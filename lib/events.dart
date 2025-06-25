@@ -1,4 +1,8 @@
 import 'package:dotenv/dotenv.dart';
+import 'package:mysql1/mysql1.dart';
+import 'package:nyxx/nyxx.dart';
+import 'package:nyxx_commands/nyxx_commands.dart';
+import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:toxbot/commands/configuration/announcements.dart';
 import 'package:toxbot/commands/configuration/autorole.dart';
 import 'package:toxbot/commands/configuration/color.dart';
@@ -39,10 +43,6 @@ import 'package:toxbot/commands/roleplay/wink.dart';
 import 'package:toxbot/commands/roleplay/yeet.dart';
 import 'package:toxbot/database.dart';
 import 'package:toxbot/utils/functions.dart';
-import 'package:mysql1/mysql1.dart';
-import 'package:nyxx/nyxx.dart';
-import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:nyxx_extensions/nyxx_extensions.dart';
 
 var env = DotEnv(includePlatformEnvironment: true)..load();
 
@@ -162,7 +162,8 @@ void setupGuildMemberAddHandler(NyxxGateway client) async {
 
         if (guildSettings['autorole'] != null) {
           try {
-            await event.member.addRole(Snowflake(guildSettings['autorole']));
+            await event.member
+                .addRole(Snowflake(int.parse(guildSettings['autorole'])));
           } catch (e) {
             print('Failed to add autorole: $e');
             return;
