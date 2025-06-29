@@ -48,6 +48,10 @@ var env = DotEnv(includePlatformEnvironment: true)..load();
 
 final Set<Snowflake> currentGuildIds = {};
 
+late DateTime botStartTime;
+
+bool isBotReady = false;
+
 CommandsPlugin setupCommandHandler(CommandsPlugin commands) {
   // Configuration commands
   commands.addCommand(announcements);
@@ -106,6 +110,11 @@ CommandsPlugin setupCommandHandler(CommandsPlugin commands) {
 
 void setupReadyHandler(NyxxGateway client) async {
   client.onReady.listen((event) async {
+    if (!isBotReady) {
+      botStartTime = DateTime.now();
+      isBotReady = true;
+    }
+
     print(
         'Client logged in as ${event.user.username} with ${event.guilds.length} guilds on ${event.totalShards} shards.');
     currentGuildIds.addAll(event.guilds.map((guild) => guild.id));
