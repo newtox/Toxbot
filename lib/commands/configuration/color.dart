@@ -1,8 +1,8 @@
 import 'package:dotenv/dotenv.dart';
-import 'package:toxbot/database.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
+import 'package:toxbot/database.dart';
 
 var env = DotEnv(includePlatformEnvironment: true)..load();
 

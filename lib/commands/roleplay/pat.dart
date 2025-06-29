@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:toxbot/database.dart';
-import 'package:toxbot/utils/functions.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
+import 'package:toxbot/database.dart';
+import 'package:toxbot/utils/functions.dart';
 
 final pat = ChatCommand('pat', 'Pat someone.', localizedDescriptions: {
   Locale.da: 'Klap nogen.',
