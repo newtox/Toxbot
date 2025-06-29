@@ -1,6 +1,6 @@
-import 'package:toxbot/database.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
+import 'package:toxbot/database.dart';
 
 String latencyTypeToString(String type) => type;
 

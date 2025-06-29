@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:toxbot/database.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
+import 'package:toxbot/database.dart';
 
 final waifu =
     ChatCommand('waifu', 'Displays a waifu image.', localizedDescriptions: {
