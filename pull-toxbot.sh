@@ -24,7 +24,7 @@ if [ $? -eq 0 ]; then
     docker run -d \
         --name $CONTAINER_NAME \
         --restart unless-stopped \
-        -v /data/compose/10/data:/data/rustdesk:ro \
+        -v /docker_volumes/rustdesk/hbbs:/data/rustdesk:ro \
         $IMAGE_NAME
 
     echo "Docker container rebuilt and started." | tee -a "$LOG_FILE"
