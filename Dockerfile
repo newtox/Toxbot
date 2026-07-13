@@ -1,10 +1,13 @@
-FROM dart:stable
+FROM dart:stable-slim
 
-RUN apt-get update && apt-get install -y libsqlite3-dev sqlite3 && apt-get clean
+RUN apt-get update && apt-get install -y --no-install-recommends libsqlite3-dev sqlite3 \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-COPY . .
 
+COPY pubspec.yaml pubspec.lock ./
 RUN dart pub get
+
+COPY . .
 
 CMD ["dart", "bin/main.dart"]
