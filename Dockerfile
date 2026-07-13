@@ -1,4 +1,4 @@
-FROM dart:stable-slim
+FROM dart:stable
 
 RUN apt-get update && apt-get install -y --no-install-recommends libsqlite3-dev sqlite3 \
     && rm -rf /var/lib/apt/lists/*
