@@ -276,7 +276,7 @@ final system =
                 level: ResponseLevel.hint);
           }
         } finally {
-          db.dispose();
+          db.close();
         }
       } catch (e) {
         await context.respond(
