@@ -19,7 +19,7 @@ Future<DiscordColor> getHighestRoleColor(Member member) async {
   if (member.roles.isNotEmpty) {
     var highestRole = await member.roles.first.get();
 
-    color = highestRole.color;
+    color = highestRole.colors.primary;
   }
 
   return color;
