@@ -18,7 +18,7 @@ if [ $? -eq 0 ]; then
     docker rm $CONTAINER_NAME
     
     # Build new image
-    docker build -t $IMAGE_NAME .
+    docker build --no-cache -t $IMAGE_NAME .
     
     # Run new container
     docker run -d \
