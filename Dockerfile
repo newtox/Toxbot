@@ -10,4 +10,6 @@ RUN dart pub get
 
 COPY . .
 
+ENV DART_INCLUDE_SECRETS=true
+
 CMD ["dart", "bin/main.dart"]
