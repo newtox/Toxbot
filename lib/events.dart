@@ -351,6 +351,11 @@ void setupCommandPreCallHandler(
         final fullGuild = await client.guilds.get(context.guild!.id);
         await checkForDatabase(fullGuild);
       }
+
+      if (context is InteractionInteractiveContext) {
+        await (context as InteractionInteractiveContext).acknowledge();
+      }
+
     } catch (e) {
       print('Error in setupCommandPreCallHandler: $e');
       return;
