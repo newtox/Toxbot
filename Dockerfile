@@ -1,6 +1,11 @@
 FROM dart:stable
 
-RUN apt-get update && apt-get install -y --no-install-recommends libsqlite3-dev sqlite3 \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libsqlite3-dev \
+    sqlite3 \
+    clang \
+    llvm \
+    lld \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -10,6 +15,4 @@ RUN dart pub get
 
 COPY . .
 
-ENV DART_INCLUDE_SECRETS=true
-
-CMD ["dart", "bin/main.dart"]
+CMD ["dart", "run", "bin/main.dart"]
