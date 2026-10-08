@@ -9,17 +9,33 @@
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
+      php = pkgs.php84;
+      root = ''"$(git rev-parse --show-toplevel 2>/dev/null || pwd)"'';
     in {
-      devShells.${system}.default = pkgs.mkShell {
-        buildInputs = [
-          pkgs.dart
-        ];
+      devShells.${system} = {
+        default = pkgs.mkShell {
+          buildInputs = [ pkgs.dart ];
 
-        shellHook = ''
-          echo "Loading dependencies via pub get..."
-          dart pub get
-          echo "Toxbot Discord Bot ready at v.($(dart --version))!"
-        '';
+          shellHook = ''
+            cd ${root}/bot
+            dart pub get
+            echo "Toxbot: $(dart --version 2>&1)"
+          '';
+        };
+
+        dashboard = pkgs.mkShell {
+          buildInputs = [
+            php
+            php.packages.composer
+            pkgs.nodejs_22
+            pkgs.mariadb.client
+          ];
+
+          shellHook = ''
+            cd ${root}/dashboard
+            echo "Toxbot Dashboard: PHP $(php -r 'echo PHP_VERSION;'), Node $(node -v)"
+          '';
+        };
       };
     };
 }
