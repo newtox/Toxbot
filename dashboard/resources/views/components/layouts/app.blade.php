@@ -1,4 +1,11 @@
-@props(['title' => null, 'guild' => null, 'guilds' => []])
+@props(['title' => null, 'description' => null, 'guild' => null, 'guilds' => []])
+
+@php
+    $pageTitle = $title ? $title.' · Toxbot' : 'Toxbot Dashboard';
+    $pageDescription = $description ?? __('login.intro');
+    $shareImage = $botAvatar ? str_replace('size=128', 'size=512', $botAvatar) : null;
+    $fallbackIcon = 'data:image/svg+xml,'.rawurlencode('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="32" fill="'.$palette['accent'].'"/><text x="32" y="44" text-anchor="middle" font-family="sans-serif" font-size="36" font-weight="700" fill="'.$palette['on'].'">t</text></svg>');
+@endphp
 
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}"
@@ -6,8 +13,31 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#1e1f22">
-    <title>{{ $title ? $title.' · ' : '' }}Toxbot</title>
+    <title>{{ $pageTitle }}</title>
+    <meta name="description" content="{{ $pageDescription }}">
+    <meta name="theme-color" content="{{ $palette['accent'] }}">
+    <link rel="canonical" href="{{ url()->current() }}">
+    @auth
+        <meta name="robots" content="noindex, nofollow">
+    @endauth
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Toxbot">
+    <meta property="og:title" content="{{ $pageTitle }}">
+    <meta property="og:description" content="{{ $pageDescription }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{ $pageTitle }}">
+    <meta name="twitter:description" content="{{ $pageDescription }}">
+
+    @if ($shareImage)
+        <meta property="og:image" content="{{ $shareImage }}">
+        <meta name="twitter:image" content="{{ $shareImage }}">
+        <link rel="icon" type="image/png" href="{{ $botAvatar }}">
+        <link rel="apple-touch-icon" href="{{ $shareImage }}">
+    @else
+        <link rel="icon" type="image/svg+xml" href="{{ $fallbackIcon }}">
+    @endif
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=rubik:400,500,600,700&display=swap" rel="stylesheet">
