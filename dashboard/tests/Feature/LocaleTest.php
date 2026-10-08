@@ -69,4 +69,16 @@ class LocaleTest extends TestCase
         $this->assertSame('ja_jp', BotUser::find('123456789012345678')->language);
         $this->get('/profile')->assertSee('ログアウト');
     }
+
+    public function test_requests_without_a_language_use_the_default_locale(): void
+    {
+        config(['app.locale' => 'de']);
+
+        $this->get('/', ['Accept-Language' => ''])->assertSee('Mit Discord anmelden');
+    }
+
+    public function test_guests_are_sent_to_the_start_page_instead_of_discord(): void
+    {
+        $this->get('/profile')->assertRedirect('/');
+    }
 }
