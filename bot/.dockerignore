@@ -1,7 +1,8 @@
 .dart_tool/
 .packages
 .pub-cache/
-.git/
 .vscode/
 build/
 *.log
+.env
+start.sh

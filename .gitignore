@@ -1,12 +1,6 @@
-# See https://www.dartlang.org/guides/libraries/private-files
-
-# Files and directories created by pub
+.env
 .dart_tool/
 .packages
 build/
-
-# dotenv environment variables file
-.env
-
-# .vscode
-.vscode
+.vscode/
+.idea/
