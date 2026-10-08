@@ -1,0 +1,95 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@theme {
+    --font-sans: 'Rubik', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji';
+
+    --color-accent: #6dbe33;
+    --color-on-accent: #101113;
+    --color-accent-fg: #6dbe33;
+
+    --color-blurple: #5865f2;
+
+    --color-dc-950: #141517;
+    --color-dc-900: #1e1f22;
+    --color-dc-800: #2b2d31;
+    --color-dc-700: #313338;
+    --color-dc-600: #383a40;
+    --color-dc-500: #404249;
+    --color-dc-400: #4e5058;
+
+    --color-dc-text: #dbdee1;
+    --color-dc-header: #f2f3f5;
+    --color-dc-muted: #949ba4;
+    --color-dc-faint: #6d6f78;
+    --color-dc-link: #00a8fc;
+    --color-dc-red: #f23f43;
+    --color-dc-yellow: #f0b232;
+}
+
+@layer base {
+    html {
+        color-scheme: dark;
+    }
+
+    body {
+        @apply bg-dc-900 font-sans text-dc-text antialiased;
+    }
+
+    ::selection {
+        @apply bg-accent text-on-accent;
+    }
+
+    :focus-visible {
+        @apply outline-2 outline-offset-2 outline-accent-fg;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *, ::before, ::after {
+            transition-duration: 0s !important;
+            animation-duration: 0s !important;
+        }
+    }
+}
+
+@utility card {
+    @apply rounded-xl bg-dc-800 p-5;
+}
+
+@utility label {
+    @apply mb-2 block text-sm font-medium text-dc-header;
+}
+
+@utility input {
+    @apply w-full rounded-md border-0 bg-dc-900 px-3 py-2.5 text-dc-text ring-1 ring-black/20 placeholder:text-dc-faint focus:ring-2 focus:ring-accent focus:outline-none;
+}
+
+@utility btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+@utility btn-primary {
+    @apply btn bg-accent text-on-accent hover:brightness-110;
+}
+
+@utility btn-ghost {
+    @apply btn text-dc-text hover:underline;
+}
+
+@utility btn-secondary {
+    @apply btn bg-dc-600 text-dc-header hover:bg-dc-500;
+}
+
+@utility nav-item {
+    @apply flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-dc-muted transition-colors hover:bg-dc-600 hover:text-dc-header;
+}
+
+@utility dc-mention {
+    @apply rounded-[3px] bg-blurple/30 px-0.5 font-medium text-[#c9cdfb];
+}
+
+@utility dc-code {
+    @apply rounded-[3px] bg-dc-900 px-1 py-0.5 font-mono text-[0.85em];
+}
