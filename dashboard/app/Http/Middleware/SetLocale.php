@@ -31,6 +31,10 @@ class SetLocale
             return session('locale');
         }
 
+        if ($request->getLanguages() === []) {
+            return config('app.locale');
+        }
+
         return $request->getPreferredLanguage(array_keys($locales)) ?? config('app.locale');
     }
 }

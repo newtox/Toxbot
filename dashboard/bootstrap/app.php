@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->trustProxies(at: '*');
+        $middleware->redirectGuestsTo(fn () => route('home'));
         $middleware->web(append: [SetLocale::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
