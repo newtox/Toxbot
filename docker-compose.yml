@@ -1,0 +1,45 @@
+services:
+  bot:
+    image: ghcr.io/newtox/toxbot:latest
+    container_name: toxbot
+    restart: unless-stopped
+    environment:
+      token: ${DISCORD_BOT_TOKEN}
+      db_host: ${DB_HOST:-host.docker.internal}
+      db_user: ${DB_USERNAME}
+      db_password: ${DB_PASSWORD}
+      db_name: ${DB_DATABASE:-toxbot}
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    volumes:
+      - /docker_volumes/rustdesk/hbbs:/data/rustdesk:ro
+
+  dashboard:
+    image: ghcr.io/newtox/toxbot-dashboard:latest
+    container_name: toxbot-dashboard
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:8090:8080
+    environment:
+      APP_NAME: Toxbot
+      APP_ENV: production
+      APP_DEBUG: "false"
+      APP_KEY: ${APP_KEY}
+      APP_URL: ${APP_URL}
+      DB_CONNECTION: mysql
+      DB_HOST: ${DB_HOST:-host.docker.internal}
+      DB_PORT: ${DB_PORT:-3306}
+      DB_DATABASE: ${DB_DATABASE:-toxbot}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      SESSION_DRIVER: database
+      SESSION_ENCRYPT: "true"
+      SESSION_SECURE_COOKIE: "true"
+      CACHE_STORE: database
+      QUEUE_CONNECTION: sync
+      DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID}
+      DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET}
+      DISCORD_REDIRECT_URI: ${APP_URL}/auth/discord/callback
+      DISCORD_BOT_TOKEN: ${DISCORD_BOT_TOKEN}
+    extra_hosts:
+      - host.docker.internal:host-gateway

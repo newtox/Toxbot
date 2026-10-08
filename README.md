@@ -9,84 +9,74 @@ This work is licensed under a
 [cc-by-nc-sa-image]: https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png
 [cc-by-nc-sa-shield]: https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg
 
-# Toxbot: The Dart Discord Bot
+# Toxbot
 
-Welcome to the **Toxbot** repository! Here, you'll find **Toxbot**, a Discord bot crafted in Dart using `nyxx` and `nyxx_commands` for seamless integration with Discord's slash command system. Whether you're here to use the bot, extend its functionality, or learn about Dart in a Discord bot context, you're in the right place.
+A Discord bot written in Dart with [`nyxx`](https://pub.dev/packages/nyxx) and `nyxx_commands`, plus a web dashboard to configure it.
 
-## Overview
+| Part | Folder | Stack |
+| --- | --- | --- |
+| Bot | `bot/` | Dart, nyxx, MySQL |
+| Dashboard | [`dashboard/`](dashboard/README.md) | Laravel, Livewire, Tailwind |
 
-- **Toxbot**: A versatile Discord bot designed for community engagement, moderation, and entertainment, utilizing slash commands.
-- **Technology**: Built with Dart, leveraging `nyxx` for Discord interactions and `nyxx_commands` for managing slash commands.
+Both share the same MySQL database. Whatever you change in the dashboard (welcome and goodbye messages, autorole, language, embed color) is picked up by the bot right away.
 
-## How to Use
+## Running locally
 
-### Prerequisites
+### Bot
 
-- **Dart SDK**: Ensure Dart is installed and configured on your system.
-- **Discord Developer Account**: Have a Developer Application to obtain a Bot Token.
-
-### Installation
-
-1. **Clone this repository**:
+1. Copy `bot/.env.example` to `bot/.env` and fill in your bot token and database credentials.
+2. Start the bot:
    ```bash
-   git clone https://github.com/newtox/Toxbot.git
-   cd Toxbot
+   cd bot
+   dart pub get
+   dart run bin/main.dart
    ```
 
-2. **Setup**:
-   - Create a `.env` file based on the provided `.env.example`. Copy the content from:
-     ```plaintext
-     .env.example
-     ```
-   - Replace the placeholders with your bot details:
-     ```
-     token=your_bot_token_here
-     db_host=your_database_host
-     db_port=your_database_port
-     db_user=your_database_username
-     db_password=your_database_password
-     db_name=your_database_name
-     ```
+With Nix, `bot/start.sh` does the same inside the dev shell. `nix develop` opens that shell in `bot/`.
 
-3. **Run the Bot**:
-   - After setting up, run:
-     ```bash
-     dart run bin/main.dart
-     ```
-   - If dependencies aren't installed, first run:
-     ```
-     dart pub get
-     ```
+### Dashboard
 
-### Usage
-
-Toxbot uses slash commands. Users can see all commands by typing `/` in Discord. For instance, to check if Toxbot is online, use:
-
-```dart
-/ping
+```bash
+nix develop .#dashboard
 ```
+
+This shell comes with PHP, Composer and Node and opens in `dashboard/`. Setup and usage are described in the [dashboard README](dashboard/README.md).
+
+## Deployment
+
+On every push to `main`, the GitHub Action in `.github/workflows/docker.yml` builds two Docker images from `bot/` and `dashboard/` and publishes them to the GitHub Container Registry:
+
+- `ghcr.io/newtox/toxbot`
+- `ghcr.io/newtox/toxbot-dashboard`
+
+The server runs both from `docker-compose.yml`, deployed as a Portainer stack. Secrets are not part of the images; they are set as stack environment variables. See `stack.env.example` for the full list.
+
+The dashboard listens on `127.0.0.1:8090` and is meant to sit behind a reverse proxy, for example Caddy:
+
+```
+toxbot.example.com {
+    reverse_proxy 127.0.0.1:8090
+}
+```
+
+To update: push to `main`, wait for the action to finish, then use **Pull and redeploy** on the stack in Portainer.
+
+## Usage
+
+Toxbot uses slash commands. Type `/` in Discord to see all of them, for example `/ping` to check whether the bot is online.
 
 ## Contributing
 
-Interested in adding features to Toxbot? Here's how:
-
-- **Fork** the repository.
-- **Create** a new branch: `git checkout -b feature/your-feature-name`
-- **Commit** your contributions: `git commit -m 'Add new feature: your-feature-name'`
-- **Push** to your branch: `git push origin feature/your-feature-name`
-- **Submit** a pull request detailing your script or improvements.
+- Fork the repository.
+- Create a branch: `git checkout -b feature/your-feature-name`
+- Commit your changes: `git commit -m 'Add your feature'`
+- Push the branch: `git push origin feature/your-feature-name`
+- Open a pull request.
 
 ## License
 
-This project is licensed under the **Creative Commons Attribution-NonCommercial-ShareAlike (CC BY-NC-SA)** License. For more details, see:
-
-- **License**: [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
-
-By contributing, you agree that your contributions will be licensed under the same license.
+This project is licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) license. By contributing, you agree that your contributions are licensed under the same terms.
 
 ## Contact
 
-Have a feature request or found a bug?
-
-- Open an issue directly on GitHub.
-- Or reach out to me at [contact@placeholder.de](mailto:contact@placeholder.de)
+Found a bug or have a feature request? Open an issue on GitHub or write to [contact@placeholder.de](mailto:contact@placeholder.de).
