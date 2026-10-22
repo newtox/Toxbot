@@ -110,9 +110,6 @@ class Announcer
         }
     }
 
-    /**
-     * @param  list<array{video: string, channel: string, title: string, published: ?string}>  $entries
-     */
     public function youtubeEntries(array $entries): void
     {
         $fresh = array_values(array_filter($entries, fn ($e) => $e['published'] === null

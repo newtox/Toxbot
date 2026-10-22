@@ -27,8 +27,6 @@ final info = ChatCommand('info', 'Get generic information about the bot.',
     return '$current/$rss MB';
   }
 
-  // Shard ${(context.guild?.shard.id ?? 0) + 1} of ${(context.client as INyxxWebsocket).shards
-
   final invite =
       'https://discord.com/oauth2/authorize?client_id=561253410591211520&permissions=1757019580661079&integration_type=0&scope=bot+applications.commands';
 
