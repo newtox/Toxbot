@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Guild;
+use App\Models\TagGuildBlock;
 use App\Services\Discord;
 use App\Services\GuildAccess;
 use Illuminate\Http\Client\RequestException;
@@ -39,6 +40,12 @@ class GuildSettings extends Component
 
     public ?string $autorole = null;
 
+    public bool $tagsEnabled = true;
+
+    public bool $levelupEnabled = false;
+
+    public ?string $levelupChannel = null;
+
     public function mount(array $guild): void
     {
         $this->guildId = $guild['id'];
@@ -61,6 +68,10 @@ class GuildSettings extends Component
         $this->byeEnabled = $row->bye_channel !== null && $row->bye_msg !== null;
 
         $this->autorole = $row->autorole;
+
+        $this->tagsEnabled = (bool) $row->tags_enabled;
+        $this->levelupEnabled = (bool) $row->levelup_enabled;
+        $this->levelupChannel = $row->levelup_channel;
 
         $this->resetValidation();
     }
@@ -99,12 +110,14 @@ class GuildSettings extends Component
             'byeChannel' => $channelRules($this->byeEnabled),
             'byeMsg' => $messageRules($this->byeEnabled),
             'autorole' => ['nullable', Rule::in($roleIds)],
+            'levelupChannel' => ['nullable', Rule::in($channelIds)],
         ], [
             '*Channel.required' => __('guild.channel_required'),
             '*Msg.required' => __('guild.message_required'),
             '*Msg.max' => __('guild.message_max', ['max' => $max]),
             '*Channel.in' => __('guild.channel_invalid'),
             'autorole.in' => __('guild.role_invalid'),
+            'levelupChannel.in' => __('guild.channel_invalid'),
         ]);
 
         $row = Guild::forDiscordId($this->guildId);
@@ -114,10 +127,20 @@ class GuildSettings extends Component
             'bye_channel' => $this->byeEnabled ? $this->byeChannel : null,
             'bye_msg' => $this->byeMsg !== '' ? $this->byeMsg : null,
             'autorole' => $this->autorole ?: null,
+            'tags_enabled' => $this->tagsEnabled,
+            'levelup_enabled' => $this->levelupEnabled,
+            'levelup_channel' => $this->levelupChannel ?: null,
         ])->save();
 
         $this->loadFromDatabase();
         $this->dispatch('saved');
+    }
+
+    public function unblockTag(int $tagId): void
+    {
+        abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
+
+        TagGuildBlock::query()->where('guild', $this->guildId)->where('tag_id', $tagId)->delete();
     }
 
     public function render()
@@ -151,6 +174,8 @@ class GuildSettings extends Component
         }
 
         return view('livewire.guild-settings', [
+            'blockedTags' => TagGuildBlock::query()->with('tag')->where('guild', $this->guildId)->get()
+                ->filter(fn ($block) => $block->tag !== null),
             'channelGroups' => $channelGroups,
             'roles' => $roles,
             'loadError' => $loadError,

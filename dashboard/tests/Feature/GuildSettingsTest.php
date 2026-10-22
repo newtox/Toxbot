@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use App\Livewire\GuildSettings;
 use App\Models\DashboardUser;
 use App\Models\Guild;
+use App\Models\Tag;
+use App\Models\TagGuildBlock;
 use App\Services\GuildAccess;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
@@ -132,5 +134,48 @@ class GuildSettingsTest extends TestCase
         $row = Guild::find(self::GUILD);
         $this->assertNull($row->welcome_channel);
         $this->assertSame('Hallo &user', $row->welcome_msg);
+    }
+
+    public function test_saves_level_up_and_tag_settings(): void
+    {
+        $this->login();
+
+        Livewire::test(GuildSettings::class, ['guild' => ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon_url' => null]])
+            ->assertSet('tagsEnabled', true)
+            ->assertSet('levelupEnabled', false)
+            ->set('tagsEnabled', false)
+            ->set('levelupEnabled', true)
+            ->set('levelupChannel', '11')
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $row = Guild::find(self::GUILD);
+        $this->assertFalse($row->tags_enabled);
+        $this->assertTrue($row->levelup_enabled);
+        $this->assertSame('11', $row->levelup_channel);
+    }
+
+    public function test_level_up_channel_must_be_a_text_channel(): void
+    {
+        $this->login();
+
+        Livewire::test(GuildSettings::class, ['guild' => ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon_url' => null]])
+            ->set('levelupEnabled', true)
+            ->set('levelupChannel', '12')
+            ->call('save')
+            ->assertHasErrors('levelupChannel');
+    }
+
+    public function test_unblocks_a_tag(): void
+    {
+        $this->login();
+        $tag = Tag::create(['name' => 'spam', 'owner' => '1', 'content' => 'x']);
+        TagGuildBlock::create(['guild' => self::GUILD, 'tag_id' => $tag->id]);
+
+        Livewire::test(GuildSettings::class, ['guild' => ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon_url' => null]])
+            ->assertSee('spam')
+            ->call('unblockTag', $tag->id);
+
+        $this->assertSame(0, TagGuildBlock::count());
     }
 }

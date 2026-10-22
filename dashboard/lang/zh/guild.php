@@ -37,4 +37,13 @@ return [
     'message_max' => 'Discord 最多允许 :max 个字符。',
     'channel_invalid' => '该频道已不存在，或 Toxbot 无法在其中发言。',
     'role_invalid' => 'Toxbot 无法分配此角色（它高于 Toxbot 的最高角色）。',
+    'levelup_title' => '升级消息',
+    'levelup_description' => '当有人在本服务器升级时，Toxbot 会发送祝贺。',
+    'levelup_same_channel' => '成员发言的频道',
+    'tags_title' => '标签',
+    'tags_description' => '成员可以用 /tag show 使用自己的命令。标签是全局的，你可以在这里为你的服务器关闭它们。',
+    'blocked_tags' => '已屏蔽的标签',
+    'no_blocked_tags' => '没有屏蔽的标签。',
+    'unblock' => '取消屏蔽',
+    'block_hint' => '在 Discord 中用 /tag block 屏蔽单个标签。',
 ];
