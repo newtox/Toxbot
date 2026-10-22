@@ -43,6 +43,7 @@ import 'package:toxbot/commands/roleplay/wink.dart';
 import 'package:toxbot/commands/roleplay/yeet.dart';
 import 'package:toxbot/commands/tags/tag.dart';
 import 'package:toxbot/database.dart';
+import 'package:toxbot/levels.dart';
 import 'package:toxbot/premium.dart';
 import 'package:toxbot/utils/functions.dart';
 
@@ -373,6 +374,8 @@ void setupCommandPreCallHandler(
 void setupCommandPostCallHandler(
     CommandsPlugin commands, NyxxGateway client) async {
   commands.onPostCall.listen((context) async {
+    countCommand(client, context);
+
     try {
       final channelId = Snowflake(1288846653704376462);
       final channel = await client.channels[channelId].get();
