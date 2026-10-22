@@ -124,14 +124,24 @@
             </div>
         </div>
 
-        <div>
-            <label class="label" for="stream-msg">{{ __('guild.message') }}</label>
-            <textarea id="stream-msg" x-ref="streamMsg" wire:model="streamMsg" rows="2" placeholder="{{ \App\Models\Guild::DEFAULT_STREAM_MESSAGE }}"
-                      class="input resize-y font-mono text-sm"></textarea>
-            @error('streamMsg') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
-            <div class="mt-3 flex flex-wrap gap-2">
+        <div x-data="{ target: 'streamMsg' }" class="space-y-4">
+            <div class="grid gap-4 sm:grid-cols-2">
+                <div>
+                    <label class="label" for="stream-msg">{{ __('streams.live_message') }}</label>
+                    <textarea id="stream-msg" x-ref="streamMsg" x-on:focus="target = 'streamMsg'" wire:model="streamMsg" rows="2" placeholder="{{ \App\Models\Guild::DEFAULT_STREAM_MESSAGE }}"
+                              class="input resize-y font-mono text-sm"></textarea>
+                    @error('streamMsg') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+                </div>
+                <div>
+                    <label class="label" for="stream-video-msg">{{ __('streams.video_message') }}</label>
+                    <textarea id="stream-video-msg" x-ref="streamVideoMsg" x-on:focus="target = 'streamVideoMsg'" wire:model="streamVideoMsg" rows="2" placeholder="{{ \App\Models\Guild::DEFAULT_VIDEO_MESSAGE }}"
+                              class="input resize-y font-mono text-sm"></textarea>
+                    @error('streamVideoMsg') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+                </div>
+            </div>
+            <div class="flex flex-wrap gap-2">
                 @foreach (\App\Models\Guild::STREAM_PLACEHOLDERS as $token => $hint)
-                    <button type="button" title="{{ __($hint) }}" x-on:click="toxbot.insertAtCursor($refs.streamMsg, '{{ $token }}')"
+                    <button type="button" title="{{ __($hint) }}" x-on:click="toxbot.insertAtCursor($refs[target], '{{ $token }}')"
                             class="rounded-full bg-dc-600 px-3 py-1 font-mono text-xs text-dc-text transition hover:bg-accent hover:text-on-accent">{{ $token }}</button>
                 @endforeach
             </div>

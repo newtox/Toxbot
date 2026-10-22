@@ -186,6 +186,7 @@ class StreamsTest extends TestCase
 
         $this->assertCount(1, $this->discordPosts);
         $this->assertSame('https://www.youtube.com/watch?v=abc', $this->discordPosts[0]['embeds'][0]['url']);
+        $this->assertSame('<@&777> **Mein Kanal** uploaded a new video! https://www.youtube.com/watch?v=abc', $this->discordPosts[0]['content']);
     }
 
     private function login(): void

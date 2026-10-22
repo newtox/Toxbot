@@ -52,6 +52,8 @@ class GuildSettings extends Component
 
     public string $streamMsg = '';
 
+    public string $streamVideoMsg = '';
+
     public ?string $liveRole = null;
 
     public ?string $liveRoleRequired = null;
@@ -86,6 +88,7 @@ class GuildSettings extends Component
         $this->streamChannel = $row->stream;
         $this->streamRole = $row->notify;
         $this->streamMsg = (string) $row->stream_msg;
+        $this->streamVideoMsg = (string) $row->stream_video_msg;
         $this->liveRole = $row->live_role;
         $this->liveRoleRequired = $row->live_role_required;
 
@@ -132,6 +135,7 @@ class GuildSettings extends Component
             'streamChannel' => ['nullable', Rule::in($channelIds)],
             'streamRole' => ['nullable', Rule::in($mentionableRoleIds)],
             'streamMsg' => ['nullable', 'string', "max:{$max}"],
+            'streamVideoMsg' => ['nullable', 'string', "max:{$max}"],
             'liveRole' => ['nullable', Rule::in($roleIds)],
             'liveRoleRequired' => ['nullable', Rule::in($mentionableRoleIds)],
         ], [
@@ -160,6 +164,7 @@ class GuildSettings extends Component
             'stream' => $this->streamChannel ?: null,
             'notify' => $this->streamRole ?: null,
             'stream_msg' => $this->streamMsg !== '' ? $this->streamMsg : null,
+            'stream_video_msg' => $this->streamVideoMsg !== '' ? $this->streamVideoMsg : null,
             'live_role' => $this->liveRole ?: null,
             'live_role_required' => $this->liveRole ? ($this->liveRoleRequired ?: null) : null,
         ])->save();

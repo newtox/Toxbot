@@ -36,7 +36,8 @@ return [
     'premium_locked' => 'Disse indstillinger følger med Server Premium. Alle med Toxbot Premium kan låse det op for denne server på deres profilside.',
     'paused' => 'Sat på pause',
     'paused_hint' => 'Uden Server Premium meldes kun de første :limit streamere.',
-    'own_message' => 'Egen besked til denne streamer',
+    'own_message' => 'Egen besked ved livestreams',
+    'own_video_message' => 'Egen besked ved nye videoer',
     'own_message_hint' => 'Lad være tom for at bruge serverbeskeden',
     'own_role' => 'Egen rolle at pinge for denne streamer',
     'own_role_default' => 'Serverens ping-rolle',
@@ -51,4 +52,7 @@ return [
     'not_found' => 'Denne kanal findes ikke.',
     'platform_error' => 'Twitch eller YouTube kan ikke nås lige nu eller er ikke sat op.',
     'youtube_need_id' => 'Uden YouTube-API-nøgle virker kun kanal-ID (UC…) eller et /channel/-link.',
+    'live_message' => 'Besked ved livestreams',
+    'video_message' => 'Besked ved nye YouTube-videoer',
+    'youtube_no_key' => 'Uden en YouTube API-nøgle meldes livestreams som videoer, og kun kanal-ID\'er virker.',
 ];

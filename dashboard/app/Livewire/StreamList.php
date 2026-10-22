@@ -29,6 +29,8 @@ class StreamList extends Component
 
     public string $customMessage = '';
 
+    public string $videoMessage = '';
+
     public string $pingRole = '';
 
     public string $filterGames = '';
@@ -86,6 +88,7 @@ class StreamList extends Component
         $this->resetValidation();
         $this->editingId = $id;
         $this->customMessage = (string) $subscription->message;
+        $this->videoMessage = (string) $subscription->video_message;
         $this->pingRole = (string) $subscription->role;
         $this->filterGames = (string) $subscription->filter_games;
         $this->filterTitle = (string) $subscription->filter_title;
@@ -107,6 +110,7 @@ class StreamList extends Component
 
         $this->validate([
             'customMessage' => ['nullable', 'string', 'max:2000'],
+            'videoMessage' => ['nullable', 'string', 'max:2000'],
             'pingRole' => ['nullable', Rule::in(array_column($this->roles($discord), 'id'))],
             'filterGames' => ['nullable', 'string', 'max:500'],
             'filterTitle' => ['nullable', 'string', 'max:200'],
@@ -118,6 +122,7 @@ class StreamList extends Component
         if ($premium->isGuildPremium($this->guildId)) {
             $fields += [
                 'message' => $this->customMessage !== '' ? $this->customMessage : null,
+                'video_message' => $this->videoMessage !== '' ? $this->videoMessage : null,
                 'role' => $this->pingRole !== '' ? $this->pingRole : null,
                 'filter_games' => $this->filterGames !== '' ? $this->filterGames : null,
                 'filter_title' => $this->filterTitle !== '' ? $this->filterTitle : null,
