@@ -16,18 +16,19 @@ void main() async {
           defaultResponseLevel: ResponseLevel.public,
           type: CommandType.slashOnly));
 
-  final client = await Nyxx.connectGateway(env['token']!, GatewayIntents.all,
-      options: GatewayClientOptions(plugins: [
-        Logging(
-            stderrLevel: Level.SEVERE,
-            stackTraceLevel: Level.SEVERE,
-            logLevel: Level.INFO,
-            censorToken: true,
-            stdout: stdout,
-            stderr: stderr),
-        cliIntegration,
-        setupCommandHandler(commands)
-      ]));
+  final client =
+      await Nyxx.connectGateway(env['token']!, GatewayIntents.allUnprivileged,
+          options: GatewayClientOptions(plugins: [
+            Logging(
+                stderrLevel: Level.SEVERE,
+                stackTraceLevel: Level.SEVERE,
+                logLevel: Level.INFO,
+                censorToken: true,
+                stdout: stdout,
+                stderr: stderr),
+            cliIntegration,
+            setupCommandHandler(commands)
+          ]));
 
   setupReadyHandler(client);
   setupGuildCreateHandler(client);
