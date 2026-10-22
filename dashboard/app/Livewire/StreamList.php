@@ -156,7 +156,8 @@ class StreamList extends Component
     {
         return view('livewire.stream-list', [
             'subscriptions' => StreamSubscription::query()->with('source')->where('guild', $this->guildId)->oldest()->get(),
-            'premium' => $premium->isGuildPremium($this->guildId),
+            'premium' => $isPremium = $premium->isGuildPremium($this->guildId),
+            'activeIds' => $isPremium ? null : StreamSubscription::freeIds($this->guildId),
             'limit' => $manager->limit($this->guildId),
             'roles' => $this->editingId ? $this->roles($discord) : [],
             'twitchReady' => $twitch->configured() && strlen((string) config('toxbot.streams.webhook_secret')) >= 10,

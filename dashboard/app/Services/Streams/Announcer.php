@@ -53,6 +53,9 @@ class Announcer
 
         foreach ($source->subscriptions as $subscription) {
             $premium = $this->premium->isGuildPremium($subscription->guild);
+            if (! $this->allowed($subscription, $premium)) {
+                continue;
+            }
             if ($premium && ! $subscription->matches($details['game'], $details['title'])) {
                 continue;
             }
@@ -162,6 +165,9 @@ class Announcer
             }
 
             $premium = $this->premium->isGuildPremium($subscription->guild);
+            if (! $this->allowed($subscription, $premium)) {
+                continue;
+            }
             $keyword = mb_strtolower(trim((string) $subscription->filter_title));
             if ($premium && $keyword !== '' && ! str_contains(mb_strtolower($title), $keyword)) {
                 continue;
@@ -178,6 +184,11 @@ class Announcer
 
             $this->announce($subscription, $source, $videoId, $kind, $details, $premium);
         }
+    }
+
+    private function allowed(StreamSubscription $subscription, bool $premium): bool
+    {
+        return $premium || in_array((int) $subscription->id, StreamSubscription::freeIds($subscription->guild), true);
     }
 
     private function announce(StreamSubscription $subscription, StreamSource $source, string $itemId, string $kind, array $details, bool $premium): void

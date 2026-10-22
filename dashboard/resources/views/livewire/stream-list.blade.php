@@ -40,6 +40,7 @@
                             <div class="text-xs text-dc-muted">
                                 {{ $source->platform === 'twitch' ? 'Twitch' : 'YouTube' }}
                                 @if ($source->live_item) · <span class="font-semibold text-dc-red">LIVE</span> @endif
+                                @if ($activeIds !== null && ! in_array((int) $subscription->id, $activeIds, true)) · <span class="font-semibold text-dc-yellow" title="{{ __('streams.paused_hint', ['limit' => config('toxbot.streams.free_limit')]) }}">{{ __('streams.paused') }}</span> @endif
                             </div>
                         </div>
                         <button type="button" wire:click="edit({{ $subscription->id }})" class="btn-secondary px-3 py-1.5">{{ __('streams.settings') }}</button>
