@@ -24,7 +24,18 @@ class Guild extends Model
 
     protected $fillable = [
         'id', 'welcome_channel', 'bye_channel', 'welcome_msg', 'bye_msg', 'autorole',
+        'tags_enabled', 'levelup_enabled', 'levelup_channel',
     ];
+
+    protected $attributes = [
+        'tags_enabled' => true,
+        'levelup_enabled' => false,
+    ];
+
+    protected function casts(): array
+    {
+        return ['tags_enabled' => 'boolean', 'levelup_enabled' => 'boolean'];
+    }
 
     public static function forDiscordId(string $id): self
     {
