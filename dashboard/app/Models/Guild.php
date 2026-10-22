@@ -25,7 +25,18 @@ class Guild extends Model
     protected $fillable = [
         'id', 'welcome_channel', 'bye_channel', 'welcome_msg', 'bye_msg', 'autorole',
         'tags_enabled', 'levelup_enabled', 'levelup_channel',
+        'notify', 'stream', 'stream_msg', 'live_role', 'live_role_required',
     ];
+
+    public const STREAM_PLACEHOLDERS = [
+        '&streamer' => 'streams.placeholder_streamer',
+        '&title' => 'streams.placeholder_title',
+        '&game' => 'streams.placeholder_game',
+        '&link' => 'streams.placeholder_link',
+        '&role' => 'streams.placeholder_role',
+    ];
+
+    public const DEFAULT_STREAM_MESSAGE = '&role **&streamer** is live! &link';
 
     protected $attributes = [
         'tags_enabled' => true,
