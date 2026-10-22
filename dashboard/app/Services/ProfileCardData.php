@@ -1,0 +1,75 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\Background;
+use App\Models\BotUser;
+use App\Models\MemberLevel;
+use App\Support\Level;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
+
+class ProfileCardData
+{
+    public function __construct(
+        private readonly Discord $discord,
+        private readonly Premium $premium,
+    ) {}
+
+    public function build(string $userId, ?string $guildId = null, ?Background $preview = null): array
+    {
+        $user = BotUser::forDiscordId($userId);
+        $premium = $this->premium->isPremium($userId);
+
+        $background = $preview ?? $user->background;
+        if ($preview === null && $background && (! $background->active || ($background->premium_only && ! $premium))) {
+            $background = null;
+        }
+
+        $stats = ['Global Rank' => '#'.$this->number($user->globalRank())];
+
+        if ($guildId) {
+            $member = MemberLevel::query()->where('guild', $guildId)->where('user', $userId)->first();
+            $stats['Server Level'] = $this->number(Level::fromXp((int) $member?->xp)['level']);
+        }
+
+        $stats['Credits'] = $this->number((int) $user->credits);
+        $stats['Commands'] = $this->number((int) $user->commands_used);
+
+        return [
+            'background' => $background?->path(),
+            'avatar' => $this->avatar($userId),
+            'accent' => $user->color ?: BotUser::DEFAULT_COLOR,
+            'level' => $user->level(),
+            'stats' => $stats,
+            'premium' => $premium,
+        ];
+    }
+
+    private function avatar(string $userId): ?string
+    {
+        $cached = Cache::remember("card:avatar:{$userId}", 3600, function () use ($userId) {
+            try {
+                $profile = $this->discord->user($userId);
+                $url = isset($profile['avatar'])
+                    ? "https://cdn.discordapp.com/avatars/{$userId}/{$profile['avatar']}.png?size=256"
+                    : 'https://cdn.discordapp.com/embed/avatars/'.(((int) $userId >> 22) % 6).'.png';
+
+                $response = Http::timeout(5)->get($url);
+
+                return $response->successful() ? base64_encode($response->body()) : '';
+            } catch (\Throwable $e) {
+                report($e);
+
+                return '';
+            }
+        });
+
+        return $cached !== '' ? base64_decode($cached) : null;
+    }
+
+    private function number(int $value): string
+    {
+        return number_format($value, 0, '', ' ');
+    }
+}

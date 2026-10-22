@@ -120,6 +120,11 @@ class Discord
         return $url ?: null;
     }
 
+    public function user(string $userId): array
+    {
+        return Cache::remember("discord:user:{$userId}:profile", 600, fn () => $this->asBot()->get("/users/{$userId}")->throw()->json());
+    }
+
     public function guildChannels(string $guildId): array
     {
         return Cache::remember("discord:guild:{$guildId}:channels", 30, fn () => $this->asBot()->get("/guilds/{$guildId}/channels")->throw()->json());
