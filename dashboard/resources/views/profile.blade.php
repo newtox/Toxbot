@@ -9,6 +9,7 @@
         </div>
 
         <livewire:profile-overview />
+        <livewire:premium-server-picker />
         <livewire:profile-settings />
     </div>
 </x-layouts.app>

@@ -10,4 +10,10 @@ return [
     'embed_title' => 'Так выглядят твои эмбеды',
     'embed_text' => 'Например, Toxbot использует этот цвет в /hug, /pat или /info.',
     'color_invalid' => 'Укажи цвет в формате hex, например #7289da.',
+    'premium_server_title' => 'Server Premium',
+    'premium_server_description' => 'С Toxbot Premium ты открываешь Server Premium для одного сервера, которым управляешь: больше стримеров, своё сообщение и роль для упоминания у каждого стримера, фильтры и многое другое.',
+    'premium_server_none' => 'Нет сервера',
+    'premium_server_locked' => 'Server Premium для одного сервера на твой выбор входит в Toxbot Premium.',
+    'premium_server_invalid' => 'Выбери сервер, которым ты управляешь и на котором есть Toxbot.',
+    'premium_server_unknown' => 'Сервер больше недоступен',
 ];

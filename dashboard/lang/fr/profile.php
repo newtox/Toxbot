@@ -10,4 +10,10 @@ return [
     'embed_title' => 'Voilà à quoi ressemblent tes embeds',
     'embed_text' => 'Toxbot utilise cette couleur par exemple pour /hug, /pat ou /info.',
     'color_invalid' => 'Saisis une couleur hexadécimale comme #7289da.',
+    'premium_server_title' => 'Server Premium',
+    'premium_server_description' => 'Avec Toxbot Premium, tu débloques Server Premium pour un serveur que tu gères : plus de streamers, message et rôle à mentionner par streamer, filtres et plus encore.',
+    'premium_server_none' => 'Aucun serveur',
+    'premium_server_locked' => 'Server Premium pour un serveur de ton choix est inclus dans Toxbot Premium.',
+    'premium_server_invalid' => 'Choisis un serveur que tu gères et où Toxbot est présent.',
+    'premium_server_unknown' => 'Serveur plus disponible',
 ];

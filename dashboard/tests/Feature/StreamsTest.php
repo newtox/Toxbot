@@ -2,13 +2,17 @@
 
 namespace Tests\Feature;
 
+use App\Livewire\PremiumServerPicker;
 use App\Livewire\StreamList;
 use App\Models\DashboardUser;
+use App\Models\Entitlement;
 use App\Models\Guild;
+use App\Models\PremiumServer;
 use App\Models\StreamAnnouncement;
 use App\Models\StreamSource;
 use App\Models\StreamSubscription;
 use App\Services\GuildAccess;
+use App\Services\Premium;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
@@ -140,7 +144,7 @@ class StreamsTest extends TestCase
         $this->twitchRequest('notification', $online);
         $this->assertCount(1, $this->discordPosts, 'filters are ignored without premium');
 
-        \App\Models\Entitlement::create(['id' => '1', 'sku_id' => '700', 'guild_id' => self::GUILD, 'type' => 8, 'deleted' => false, 'consumed' => false]);
+        Entitlement::create(['id' => '1', 'sku_id' => '700', 'guild_id' => self::GUILD, 'type' => 8, 'deleted' => false, 'consumed' => false]);
         $source->update(['live_item' => null]);
         $this->twitchRequest('notification', ['subscription' => ['type' => 'stream.online'], 'event' => ['id' => 'stream-2', 'broadcaster_user_id' => '42']]);
         $this->assertCount(1, $this->discordPosts, 'Valheim does not match the Palworld filter');
@@ -261,6 +265,46 @@ class StreamsTest extends TestCase
 
         $this->assertStringStartsWith('<@&888>', $this->discordPosts[0]['content']);
         $this->assertSame(['parse' => [], 'roles' => ['888']], $this->discordPosts[0]['allowed_mentions']);
+    }
+
+    public function test_premium_users_unlock_server_premium_for_one_server(): void
+    {
+        $this->login();
+        $this->mock(GuildAccess::class, fn ($mock) => $mock
+            ->shouldReceive('manageableGuilds')->andReturn([['id' => self::GUILD, 'name' => 'Toxic', 'has_bot' => true]])
+            ->shouldReceive('find')->andReturn(['id' => self::GUILD]));
+
+        Livewire::test(PremiumServerPicker::class)->set('guildId', self::GUILD)->call('save')->assertForbidden();
+
+        config(['toxbot.premium_users' => ['123456789012345678']]);
+        Livewire::test(PremiumServerPicker::class)
+            ->set('guildId', '222')->call('save')->assertHasErrors('guildId')
+            ->set('guildId', self::GUILD)->call('save')->assertHasNoErrors();
+
+        $this->assertSame(self::GUILD, PremiumServer::find('123456789012345678')->guild_id);
+        $this->assertTrue(app(Premium::class)->isGuildPremium(self::GUILD));
+
+        config(['toxbot.premium_users' => []]);
+        $this->assertFalse((new Premium)->isGuildPremium(self::GUILD));
+    }
+
+    public function test_only_free_limit_streamers_are_announced_without_premium(): void
+    {
+        config(['toxbot.streams.free_limit' => 1]);
+        $this->guild();
+        $other = StreamSource::create(['platform' => 'twitch', 'external_id' => '1', 'login' => 'first', 'name' => 'First']);
+        StreamSubscription::create(['guild' => self::GUILD, 'stream_source_id' => $other->id]);
+        $source = $this->twitchSource();
+        StreamSubscription::create(['guild' => self::GUILD, 'stream_source_id' => $source->id]);
+
+        $payload = ['subscription' => ['type' => 'stream.online'], 'event' => ['id' => 'stream-3', 'broadcaster_user_id' => '42', 'started_at' => now()->toIso8601String()]];
+        $this->twitchRequest('notification', $payload)->assertNoContent();
+        $this->assertCount(0, $this->discordPosts);
+
+        config(['toxbot.premium_guilds' => [self::GUILD]]);
+        $source->update(['live_item' => null]);
+        $this->twitchRequest('notification', array_replace_recursive($payload, ['event' => ['id' => 'stream-4']]))->assertNoContent();
+        $this->assertCount(1, $this->discordPosts);
     }
 
     public function test_premium_settings_are_only_saved_for_premium_servers(): void
