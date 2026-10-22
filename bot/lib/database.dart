@@ -69,7 +69,7 @@ Future<String> getString(User user, String dbString) async {
     final yamlFile = File('${Directory.current.path}/lib/utils/languages.yaml');
     final yamlContent = loadYaml(await yamlFile.readAsString());
 
-    return yamlContent[language][dbString] ?? '';
+    return yamlContent[language]?[dbString] ?? yamlContent['en_us'][dbString] ?? '';
   } catch (e) {
     print('Error in getString: $e');
   } finally {
