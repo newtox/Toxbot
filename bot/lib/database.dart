@@ -103,6 +103,11 @@ Future<void> clearOldGuilds(NyxxGateway client) async {
         if (e.statusCode == 403 || e.statusCode == 404) {
           await connection.query(
               'DELETE FROM `guilds` WHERE `id` = ?;', [guildIdAsString]);
+          try {
+            await connection.query(
+                'DELETE FROM `stream_subscriptions` WHERE `guild` = ?;',
+                [guildIdAsString]);
+          } catch (_) {}
         }
       }
     }
