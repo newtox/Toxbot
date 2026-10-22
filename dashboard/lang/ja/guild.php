@@ -37,4 +37,13 @@ return [
     'message_max' => 'Discord では最大 :max 文字までです。',
     'channel_invalid' => 'このチャンネルは存在しないか、Toxbot が書き込めません。',
     'role_invalid' => 'Toxbot はこのロールを付与できません（Toxbot の最上位ロールより上にあります）。',
+    'levelup_title' => 'レベルアップ通知',
+    'levelup_description' => 'このサーバーで誰かがレベルアップするとToxbotがお祝いします。',
+    'levelup_same_channel' => 'メンバーが書き込んだチャンネル',
+    'tags_title' => 'タグ',
+    'tags_description' => 'メンバーは /tag show で自分のコマンドを使えます。タグは全体共通ですが、ここでサーバーごとに無効にできます。',
+    'blocked_tags' => 'ブロック中のタグ',
+    'no_blocked_tags' => 'ブロック中のタグはありません。',
+    'unblock' => 'ブロック解除',
+    'block_hint' => '個別のタグはDiscordで /tag block を使ってブロックします。',
 ];

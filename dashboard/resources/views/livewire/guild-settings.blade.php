@@ -53,6 +53,72 @@
         @endif
     </section>
 
+    <section id="levels" class="card scroll-mt-20">
+        <div class="flex items-start gap-4">
+            <div class="flex-1">
+                <h2 class="text-lg font-semibold text-dc-header">{{ __('guild.levelup_title') }}</h2>
+                <p class="text-sm text-dc-muted">{{ __('guild.levelup_description') }}</p>
+            </div>
+            <label class="relative mt-1 inline-flex cursor-pointer items-center">
+                <input type="checkbox" wire:model="levelupEnabled" class="peer sr-only">
+                <span class="h-6 w-10 rounded-full bg-dc-400 transition-colors peer-checked:bg-accent peer-focus-visible:ring-2 peer-focus-visible:ring-accent-fg peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-dc-800"></span>
+                <span class="absolute top-0.5 left-0.5 size-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-4"></span>
+                <span class="sr-only">{{ __('guild.enable', ['name' => __('guild.levelup_title')]) }}</span>
+            </label>
+        </div>
+
+        <div x-show="$wire.levelupEnabled" x-collapse.duration.200ms class="mt-6">
+            <label class="label" for="levelup-channel">{{ __('guild.channel') }}</label>
+            <select id="levelup-channel" wire:model="levelupChannel" class="input max-w-md">
+                <option value="">{{ __('guild.levelup_same_channel') }}</option>
+                @foreach ($channelGroups as $group)
+                    @if ($group['name'])
+                        <optgroup label="{{ $group['name'] }}">
+                    @endif
+                    @foreach ($group['channels'] as $c)
+                        <option value="{{ $c['id'] }}"># {{ $c['name'] }}</option>
+                    @endforeach
+                    @if ($group['name'])
+                        </optgroup>
+                    @endif
+                @endforeach
+            </select>
+            @error('levelupChannel') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+        </div>
+    </section>
+
+    <section id="tags" class="card scroll-mt-20">
+        <div class="flex items-start gap-4">
+            <div class="flex-1">
+                <h2 class="text-lg font-semibold text-dc-header">{{ __('guild.tags_title') }}</h2>
+                <p class="text-sm text-dc-muted">{{ __('guild.tags_description') }}</p>
+            </div>
+            <label class="relative mt-1 inline-flex cursor-pointer items-center">
+                <input type="checkbox" wire:model="tagsEnabled" class="peer sr-only">
+                <span class="h-6 w-10 rounded-full bg-dc-400 transition-colors peer-checked:bg-accent peer-focus-visible:ring-2 peer-focus-visible:ring-accent-fg peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-dc-800"></span>
+                <span class="absolute top-0.5 left-0.5 size-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-4"></span>
+                <span class="sr-only">{{ __('guild.enable', ['name' => __('guild.tags_title')]) }}</span>
+            </label>
+        </div>
+
+        <div class="mt-6">
+            <h3 class="label">{{ __('guild.blocked_tags') }}</h3>
+            @if ($blockedTags->isEmpty())
+                <p class="text-sm text-dc-faint">{{ __('guild.no_blocked_tags') }}</p>
+            @else
+                <ul class="divide-y divide-black/25 rounded-lg bg-dc-900">
+                    @foreach ($blockedTags as $block)
+                        <li wire:key="block-{{ $block->tag_id }}" class="flex items-center gap-3 px-3 py-2">
+                            <span class="flex-1 font-mono text-sm text-dc-header">{{ $block->tag->name }}</span>
+                            <button type="button" wire:click="unblockTag({{ $block->tag_id }})" class="btn-secondary px-3 py-1">{{ __('guild.unblock') }}</button>
+                        </li>
+                    @endforeach
+                </ul>
+            @endif
+            <p class="mt-3 text-sm text-dc-faint">{{ __('guild.block_hint') }}</p>
+        </div>
+    </section>
+
     <x-unsaved-bar />
 
     @if ($errors->any())

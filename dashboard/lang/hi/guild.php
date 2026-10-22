@@ -37,4 +37,13 @@ return [
     'message_max' => 'Discord अधिकतम :max अक्षरों की अनुमति देता है।',
     'channel_invalid' => 'यह चैनल अब मौजूद नहीं है या Toxbot इसमें नहीं लिख सकता।',
     'role_invalid' => 'Toxbot यह रोल नहीं दे सकता (यह Toxbot के सबसे ऊँचे रोल से ऊपर है)।',
+    'levelup_title' => 'लेवल-अप संदेश',
+    'levelup_description' => 'जब कोई इस सर्वर पर नया लेवल पाता है तो Toxbot बधाई देता है।',
+    'levelup_same_channel' => 'जिस चैनल में लिखा गया',
+    'tags_title' => 'टैग',
+    'tags_description' => 'सदस्य /tag show से अपने कमांड चला सकते हैं। टैग ग्लोबल हैं; आप यहाँ अपने सर्वर के लिए उन्हें बंद कर सकते हैं।',
+    'blocked_tags' => 'ब्लॉक किए गए टैग',
+    'no_blocked_tags' => 'कोई टैग ब्लॉक नहीं है।',
+    'unblock' => 'अनब्लॉक करें',
+    'block_hint' => 'Discord में /tag block से अलग-अलग टैग ब्लॉक करें।',
 ];

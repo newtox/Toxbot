@@ -37,4 +37,13 @@ return [
     'message_max' => 'Discord는 최대 :max자까지 허용합니다.',
     'channel_invalid' => '이 채널이 더 이상 없거나 Toxbot이 메시지를 쓸 수 없습니다.',
     'role_invalid' => 'Toxbot이 이 역할을 부여할 수 없습니다(Toxbot의 최고 역할보다 위에 있음).',
+    'levelup_title' => '레벨업 메시지',
+    'levelup_description' => '이 서버에서 누군가 레벨업하면 Toxbot이 축하합니다.',
+    'levelup_same_channel' => '멤버가 작성한 채널',
+    'tags_title' => '태그',
+    'tags_description' => '멤버는 /tag show로 자신의 명령어를 사용할 수 있습니다. 태그는 전역이며, 여기서 서버에 대해 끌 수 있습니다.',
+    'blocked_tags' => '차단된 태그',
+    'no_blocked_tags' => '차단된 태그가 없습니다.',
+    'unblock' => '차단 해제',
+    'block_hint' => 'Discord에서 /tag block으로 개별 태그를 차단합니다.',
 ];

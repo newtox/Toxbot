@@ -37,4 +37,13 @@ return [
     'message_max' => 'Discord permite como máximo :max caracteres.',
     'channel_invalid' => 'Este canal ya no existe o Toxbot no puede escribir en él.',
     'role_invalid' => 'Toxbot no puede asignar este rol (está por encima de su rol más alto).',
+    'levelup_title' => 'Mensajes de subida de nivel',
+    'levelup_description' => 'Toxbot felicita cuando alguien sube de nivel en este servidor.',
+    'levelup_same_channel' => 'Canal donde se escribió',
+    'tags_title' => 'Tags',
+    'tags_description' => 'Los miembros pueden usar sus propios comandos con /tag show. Los tags son globales; aquí puedes desactivarlos para tu servidor.',
+    'blocked_tags' => 'Tags bloqueados',
+    'no_blocked_tags' => 'No hay tags bloqueados.',
+    'unblock' => 'Desbloquear',
+    'block_hint' => 'Bloquea tags concretos en Discord con /tag block.',
 ];
