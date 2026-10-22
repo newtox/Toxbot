@@ -15,6 +15,7 @@ import 'package:toxbot/commands/general/ping.dart';
 import 'package:toxbot/commands/image/awoo.dart';
 import 'package:toxbot/commands/image/neko.dart';
 import 'package:toxbot/commands/image/waifu.dart';
+import 'package:toxbot/commands/levels/levels.dart';
 import 'package:toxbot/commands/moderation/clear.dart';
 import 'package:toxbot/commands/roleplay/bite.dart';
 import 'package:toxbot/commands/roleplay/blush.dart';
@@ -77,6 +78,14 @@ CommandsPlugin setupCommandHandler(CommandsPlugin commands) {
   commands.addCommand(awoo);
   commands.addCommand(neko);
   commands.addCommand(waifu);
+
+  // Level & shop commands
+  commands.addCommand(background);
+  commands.addCommand(boost);
+  commands.addCommand(daily);
+  commands.addCommand(leaderboard);
+  commands.addCommand(profile);
+  commands.addCommand(shop);
 
   // Moderation commands
   commands.addCommand(clear);
