@@ -60,7 +60,7 @@
                     </button>
                 </div>
 
-                <nav class="flex-1 space-y-6 overflow-y-auto px-3 pb-4">
+                <nav class="flex-1 space-y-5 overflow-y-auto px-3 pb-4">
                     @if ($guild)
                         <div x-data="{ open: false }" class="relative" x-on:click.outside="open = false">
                             <button type="button" x-on:click="open = !open"
@@ -89,22 +89,32 @@
                             </div>
                         </div>
 
-                        <div class="space-y-0.5">
-                            <p class="px-3 pb-1.5 text-xs font-medium text-dc-faint">{{ __('menu.server_settings') }}</p>
-                            <a href="#welcome" x-on:click="nav = false" class="nav-item"><x-icon name="welcome" />{{ __('guild.welcome_title') }}</a>
-                            <a href="#bye" x-on:click="nav = false" class="nav-item"><x-icon name="bye" />{{ __('guild.bye_title') }}</a>
-                            <a href="#autorole" x-on:click="nav = false" class="nav-item"><x-icon name="autorole" />{{ __('guild.autorole_title') }}</a>
-                            <a href="#levels" x-on:click="nav = false" class="nav-item"><x-icon name="level" />{{ __('guild.levelup_title') }}</a>
-                            <a href="#streams" x-on:click="nav = false" class="nav-item"><x-icon name="stream" />{{ __('streams.title') }}</a>
-                            <a href="#live-role" x-on:click="nav = false" class="nav-item"><x-icon name="live" />{{ __('streams.live_role_title') }}</a>
-                            <a href="#tags" x-on:click="nav = false" class="nav-item"><x-icon name="tag" />{{ __('guild.tags_title') }}</a>
+                        <div class="space-y-1.5">
+                            <p class="nav-heading">{{ __('menu.server') }}</p>
+                            <a href="{{ route('servers.show', $guild['id']) }}"
+                               @class(['nav-item', 'nav-item-active' => request()->routeIs('servers.show')])>
+                                <x-icon name="servers" />{{ __('menu.overview') }}
+                            </a>
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <p class="nav-heading">{{ __('menu.server_settings') }}</p>
+                            @foreach ([
+                                'general' => 'welcome',
+                                'levels' => 'level',
+                                'streams' => 'stream',
+                                'tags' => 'tag',
+                            ] as $section => $icon)
+                                <a href="{{ route('servers.settings', [$guild['id'], $section]) }}"
+                                   @class(['nav-item', 'nav-item-active' => request()->routeIs('servers.settings') && request()->route('section') === $section])>
+                                    <x-icon :name="$icon" />{{ __('menu.section_'.$section) }}
+                                </a>
+                            @endforeach
                         </div>
                     @endif
 
-                    <div class="space-y-0.5">
-                        @if ($guild)
-                            <p class="px-3 pb-1.5 text-xs font-medium text-dc-faint">{{ __('menu.general') }}</p>
-                        @endif
+                    <div class="space-y-1.5">
+                        <p class="nav-heading">{{ __('menu.general') }}</p>
                         @foreach ([
                             ['route' => 'servers.index', 'active' => 'servers.index', 'icon' => 'servers', 'label' => __('menu.servers')],
                             ['route' => 'profile', 'active' => 'profile', 'icon' => 'profile', 'label' => __('menu.profile')],
@@ -115,7 +125,7 @@
                                 : []),
                         ] as $item)
                             <a href="{{ route($item['route']) }}"
-                               @class(['nav-item', 'bg-accent! text-on-accent!' => request()->routeIs($item['active'])])>
+                               @class(['nav-item', 'nav-item-active' => request()->routeIs($item['active'])])>
                                 <x-icon :name="$item['icon']" />{{ $item['label'] }}
                             </a>
                         @endforeach
@@ -152,7 +162,7 @@
 
                 @include('components.layouts.partials.status')
 
-                <main class="mx-auto w-full max-w-4xl px-4 py-6 md:px-8 md:py-9">
+                <main class="mx-auto w-full max-w-5xl px-4 py-6 md:px-8 md:py-9">
                     {{ $slot }}
                 </main>
             </div>

@@ -4,6 +4,7 @@ use App\Http\Controllers\DiscordAuthController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ServerController;
 use App\Http\Middleware\EnsureBotOwner;
+use App\Livewire\GuildSettings;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -26,6 +27,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/servers/{guild}', [ServerController::class, 'show'])
         ->whereNumber('guild')
         ->name('servers.show');
+    Route::get('/servers/{guild}/{section}', [ServerController::class, 'settings'])
+        ->whereNumber('guild')
+        ->whereIn('section', GuildSettings::SECTIONS)
+        ->name('servers.settings');
 
     Route::view('/profile', 'profile')->name('profile');
     Route::view('/shop', 'shop')->name('shop');

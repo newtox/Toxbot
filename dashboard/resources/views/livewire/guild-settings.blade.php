@@ -3,8 +3,8 @@
         <div class="flex min-w-0 flex-1 basis-72 items-center gap-4">
             <x-guild-icon :guild="['name' => $guildName, 'icon_url' => $guildIcon]" class="rounded-2xl" size="size-14" />
             <div class="min-w-0">
-                <h1 class="truncate text-2xl font-bold text-dc-header">{{ $guildName }}</h1>
-                <p class="text-sm text-dc-muted">{{ __('guild.intro') }}</p>
+                <p class="truncate text-sm font-medium text-dc-muted">{{ $guildName }}</p>
+                <h1 class="truncate text-2xl font-bold text-dc-header">{{ __('menu.section_'.$section) }}</h1>
             </div>
         </div>
         <button type="button" wire:click="refreshDiscordData" wire:loading.attr="disabled" class="btn-secondary max-sm:w-full">
@@ -17,6 +17,7 @@
         <div class="rounded-lg border-l-4 border-dc-red bg-dc-800 px-4 py-3 text-sm">{{ $loadError }}</div>
     @endif
 
+    @if ($section === 'general')
     @include('livewire.partials.announcement', [
         'type' => 'welcome',
         'title' => __('guild.welcome_title'),
@@ -53,6 +54,9 @@
         @endif
     </section>
 
+    @endif
+
+    @if ($section === 'levels')
     <section id="levels" class="card scroll-mt-20">
         <div class="flex items-start gap-4">
             <div class="flex-1">
@@ -87,6 +91,9 @@
         </div>
     </section>
 
+    @endif
+
+    @if ($section === 'streams')
     <section id="streams" class="card scroll-mt-20 space-y-5">
         <div>
             <h2 class="text-lg font-semibold text-dc-header">{{ __('streams.title') }}</h2>
@@ -181,6 +188,9 @@
         <p class="mt-3 text-sm text-dc-faint">{{ __('streams.live_role_hint') }}</p>
     </section>
 
+    @endif
+
+    @if ($section === 'tags')
     <section id="tags" class="card scroll-mt-20">
         <div class="flex items-start gap-4">
             <div class="flex-1">
@@ -212,6 +222,8 @@
             <p class="mt-3 text-sm text-dc-faint">{{ __('guild.block_hint') }}</p>
         </div>
     </section>
+
+    @endif
 
     <x-unsaved-bar />
 

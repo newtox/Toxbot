@@ -13,4 +13,10 @@ return [
     'shop' => 'Butik',
     'tags' => 'Tags',
     'admin' => 'Admin',
+    'server' => 'Server',
+    'overview' => 'Oversigt',
+    'section_general' => 'Velkomst & roller',
+    'section_levels' => 'Levels',
+    'section_streams' => 'Streams',
+    'section_tags' => 'Tags',
 ];

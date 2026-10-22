@@ -13,4 +13,10 @@ return [
     'shop' => '상점',
     'tags' => '태그',
     'admin' => '관리',
+    'server' => '서버',
+    'overview' => '개요',
+    'section_general' => '환영 및 역할',
+    'section_levels' => '레벨',
+    'section_streams' => '방송',
+    'section_tags' => '태그',
 ];

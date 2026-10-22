@@ -13,4 +13,10 @@ return [
     'shop' => 'ショップ',
     'tags' => 'タグ',
     'admin' => '管理',
+    'server' => 'サーバー',
+    'overview' => '概要',
+    'section_general' => 'あいさつとロール',
+    'section_levels' => 'レベル',
+    'section_streams' => '配信',
+    'section_tags' => 'タグ',
 ];

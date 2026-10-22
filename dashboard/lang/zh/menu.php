@@ -13,4 +13,10 @@ return [
     'shop' => '商店',
     'tags' => '标签',
     'admin' => '管理',
+    'server' => '服务器',
+    'overview' => '概览',
+    'section_general' => '欢迎与身份组',
+    'section_levels' => '等级',
+    'section_streams' => '直播',
+    'section_tags' => '标签',
 ];

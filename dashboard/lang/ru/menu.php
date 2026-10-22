@@ -13,4 +13,10 @@ return [
     'shop' => 'Магазин',
     'tags' => 'Теги',
     'admin' => 'Админ',
+    'server' => 'Сервер',
+    'overview' => 'Обзор',
+    'section_general' => 'Приветствие и роли',
+    'section_levels' => 'Уровни',
+    'section_streams' => 'Стримы',
+    'section_tags' => 'Теги',
 ];
