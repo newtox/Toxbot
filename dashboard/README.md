@@ -13,6 +13,8 @@ Web dashboard for [Toxbot](../README.md), built with Laravel, Livewire and Tailw
 - **Administration** for the bot owner: handle reported tags and manage the backgrounds in the shop
 - **Profile cards** rendered as PNG under `/card/{user}.png`, used by `/profile` in Discord
 - **Top.gg webhook** under `/webhooks/topgg` that pays credits for votes
+- **Stream notifications**: add Twitch and YouTube channels per server, pick the channel, ping role and message. Twitch uses EventSub webhooks (`/webhooks/twitch`), YouTube uses WebSub (`/webhooks/youtube`). Servers with Server Premium get more streamers, a message and ping role per streamer, filters and an action for when the stream ends.
+- **Live role** settings, the role itself is given by the bot
 - **All 10 bot languages**. For logged-in users, the dashboard language and the bot language are the same setting.
 
 ## How it works with the bot
@@ -42,6 +44,10 @@ Fill in `.env`:
 | `TOXBOT_OWNER_ID` | Your Discord user ID, only this account sees the administration |
 | `TOXBOT_PREMIUM_USERS`, `TOXBOT_PREMIUM_USER_SKUS` | Premium without subscription for these user IDs, and the SKU ID of the subscription |
 | `TOPGG_WEBHOOK_SECRET` | Secret of the Top.gg webhook, leave empty to turn vote rewards off |
+| `TOXBOT_PREMIUM_GUILDS`, `TOXBOT_PREMIUM_GUILD_SKUS` | Server Premium without subscription for these server IDs, and the SKU ID of the server subscription |
+| `TWITCH_CLIENT_ID`, `TWITCH_CLIENT_SECRET` | [dev.twitch.tv/console](https://dev.twitch.tv/console) → your application |
+| `STREAM_WEBHOOK_SECRET` | Any random string with 10 to 100 characters |
+| `YOUTUBE_API_KEY` | Optional, Google Cloud → YouTube Data API v3 |
 
 PHP needs the `pdo_mysql` and `gd` extensions; `gd` draws the profile cards.
 
@@ -52,17 +58,21 @@ php artisan migrate
 php artisan serve
 ```
 
+Stream webhooks need a public HTTPS address, so Twitch and YouTube notifications only arrive on the real deployment. Adding streamers works locally as long as the Twitch credentials are set.
+
+The scheduler (`php artisan schedule:work`) runs `streams:maintain` every hour and `streams:check-upcoming` every two minutes.
+
 Open `http://localhost:8000`. Use `localhost`, not `127.0.0.1`, otherwise the Discord login fails because the session cookie belongs to the other host name.
 
 ### Migrations and an existing bot database
 
 `create_toxbot_tables` is safe to run against a database the bot already uses. Existing tables are left as they are; it only adds the `notify` and `stream` columns to `guilds`, which the bot writes but which were missing from the original `toxbot.sql`. On an empty database it creates all bot tables with proper primary keys.
 
-The later migrations only add tables and columns for tags, levels, credits, the shop and entitlements, all with defaults, so an older bot version keeps working with them.
+The later migrations only add tables and columns for tags, levels, credits, the shop, entitlements and stream notifications, all with defaults, so an older bot version keeps working with them.
 
 ## Translations
 
-One PHP file per area and language under `lang/{locale}/` (`menu`, `login`, `servers`, `guild`, `profile`, `common`, `levels`, `shop`, `tags`, `admin`), used as `__('guild.welcome_title')`.
+One PHP file per area and language under `lang/{locale}/` (`menu`, `login`, `servers`, `guild`, `profile`, `common`, `levels`, `shop`, `tags`, `admin`, `streams`), used as `__('guild.welcome_title')`.
 
 The list of languages lives in `config/app.php` under `locales`, together with the matching bot language code. To add a language, add it there, copy `lang/en/` to `lang/{code}/` and translate it. `LocaleTest` checks that every language has every key.
 

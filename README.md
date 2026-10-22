@@ -28,7 +28,10 @@ Both share the same MySQL database. Whatever you change in the dashboard (welcom
 - **Credits and shop**: `/daily`, credits for level-ups and Top.gg votes, profile backgrounds to buy with `/shop`
 - **Profile cards**: `/profile` shows level, rank, credits and the chosen background as an image
 - **Tags**: global custom commands with `/tag`, reportable and blockable per server
+- **Stream notifications** for Twitch and YouTube: a message with role ping when a streamer goes live or uploads a video
+- **Live role**: members who stream on Discord get a role while they are live
 - **Premium** through Discord subscriptions: double XP and daily reward, premium backgrounds, more tags and tags as embeds, plus a 24 hour XP boost to buy
+- **Server Premium** through a server subscription: more streamers, a custom message and ping role per streamer, game and title filters, and editing or deleting the notification when the stream ends
 
 ## Running locally
 
@@ -73,6 +76,16 @@ chown 33:33 /docker_volumes/toxbot-dashboard/backgrounds
 - Create the SKUs in the Developer Portal under **Monetization**: a user subscription for Premium and a consumable for the XP boost. Put their IDs into `PREMIUM_USER_SKUS` and `XP_BOOST_SKU`.
 - `PREMIUM_USERS` gives Premium to the listed user IDs without a subscription, for example for testing.
 - For vote rewards, add `https://<dashboard>/webhooks/topgg` as webhook on Top.gg and put the generated secret into `TOPGG_WEBHOOK_SECRET`.
+- For Server Premium, create a server (guild) subscription SKU and put its ID into `PREMIUM_GUILD_SKUS`. `PREMIUM_GUILDS` gives Server Premium to the listed server IDs without a subscription.
+
+### Stream notifications
+
+- Create an application at [dev.twitch.tv/console](https://dev.twitch.tv/console) (OAuth redirect `http://localhost`, category "Chat Bot" or "Other") and put its client ID and secret into `TWITCH_CLIENT_ID` and `TWITCH_CLIENT_SECRET`.
+- Set `STREAM_WEBHOOK_SECRET` to a random string with 10 to 100 characters, for example `openssl rand -hex 32`. It signs the Twitch and YouTube webhooks.
+- `YOUTUBE_API_KEY` is optional (Google Cloud → YouTube Data API v3). Without it, YouTube channels have to be added by channel ID or `/channel/UC…` link, and live streams cannot be told apart from videos.
+- Twitch and YouTube call `https://<dashboard>/webhooks/twitch` and `https://<dashboard>/webhooks/youtube`. This only works on the public HTTPS deployment, not locally.
+- The `scheduler` service in `docker-compose.yml` renews the YouTube subscriptions and posts scheduled YouTube streams when they start. It uses the dashboard image.
+- The live role needs the **Presence Intent** under **Bot → Privileged Gateway Intents** in the Developer Portal.
 
 The dashboard listens on `127.0.0.1:8090` and is meant to sit behind a reverse proxy, for example Caddy:
 
