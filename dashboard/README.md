@@ -6,12 +6,18 @@ Web dashboard for [Toxbot](../README.md), built with Laravel, Livewire and Tailw
 - **Server list** with every server where you are owner, administrator or have "Manage Server". Servers without Toxbot get an invite button.
 - **Welcome and goodbye messages** with channel picker, placeholders (`&mention`, `&user`, `&server`) and a live preview that looks like Discord
 - **Autorole**, limited to roles below Toxbot's highest role, same rule as `/autorole`
-- **Profile** with language and embed color, same settings as `/language` and `/color`. The embed color is also the dashboard's accent color.
+- **Level-up messages** and **tags** per server: turn them on or off, pick the channel, unblock blocked tags
+- **Profile** with the profile card, level, rank and credits, plus language and embed color, same settings as `/language` and `/color`. The embed color is also the dashboard's accent color.
+- **Shop** to buy and switch profile backgrounds, with a live preview of the card. The shop starts empty; backgrounds are uploaded on the administration page, and cards without one get a gradient in the user's embed color.
+- **Tags**: create, edit and delete your own tags
+- **Administration** for the bot owner: handle reported tags and manage the backgrounds in the shop
+- **Profile cards** rendered as PNG under `/card/{user}.png`, used by `/profile` in Discord
+- **Top.gg webhook** under `/webhooks/topgg` that pays credits for votes
 - **All 10 bot languages**. For logged-in users, the dashboard language and the bot language are the same setting.
 
 ## How it works with the bot
 
-The dashboard reads and writes Toxbot's own tables (`guilds`, `users`) in the shared MySQL database. The bot reads them fresh on every event and command, so there is no restart and no extra API between the two.
+The dashboard reads and writes Toxbot's own tables (`guilds`, `users`, `tags`, `member_levels`, `backgrounds` and so on) in the shared MySQL database. The bot reads them fresh on every event and command, so there is no restart and no extra API between the two.
 
 Channels, roles and bot info come straight from the Discord REST API using the bot token.
 
@@ -19,7 +25,7 @@ The dashboard keeps its own logins in `dashboard_users`, because `users` belongs
 
 ## Translations
 
-One PHP file per area and language under `lang/{locale}/` (`menu`, `login`, `servers`, `guild`, `profile`, `common`), used as `__('guild.welcome_title')`.
+One PHP file per area and language under `lang/{locale}/` (`menu`, `login`, `servers`, `guild`, `profile`, `common`, `levels`, `shop`, `tags`, `admin`), used as `__('guild.welcome_title')`.
 
 The list of languages lives in `config/app.php` under `locales`, together with the matching bot language code. To add a language, add it there, copy `lang/en/` to `lang/{code}/` and translate it. `LocaleTest` checks that every language has every key.
 
@@ -33,4 +39,4 @@ The Discord API is faked with `Http::fake()`, so the tests need no token and no 
 
 ## Production
 
-The `Dockerfile` builds a production image (PHP 8.4 with Nginx, assets compiled, migrations run on start). It is built by GitHub Actions and deployed together with the bot; see [Deployment](../README.md#deployment) in the main README.
+The `Dockerfile` builds a production image (PHP 8.4 with Nginx and GD, assets compiled, migrations run on start). It is built by GitHub Actions and deployed together with the bot; see [Deployment](../README.md#deployment) in the main README.
