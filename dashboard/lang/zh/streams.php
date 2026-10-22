@@ -36,7 +36,8 @@ return [
     'premium_locked' => '这些设置属于 Server Premium。任何拥有 Toxbot Premium 的人都可以在个人资料页为此服务器开启。',
     'paused' => '已暂停',
     'paused_hint' => '没有 Server Premium 时，只通知前 :limit 位主播。',
-    'own_message' => '此主播的自定义消息',
+    'own_message' => '直播的专属消息',
+    'own_video_message' => '新视频的专属消息',
     'own_message_hint' => '留空则使用服务器消息',
     'own_role' => '此主播专用的提及身份组',
     'own_role_default' => '服务器的提及身份组',
@@ -51,4 +52,7 @@ return [
     'not_found' => '该频道不存在。',
     'platform_error' => '暂时无法连接 Twitch 或 YouTube，或尚未配置。',
     'youtube_need_id' => '没有 YouTube API 密钥时，只能使用频道 ID（UC…）或 /channel/ 链接。',
+    'live_message' => '直播消息',
+    'video_message' => 'YouTube 新视频消息',
+    'youtube_no_key' => '没有 YouTube API 密钥时，直播会按视频通知，并且只能使用频道 ID。',
 ];

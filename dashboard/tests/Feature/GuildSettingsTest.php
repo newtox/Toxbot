@@ -187,6 +187,7 @@ class GuildSettingsTest extends TestCase
             ->set('streamChannel', '11')
             ->set('streamRole', '22')
             ->set('streamMsg', '&role &streamer ist live!')
+            ->set('streamVideoMsg', 'Neues Video: &title &link')
             ->set('liveRole', '20')
             ->set('liveRoleRequired', '22')
             ->call('save')
@@ -196,6 +197,7 @@ class GuildSettingsTest extends TestCase
         $this->assertSame('11', $row->stream);
         $this->assertSame('22', $row->notify);
         $this->assertSame('&role &streamer ist live!', $row->stream_msg);
+        $this->assertSame('Neues Video: &title &link', $row->stream_video_msg);
         $this->assertSame('20', $row->live_role);
         $this->assertSame('22', $row->live_role_required);
 

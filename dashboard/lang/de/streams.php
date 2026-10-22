@@ -36,7 +36,8 @@ return [
     'premium_locked' => 'Diese Einstellungen gibt es mit Server Premium. Jeder mit Toxbot Premium kann es auf seiner Profilseite für diesen Server freischalten.',
     'paused' => 'Pausiert',
     'paused_hint' => 'Ohne Server Premium werden nur die ersten :limit Streamer gemeldet.',
-    'own_message' => 'Eigene Nachricht für diesen Streamer',
+    'own_message' => 'Eigene Nachricht bei Livestreams',
+    'own_video_message' => 'Eigene Nachricht bei neuen Videos',
     'own_message_hint' => 'Leer lassen für die Server-Nachricht',
     'own_role' => 'Eigene Ping-Rolle für diesen Streamer',
     'own_role_default' => 'Ping-Rolle des Servers',
@@ -51,4 +52,7 @@ return [
     'not_found' => 'Diesen Kanal gibt es nicht.',
     'platform_error' => 'Twitch oder YouTube ist gerade nicht erreichbar oder nicht eingerichtet.',
     'youtube_need_id' => 'Ohne YouTube-API-Schlüssel geht nur die Kanal-ID (UC…) oder ein Link mit /channel/.',
+    'live_message' => 'Nachricht bei Livestreams',
+    'video_message' => 'Nachricht bei neuen YouTube-Videos',
+    'youtube_no_key' => 'Ohne YouTube-API-Key werden Livestreams wie Videos gemeldet und nur Kanal-IDs funktionieren.',
 ];

@@ -36,7 +36,8 @@ return [
     'premium_locked' => 'Ces réglages sont inclus dans Server Premium. Toute personne ayant Toxbot Premium peut le débloquer pour ce serveur sur sa page de profil.',
     'paused' => 'En pause',
     'paused_hint' => 'Sans Server Premium, seuls les :limit premiers streamers sont annoncés.',
-    'own_message' => 'Message personnalisé pour ce streamer',
+    'own_message' => 'Message personnalisé pour les lives',
+    'own_video_message' => 'Message personnalisé pour les nouvelles vidéos',
     'own_message_hint' => 'Laisser vide pour utiliser le message du serveur',
     'own_role' => 'Rôle à mentionner pour ce streamer',
     'own_role_default' => 'Le rôle à mentionner du serveur',
@@ -51,4 +52,7 @@ return [
     'not_found' => 'Cette chaîne n\'existe pas.',
     'platform_error' => 'Twitch ou YouTube est injoignable ou n\'est pas configuré.',
     'youtube_need_id' => 'Sans clé API YouTube, seul l\'ID de chaîne (UC…) ou un lien /channel/ fonctionne.',
+    'live_message' => 'Message pour les lives',
+    'video_message' => 'Message pour les nouvelles vidéos YouTube',
+    'youtube_no_key' => 'Sans clé API YouTube, les lives sont annoncés comme des vidéos et seuls les ID de chaîne fonctionnent.',
 ];

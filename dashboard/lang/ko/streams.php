@@ -36,7 +36,8 @@ return [
     'premium_locked' => '이 설정은 Server Premium에 포함됩니다. Toxbot Premium이 있는 사람은 프로필 페이지에서 이 서버에 활성화할 수 있습니다.',
     'paused' => '일시 중지됨',
     'paused_hint' => 'Server Premium이 없으면 처음 :limit명의 스트리머만 알림이 갑니다.',
-    'own_message' => '이 스트리머 전용 메시지',
+    'own_message' => '라이브 방송용 메시지',
+    'own_video_message' => '새 영상용 메시지',
     'own_message_hint' => '비워 두면 서버 메시지를 사용합니다',
     'own_role' => '이 스트리머 전용 알림 역할',
     'own_role_default' => '서버 알림 역할',
@@ -51,4 +52,7 @@ return [
     'not_found' => '존재하지 않는 채널입니다.',
     'platform_error' => 'Twitch 또는 YouTube에 연결할 수 없거나 설정되지 않았습니다.',
     'youtube_need_id' => 'YouTube API 키가 없으면 채널 ID (UC…) 또는 /channel/ 링크만 사용할 수 있습니다.',
+    'live_message' => '라이브 방송 메시지',
+    'video_message' => '새 YouTube 영상 메시지',
+    'youtube_no_key' => 'YouTube API 키가 없으면 라이브 방송도 영상처럼 알림이 가고 채널 ID만 사용할 수 있습니다.',
 ];

@@ -36,7 +36,8 @@ return [
     'premium_locked' => 'ये सेटिंग्स Server Premium के साथ आती हैं। Toxbot Premium वाला कोई भी व्यक्ति इसे अपने प्रोफ़ाइल पेज पर इस सर्वर के लिए अनलॉक कर सकता है।',
     'paused' => 'रुका हुआ',
     'paused_hint' => 'Server Premium के बिना केवल पहले :limit स्ट्रीमर की सूचना दी जाती है।',
-    'own_message' => 'इस स्ट्रीमर के लिए अपना संदेश',
+    'own_message' => 'लाइवस्ट्रीम के लिए अपना संदेश',
+    'own_video_message' => 'नए वीडियो के लिए अपना संदेश',
     'own_message_hint' => 'सर्वर संदेश के लिए खाली छोड़ें',
     'own_role' => 'इस स्ट्रीमर के लिए अपना पिंग रोल',
     'own_role_default' => 'सर्वर का पिंग रोल',
@@ -51,4 +52,7 @@ return [
     'not_found' => 'यह चैनल मौजूद नहीं है।',
     'platform_error' => 'Twitch या YouTube अभी उपलब्ध नहीं है या सेट नहीं है।',
     'youtube_need_id' => 'YouTube API कुंजी के बिना केवल चैनल ID (UC…) या /channel/ लिंक काम करता है।',
+    'live_message' => 'लाइवस्ट्रीम के लिए संदेश',
+    'video_message' => 'नए YouTube वीडियो के लिए संदेश',
+    'youtube_no_key' => 'YouTube API key के बिना लाइवस्ट्रीम को वीडियो की तरह सूचित किया जाता है और केवल चैनल ID काम करती हैं।',
 ];

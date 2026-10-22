@@ -36,7 +36,8 @@ return [
     'premium_locked' => 'これらの設定は Server Premium で使えます。Toxbot Premium を持っている人なら、プロフィールページでこのサーバーに有効化できます。',
     'paused' => '一時停止中',
     'paused_hint' => 'Server Premium がない場合、通知されるのは最初の :limit 人の配信者だけです。',
-    'own_message' => 'この配信者用のメッセージ',
+    'own_message' => 'ライブ配信用の独自メッセージ',
+    'own_video_message' => '新しい動画用の独自メッセージ',
     'own_message_hint' => '空欄ならサーバーのメッセージを使います',
     'own_role' => 'この配信者専用の通知ロール',
     'own_role_default' => 'サーバーの通知ロール',
@@ -51,4 +52,7 @@ return [
     'not_found' => 'このチャンネルは存在しません。',
     'platform_error' => 'TwitchまたはYouTubeに接続できないか、未設定です。',
     'youtube_need_id' => 'YouTube APIキーがない場合はチャンネルID（UC…）か/channel/リンクのみ使えます。',
+    'live_message' => 'ライブ配信のメッセージ',
+    'video_message' => 'YouTube の新しい動画のメッセージ',
+    'youtube_no_key' => 'YouTube API キーがない場合、ライブ配信は動画として通知され、チャンネル ID しか使えません。',
 ];

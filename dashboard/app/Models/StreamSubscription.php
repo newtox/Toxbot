@@ -11,7 +11,7 @@ class StreamSubscription extends Model
     public const END_ACTIONS = ['keep', 'edit', 'delete'];
 
     protected $fillable = [
-        'guild', 'stream_source_id', 'message', 'role', 'filter_games', 'filter_title',
+        'guild', 'stream_source_id', 'message', 'video_message', 'role', 'filter_games', 'filter_title',
         'end_action', 'notify_videos', 'notify_live',
     ];
 

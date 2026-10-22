@@ -25,7 +25,7 @@ class Guild extends Model
     protected $fillable = [
         'id', 'welcome_channel', 'bye_channel', 'welcome_msg', 'bye_msg', 'autorole',
         'tags_enabled', 'levelup_enabled', 'levelup_channel',
-        'notify', 'stream', 'stream_msg', 'live_role', 'live_role_required',
+        'notify', 'stream', 'stream_msg', 'stream_video_msg', 'live_role', 'live_role_required',
     ];
 
     public const STREAM_PLACEHOLDERS = [
@@ -37,6 +37,8 @@ class Guild extends Model
     ];
 
     public const DEFAULT_STREAM_MESSAGE = '&role **&streamer** is live! &link';
+
+    public const DEFAULT_VIDEO_MESSAGE = '&role **&streamer** uploaded a new video! &link';
 
     protected $attributes = [
         'tags_enabled' => true,

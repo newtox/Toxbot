@@ -9,7 +9,7 @@
     @endif
 
     <form wire:submit="add" class="flex flex-wrap gap-2">
-        <select wire:model="platform" class="input w-auto" aria-label="{{ __('streams.platform') }}">
+        <select wire:model.live="platform" class="input w-auto" aria-label="{{ __('streams.platform') }}">
             <option value="twitch">Twitch</option>
             <option value="youtube">YouTube</option>
         </select>
@@ -19,6 +19,9 @@
             {{ __('streams.add') }}
         </button>
     </form>
+    @if ($platform === 'youtube' && ! $youtubeHandles)
+        <p class="text-sm text-dc-muted">{{ __('streams.youtube_no_key') }}</p>
+    @endif
     @error('input') <p class="text-sm text-dc-red">{{ $message }}</p> @enderror
     @if ($error) <p class="text-sm text-dc-red" role="alert">{{ $error }}</p> @endif
 
@@ -66,10 +69,19 @@
                                     <p class="text-sm text-dc-muted">{{ __('streams.premium_locked') }}</p>
                                 @endunless
 
-                                <div>
-                                    <label class="label" for="stream-msg-{{ $subscription->id }}">{{ __('streams.own_message') }}</label>
-                                    <textarea id="stream-msg-{{ $subscription->id }}" wire:model="customMessage" rows="2" placeholder="{{ __('streams.own_message_hint') }}" class="input resize-y font-mono text-sm"></textarea>
-                                    @error('customMessage') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+                                <div @class(['grid gap-4', 'sm:grid-cols-2' => $source->platform === 'youtube'])>
+                                    <div>
+                                        <label class="label" for="stream-msg-{{ $subscription->id }}">{{ __('streams.own_message') }}</label>
+                                        <textarea id="stream-msg-{{ $subscription->id }}" wire:model="customMessage" rows="2" placeholder="{{ __('streams.own_message_hint') }}" class="input resize-y font-mono text-sm"></textarea>
+                                        @error('customMessage') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+                                    </div>
+                                    @if ($source->platform === 'youtube')
+                                        <div>
+                                            <label class="label" for="stream-video-msg-{{ $subscription->id }}">{{ __('streams.own_video_message') }}</label>
+                                            <textarea id="stream-video-msg-{{ $subscription->id }}" wire:model="videoMessage" rows="2" placeholder="{{ __('streams.own_message_hint') }}" class="input resize-y font-mono text-sm"></textarea>
+                                            @error('videoMessage') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+                                        </div>
+                                    @endif
                                 </div>
 
                                 <div>

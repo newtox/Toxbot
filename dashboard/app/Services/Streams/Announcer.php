@@ -206,7 +206,9 @@ class Announcer
             return;
         }
 
-        $template = ($premium && $subscription->message) ? $subscription->message : ($guild->stream_msg ?: Guild::DEFAULT_STREAM_MESSAGE);
+        $template = $kind === 'video'
+            ? (($premium && $subscription->video_message) ? $subscription->video_message : ($guild->stream_video_msg ?: Guild::DEFAULT_VIDEO_MESSAGE))
+            : (($premium && $subscription->message) ? $subscription->message : ($guild->stream_msg ?: Guild::DEFAULT_STREAM_MESSAGE));
         $role = ($premium && $subscription->role) ? $subscription->role : $guild->notify;
 
         $content = strtr($template, [
