@@ -9,6 +9,13 @@ services:
       db_user: ${DB_USERNAME}
       db_password: ${DB_PASSWORD}
       db_name: ${DB_DATABASE:-toxbot}
+      owner_id: ${OWNER_ID}
+      dashboard_url: http://toxbot-dashboard:8080
+      premium_users: ${PREMIUM_USERS:-}
+      premium_user_skus: ${PREMIUM_USER_SKUS:-}
+      xp_boost_sku: ${XP_BOOST_SKU:-}
+      currency: ${CURRENCY:-Credits}
+      tag_report_channel: ${TAG_REPORT_CHANNEL:-}
     extra_hosts:
       - host.docker.internal:host-gateway
     volumes:
@@ -42,5 +49,13 @@ services:
       DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET}
       DISCORD_REDIRECT_URI: ${APP_URL}/auth/discord/callback
       DISCORD_BOT_TOKEN: ${DISCORD_BOT_TOKEN}
+      TOXBOT_OWNER_ID: ${OWNER_ID}
+      TOXBOT_PREMIUM_USERS: ${PREMIUM_USERS:-}
+      TOXBOT_PREMIUM_USER_SKUS: ${PREMIUM_USER_SKUS:-}
+      TOXBOT_CURRENCY: ${CURRENCY:-Credits}
+      TOPGG_WEBHOOK_SECRET: ${TOPGG_WEBHOOK_SECRET:-}
+      TOPGG_VOTE_REWARD: ${TOPGG_VOTE_REWARD:-200}
+    volumes:
+      - /docker_volumes/toxbot-dashboard/backgrounds:/var/www/html/storage/app/private/backgrounds
     extra_hosts:
       - host.docker.internal:host-gateway
