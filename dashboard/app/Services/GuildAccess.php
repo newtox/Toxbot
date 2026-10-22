@@ -5,13 +5,13 @@ namespace App\Services;
 use App\Models\DashboardUser;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Session;
 
 class GuildAccess
 {
-    public const SESSION_TOKEN_KEY = 'discord.access_token';
-
-    public function __construct(private readonly Discord $discord) {}
+    public function __construct(
+        private readonly Discord $discord,
+        private readonly DiscordTokens $tokens,
+    ) {}
 
     public function manageableGuilds(DashboardUser $user, bool $fresh = false): array
     {
@@ -21,17 +21,14 @@ class GuildAccess
             Cache::forget($cacheKey);
         }
 
-        $guilds = Cache::remember($cacheKey, 300, function () {
-            $token = Session::get(self::SESSION_TOKEN_KEY);
-
-            if (! $token) {
-                throw new MissingDiscordToken;
-            }
+        $guilds = Cache::remember($cacheKey, 300, function () use ($user) {
+            $token = $this->tokens->accessToken($user);
 
             try {
                 return $this->discord->currentUserGuilds($token);
             } catch (RequestException $e) {
                 if ($e->response->status() === 401) {
+                    $this->tokens->forget($user);
                     throw new MissingDiscordToken;
                 }
                 throw $e;

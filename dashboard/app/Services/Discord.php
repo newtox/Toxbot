@@ -65,6 +65,20 @@ class Discord
             ->json();
     }
 
+    public function refreshToken(string $refreshToken): array
+    {
+        return Http::asForm()
+            ->acceptJson()
+            ->post(self::API.'/oauth2/token', [
+                'client_id' => $this->clientId,
+                'client_secret' => $this->clientSecret,
+                'grant_type' => 'refresh_token',
+                'refresh_token' => $refreshToken,
+            ])
+            ->throw()
+            ->json();
+    }
+
     public function currentUser(string $accessToken): array
     {
         return $this->asUser($accessToken)->get('/users/@me')->throw()->json();
