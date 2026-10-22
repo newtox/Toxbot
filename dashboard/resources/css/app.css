@@ -12,20 +12,20 @@
 
     --color-blurple: #5865f2;
 
-    --color-dc-950: #141517;
-    --color-dc-900: #1e1f22;
-    --color-dc-800: #2b2d31;
-    --color-dc-700: #313338;
-    --color-dc-600: #383a40;
-    --color-dc-500: #404249;
-    --color-dc-400: #4e5058;
+    --color-dc-950: #0b0d0f;
+    --color-dc-900: #111417;
+    --color-dc-800: #191c20;
+    --color-dc-700: #1f2226;
+    --color-dc-600: #25282c;
+    --color-dc-500: #2f3338;
+    --color-dc-400: #3d4248;
 
-    --color-dc-text: #dbdee1;
-    --color-dc-header: #f2f3f5;
-    --color-dc-muted: #949ba4;
-    --color-dc-faint: #6d6f78;
+    --color-dc-text: #e4e4e7;
+    --color-dc-header: #f4f4f5;
+    --color-dc-muted: #a1a1aa;
+    --color-dc-faint: #71717a;
     --color-dc-link: #00a8fc;
-    --color-dc-red: #f23f43;
+    --color-dc-red: #ed4245;
     --color-dc-yellow: #f0b232;
 }
 
@@ -55,7 +55,15 @@
 }
 
 @utility card {
-    @apply rounded-xl bg-dc-800 p-5;
+    @apply rounded-xl bg-dc-800 p-5 ring-1 ring-white/[0.03];
+}
+
+@utility tile {
+    @apply rounded-xl border border-accent/60 bg-linear-to-br from-accent/15 to-accent/[0.03] p-4;
+}
+
+@utility nav-heading {
+    @apply px-1 pb-1 text-[0.7rem] font-bold tracking-wider text-dc-faint uppercase;
 }
 
 @utility label {
@@ -83,7 +91,11 @@
 }
 
 @utility nav-item {
-    @apply flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-dc-muted transition-colors hover:bg-dc-600 hover:text-dc-header;
+    @apply flex items-center gap-2.5 rounded-lg bg-dc-600 px-2.5 py-2 text-sm font-medium text-dc-text transition-colors hover:bg-dc-500 hover:text-dc-header;
+}
+
+@utility nav-item-active {
+    @apply bg-accent text-on-accent hover:bg-accent hover:text-on-accent;
 }
 
 @utility dc-mention {

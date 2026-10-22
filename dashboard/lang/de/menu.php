@@ -13,4 +13,10 @@ return [
     'shop' => 'Shop',
     'tags' => 'Tags',
     'admin' => 'Verwaltung',
+    'server' => 'Server',
+    'overview' => 'Übersicht',
+    'section_general' => 'Begrüßung & Rollen',
+    'section_levels' => 'Level',
+    'section_streams' => 'Streams',
+    'section_tags' => 'Tags',
 ];

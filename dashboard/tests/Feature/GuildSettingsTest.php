@@ -77,6 +77,21 @@ class GuildSettingsTest extends TestCase
             ->assertDontSee('Fremd');
     }
 
+    public function test_overview_and_section_pages(): void
+    {
+        $this->login();
+        Guild::create(['id' => self::GUILD, 'levelup_enabled' => true]);
+
+        $this->get('/servers/'.self::GUILD)
+            ->assertOk()
+            ->assertSee(route('servers.settings', [self::GUILD, 'streams']))
+            ->assertSee(__('guild.levelup_title'));
+
+        $this->get('/servers/'.self::GUILD.'/streams')->assertOk()->assertSee(__('streams.live_role_title'));
+        $this->get('/servers/'.self::GUILD.'/nope')->assertNotFound();
+        $this->get('/servers/'.self::OTHER_GUILD.'/general')->assertForbidden();
+    }
+
     public function test_cannot_open_server_without_permission(): void
     {
         $this->login();
@@ -139,12 +154,16 @@ class GuildSettingsTest extends TestCase
     {
         $this->login();
 
-        Livewire::test(GuildSettings::class, ['guild' => ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon_url' => null]])
-            ->assertSet('tagsEnabled', true)
+        Livewire::test(GuildSettings::class, ['guild' => ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon_url' => null], 'section' => 'levels'])
             ->assertSet('levelupEnabled', false)
-            ->set('tagsEnabled', false)
             ->set('levelupEnabled', true)
             ->set('levelupChannel', '11')
+            ->call('save')
+            ->assertHasNoErrors();
+
+        Livewire::test(GuildSettings::class, ['guild' => ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon_url' => null], 'section' => 'tags'])
+            ->assertSet('tagsEnabled', true)
+            ->set('tagsEnabled', false)
             ->call('save')
             ->assertHasNoErrors();
 
@@ -158,7 +177,7 @@ class GuildSettingsTest extends TestCase
     {
         $this->login();
 
-        Livewire::test(GuildSettings::class, ['guild' => ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon_url' => null]])
+        Livewire::test(GuildSettings::class, ['guild' => ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon_url' => null], 'section' => 'levels'])
             ->set('levelupEnabled', true)
             ->set('levelupChannel', '12')
             ->call('save')
@@ -171,7 +190,7 @@ class GuildSettingsTest extends TestCase
         $tag = Tag::create(['name' => 'spam', 'owner' => '1', 'content' => 'x']);
         TagGuildBlock::create(['guild' => self::GUILD, 'tag_id' => $tag->id]);
 
-        Livewire::test(GuildSettings::class, ['guild' => ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon_url' => null]])
+        Livewire::test(GuildSettings::class, ['guild' => ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon_url' => null], 'section' => 'tags'])
             ->assertSee('spam')
             ->call('unblockTag', $tag->id);
 
@@ -182,7 +201,7 @@ class GuildSettingsTest extends TestCase
     {
         $this->login();
 
-        Livewire::test(GuildSettings::class, ['guild' => ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon_url' => null]])
+        Livewire::test(GuildSettings::class, ['guild' => ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon_url' => null], 'section' => 'streams'])
             ->set('streamChannel', '11')
             ->set('streamRole', '22')
             ->set('streamMsg', '&role &streamer ist live!')
@@ -200,7 +219,7 @@ class GuildSettingsTest extends TestCase
         $this->assertSame('20', $row->live_role);
         $this->assertSame('22', $row->live_role_required);
 
-        Livewire::test(GuildSettings::class, ['guild' => ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon_url' => null]])
+        Livewire::test(GuildSettings::class, ['guild' => ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon_url' => null], 'section' => 'streams'])
             ->set('liveRole', '22')
             ->call('save')
             ->assertHasErrors('liveRole');

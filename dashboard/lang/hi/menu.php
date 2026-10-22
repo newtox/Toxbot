@@ -13,4 +13,10 @@ return [
     'shop' => 'दुकान',
     'tags' => 'टैग',
     'admin' => 'एडमिन',
+    'server' => 'सर्वर',
+    'overview' => 'अवलोकन',
+    'section_general' => 'स्वागत और रोल',
+    'section_levels' => 'लेवल',
+    'section_streams' => 'स्ट्रीम',
+    'section_tags' => 'टैग',
 ];

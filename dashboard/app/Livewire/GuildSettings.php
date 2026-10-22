@@ -17,6 +17,11 @@ class GuildSettings extends Component
 
     private const CATEGORY_TYPE = 4;
 
+    public const SECTIONS = ['general', 'levels', 'streams', 'tags'];
+
+    #[Locked]
+    public string $section = 'general';
+
     #[Locked]
     public string $guildId;
 
@@ -58,8 +63,9 @@ class GuildSettings extends Component
 
     public ?string $liveRoleRequired = null;
 
-    public function mount(array $guild): void
+    public function mount(array $guild, string $section = 'general'): void
     {
+        $this->section = in_array($section, self::SECTIONS, true) ? $section : 'general';
         $this->guildId = $guild['id'];
         $this->guildName = $guild['name'];
         $this->guildIcon = $guild['icon_url'];
@@ -125,49 +131,70 @@ class GuildSettings extends Component
             ? ['required', Rule::in($channelIds)]
             : ['nullable'];
 
-        $this->validate([
-            'welcomeChannel' => $channelRules($this->welcomeEnabled),
-            'welcomeMsg' => $messageRules($this->welcomeEnabled),
-            'byeChannel' => $channelRules($this->byeEnabled),
-            'byeMsg' => $messageRules($this->byeEnabled),
-            'autorole' => ['nullable', Rule::in($roleIds)],
-            'levelupChannel' => ['nullable', Rule::in($channelIds)],
-            'streamChannel' => ['nullable', Rule::in($channelIds)],
-            'streamRole' => ['nullable', Rule::in($mentionableRoleIds)],
-            'streamMsg' => ['nullable', 'string', "max:{$max}"],
-            'streamVideoMsg' => ['nullable', 'string', "max:{$max}"],
-            'liveRole' => ['nullable', Rule::in($roleIds)],
-            'liveRoleRequired' => ['nullable', Rule::in($mentionableRoleIds)],
-        ], [
-            '*Channel.required' => __('guild.channel_required'),
-            '*Msg.required' => __('guild.message_required'),
-            '*Msg.max' => __('guild.message_max', ['max' => $max]),
-            '*Channel.in' => __('guild.channel_invalid'),
-            'autorole.in' => __('guild.role_invalid'),
-            'levelupChannel.in' => __('guild.channel_invalid'),
-            'streamChannel.in' => __('guild.channel_invalid'),
-            'streamRole.in' => __('guild.role_invalid'),
-            'liveRole.in' => __('guild.role_invalid'),
-            'liveRoleRequired.in' => __('guild.role_invalid'),
-        ]);
+        $rules = [
+            'general' => [
+                'welcomeChannel' => $channelRules($this->welcomeEnabled),
+                'welcomeMsg' => $messageRules($this->welcomeEnabled),
+                'byeChannel' => $channelRules($this->byeEnabled),
+                'byeMsg' => $messageRules($this->byeEnabled),
+                'autorole' => ['nullable', Rule::in($roleIds)],
+            ],
+            'levels' => [
+                'levelupChannel' => ['nullable', Rule::in($channelIds)],
+            ],
+            'streams' => [
+                'streamChannel' => ['nullable', Rule::in($channelIds)],
+                'streamRole' => ['nullable', Rule::in($mentionableRoleIds)],
+                'streamMsg' => ['nullable', 'string', "max:{$max}"],
+                'streamVideoMsg' => ['nullable', 'string', "max:{$max}"],
+                'liveRole' => ['nullable', Rule::in($roleIds)],
+                'liveRoleRequired' => ['nullable', Rule::in($mentionableRoleIds)],
+            ],
+            'tags' => [],
+        ];
 
-        $row = Guild::forDiscordId($this->guildId);
-        $row->fill([
-            'welcome_channel' => $this->welcomeEnabled ? $this->welcomeChannel : null,
-            'welcome_msg' => $this->welcomeMsg !== '' ? $this->welcomeMsg : null,
-            'bye_channel' => $this->byeEnabled ? $this->byeChannel : null,
-            'bye_msg' => $this->byeMsg !== '' ? $this->byeMsg : null,
-            'autorole' => $this->autorole ?: null,
-            'tags_enabled' => $this->tagsEnabled,
-            'levelup_enabled' => $this->levelupEnabled,
-            'levelup_channel' => $this->levelupChannel ?: null,
-            'stream' => $this->streamChannel ?: null,
-            'notify' => $this->streamRole ?: null,
-            'stream_msg' => $this->streamMsg !== '' ? $this->streamMsg : null,
-            'stream_video_msg' => $this->streamVideoMsg !== '' ? $this->streamVideoMsg : null,
-            'live_role' => $this->liveRole ?: null,
-            'live_role_required' => $this->liveRole ? ($this->liveRoleRequired ?: null) : null,
-        ])->save();
+        $sectionRules = $rules[$this->section];
+        if ($sectionRules !== []) {
+            $this->validate($sectionRules, [
+                '*Channel.required' => __('guild.channel_required'),
+                '*Msg.required' => __('guild.message_required'),
+                '*Msg.max' => __('guild.message_max', ['max' => $max]),
+                '*Channel.in' => __('guild.channel_invalid'),
+                'autorole.in' => __('guild.role_invalid'),
+                'levelupChannel.in' => __('guild.channel_invalid'),
+                'streamChannel.in' => __('guild.channel_invalid'),
+                'streamRole.in' => __('guild.role_invalid'),
+                'liveRole.in' => __('guild.role_invalid'),
+                'liveRoleRequired.in' => __('guild.role_invalid'),
+            ]);
+        }
+
+        $fields = match ($this->section) {
+            'general' => [
+                'welcome_channel' => $this->welcomeEnabled ? $this->welcomeChannel : null,
+                'welcome_msg' => $this->welcomeMsg !== '' ? $this->welcomeMsg : null,
+                'bye_channel' => $this->byeEnabled ? $this->byeChannel : null,
+                'bye_msg' => $this->byeMsg !== '' ? $this->byeMsg : null,
+                'autorole' => $this->autorole ?: null,
+            ],
+            'levels' => [
+                'levelup_enabled' => $this->levelupEnabled,
+                'levelup_channel' => $this->levelupChannel ?: null,
+            ],
+            'streams' => [
+                'stream' => $this->streamChannel ?: null,
+                'notify' => $this->streamRole ?: null,
+                'stream_msg' => $this->streamMsg !== '' ? $this->streamMsg : null,
+                'stream_video_msg' => $this->streamVideoMsg !== '' ? $this->streamVideoMsg : null,
+                'live_role' => $this->liveRole ?: null,
+                'live_role_required' => $this->liveRole ? ($this->liveRoleRequired ?: null) : null,
+            ],
+            'tags' => [
+                'tags_enabled' => $this->tagsEnabled,
+            ],
+        };
+
+        Guild::forDiscordId($this->guildId)->fill($fields)->save();
 
         $this->loadFromDatabase();
         $this->dispatch('saved');
