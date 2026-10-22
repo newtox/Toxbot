@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'title' => 'Shop',
+    'intro' => 'Backgrounds for your profile card. Click an image to preview it.',
+    'balance' => 'Balance',
+    'empty' => 'There are no backgrounds in the shop yet.',
+    'preview' => 'Preview',
+    'show_preview' => 'Show preview',
+    'equipped_badge' => 'Active',
+    'owned' => 'Owned',
+    'free_with_premium' => 'Free with Premium',
+    'in_use' => 'In use',
+    'premium_label' => 'Premium only',
+    'use' => 'Use',
+    'confirm' => 'Buy :name for :price?',
+    'buy' => 'Buy',
+    'earn_hint' => 'You get credits with /daily, from level-ups and for votes on Top.gg.',
+    'bought' => 'Bought! The background is now active.',
+    'equipped' => 'The background is now active.',
+    'not_available' => 'This background is no longer available.',
+    'premium_only' => 'This background is only available with Premium.',
+    'already_owned' => 'You already own this background.',
+    'not_enough' => 'You do not have enough credits for this.',
+    'not_owned' => 'You need to buy this background first.',
+    'use_default' => 'Use default',
+    'equipped_default' => 'You are now using the default background.',
+];

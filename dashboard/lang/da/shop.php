@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'title' => 'Butik',
+    'intro' => 'Baggrunde til dit profilkort. Klik på et billede for at se det.',
+    'balance' => 'Saldo',
+    'empty' => 'Der er ingen baggrunde i butikken endnu.',
+    'preview' => 'Forhåndsvisning',
+    'show_preview' => 'Vis forhåndsvisning',
+    'equipped_badge' => 'Aktiv',
+    'owned' => 'Ejet',
+    'free_with_premium' => 'Gratis med Premium',
+    'in_use' => 'I brug',
+    'premium_label' => 'Kun med Premium',
+    'use' => 'Brug',
+    'confirm' => 'Køb :name for :price?',
+    'buy' => 'Køb',
+    'earn_hint' => 'Du får credits med /daily, ved level-ups og for stemmer på Top.gg.',
+    'bought' => 'Købt! Baggrunden er nu aktiv.',
+    'equipped' => 'Baggrunden er nu aktiv.',
+    'not_available' => 'Denne baggrund findes ikke længere.',
+    'premium_only' => 'Denne baggrund er kun tilgængelig med Premium.',
+    'already_owned' => 'Du ejer allerede denne baggrund.',
+    'not_enough' => 'Du har ikke nok credits til dette.',
+    'not_owned' => 'Du skal først købe denne baggrund.',
+    'use_default' => 'Brug standard',
+    'equipped_default' => 'Du bruger nu standardbaggrunden.',
+];

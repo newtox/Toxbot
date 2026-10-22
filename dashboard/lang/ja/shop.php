@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'title' => 'ショップ',
+    'intro' => 'プロフィールカードの背景です。画像をクリックするとプレビューできます。',
+    'balance' => '残高',
+    'empty' => 'ショップにはまだ背景がありません。',
+    'preview' => 'プレビュー',
+    'show_preview' => 'プレビューを表示',
+    'equipped_badge' => '使用中',
+    'owned' => '所持済み',
+    'free_with_premium' => 'Premiumで無料',
+    'in_use' => '使用中',
+    'premium_label' => 'Premium限定',
+    'use' => '使う',
+    'confirm' => ':name を :price で購入しますか？',
+    'buy' => '購入',
+    'earn_hint' => 'クレジットは /daily、レベルアップ、Top.ggでの投票でもらえます。',
+    'bought' => '購入しました！背景が設定されました。',
+    'equipped' => '背景が設定されました。',
+    'not_available' => 'この背景はもう利用できません。',
+    'premium_only' => 'この背景はPremiumでのみ利用できます。',
+    'already_owned' => 'この背景はすでに持っています。',
+    'not_enough' => 'クレジットが足りません。',
+    'not_owned' => '先にこの背景を購入してください。',
+    'use_default' => 'デフォルトに戻す',
+    'equipped_default' => 'デフォルトの背景に戻しました。',
+];
