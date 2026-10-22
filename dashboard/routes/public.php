@@ -3,6 +3,8 @@
 use App\Http\Controllers\BackgroundImageController;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\TopggWebhookController;
+use App\Http\Controllers\TwitchWebhookController;
+use App\Http\Controllers\YouTubeWebhookController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/card/{user}.png', [CardController::class, 'show'])
@@ -17,3 +19,14 @@ Route::get('/backgrounds/{background}', [BackgroundImageController::class, 'show
 Route::post('/webhooks/topgg', TopggWebhookController::class)
     ->middleware('throttle:120,1')
     ->name('webhooks.topgg');
+
+Route::post('/webhooks/twitch', TwitchWebhookController::class)
+    ->middleware('throttle:600,1')
+    ->name('webhooks.twitch');
+
+Route::get('/webhooks/youtube', [YouTubeWebhookController::class, 'verify'])
+    ->middleware('throttle:600,1')
+    ->name('webhooks.youtube');
+
+Route::post('/webhooks/youtube', [YouTubeWebhookController::class, 'notify'])
+    ->middleware('throttle:600,1');
