@@ -83,7 +83,7 @@ Future<void> clearOldGuilds(NyxxGateway client) async {
   final connection = await getMySqlConnection();
 
   try {
-    final results = await connection.query('SELECT * FROM `guilds`;', []);
+    final results = await connection.query('SELECT `id` FROM `guilds`;', []);
 
     for (final row in results) {
       final String guildIdAsString = row['id'].toString();
@@ -96,46 +96,15 @@ Future<void> clearOldGuilds(NyxxGateway client) async {
 
       try {
         await client.guilds.fetch(Snowflake(guildIdAsInt));
-      } catch (e) {
-        await connection
-            .query('DELETE FROM `guilds` WHERE `id` = ?;', [guildIdAsString]);
-      } finally {
-        await connection.close();
+      } on HttpResponseError catch (e) {
+        if (e.statusCode == 403 || e.statusCode == 404) {
+          await connection.query(
+              'DELETE FROM `guilds` WHERE `id` = ?;', [guildIdAsString]);
+        }
       }
     }
   } catch (e) {
     print('Error in clearOldGuilds: $e');
-  } finally {
-    await connection.close();
-  }
-}
-
-Future<void> clearOldUsers(NyxxGateway client) async {
-  final connection = await getMySqlConnection();
-
-  try {
-    final results = await connection.query('SELECT * FROM `users`;', []);
-
-    for (final row in results) {
-      final String userIdAsString = row['id'].toString();
-      int? userIdAsInt = int.tryParse(userIdAsString);
-
-      if (userIdAsInt == null) {
-        print('Failed to parse user ID: $userIdAsString');
-        continue;
-      }
-
-      try {
-        await client.users.fetch(Snowflake(userIdAsInt));
-      } catch (e) {
-        await connection
-            .query('DELETE FROM `users` WHERE `id` = ?;', [userIdAsString]);
-      } finally {
-        await connection.close();
-      }
-    }
-  } catch (e) {
-    print('Error in clearOldUsers: $e');
   } finally {
     await connection.close();
   }
