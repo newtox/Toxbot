@@ -212,6 +212,7 @@ class Announcer
         $role = ($premium && $subscription->role) ? $subscription->role : $guild->notify;
 
         $content = strtr($template, [
+            '&channel' => $source->name,
             '&streamer' => $source->name,
             '&title' => $details['title'],
             '&game' => $details['game'],

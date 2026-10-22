@@ -12,7 +12,7 @@ return [
     'live_role_required' => 'केवल इस रोल वाले सदस्यों के लिए',
     'everyone' => 'सभी सदस्य',
     'live_role_hint' => 'जब कोई अपने Discord खाते से Twitch या YouTube जोड़कर लाइव होता है, तो Discord उसे स्ट्रीमिंग दिखाता है।',
-    'placeholder_streamer' => 'स्ट्रीमर का नाम',
+    'placeholder_channel' => 'Twitch या YouTube पर चैनल का नाम',
     'placeholder_title' => 'स्ट्रीम या वीडियो का शीर्षक',
     'placeholder_game' => 'गेम (केवल Twitch)',
     'placeholder_link' => 'स्ट्रीम या वीडियो का लिंक',

@@ -12,7 +12,7 @@ return [
     'live_role_required' => '이 역할이 있는 멤버만',
     'everyone' => '모든 멤버',
     'live_role_hint' => 'Twitch나 YouTube를 Discord 계정에 연결하고 방송 중이면 Discord에 방송 중으로 표시됩니다.',
-    'placeholder_streamer' => '스트리머 이름',
+    'placeholder_channel' => 'Twitch 또는 YouTube 채널 이름',
     'placeholder_title' => '방송 또는 영상 제목',
     'placeholder_game' => '게임 (Twitch만)',
     'placeholder_link' => '방송 또는 영상 링크',

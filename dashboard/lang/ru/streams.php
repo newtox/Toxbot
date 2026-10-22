@@ -12,7 +12,7 @@ return [
     'live_role_required' => 'Только для участников с ролью',
     'everyone' => 'Все участники',
     'live_role_hint' => 'Discord показывает, что человек стримит, если он подключил Twitch или YouTube к аккаунту и сейчас в эфире.',
-    'placeholder_streamer' => 'Имя стримера',
+    'placeholder_channel' => 'Название канала на Twitch или YouTube',
     'placeholder_title' => 'Название стрима или видео',
     'placeholder_game' => 'Игра (только Twitch)',
     'placeholder_link' => 'Ссылка на стрим или видео',

@@ -12,7 +12,7 @@ return [
     'live_role_required' => 'Solo para miembros con rol',
     'everyone' => 'Todos los miembros',
     'live_role_hint' => 'Discord muestra a alguien transmitiendo cuando conectó Twitch o YouTube a su cuenta y está en directo.',
-    'placeholder_streamer' => 'Nombre del streamer',
+    'placeholder_channel' => 'Nombre del canal en Twitch o YouTube',
     'placeholder_title' => 'Título del stream o vídeo',
     'placeholder_game' => 'Juego (solo Twitch)',
     'placeholder_link' => 'Enlace al stream o vídeo',

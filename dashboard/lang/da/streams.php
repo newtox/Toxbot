@@ -12,7 +12,7 @@ return [
     'live_role_required' => 'Kun for medlemmer med rolle',
     'everyone' => 'Alle medlemmer',
     'live_role_hint' => 'Discord viser nogen som streamende, når de har forbundet Twitch eller YouTube til Discord og er live.',
-    'placeholder_streamer' => 'Streamerens navn',
+    'placeholder_channel' => 'Kanalens navn på Twitch eller YouTube',
     'placeholder_title' => 'Titel på stream eller video',
     'placeholder_game' => 'Spil (kun Twitch)',
     'placeholder_link' => 'Link til stream eller video',

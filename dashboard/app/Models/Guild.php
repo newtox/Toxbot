@@ -29,16 +29,16 @@ class Guild extends Model
     ];
 
     public const STREAM_PLACEHOLDERS = [
-        '&streamer' => 'streams.placeholder_streamer',
+        '&channel' => 'streams.placeholder_channel',
         '&title' => 'streams.placeholder_title',
         '&game' => 'streams.placeholder_game',
         '&link' => 'streams.placeholder_link',
         '&role' => 'streams.placeholder_role',
     ];
 
-    public const DEFAULT_STREAM_MESSAGE = '&role **&streamer** is live! &link';
+    public const DEFAULT_STREAM_MESSAGE = '&role **&channel** is live! &link';
 
-    public const DEFAULT_VIDEO_MESSAGE = '&role **&streamer** uploaded a new video! &link';
+    public const DEFAULT_VIDEO_MESSAGE = '&role **&channel** uploaded a new video! &link';
 
     protected $attributes = [
         'tags_enabled' => true,

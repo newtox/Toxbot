@@ -12,7 +12,7 @@ return [
     'live_role_required' => 'このロールを持つメンバーのみ',
     'everyone' => '全メンバー',
     'live_role_hint' => 'TwitchやYouTubeをDiscordアカウントに連携して配信中だと、Discordに配信中と表示されます。',
-    'placeholder_streamer' => '配信者名',
+    'placeholder_channel' => 'Twitch または YouTube のチャンネル名',
     'placeholder_title' => '配信・動画のタイトル',
     'placeholder_game' => 'ゲーム（Twitchのみ）',
     'placeholder_link' => '配信・動画へのリンク',

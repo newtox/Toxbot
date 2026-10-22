@@ -78,7 +78,7 @@ class StreamsTest extends TestCase
 
     private function guild(): Guild
     {
-        return Guild::create(['id' => self::GUILD, 'stream' => '555', 'notify' => '777', 'stream_msg' => '&role &streamer spielt &game: &link']);
+        return Guild::create(['id' => self::GUILD, 'stream' => '555', 'notify' => '777', 'stream_msg' => '&role &channel spielt &game: &link']);
     }
 
     private function twitchSource(): StreamSource

@@ -12,7 +12,7 @@ return [
     'live_role_required' => 'Only for members with role',
     'everyone' => 'All members',
     'live_role_hint' => 'Discord shows someone as streaming when they connected Twitch or YouTube to their Discord account and are live.',
-    'placeholder_streamer' => 'Streamer name',
+    'placeholder_channel' => 'Channel name on Twitch or YouTube',
     'placeholder_title' => 'Stream or video title',
     'placeholder_game' => 'Game (Twitch only)',
     'placeholder_link' => 'Link to the stream or video',
