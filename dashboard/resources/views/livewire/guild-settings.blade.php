@@ -87,6 +87,90 @@
         </div>
     </section>
 
+    <section id="streams" class="card scroll-mt-20 space-y-5">
+        <div>
+            <h2 class="text-lg font-semibold text-dc-header">{{ __('streams.title') }}</h2>
+            <p class="text-sm text-dc-muted">{{ __('streams.description') }}</p>
+        </div>
+
+        <div class="grid gap-4 sm:grid-cols-2">
+            <div>
+                <label class="label" for="stream-channel">{{ __('guild.channel') }}</label>
+                <select id="stream-channel" wire:model="streamChannel" class="input">
+                    <option value="">{{ __('streams.no_channel') }}</option>
+                    @foreach ($channelGroups as $group)
+                        @if ($group['name'])
+                            <optgroup label="{{ $group['name'] }}">
+                        @endif
+                        @foreach ($group['channels'] as $c)
+                            <option value="{{ $c['id'] }}"># {{ $c['name'] }}</option>
+                        @endforeach
+                        @if ($group['name'])
+                            </optgroup>
+                        @endif
+                    @endforeach
+                </select>
+                @error('streamChannel') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+            </div>
+            <div>
+                <label class="label" for="stream-role">{{ __('streams.ping_role') }}</label>
+                <select id="stream-role" wire:model="streamRole" class="input">
+                    <option value="">{{ __('streams.no_ping') }}</option>
+                    @foreach ($roles as $role)
+                        <option value="{{ $role['id'] }}">@ {{ $role['name'] }}</option>
+                    @endforeach
+                </select>
+                @error('streamRole') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+            </div>
+        </div>
+
+        <div>
+            <label class="label" for="stream-msg">{{ __('guild.message') }}</label>
+            <textarea id="stream-msg" x-ref="streamMsg" wire:model="streamMsg" rows="2" placeholder="{{ \App\Models\Guild::DEFAULT_STREAM_MESSAGE }}"
+                      class="input resize-y font-mono text-sm"></textarea>
+            @error('streamMsg') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+            <div class="mt-3 flex flex-wrap gap-2">
+                @foreach (\App\Models\Guild::STREAM_PLACEHOLDERS as $token => $hint)
+                    <button type="button" title="{{ __($hint) }}" x-on:click="toxbot.insertAtCursor($refs.streamMsg, '{{ $token }}')"
+                            class="rounded-full bg-dc-600 px-3 py-1 font-mono text-xs text-dc-text transition hover:bg-accent hover:text-on-accent">{{ $token }}</button>
+                @endforeach
+            </div>
+        </div>
+
+        <livewire:stream-list :guild-id="$guildId" />
+    </section>
+
+    <section id="live-role" class="card scroll-mt-20">
+        <h2 class="text-lg font-semibold text-dc-header">{{ __('streams.live_role_title') }}</h2>
+        <p class="mb-5 text-sm text-dc-muted">{{ __('streams.live_role_description') }}</p>
+
+        <div class="grid gap-4 sm:grid-cols-2">
+            <div>
+                <label class="label" for="live-role">{{ __('guild.role') }}</label>
+                <select id="live-role" wire:model="liveRole" class="input">
+                    <option value="">{{ __('streams.no_live_role') }}</option>
+                    @foreach ($roles as $role)
+                        <option value="{{ $role['id'] }}" @disabled(! $role['assignable'])>
+                            {{ $role['name'] }}{{ $role['assignable'] ? '' : ' ('.__('guild.above_bot').')' }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('liveRole') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+            </div>
+            <div x-show="$wire.liveRole">
+                <label class="label" for="live-role-required">{{ __('streams.live_role_required') }}</label>
+                <select id="live-role-required" wire:model="liveRoleRequired" class="input">
+                    <option value="">{{ __('streams.everyone') }}</option>
+                    @foreach ($roles as $role)
+                        <option value="{{ $role['id'] }}">{{ $role['name'] }}</option>
+                    @endforeach
+                </select>
+                @error('liveRoleRequired') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+            </div>
+        </div>
+        <p class="mt-3 text-sm text-dc-faint">{{ __('streams.live_role_hint') }}</p>
+    </section>
+
     <section id="tags" class="card scroll-mt-20">
         <div class="flex items-start gap-4">
             <div class="flex-1">

@@ -178,4 +178,30 @@ class GuildSettingsTest extends TestCase
 
         $this->assertSame(0, TagGuildBlock::count());
     }
+
+    public function test_saves_stream_and_live_role_settings(): void
+    {
+        $this->login();
+
+        Livewire::test(GuildSettings::class, ['guild' => ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon_url' => null]])
+            ->set('streamChannel', '11')
+            ->set('streamRole', '22')
+            ->set('streamMsg', '&role &streamer ist live!')
+            ->set('liveRole', '20')
+            ->set('liveRoleRequired', '22')
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $row = Guild::find(self::GUILD);
+        $this->assertSame('11', $row->stream);
+        $this->assertSame('22', $row->notify);
+        $this->assertSame('&role &streamer ist live!', $row->stream_msg);
+        $this->assertSame('20', $row->live_role);
+        $this->assertSame('22', $row->live_role_required);
+
+        Livewire::test(GuildSettings::class, ['guild' => ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon_url' => null]])
+            ->set('liveRole', '22')
+            ->call('save')
+            ->assertHasErrors('liveRole');
+    }
 }
