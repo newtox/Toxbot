@@ -30,9 +30,6 @@ class YouTube
         return is_string($id) && preg_match('/^UC[\w-]{22}$/', $id) ? $id : null;
     }
 
-    /**
-     * @return array{id: string, name: string, handle: ?string, avatar: ?string}|null
-     */
     public function resolve(string $input): ?array
     {
         $input = trim($input);
@@ -74,9 +71,6 @@ class YouTube
         return hash_equals(hash_hmac($algo, $body, $this->secret()), $hash);
     }
 
-    /**
-     * @return list<array{video: string, channel: string, title: string, published: ?string}>
-     */
     public static function parseFeed(string $xml): array
     {
         $previous = libxml_use_internal_errors(true);
@@ -106,10 +100,6 @@ class YouTube
         return $entries;
     }
 
-    /**
-     * @param  list<string>  $ids
-     * @return array<string, array{live: string, title: string, thumbnail: ?string, ended: bool, started: ?string}>
-     */
     public function videos(array $ids): array
     {
         if (! $this->hasApiKey() || $ids === []) {

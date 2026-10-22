@@ -26,9 +26,6 @@ class StreamSubscription extends Model
         return ['notify_videos' => 'boolean', 'notify_live' => 'boolean'];
     }
 
-    /**
-     * The subscriptions of a server without Server Premium that still get announced.
-     */
     public static function freeIds(string $guildId): array
     {
         return static::query()->where('guild', $guildId)->orderBy('id')

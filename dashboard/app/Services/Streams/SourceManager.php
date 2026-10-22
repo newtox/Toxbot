@@ -24,9 +24,6 @@ class SourceManager
             : config('toxbot.streams.free_limit');
     }
 
-    /**
-     * Throws with a translation key as message when the streamer cannot be added.
-     */
     public function add(string $guildId, string $platform, string $input): StreamSubscription
     {
         if (StreamSubscription::query()->where('guild', $guildId)->count() >= $this->limit($guildId)) {
