@@ -18,13 +18,23 @@ A Discord bot written in Dart with [`nyxx`](https://pub.dev/packages/nyxx) and `
 | Bot | `bot/` | Dart, nyxx, MySQL |
 | Dashboard | [`dashboard/`](dashboard/README.md) | Laravel, Livewire, Tailwind |
 
-Both share the same MySQL database. Whatever you change in the dashboard (welcome and goodbye messages, autorole, language, embed color) is picked up by the bot right away.
+Both share the same MySQL database. Whatever you change in the dashboard (welcome and goodbye messages, autorole, level-up messages, tags, language, embed color) is picked up by the bot right away.
+
+## Features
+
+- **Roleplay, image and fun commands** like `/hug`, `/pat` or `/8ball`
+- **Server setup**: welcome and goodbye messages, autorole, level-up messages
+- **Levels**: XP for messages and commands, with a global level and a separate level per server, plus `/leaderboard`
+- **Credits and shop**: `/daily`, credits for level-ups and Top.gg votes, profile backgrounds to buy with `/shop`
+- **Profile cards**: `/profile` shows level, rank, credits and the chosen background as an image
+- **Tags**: global custom commands with `/tag`, reportable and blockable per server
+- **Premium** through Discord subscriptions: double XP and daily reward, premium backgrounds, more tags and tags as embeds, plus a 24 hour XP boost to buy
 
 ## Running locally
 
 ### Bot
 
-1. Copy `bot/.env.example` to `bot/.env` and fill in your bot token and database credentials.
+1. Copy `bot/.env.example` to `bot/.env` and fill in your bot token, your Discord user ID as `owner_id` and the database credentials. Set `dashboard_url` to the dashboard (locally `http://localhost:8000`), the bot loads the profile cards from there. All other values are optional and have defaults.
 2. Start the bot:
    ```bash
    cd bot
@@ -51,6 +61,19 @@ On every push to `main`, the GitHub Action in `.github/workflows/docker.yml` bui
 
 The server runs both from `docker-compose.yml`, deployed as a Portainer stack. Secrets are not part of the images; they are set as stack environment variables. See `stack.env.example` for the full list.
 
+Backgrounds uploaded in the dashboard are stored in `/docker_volumes/toxbot-dashboard/backgrounds` on the host. Create the folder once and give it to the container user:
+
+```bash
+mkdir -p /docker_volumes/toxbot-dashboard/backgrounds
+chown 33:33 /docker_volumes/toxbot-dashboard/backgrounds
+```
+
+### Premium and Top.gg
+
+- Create the SKUs in the Developer Portal under **Monetization**: a user subscription for Premium and a consumable for the XP boost. Put their IDs into `PREMIUM_USER_SKUS` and `XP_BOOST_SKU`.
+- `PREMIUM_USERS` gives Premium to the listed user IDs without a subscription, for example for testing.
+- For vote rewards, add `https://<dashboard>/webhooks/topgg` as webhook on Top.gg and put the generated secret into `TOPGG_WEBHOOK_SECRET`.
+
 The dashboard listens on `127.0.0.1:8090` and is meant to sit behind a reverse proxy, for example Caddy:
 
 ```
@@ -63,7 +86,7 @@ To update: push to `main`, wait for the action to finish, then use **Pull and re
 
 ## Usage
 
-Toxbot uses slash commands. Type `/` in Discord to see all of them, for example `/ping` to check whether the bot is online.
+Toxbot uses slash commands. Type `/` in Discord to see all of them, for example `/ping` to check whether the bot is online, `/profile` for your profile card or `/tag show` to use a tag.
 
 ## Contributing
 
