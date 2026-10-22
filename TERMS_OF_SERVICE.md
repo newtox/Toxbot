@@ -8,7 +8,7 @@ By using Toxbot ("the bot") or its dashboard, you agree to these Terms of Servic
 
 ## Description of Service
 
-Toxbot is a Discord bot created using Dart, providing community engagement, moderation, and entertainment features through Discord's slash command system, together with a web dashboard to configure it. Features include levels, credits, a shop for profile backgrounds, custom tags and optional paid Premium features.
+Toxbot is a Discord bot created using Dart, providing community engagement, moderation, and entertainment features through Discord's slash command system, together with a web dashboard to configure it. Features include levels, credits, a shop for profile backgrounds, custom tags, Twitch and YouTube stream notifications and optional paid Premium features for users and servers.
 
 ## User Conduct
 
@@ -37,11 +37,17 @@ Tags are custom commands that you create and that can be used on every server To
 
 ## Premium and Purchases
 
-- Premium subscriptions and other paid items (such as the 24 hour XP boost) are sold and billed by Discord. Discord's [Paid Services Terms](https://discord.com/terms/paid-services-terms) also apply to these purchases.
+- Premium subscriptions for users, Server Premium subscriptions for servers and other paid items (such as the 24 hour XP boost) are sold and billed by Discord. Discord's [Paid Services Terms](https://discord.com/terms/paid-services-terms) also apply to these purchases.
 - Payments, cancellations and refunds are handled by Discord. You can cancel a subscription at any time in your Discord settings; Premium stays active until the end of the paid period.
 - Premium features are described in the store. We may change, improve or replace individual Premium features, as long as Premium as a whole remains comparable.
 - When a subscription ends, Premium-only features stop working. Things you created while you had Premium, such as tags, are kept, but may fall back to the free version (for example, embed tags are shown as text).
+- Server Premium applies to the server it was bought for, for everyone there. When it ends, stream notifications keep working with the free settings; streamers above the free limit stay listed, but no new ones can be added until the server is below the limit again.
 - A consumable item such as the XP boost is used up when you redeem it.
+
+## Stream Notifications
+
+- Stream notifications depend on Twitch and YouTube. We cannot guarantee that every stream or video is announced, or that it is announced on time.
+- Server administrators are responsible for the messages and role pings they set up.
 
 ## Voting Rewards
 
