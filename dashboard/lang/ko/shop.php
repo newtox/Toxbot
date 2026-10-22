@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'title' => '상점',
+    'intro' => '프로필 카드 배경입니다. 이미지를 클릭하면 미리 볼 수 있습니다.',
+    'balance' => '잔액',
+    'empty' => '상점에 아직 배경이 없습니다.',
+    'preview' => '미리보기',
+    'show_preview' => '미리보기 표시',
+    'equipped_badge' => '사용 중',
+    'owned' => '보유 중',
+    'free_with_premium' => 'Premium 무료',
+    'in_use' => '사용 중',
+    'premium_label' => 'Premium 전용',
+    'use' => '사용',
+    'confirm' => ':name을(를) :price에 구매할까요?',
+    'buy' => '구매',
+    'earn_hint' => '크레딧은 /daily, 레벨업, Top.gg 투표로 받을 수 있습니다.',
+    'bought' => '구매 완료! 배경이 적용되었습니다.',
+    'equipped' => '배경이 적용되었습니다.',
+    'not_available' => '이 배경은 더 이상 사용할 수 없습니다.',
+    'premium_only' => '이 배경은 Premium에서만 사용할 수 있습니다.',
+    'already_owned' => '이미 보유한 배경입니다.',
+    'not_enough' => '크레딧이 부족합니다.',
+    'not_owned' => '먼저 이 배경을 구매해야 합니다.',
+    'use_default' => '기본값 사용',
+    'equipped_default' => '이제 기본 배경을 사용합니다.',
+];

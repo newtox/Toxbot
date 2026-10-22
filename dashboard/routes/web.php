@@ -27,4 +27,5 @@ Route::middleware('auth')->group(function () {
         ->name('servers.show');
 
     Route::view('/profile', 'profile')->name('profile');
+    Route::view('/shop', 'shop')->name('shop');
 });

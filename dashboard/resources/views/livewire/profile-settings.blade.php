@@ -1,12 +1,4 @@
 <div class="space-y-6 pb-32">
-    <div class="flex items-center gap-4">
-        <img src="{{ $user->avatar_url }}" alt="" class="size-14 rounded-full">
-        <div>
-            <h1 class="text-2xl font-bold text-dc-header">{{ $user->display_name }}</h1>
-            <p class="text-sm text-dc-muted">{{ __('profile.intro') }}</p>
-        </div>
-    </div>
-
     <section class="card">
         <h2 class="text-lg font-semibold text-dc-header">{{ __('profile.language_title') }}</h2>
         <p class="mb-5 text-sm text-dc-muted">{{ __('profile.language_description') }}</p>

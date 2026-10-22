@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'title' => '商店',
+    'intro' => '个人资料卡的背景。点击图片预览。',
+    'balance' => '余额',
+    'empty' => '商店里还没有背景。',
+    'preview' => '预览',
+    'show_preview' => '显示预览',
+    'equipped_badge' => '使用中',
+    'owned' => '已拥有',
+    'free_with_premium' => 'Premium 免费',
+    'in_use' => '使用中',
+    'premium_label' => '仅限 Premium',
+    'use' => '使用',
+    'confirm' => '以 :price 购买 :name？',
+    'buy' => '购买',
+    'earn_hint' => '通过 /daily、升级和在 Top.gg 投票可获得积分。',
+    'bought' => '购买成功！背景已启用。',
+    'equipped' => '背景已启用。',
+    'not_available' => '此背景已不再提供。',
+    'premium_only' => '此背景仅限 Premium 使用。',
+    'already_owned' => '你已经拥有这个背景。',
+    'not_enough' => '你的积分不够。',
+    'not_owned' => '你需要先购买这个背景。',
+    'use_default' => '使用默认',
+    'equipped_default' => '你现在使用的是默认背景。',
+];

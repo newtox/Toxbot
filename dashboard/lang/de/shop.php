@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'title' => 'Shop',
+    'intro' => 'Hintergründe für deine Profilkarte. Klick auf ein Bild für die Vorschau.',
+    'balance' => 'Guthaben',
+    'empty' => 'Im Shop gibt es noch keine Hintergründe.',
+    'preview' => 'Vorschau',
+    'show_preview' => 'Vorschau anzeigen',
+    'equipped_badge' => 'Aktiv',
+    'owned' => 'Gekauft',
+    'free_with_premium' => 'Gratis mit Premium',
+    'in_use' => 'In Benutzung',
+    'premium_label' => 'Nur mit Premium',
+    'use' => 'Benutzen',
+    'confirm' => ':name für :price kaufen?',
+    'buy' => 'Kaufen',
+    'earn_hint' => 'Credits bekommst du mit /daily, durch Level-ups und für Votes auf Top.gg.',
+    'bought' => 'Gekauft! Der Hintergrund ist jetzt aktiv.',
+    'equipped' => 'Der Hintergrund ist jetzt aktiv.',
+    'not_available' => 'Diesen Hintergrund gibt es nicht mehr.',
+    'premium_only' => 'Dieser Hintergrund ist nur mit Premium verfügbar.',
+    'already_owned' => 'Den Hintergrund hast du schon.',
+    'not_enough' => 'Dafür hast du nicht genug Credits.',
+    'not_owned' => 'Diesen Hintergrund musst du erst kaufen.',
+    'use_default' => 'Standard benutzen',
+    'equipped_default' => 'Du benutzt jetzt den Standard-Hintergrund.',
+];

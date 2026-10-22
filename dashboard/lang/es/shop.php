@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'title' => 'Tienda',
+    'intro' => 'Fondos para tu tarjeta de perfil. Haz clic en una imagen para verla.',
+    'balance' => 'Saldo',
+    'empty' => 'Todavía no hay fondos en la tienda.',
+    'preview' => 'Vista previa',
+    'show_preview' => 'Mostrar vista previa',
+    'equipped_badge' => 'Activo',
+    'owned' => 'Comprado',
+    'free_with_premium' => 'Gratis con Premium',
+    'in_use' => 'En uso',
+    'premium_label' => 'Solo con Premium',
+    'use' => 'Usar',
+    'confirm' => '¿Comprar :name por :price?',
+    'buy' => 'Comprar',
+    'earn_hint' => 'Consigues créditos con /daily, al subir de nivel y votando en Top.gg.',
+    'bought' => '¡Comprado! El fondo ya está activo.',
+    'equipped' => 'El fondo ya está activo.',
+    'not_available' => 'Este fondo ya no está disponible.',
+    'premium_only' => 'Este fondo solo está disponible con Premium.',
+    'already_owned' => 'Ya tienes este fondo.',
+    'not_enough' => 'No tienes suficientes créditos para esto.',
+    'not_owned' => 'Primero tienes que comprar este fondo.',
+    'use_default' => 'Usar predeterminado',
+    'equipped_default' => 'Ahora usas el fondo predeterminado.',
+];
