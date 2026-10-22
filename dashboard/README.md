@@ -4,6 +4,8 @@ Web dashboard for [Toxbot](../README.md), built with Laravel, Livewire and Tailw
 
 - **Discord login** via OAuth2 (scopes `identify guilds`)
 - **Server list** with every server where you are owner, administrator or have "Manage Server". Servers without Toxbot get an invite button.
+- **Landing page** with features, Premium and invite link, plus live numbers for servers, members with XP and tags
+- **Server overview** with member count, streamers, Server Premium status and every module at a glance; the settings are split into pages for welcome and roles, levels, streams and tags
 - **Welcome and goodbye messages** with channel picker, placeholders (`&mention`, `&user`, `&server`) and a live preview that looks like Discord
 - **Autorole**, limited to roles below Toxbot's highest role, same rule as `/autorole`
 - **Level-up messages** and **tags** per server: turn them on or off, pick the channel, unblock blocked tags
