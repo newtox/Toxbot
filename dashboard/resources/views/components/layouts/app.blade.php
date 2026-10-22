@@ -94,6 +94,8 @@
                             <a href="#welcome" x-on:click="nav = false" class="nav-item"><x-icon name="welcome" />{{ __('guild.welcome_title') }}</a>
                             <a href="#bye" x-on:click="nav = false" class="nav-item"><x-icon name="bye" />{{ __('guild.bye_title') }}</a>
                             <a href="#autorole" x-on:click="nav = false" class="nav-item"><x-icon name="autorole" />{{ __('guild.autorole_title') }}</a>
+                            <a href="#levels" x-on:click="nav = false" class="nav-item"><x-icon name="level" />{{ __('guild.levelup_title') }}</a>
+                            <a href="#tags" x-on:click="nav = false" class="nav-item"><x-icon name="tag" />{{ __('guild.tags_title') }}</a>
                         </div>
                     @endif
 
@@ -104,6 +106,11 @@
                         @foreach ([
                             ['route' => 'servers.index', 'active' => 'servers.index', 'icon' => 'servers', 'label' => __('menu.servers')],
                             ['route' => 'profile', 'active' => 'profile', 'icon' => 'profile', 'label' => __('menu.profile')],
+                            ['route' => 'shop', 'active' => 'shop', 'icon' => 'shop', 'label' => __('menu.shop')],
+                            ['route' => 'tags', 'active' => 'tags', 'icon' => 'tag', 'label' => __('menu.tags')],
+                            ...(\App\Http\Middleware\EnsureBotOwner::check(auth()->id())
+                                ? [['route' => 'admin', 'active' => 'admin', 'icon' => 'shield', 'label' => __('menu.admin')]]
+                                : []),
                         ] as $item)
                             <a href="{{ route($item['route']) }}"
                                @class(['nav-item', 'bg-accent! text-on-accent!' => request()->routeIs($item['active'])])>

@@ -10,4 +10,7 @@ return [
     'close_menu' => 'Close menu',
     'logout' => 'Log out',
     'switch' => 'Change language',
+    'shop' => 'Shop',
+    'tags' => 'Tags',
+    'admin' => 'Admin',
 ];
