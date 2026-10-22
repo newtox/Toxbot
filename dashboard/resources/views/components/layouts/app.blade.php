@@ -168,14 +168,25 @@
             </div>
         </div>
     @else
-        <header class="mx-auto flex h-16 max-w-5xl items-center justify-between px-4">
-            <x-brand :bot-avatar="$botAvatar" />
-            <x-locale-switch compact />
+        <header class="sticky top-0 z-30 border-b border-white/5 bg-dc-900/85 backdrop-blur">
+            <div class="mx-auto flex h-16 max-w-6xl items-center gap-6 px-4">
+                <x-brand :bot-avatar="$botAvatar" />
+                @if (request()->routeIs('home'))
+                    <nav class="hidden gap-5 text-sm font-medium text-dc-muted sm:flex">
+                        <a href="#features" class="hover:text-dc-header">{{ __('home.nav_features') }}</a>
+                        <a href="#premium" class="hover:text-dc-header">{{ __('home.nav_premium') }}</a>
+                    </nav>
+                @endif
+                <div class="ml-auto flex items-center gap-2">
+                    <x-locale-switch compact />
+                    <a href="{{ route('login') }}" class="btn-primary max-sm:hidden">{{ __('home.dashboard') }}</a>
+                </div>
+            </div>
         </header>
 
         @include('components.layouts.partials.status')
 
-        <main class="mx-auto w-full max-w-5xl px-4 py-8">
+        <main>
             {{ $slot }}
         </main>
     @endauth
