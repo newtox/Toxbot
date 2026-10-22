@@ -5,6 +5,7 @@ import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:toxbot/events.dart';
 import 'package:toxbot/levels.dart';
+import 'package:toxbot/live_role.dart';
 import 'package:toxbot/premium.dart';
 
 void main() async {
@@ -41,4 +42,5 @@ void main() async {
   setupCommandPostCallHandler(commands, client);
   setupEntitlementHandlers(client);
   setupMessageXpHandler(client);
+  setupLiveRoleHandler(client);
 }
