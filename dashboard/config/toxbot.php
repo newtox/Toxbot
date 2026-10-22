@@ -7,6 +7,10 @@ return [
 
     'premium_user_skus' => array_values(array_filter(array_map('trim', explode(',', (string) env('TOXBOT_PREMIUM_USER_SKUS', ''))))),
 
+    'premium_guilds' => array_values(array_filter(array_map('trim', explode(',', (string) env('TOXBOT_PREMIUM_GUILDS', ''))))),
+
+    'premium_guild_skus' => array_values(array_filter(array_map('trim', explode(',', (string) env('TOXBOT_PREMIUM_GUILD_SKUS', ''))))),
+
     'currency' => env('TOXBOT_CURRENCY', 'Credits'),
 
     'tags' => [
