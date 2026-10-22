@@ -42,6 +42,7 @@ import 'package:toxbot/commands/roleplay/wave.dart';
 import 'package:toxbot/commands/roleplay/wink.dart';
 import 'package:toxbot/commands/roleplay/yeet.dart';
 import 'package:toxbot/database.dart';
+import 'package:toxbot/premium.dart';
 import 'package:toxbot/utils/functions.dart';
 
 var env = DotEnv(includePlatformEnvironment: true)..load();
@@ -113,6 +114,7 @@ void setupReadyHandler(NyxxGateway client) async {
     if (!isBotReady) {
       botStartTime = DateTime.now();
       isBotReady = true;
+      syncEntitlements(client);
     }
 
     print(
