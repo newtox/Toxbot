@@ -15,7 +15,9 @@ This Privacy Policy explains how Toxbot ("we", "our", or "the bot") and the Toxb
 - **Levels**: your XP and level, globally and per server, and when you last received XP. To give XP for chat messages, the bot notices that you sent a message on a server. **The content of your messages is not read or stored.**
 - **Credits and shop**: your credit balance, a history of what you earned and spent (for example daily rewards, level-ups, votes and purchases), your daily streak and the backgrounds you own and use
 - **Tags**: the name and content of tags you create, how often they were used, and reports about tags, including who reported them and why
-- **Purchases**: when you buy Premium or an XP boost, Discord tells us which product you bought and how long it is valid. **We never see your payment details**; payments are handled entirely by Discord.
+- **Stream notifications**: the Twitch and YouTube channels a server follows (channel ID, name and avatar), the server's notification settings, and which streams and videos were announced in which message
+- **Live role**: to give the live role, the bot sees on servers with a live role whether you are currently streaming on Discord. This status is not stored.
+- **Purchases**: when you buy Premium, Server Premium or an XP boost, Discord tells us which product you bought and how long it is valid. **We never see your payment details**; payments are handled entirely by Discord.
 
 ### When you use the dashboard
 - When you log in with Discord, we receive your Discord ID, username, display name, avatar and the list of your servers. We use the server list only to show which servers you can manage.
@@ -42,6 +44,7 @@ Some information is visible to other users on purpose: your level, rank, credits
 
 - **Discord** runs the platform and handles all payments. See [Discord's Privacy Policy](https://discord.com/privacy).
 - **Top.gg**: if you vote for Toxbot on Top.gg, Top.gg sends us your Discord ID so we can give you credits. See [Top.gg's Privacy Policy](https://top.gg/privacy).
+- **Twitch** and **YouTube**: for stream notifications we ask them for public channel, stream and video information and receive notifications when a followed channel goes live. No data about you is sent there. See [Twitch's Privacy Notice](https://www.twitch.tv/p/legal/privacy-notice/) and [Google's Privacy Policy](https://policies.google.com/privacy).
 - **waifu.pics** provides the images for roleplay and image commands. No data about you is sent there.
 - Images in tags are loaded from the image host the tag's creator chose (for example Discord or Imgur) when a tag is shown.
 
@@ -56,6 +59,7 @@ We implement reasonable security measures to protect your information:
 
 - Your settings, levels, credits, purchases and tags are kept as long as you use Toxbot, or until you ask us to delete them.
 - A server's settings are deleted after Toxbot has been removed from that server, at the latest the next time the bot restarts.
+- Followed streamers are removed together with the server's settings. Announcement records are deleted after 30 days.
 - Server levels stay stored even after Toxbot leaves a server, so they are still there if it is added again. You can ask us to delete them.
 
 ## Your Rights
