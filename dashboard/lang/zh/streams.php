@@ -12,7 +12,7 @@ return [
     'live_role_required' => '仅限拥有此身份组的成员',
     'everyone' => '所有成员',
     'live_role_hint' => '当成员把 Twitch 或 YouTube 连接到 Discord 账号并正在直播时，Discord 会显示其正在直播。',
-    'placeholder_streamer' => '主播名称',
+    'placeholder_channel' => 'Twitch 或 YouTube 上的频道名称',
     'placeholder_title' => '直播或视频标题',
     'placeholder_game' => '游戏（仅 Twitch）',
     'placeholder_link' => '直播或视频链接',
