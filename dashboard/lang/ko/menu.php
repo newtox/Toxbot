@@ -10,4 +10,7 @@ return [
     'close_menu' => '메뉴 닫기',
     'logout' => '로그아웃',
     'switch' => '언어 변경',
+    'shop' => '상점',
+    'tags' => '태그',
+    'admin' => '관리',
 ];

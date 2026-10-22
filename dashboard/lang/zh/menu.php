@@ -10,4 +10,7 @@ return [
     'close_menu' => '关闭菜单',
     'logout' => '退出登录',
     'switch' => '切换语言',
+    'shop' => '商店',
+    'tags' => '标签',
+    'admin' => '管理',
 ];

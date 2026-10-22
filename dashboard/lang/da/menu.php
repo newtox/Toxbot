@@ -10,4 +10,7 @@ return [
     'close_menu' => 'Luk menu',
     'logout' => 'Log ud',
     'switch' => 'Skift sprog',
+    'shop' => 'Butik',
+    'tags' => 'Tags',
+    'admin' => 'Admin',
 ];

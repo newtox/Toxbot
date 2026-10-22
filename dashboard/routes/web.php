@@ -3,6 +3,7 @@
 use App\Http\Controllers\DiscordAuthController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ServerController;
+use App\Http\Middleware\EnsureBotOwner;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -29,4 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::view('/profile', 'profile')->name('profile');
     Route::view('/shop', 'shop')->name('shop');
     Route::view('/tags', 'tags')->name('tags');
+
+    Route::view('/admin', 'admin')->middleware(EnsureBotOwner::class)->name('admin');
 });
+

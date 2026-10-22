@@ -10,4 +10,7 @@ return [
     'close_menu' => 'Menü schließen',
     'logout' => 'Abmelden',
     'switch' => 'Sprache wechseln',
+    'shop' => 'Shop',
+    'tags' => 'Tags',
+    'admin' => 'Verwaltung',
 ];
