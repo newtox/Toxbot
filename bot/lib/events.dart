@@ -121,7 +121,6 @@ void setupReadyHandler(NyxxGateway client) async {
 
     randomStatus(event);
     clearOldGuilds(client);
-    clearOldUsers(client);
   });
 }
 
