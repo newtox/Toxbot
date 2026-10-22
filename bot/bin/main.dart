@@ -4,6 +4,7 @@ import 'package:dotenv/dotenv.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:toxbot/events.dart';
+import 'package:toxbot/premium.dart';
 
 void main() async {
   var env = DotEnv(includePlatformEnvironment: true)..load();
@@ -37,4 +38,5 @@ void main() async {
   setupErrorHandler(commands);
   setupCommandPreCallHandler(commands, client);
   setupCommandPostCallHandler(commands, client);
+  setupEntitlementHandlers(client);
 }
