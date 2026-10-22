@@ -125,6 +125,24 @@ class Discord
         return Cache::remember("discord:user:{$userId}:profile", 600, fn () => $this->asBot()->get("/users/{$userId}")->throw()->json());
     }
 
+    public function sendMessage(string $channelId, array $payload): ?string
+    {
+        return $this->asBot()->post("/channels/{$channelId}/messages", $payload)->throw()->json('id');
+    }
+
+    public function editMessage(string $channelId, string $messageId, array $payload): void
+    {
+        $this->asBot()->patch("/channels/{$channelId}/messages/{$messageId}", $payload)->throw();
+    }
+
+    public function deleteMessage(string $channelId, string $messageId): void
+    {
+        $response = $this->asBot()->delete("/channels/{$channelId}/messages/{$messageId}");
+        if ($response->status() !== 404) {
+            $response->throw();
+        }
+    }
+
     public function guildChannels(string $guildId): array
     {
         return Cache::remember("discord:guild:{$guildId}:channels", 30, fn () => $this->asBot()->get("/guilds/{$guildId}/channels")->throw()->json());
