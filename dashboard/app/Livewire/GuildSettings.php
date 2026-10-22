@@ -46,6 +46,16 @@ class GuildSettings extends Component
 
     public ?string $levelupChannel = null;
 
+    public ?string $streamChannel = null;
+
+    public ?string $streamRole = null;
+
+    public string $streamMsg = '';
+
+    public ?string $liveRole = null;
+
+    public ?string $liveRoleRequired = null;
+
     public function mount(array $guild): void
     {
         $this->guildId = $guild['id'];
@@ -73,6 +83,12 @@ class GuildSettings extends Component
         $this->levelupEnabled = (bool) $row->levelup_enabled;
         $this->levelupChannel = $row->levelup_channel;
 
+        $this->streamChannel = $row->stream;
+        $this->streamRole = $row->notify;
+        $this->streamMsg = (string) $row->stream_msg;
+        $this->liveRole = $row->live_role;
+        $this->liveRoleRequired = $row->live_role_required;
+
         $this->resetValidation();
     }
 
@@ -93,7 +109,9 @@ class GuildSettings extends Component
         abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
 
         $channelIds = collect($this->channelGroups($discord))->flatMap(fn ($g) => array_column($g['channels'], 'id'))->all();
-        $roleIds = collect($this->roles($discord))->where('assignable', true)->pluck('id')->all();
+        $allRoles = collect($this->roles($discord));
+        $roleIds = $allRoles->where('assignable', true)->pluck('id')->all();
+        $mentionableRoleIds = $allRoles->pluck('id')->all();
 
         $max = Guild::MAX_MESSAGE_LENGTH;
 
@@ -111,6 +129,11 @@ class GuildSettings extends Component
             'byeMsg' => $messageRules($this->byeEnabled),
             'autorole' => ['nullable', Rule::in($roleIds)],
             'levelupChannel' => ['nullable', Rule::in($channelIds)],
+            'streamChannel' => ['nullable', Rule::in($channelIds)],
+            'streamRole' => ['nullable', Rule::in($mentionableRoleIds)],
+            'streamMsg' => ['nullable', 'string', "max:{$max}"],
+            'liveRole' => ['nullable', Rule::in($roleIds)],
+            'liveRoleRequired' => ['nullable', Rule::in($mentionableRoleIds)],
         ], [
             '*Channel.required' => __('guild.channel_required'),
             '*Msg.required' => __('guild.message_required'),
@@ -118,6 +141,10 @@ class GuildSettings extends Component
             '*Channel.in' => __('guild.channel_invalid'),
             'autorole.in' => __('guild.role_invalid'),
             'levelupChannel.in' => __('guild.channel_invalid'),
+            'streamChannel.in' => __('guild.channel_invalid'),
+            'streamRole.in' => __('guild.role_invalid'),
+            'liveRole.in' => __('guild.role_invalid'),
+            'liveRoleRequired.in' => __('guild.role_invalid'),
         ]);
 
         $row = Guild::forDiscordId($this->guildId);
@@ -130,6 +157,11 @@ class GuildSettings extends Component
             'tags_enabled' => $this->tagsEnabled,
             'levelup_enabled' => $this->levelupEnabled,
             'levelup_channel' => $this->levelupChannel ?: null,
+            'stream' => $this->streamChannel ?: null,
+            'notify' => $this->streamRole ?: null,
+            'stream_msg' => $this->streamMsg !== '' ? $this->streamMsg : null,
+            'live_role' => $this->liveRole ?: null,
+            'live_role_required' => $this->liveRole ? ($this->liveRoleRequired ?: null) : null,
         ])->save();
 
         $this->loadFromDatabase();

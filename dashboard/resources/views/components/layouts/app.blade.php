@@ -95,6 +95,8 @@
                             <a href="#bye" x-on:click="nav = false" class="nav-item"><x-icon name="bye" />{{ __('guild.bye_title') }}</a>
                             <a href="#autorole" x-on:click="nav = false" class="nav-item"><x-icon name="autorole" />{{ __('guild.autorole_title') }}</a>
                             <a href="#levels" x-on:click="nav = false" class="nav-item"><x-icon name="level" />{{ __('guild.levelup_title') }}</a>
+                            <a href="#streams" x-on:click="nav = false" class="nav-item"><x-icon name="stream" />{{ __('streams.title') }}</a>
+                            <a href="#live-role" x-on:click="nav = false" class="nav-item"><x-icon name="live" />{{ __('streams.live_role_title') }}</a>
                             <a href="#tags" x-on:click="nav = false" class="nav-item"><x-icon name="tag" />{{ __('guild.tags_title') }}</a>
                         </div>
                     @endif
