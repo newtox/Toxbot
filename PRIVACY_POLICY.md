@@ -1,51 +1,73 @@
 # Privacy Policy for Toxbot Discord Bot
 
-Last Updated: 26.04.2025
+Last Updated: 22.10.2026
 
 ## Introduction
 
-This Privacy Policy explains how Toxbot ("we", "our", or "the bot") collects, uses, and protects information when you use our Discord bot service.
+This Privacy Policy explains how Toxbot ("we", "our", or "the bot") and the Toxbot dashboard collect, use, and protect information when you use them.
 
 ## Information We Collect
 
-### Data Collected Automatically
-- **Discord User IDs**: Used to identify users for command functionality
-- **Server IDs**: Used to configure bot settings per server
-- **Command Usage**: We track which commands are used for improving functionality
+### When you use the bot
+- **Discord user and server IDs**: to know who used a command and which server's settings apply
+- **Settings**: your language and embed color, and each server's welcome and goodbye messages, autorole, level-up and tag settings
+- **Command usage**: which command you used and when. The total number of your commands is shown on your profile card. Each use is also logged with your username and ID in a private channel that only the developer can see.
+- **Levels**: your XP and level, globally and per server, and when you last received XP. To give XP for chat messages, the bot notices that you sent a message on a server. **The content of your messages is not read or stored.**
+- **Credits and shop**: your credit balance, a history of what you earned and spent (for example daily rewards, level-ups, votes and purchases), your daily streak and the backgrounds you own and use
+- **Tags**: the name and content of tags you create, how often they were used, and reports about tags, including who reported them and why
+- **Purchases**: when you buy Premium or an XP boost, Discord tells us which product you bought and how long it is valid. **We never see your payment details**; payments are handled entirely by Discord.
 
-### Database Storage
-Toxbot uses a MySQL database (as indicated in the codebase) to store:
-- Server-specific configurations
-- User preferences and settings
-- Command usage statistics
+### When you use the dashboard
+- When you log in with Discord, we receive your Discord ID, username, display name, avatar and the list of your servers. We use the server list only to show which servers you can manage.
+- A session cookie keeps you logged in.
+
+### Profile cards
+To draw your profile card, the dashboard loads your current avatar from Discord and keeps it for up to one hour.
 
 ## How We Use Your Information
 
 We use the collected information to:
-- Provide and maintain the bot's functionality
+- Provide the bot's and dashboard's features, such as settings, levels, leaderboards, the shop, tags and Premium
+- Prevent abuse, for example by removing reported tags and blocking users who misuse the tag system
 - Improve and develop new features
 - Respond to user requests and support needs
+
+We do not sell your data and do not use it for advertising.
+
+## Visibility
+
+Some information is visible to other users on purpose: your level, rank, credits and command count on your profile card, your position on leaderboards, and the tags you create, including that you are their owner.
+
+## Third-Party Services
+
+- **Discord** runs the platform and handles all payments. See [Discord's Privacy Policy](https://discord.com/privacy).
+- **Top.gg**: if you vote for Toxbot on Top.gg, Top.gg sends us your Discord ID so we can give you credits. See [Top.gg's Privacy Policy](https://top.gg/privacy).
+- **waifu.pics** provides the images for roleplay and image commands. No data about you is sent there.
+- Images in tags are loaded from the image host the tag's creator chose (for example Discord or Imgur) when a tag is shown.
 
 ## Data Security
 
 We implement reasonable security measures to protect your information:
 - Database access is restricted and password-protected
 - We use environment variables to secure sensitive credentials
+- Dashboard sessions are encrypted
 
 ## Data Retention
 
-We retain data only as long as necessary to provide services or as required by law.
-
-## Third-Party Services
-
-Toxbot operates on Discord's platform. Please refer to [Discord's Privacy Policy](https://discord.com/privacy) for information on how Discord handles your data.
+- Your settings, levels, credits, purchases and tags are kept as long as you use Toxbot, or until you ask us to delete them.
+- A server's settings are deleted after Toxbot has been removed from that server, at the latest the next time the bot restarts.
+- Server levels stay stored even after Toxbot leaves a server, so they are still there if it is added again. You can ask us to delete them.
 
 ## Your Rights
 
 You have the right to:
 - Request access to your personal data
 - Request correction or deletion of your data
-- Opt-out of certain data collection
+- Object to or restrict certain processing
+
+Deleting your data also deletes your levels, credits, purchased backgrounds and tags. Purchases made through Discord cannot be refunded by deleting your data; refunds are handled by Discord.
+
+To use these rights, contact us using the details below.
 
 ## Changes to This Policy
 
