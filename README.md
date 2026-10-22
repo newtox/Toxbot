@@ -31,7 +31,7 @@ Both share the same MySQL database. Whatever you change in the dashboard (welcom
 - **Stream notifications** for Twitch and YouTube: a message with role ping when a streamer goes live or uploads a video
 - **Live role**: members who stream on Discord get a role while they are live
 - **Premium** through Discord subscriptions: double XP and daily reward, premium backgrounds, more tags and tags as embeds, plus a 24 hour XP boost to buy
-- **Server Premium** through a server subscription: more streamers, a custom message and ping role per streamer, game and title filters, and editing or deleting the notification when the stream ends
+- **Server Premium** for one server of the subscriber's choice, included in Premium: more streamers, a custom message and ping role per streamer, game and title filters, and editing or deleting the notification when the stream ends
 
 ## Usage
 

@@ -17,7 +17,8 @@ This Privacy Policy explains how Toxbot ("we", "our", or "the bot") and the Toxb
 - **Tags**: the name and content of tags you create, how often they were used, and reports about tags, including who reported them and why
 - **Stream notifications**: the Twitch and YouTube channels a server follows (channel ID, name and avatar), the server's notification settings, and which streams and videos were announced in which message
 - **Live role**: to give the live role, the bot sees on servers with a live role whether you are currently streaming on Discord. This status is not stored.
-- **Purchases**: when you buy Premium, Server Premium or an XP boost, Discord tells us which product you bought and how long it is valid. **We never see your payment details**; payments are handled entirely by Discord.
+- **Server Premium**: which server you chose for Server Premium
+- **Purchases**: when you buy Premium or an XP boost, Discord tells us which product you bought and how long it is valid. **We never see your payment details**; payments are handled entirely by Discord.
 
 ### When you use the dashboard
 - When you log in with Discord, we receive your Discord ID, username, display name, avatar and the list of your servers. We use the server list only to show which servers you can manage.
