@@ -41,6 +41,7 @@ import 'package:toxbot/commands/roleplay/smug.dart';
 import 'package:toxbot/commands/roleplay/wave.dart';
 import 'package:toxbot/commands/roleplay/wink.dart';
 import 'package:toxbot/commands/roleplay/yeet.dart';
+import 'package:toxbot/commands/tags/tag.dart';
 import 'package:toxbot/database.dart';
 import 'package:toxbot/premium.dart';
 import 'package:toxbot/utils/functions.dart';
@@ -78,6 +79,9 @@ CommandsPlugin setupCommandHandler(CommandsPlugin commands) {
 
   // Moderation commands
   commands.addCommand(clear);
+
+  // Tag commands
+  commands.addCommand(tag);
 
   // Roleplay commands
   commands.addCommand(bite);
@@ -353,7 +357,9 @@ void setupCommandPreCallHandler(
         await checkForDatabase(fullGuild);
       }
 
-      if (context is InteractionInteractiveContext) {
+      final opensModal = context is ChatContext &&
+          modalCommands.contains(context.command.fullName);
+      if (context is InteractionInteractiveContext && !opensModal) {
         await (context as InteractionInteractiveContext).acknowledge();
       }
 
