@@ -1,0 +1,393 @@
+import 'dart:math';
+
+import 'package:mysql1/mysql1.dart';
+
+int xpToNext(int level) => 100 * level + 100;
+
+class LevelProgress {
+  final int level;
+  final int current;
+  final int needed;
+
+  const LevelProgress(this.level, this.current, this.needed);
+}
+
+LevelProgress levelFromXp(int xp) {
+  var level = 1;
+  var rest = max(0, xp);
+  while (rest >= xpToNext(level)) {
+    rest -= xpToNext(level);
+    level++;
+  }
+  return LevelProgress(level, rest, xpToNext(level));
+}
+
+Future<void> ensureUser(MySqlConnection connection, String userId) async {
+  await connection.query(
+    'INSERT IGNORE INTO `users` (`id`, `language`, `color`) VALUES (?, ?, ?);',
+    [userId, 'en_us', '#7289da'],
+  );
+}
+
+Future<void> addCredits(
+  MySqlConnection connection,
+  String userId,
+  int amount,
+  String reason, {
+  String? reference,
+}) async {
+  await ensureUser(connection, userId);
+  await connection.query(
+    'INSERT INTO `credit_transactions` (`user`, `amount`, `reason`, `reference`, `created_at`) '
+    'VALUES (?, ?, ?, ?, UTC_TIMESTAMP());',
+    [userId, amount, reason, reference],
+  );
+  await connection.query(
+    'UPDATE `users` SET `credits` = `credits` + ? WHERE `id` = ?;',
+    [amount, userId],
+  );
+}
+
+Future<int> getCredits(MySqlConnection connection, String userId) async {
+  final rows = await connection.query(
+    'SELECT `credits` FROM `users` WHERE `id` = ?;',
+    [userId],
+  );
+  return rows.isEmpty ? 0 : rows.first['credits'] as int;
+}
+
+class XpResult {
+  final bool global;
+
+  final List<int> globalLevelUps;
+
+  final int? serverLevelUp;
+
+  const XpResult(this.global, this.globalLevelUps, this.serverLevelUp);
+}
+
+Future<bool> hasXpBoost(MySqlConnection connection, String userId) async {
+  final rows = await connection.query(
+    'SELECT (`xp_boost_until` IS NOT NULL AND `xp_boost_until` > UTC_TIMESTAMP()) AS `boost` '
+    'FROM `users` WHERE `id` = ?;',
+    [userId],
+  );
+  return rows.isNotEmpty && (rows.first['boost'] as int? ?? 0) == 1;
+}
+
+Future<XpResult> applyXp(
+  MySqlConnection connection,
+  String userId, {
+  String? guildId,
+  required int amount,
+  required int cooldown,
+  required int levelUpReward,
+}) async {
+  await ensureUser(connection, userId);
+
+  final global = await connection.query(
+    'UPDATE `users` SET `xp` = `xp` + ?, `xp_at` = UTC_TIMESTAMP() '
+    'WHERE `id` = ? AND (`xp_at` IS NULL OR `xp_at` <= UTC_TIMESTAMP() - INTERVAL ? SECOND);',
+    [amount, userId, cooldown],
+  );
+
+  final levelUps = <int>[];
+  final gotGlobal = (global.affectedRows ?? 0) > 0;
+  if (gotGlobal) {
+    final rows = await connection.query(
+      'SELECT `xp` FROM `users` WHERE `id` = ?;',
+      [userId],
+    );
+    final xp = rows.first['xp'] as int;
+    final before = levelFromXp(xp - amount).level;
+    final after = levelFromXp(xp).level;
+    for (var level = before + 1; level <= after; level++) {
+      await addCredits(connection, userId, level * levelUpReward, 'level_up');
+      levelUps.add(level);
+    }
+  }
+
+  if (guildId == null) return XpResult(gotGlobal, levelUps, null);
+
+  final updated = await connection.query(
+    'UPDATE `member_levels` SET `xp` = `xp` + ?, `xp_at` = UTC_TIMESTAMP() '
+    'WHERE `guild` = ? AND `user` = ? AND (`xp_at` IS NULL OR `xp_at` <= UTC_TIMESTAMP() - INTERVAL ? SECOND);',
+    [amount, guildId, userId, cooldown],
+  );
+  var gotServer = (updated.affectedRows ?? 0) > 0;
+  if (!gotServer) {
+    final inserted = await connection.query(
+      'INSERT IGNORE INTO `member_levels` (`guild`, `user`, `xp`, `xp_at`) VALUES (?, ?, ?, UTC_TIMESTAMP());',
+      [guildId, userId, amount],
+    );
+    gotServer = (inserted.affectedRows ?? 0) > 0;
+  }
+  if (!gotServer) return XpResult(gotGlobal, levelUps, null);
+
+  final rows = await connection.query(
+    'SELECT `xp` FROM `member_levels` WHERE `guild` = ? AND `user` = ?;',
+    [guildId, userId],
+  );
+  final xp = rows.first['xp'] as int;
+  final before = levelFromXp(xp - amount).level;
+  final after = levelFromXp(xp).level;
+  return XpResult(gotGlobal, levelUps, after > before ? after : null);
+}
+
+Future<void> countCommand(MySqlConnection connection, String userId) async {
+  await ensureUser(connection, userId);
+  await connection.query(
+    'UPDATE `users` SET `commands_used` = `commands_used` + 1 WHERE `id` = ?;',
+    [userId],
+  );
+}
+
+Future<(bool, String?)> levelUpSettings(
+  MySqlConnection connection,
+  String guildId,
+) async {
+  final rows = await connection.query(
+    'SELECT `levelup_enabled`, `levelup_channel` FROM `guilds` WHERE `id` = ? LIMIT 1;',
+    [guildId],
+  );
+  if (rows.isEmpty) return (false, null);
+  return (
+    rows.first['levelup_enabled'] == 1,
+    rows.first['levelup_channel'] as String?,
+  );
+}
+
+class DailyResult {
+  final bool claimed;
+
+  final int waitSeconds;
+  final int amount;
+  final int streak;
+
+  const DailyResult.claimed(this.amount, this.streak)
+      : claimed = true,
+        waitSeconds = 0;
+
+  const DailyResult.wait(this.waitSeconds)
+      : claimed = false,
+        amount = 0,
+        streak = 0;
+}
+
+Future<DailyResult> claimDaily(
+  MySqlConnection connection,
+  String userId, {
+  required int reward,
+  required int streakBonus,
+  required bool premium,
+}) async {
+  await ensureUser(connection, userId);
+  final rows = await connection.query(
+    'SELECT `daily_streak`, TIMESTAMPDIFF(SECOND, `daily_at`, UTC_TIMESTAMP()) AS `since` '
+    'FROM `users` WHERE `id` = ?;',
+    [userId],
+  );
+  final since = rows.first['since'] as int?;
+  const day = 24 * 3600;
+
+  if (since != null && since < day) return DailyResult.wait(day - since);
+
+  final streak = since != null && since < 2 * day
+      ? (rows.first['daily_streak'] as int) + 1
+      : 1;
+  final amount =
+      reward * (premium ? 2 : 1) + (streak - 1).clamp(0, 10) * streakBonus;
+
+  final updated = await connection.query(
+    'UPDATE `users` SET `daily_at` = UTC_TIMESTAMP(), `daily_streak` = ? '
+    'WHERE `id` = ? AND (`daily_at` IS NULL OR `daily_at` <= UTC_TIMESTAMP() - INTERVAL 1 DAY);',
+    [streak, userId],
+  );
+  if ((updated.affectedRows ?? 0) == 0) return const DailyResult.wait(60);
+
+  await addCredits(connection, userId, amount, 'daily');
+  return DailyResult.claimed(amount, streak);
+}
+
+class ShopBackground {
+  final int id;
+  final String name;
+  final int price;
+  final bool premiumOnly;
+
+  ShopBackground.fromRow(ResultRow row)
+      : id = row['id'] as int,
+        name = row['name'] as String,
+        price = row['price'] as int,
+        premiumOnly = row['premium_only'] == 1;
+
+  bool get isFree => price == 0 && !premiumOnly;
+}
+
+Future<List<ShopBackground>> shopBackgrounds(
+  MySqlConnection connection, {
+  String? name,
+}) async {
+  final rows = await connection.query(
+    'SELECT `id`, `name`, `price`, `premium_only` FROM `backgrounds` '
+    'WHERE `active` = 1 ${name != null ? 'AND `name` = ? ' : ''}ORDER BY `sort`, `price`, `id`;',
+    [if (name != null) name],
+  );
+  return rows.map(ShopBackground.fromRow).toList();
+}
+
+Future<Set<int>> ownedBackgrounds(
+  MySqlConnection connection,
+  String userId,
+) async {
+  final rows = await connection.query(
+    'SELECT `background_id` FROM `user_backgrounds` WHERE `user` = ?;',
+    [userId],
+  );
+  return rows.map((row) => row['background_id'] as int).toSet();
+}
+
+Future<List<String>> usableBackgroundNames(
+  MySqlConnection connection,
+  String userId,
+  String search,
+) async {
+  final rows = await connection.query(
+    'SELECT `b`.`name` FROM `backgrounds` AS `b` '
+    'LEFT JOIN `user_backgrounds` AS `ub` ON `ub`.`background_id` = `b`.`id` AND `ub`.`user` = ? '
+    'WHERE `b`.`active` = 1 AND `b`.`name` LIKE ? '
+    'AND (`ub`.`id` IS NOT NULL OR (`b`.`price` = 0 AND `b`.`premium_only` = 0)) '
+    'ORDER BY `b`.`sort`, `b`.`id` LIMIT 25;',
+    [userId, '%$search%'],
+  );
+  return rows.map((row) => row['name'] as String).toList();
+}
+
+Future<String?> buyOrEquip(
+  MySqlConnection connection,
+  String userId,
+  ShopBackground background, {
+  required bool premium,
+  bool allowBuy = true,
+}) async {
+  if (background.premiumOnly && !premium) return 'shop_needs_premium';
+  await ensureUser(connection, userId);
+
+  final owned = background.isFree ||
+      (await ownedBackgrounds(connection, userId)).contains(background.id);
+
+  if (!owned) {
+    if (!allowBuy) return 'background_not_owned';
+
+    if (background.price > 0) {
+      final paid = await connection.query(
+        'UPDATE `users` SET `credits` = `credits` - ? WHERE `id` = ? AND `credits` >= ?;',
+        [background.price, userId, background.price],
+      );
+      if ((paid.affectedRows ?? 0) == 0) return 'shop_not_enough';
+    }
+
+    final added = await connection.query(
+      'INSERT IGNORE INTO `user_backgrounds` (`user`, `background_id`, `created_at`) VALUES (?, ?, UTC_TIMESTAMP());',
+      [userId, background.id],
+    );
+    if ((added.affectedRows ?? 0) == 0) {
+      if (background.price > 0) {
+        await connection.query(
+          'UPDATE `users` SET `credits` = `credits` + ? WHERE `id` = ?;',
+          [background.price, userId],
+        );
+      }
+    } else if (background.price > 0) {
+      await connection.query(
+        'INSERT INTO `credit_transactions` (`user`, `amount`, `reason`, `created_at`) VALUES (?, ?, ?, UTC_TIMESTAMP());',
+        [userId, -background.price, 'purchase'],
+      );
+    }
+  }
+
+  await connection.query(
+    'UPDATE `users` SET `background_id` = ? WHERE `id` = ?;',
+    [background.id, userId],
+  );
+  return null;
+}
+
+Future<List<(String, int)>> leaderboard(
+  MySqlConnection connection, {
+  String? guildId,
+}) async {
+  final rows = guildId == null
+      ? await connection.query(
+          'SELECT `id` AS `user`, `xp` FROM `users` WHERE `xp` > 0 ORDER BY `xp` DESC, `id` LIMIT 10;',
+        )
+      : await connection.query(
+          'SELECT `user`, `xp` FROM `member_levels` WHERE `guild` = ? AND `xp` > 0 ORDER BY `xp` DESC, `user` LIMIT 10;',
+          [guildId],
+        );
+  return rows.map((row) => (row['user'].toString(), row['xp'] as int)).toList();
+}
+
+class ProfileStats {
+  final int xp;
+  final int credits;
+  final int commands;
+  final int rank;
+  final int? serverXp;
+
+  const ProfileStats(
+    this.xp,
+    this.credits,
+    this.commands,
+    this.rank,
+    this.serverXp,
+  );
+}
+
+Future<ProfileStats> profileStats(
+  MySqlConnection connection,
+  String userId, {
+  String? guildId,
+}) async {
+  final rows = await connection.query(
+    'SELECT `xp`, `credits`, `commands_used`, '
+    '(SELECT COUNT(*) FROM `users` AS `u` WHERE `u`.`xp` > `users`.`xp`) + 1 AS `rank` '
+    'FROM `users` WHERE `id` = ?;',
+    [userId],
+  );
+  int? serverXp;
+  if (guildId != null) {
+    final member = await connection.query(
+      'SELECT `xp` FROM `member_levels` WHERE `guild` = ? AND `user` = ?;',
+      [guildId, userId],
+    );
+    serverXp = member.isEmpty ? 0 : member.first['xp'] as int;
+  }
+  if (rows.isEmpty) return ProfileStats(0, 0, 0, 1, serverXp);
+  final row = rows.first;
+  return ProfileStats(
+    row['xp'] as int,
+    row['credits'] as int,
+    row['commands_used'] as int,
+    row['rank'] as int,
+    serverXp,
+  );
+}
+
+Future<DateTime> extendXpBoost(
+  MySqlConnection connection,
+  String userId,
+) async {
+  await ensureUser(connection, userId);
+  await connection.query(
+    'UPDATE `users` SET `xp_boost_until` = '
+    'GREATEST(COALESCE(`xp_boost_until`, UTC_TIMESTAMP()), UTC_TIMESTAMP()) + INTERVAL 24 HOUR '
+    'WHERE `id` = ?;',
+    [userId],
+  );
+  final rows = await connection.query(
+    'SELECT `xp_boost_until` FROM `users` WHERE `id` = ?;',
+    [userId],
+  );
+  return rows.first['xp_boost_until'] as DateTime;
+}
