@@ -10,4 +10,10 @@ return [
     'embed_title' => '埋め込みはこう見えます',
     'embed_text' => 'たとえば /hug、/pat、/info でこの色が使われます。',
     'color_invalid' => '#7289da のような16進カラーを入力してください。',
+    'premium_server_title' => 'Server Premium',
+    'premium_server_description' => 'Toxbot Premium があれば、管理しているサーバー1つで Server Premium を有効にできます。配信者の上限アップ、配信者ごとのメッセージと通知ロール、フィルターなど。',
+    'premium_server_none' => 'サーバーなし',
+    'premium_server_locked' => '好きなサーバー1つの Server Premium は Toxbot Premium に含まれています。',
+    'premium_server_invalid' => 'Toxbot が導入されていて、あなたが管理しているサーバーを選んでください。',
+    'premium_server_unknown' => 'サーバーは利用できなくなりました',
 ];

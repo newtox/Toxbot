@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Entitlement;
+use App\Models\PremiumServer;
 
 class Premium
 {
@@ -16,17 +17,29 @@ class Premium
             return true;
         }
 
+        return $this->guildCache[$guildId] ??= $this->hasGuildSubscription($guildId) || $this->hasPremiumMember($guildId);
+    }
+
+    private function hasGuildSubscription(string $guildId): bool
+    {
         $skus = config('toxbot.premium_guild_skus');
 
-        if ($skus === []) {
-            return false;
-        }
-
-        return $this->guildCache[$guildId] ??= Entitlement::query()
+        return $skus !== [] && Entitlement::query()
             ->active()
             ->where('guild_id', $guildId)
             ->whereIn('sku_id', $skus)
             ->exists();
+    }
+
+    private function hasPremiumMember(string $guildId): bool
+    {
+        foreach (PremiumServer::query()->where('guild_id', $guildId)->pluck('user_id') as $userId) {
+            if ($this->isPremium((string) $userId)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function isPremium(string $userId): bool
