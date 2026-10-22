@@ -14,6 +14,7 @@ Web dashboard for [Toxbot](../README.md), built with Laravel, Livewire and Tailw
 - **Profile cards** rendered as PNG under `/card/{user}.png`, used by `/profile` in Discord
 - **Top.gg webhook** under `/webhooks/topgg` that pays credits for votes
 - **Stream notifications**: add Twitch and YouTube channels per server, pick the channel, ping role and message. Twitch uses EventSub webhooks (`/webhooks/twitch`), YouTube uses WebSub (`/webhooks/youtube`). Servers with Server Premium get more streamers, a message and ping role per streamer, filters and an action for when the stream ends.
+- **Server Premium picker** on the profile page: Premium users choose one server they manage that gets Server Premium
 - **Live role** settings, the role itself is given by the bot
 - **All 10 bot languages**. For logged-in users, the dashboard language and the bot language are the same setting.
 
