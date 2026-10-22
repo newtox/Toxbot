@@ -57,29 +57,23 @@ late DateTime botStartTime;
 bool isBotReady = false;
 
 CommandsPlugin setupCommandHandler(CommandsPlugin commands) {
-  // Configuration commands
   commands.addCommand(announcements);
   commands.addCommand(autorole);
   commands.addCommand(color);
   commands.addCommand(language);
 
-  // Developer commands
   commands.addCommand(system);
 
-  // Fun commands
   commands.addCommand(eightball);
   commands.addCommand(someone);
 
-  // General commands
   commands.addCommand(info);
   commands.addCommand(ping);
 
-  // Image commands
   commands.addCommand(awoo);
   commands.addCommand(neko);
   commands.addCommand(waifu);
 
-  // Level & shop commands
   commands.addCommand(background);
   commands.addCommand(boost);
   commands.addCommand(daily);
@@ -87,13 +81,10 @@ CommandsPlugin setupCommandHandler(CommandsPlugin commands) {
   commands.addCommand(profile);
   commands.addCommand(shop);
 
-  // Moderation commands
   commands.addCommand(clear);
 
-  // Tag commands
   commands.addCommand(tag);
 
-  // Roleplay commands
   commands.addCommand(bite);
   commands.addCommand(blush);
   commands.addCommand(bonk);
