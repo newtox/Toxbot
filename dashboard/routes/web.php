@@ -1,17 +1,14 @@
 <?php
 
 use App\Http\Controllers\DiscordAuthController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ServerController;
 use App\Http\Middleware\EnsureBotOwner;
 use App\Livewire\GuildSettings;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return auth()->check()
-        ? redirect()->route('servers.index')
-        : view('home');
-})->name('home');
+Route::get('/', HomeController::class)->name('home');
 
 Route::get('/language/{locale}', [LanguageController::class, 'switch'])->name('language.switch');
 
