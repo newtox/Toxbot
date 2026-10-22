@@ -10,6 +10,9 @@ var env = DotEnv(includePlatformEnvironment: true)..load();
 
 final Map<String, bool> cached = {};
 
+Snowflake get ownerId =>
+    Snowflake(int.tryParse((env['owner_id'] ?? '').trim()) ?? 0);
+
 Future<Guild?> checkForDatabase(Guild guild) async {
   // ignore: collection_methods_unrelated_type
   if (cached.containsKey(guild.id)) {

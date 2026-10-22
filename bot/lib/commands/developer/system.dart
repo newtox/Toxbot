@@ -20,7 +20,7 @@ final system =
   Locale.ja: '開発者向けコマンド。',
   Locale.ko: '개발자용 명령어.'
 }, checks: [
-  UserCheck.id(Snowflake(402483602094555138))
+  UserCheck.id(ownerId)
 ], children: [
   ChatCommand('clear-cache', 'Clear bot cache.', localizedDescriptions: {
     Locale.da: 'Ryd bot-cache.',

@@ -370,7 +370,7 @@ void setupCommandPostCallHandler(
       final channel = await client.channels[channelId].get();
 
       if (channel is TextChannel) {
-        if (context.user.id != Snowflake(402483602094555138)) {
+        if (context.user.id != ownerId) {
           await channel.sendMessage(MessageBuilder(embeds: [
             EmbedBuilder(
                 timestamp: DateTime.now().toUtc(),
