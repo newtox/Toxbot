@@ -13,6 +13,8 @@ Web dashboard for [Toxbot](../README.md), built with Laravel, Livewire and Tailw
 - **Administration** for the bot owner: handle reported tags and manage the backgrounds in the shop
 - **Profile cards** rendered as PNG under `/card/{user}.png`, used by `/profile` in Discord
 - **Top.gg webhook** under `/webhooks/topgg` that pays credits for votes
+- **Stream notifications**: add Twitch and YouTube channels per server, pick the channel, ping role and message. Twitch uses EventSub webhooks (`/webhooks/twitch`), YouTube uses WebSub (`/webhooks/youtube`). Servers with Server Premium get more streamers, a message and ping role per streamer, filters and an action for when the stream ends.
+- **Live role** settings, the role itself is given by the bot
 - **All 10 bot languages**. For logged-in users, the dashboard language and the bot language are the same setting.
 
 ## How it works with the bot
@@ -25,7 +27,7 @@ The dashboard keeps its own logins in `dashboard_users`, because `users` belongs
 
 ## Translations
 
-One PHP file per area and language under `lang/{locale}/` (`menu`, `login`, `servers`, `guild`, `profile`, `common`, `levels`, `shop`, `tags`, `admin`), used as `__('guild.welcome_title')`.
+One PHP file per area and language under `lang/{locale}/` (`menu`, `login`, `servers`, `guild`, `profile`, `common`, `levels`, `shop`, `tags`, `admin`, `streams`), used as `__('guild.welcome_title')`.
 
 The list of languages lives in `config/app.php` under `locales`, together with the matching bot language code. To add a language, add it there, copy `lang/en/` to `lang/{code}/` and translate it. `LocaleTest` checks that every language has every key.
 
