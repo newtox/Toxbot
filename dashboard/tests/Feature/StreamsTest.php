@@ -193,7 +193,6 @@ class StreamsTest extends TestCase
     {
         Http::fake(['discord.com/api/v10/users/@me/guilds*' => Http::response([['id' => self::GUILD, 'name' => 'Toxic', 'permissions' => (string) 0x20]])]);
         $this->actingAs(DashboardUser::create(['id' => 123456789012345678, 'username' => 'newtox']));
-        session([GuildAccess::SESSION_TOKEN_KEY => 'user-token']);
         $this->mock(GuildAccess::class, fn ($mock) => $mock->shouldReceive('find')->andReturn(['id' => self::GUILD]));
     }
 

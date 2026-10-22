@@ -7,7 +7,6 @@ use App\Models\DashboardUser;
 use App\Models\Guild;
 use App\Models\Tag;
 use App\Models\TagGuildBlock;
-use App\Services\GuildAccess;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
 use Livewire\Livewire;
@@ -62,8 +61,8 @@ class GuildSettingsTest extends TestCase
     private function login(): DashboardUser
     {
         $user = DashboardUser::create(['id' => 123456789012345678, 'username' => 'newtox', 'global_name' => 'Newtox']);
-        $this->actingAs($user)->withSession([GuildAccess::SESSION_TOKEN_KEY => 'user-token']);
-        session([GuildAccess::SESSION_TOKEN_KEY => 'user-token']);
+        $user->forceFill(['discord_access_token' => 'user-token', 'discord_token_expires_at' => now()->addDays(7)])->save();
+        $this->actingAs($user);
 
         return $user;
     }

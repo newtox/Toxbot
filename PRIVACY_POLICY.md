@@ -22,7 +22,8 @@ This Privacy Policy explains how Toxbot ("we", "our", or "the bot") and the Toxb
 
 ### When you use the dashboard
 - When you log in with Discord, we receive your Discord ID, username, display name, avatar and the list of your servers. We use the server list only to show which servers you can manage.
-- A session cookie keeps you logged in.
+- A session cookie and a login cookie keep you logged in until you log out.
+- To show your servers, we keep the access token Discord gives us at login, encrypted, and renew it automatically. It is deleted when you log out.
 
 ### Profile cards
 To draw your profile card, the dashboard loads your current avatar from Discord and keeps it for up to one hour.

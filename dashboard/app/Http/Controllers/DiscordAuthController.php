@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DashboardUser;
 use App\Services\Discord;
-use App\Services\GuildAccess;
+use App\Services\DiscordTokens;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -14,7 +14,10 @@ use Illuminate\Support\Str;
 
 class DiscordAuthController extends Controller
 {
-    public function __construct(private readonly Discord $discord) {}
+    public function __construct(
+        private readonly Discord $discord,
+        private readonly DiscordTokens $tokens,
+    ) {}
 
     public function redirect(Request $request): RedirectResponse
     {
@@ -54,9 +57,10 @@ class DiscordAuthController extends Controller
             ],
         );
 
-        Auth::login($user);
+        $this->tokens->store($user, $token);
+
+        Auth::login($user, remember: true);
         $request->session()->regenerate();
-        $request->session()->put(GuildAccess::SESSION_TOKEN_KEY, $token['access_token']);
 
         Cache::forget("discord:user:{$user->id}:guilds");
 
@@ -65,6 +69,10 @@ class DiscordAuthController extends Controller
 
     public function logout(Request $request): RedirectResponse
     {
+        if ($user = $request->user()) {
+            $this->tokens->forget($user);
+        }
+
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

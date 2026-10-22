@@ -15,7 +15,16 @@ class DashboardUser extends Authenticatable
 
     protected $fillable = ['id', 'username', 'global_name', 'avatar'];
 
-    protected $hidden = ['remember_token'];
+    protected $hidden = ['remember_token', 'discord_access_token', 'discord_refresh_token'];
+
+    protected function casts(): array
+    {
+        return [
+            'discord_access_token' => 'encrypted',
+            'discord_refresh_token' => 'encrypted',
+            'discord_token_expires_at' => 'datetime',
+        ];
+    }
 
     protected function displayName(): Attribute
     {
