@@ -3,6 +3,19 @@ import 'package:nyxx/nyxx.dart';
 
 final env = DotEnv(includePlatformEnvironment: true)..load();
 
+int _int(String key, int fallback) => int.tryParse(env[key] ?? '') ?? fallback;
+
+String? _string(String key) {
+  final value = (env[key] ?? '').trim();
+  return value.isEmpty ? null : value;
+}
+
+Set<String> _list(String key, [String fallback = '']) => (env[key] ?? fallback)
+    .split(',')
+    .map((entry) => entry.trim())
+    .where((entry) => entry.isNotEmpty)
+    .toSet();
+
 String get botToken => env['token']!;
 
 Snowflake get ownerId =>
@@ -41,16 +54,3 @@ int? get tagReportChannel => int.tryParse(_string('tag_report_channel') ?? '');
 Set<String> get premiumUserSkus => _list('premium_user_skus');
 
 Set<String> get premiumUserIds => _list('premium_users');
-
-int _int(String key, int fallback) => int.tryParse(env[key] ?? '') ?? fallback;
-
-String? _string(String key) {
-  final value = (env[key] ?? '').trim();
-  return value.isEmpty ? null : value;
-}
-
-Set<String> _list(String key, [String fallback = '']) => (env[key] ?? fallback)
-    .split(',')
-    .map((entry) => entry.trim())
-    .where((entry) => entry.isNotEmpty)
-    .toSet();

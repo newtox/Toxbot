@@ -117,7 +117,7 @@ The bot lives in `bot/lib`:
 - `services/`: the logic behind the commands and the event handlers, for example levels, moderation, premium and the live role; `events.dart` registers the commands and handlers
 - `utils/`: shared helpers: `config.dart` for every setting from the environment, `database.dart` for the connection and translated texts, `reply.dart` for command replies, and the translations in `languages.yaml`
 
-Every Dart file is ordered the same way: imports, then constants and top-level variables, then private helper functions, then public functions, then commands, with the exported command or `setup…Handler` function last. Subcommands of a group are private (`_warn`) and listed before the group (`mod`) that uses them.
+Every Dart file is ordered the same way: imports, then constants and top-level variables, then private functions and getters, then public functions and getters, then commands, with the exported command or `setup…Handler` function last. All of `bin/` and `lib/` is formatted with `dart format`. Subcommands of a group are private (`_warn`) and listed before the group (`mod`) that uses them.
 
 ## Contributing
 
