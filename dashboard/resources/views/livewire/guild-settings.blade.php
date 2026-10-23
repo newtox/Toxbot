@@ -392,7 +392,38 @@
             </select>
             @error('linkAction') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
         </div>
-        <p class="text-sm text-dc-faint">{{ __('protection.links_exempt_hint') }}</p>
+        <div>
+            <h3 class="label">{{ __('protection.links_exempt_roles') }}</h3>
+            <div class="flex flex-wrap gap-2">
+                @foreach ($roles as $role)
+                    <label wire:key="exempt-{{ $role['id'] }}" class="cursor-pointer">
+                        <input type="checkbox" wire:model="linkExemptRoles" value="{{ $role['id'] }}" class="peer sr-only">
+                        <span class="inline-flex items-center gap-1.5 rounded-full bg-dc-900 px-3 py-1 text-sm text-dc-muted ring-1 ring-white/10 transition peer-checked:bg-accent/15 peer-checked:text-dc-header peer-checked:ring-accent peer-focus-visible:ring-accent-fg">
+                            <span class="size-2 rounded-full" style="background: {{ $role['color'] ?? '#99aab5' }}"></span>{{ $role['name'] }}
+                        </span>
+                    </label>
+                @endforeach
+            </div>
+            @error('linkExemptRoles.*') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+            <p class="mt-2 text-sm text-dc-faint">{{ __('protection.links_exempt_hint') }}</p>
+        </div>
+
+        <div class="rounded-lg bg-dc-900 p-4">
+            <h3 class="text-sm font-semibold text-dc-header">{{ __('protection.scam_title') }}</h3>
+            <p class="mt-1 text-sm text-dc-muted">
+                {{ __('protection.scam_sources') }}
+                @foreach (\App\Services\ScamList::SOURCES as $name => $source)
+                    <a href="{{ $source['page'] }}" target="_blank" rel="noopener" class="text-dc-link hover:underline">{{ $name }}</a>@if (! $loop->last), @endif
+                @endforeach
+            </p>
+            <form wire:submit="checkScamDomain" class="mt-3 flex flex-wrap gap-2">
+                <input type="text" wire:model="scamCheck" maxlength="200" placeholder="free-nitro.example" class="input min-w-48 flex-1 font-mono text-sm" aria-label="{{ __('protection.scam_check_label') }}">
+                <button type="submit" class="btn-secondary" wire:loading.attr="disabled" wire:target="checkScamDomain">{{ __('protection.scam_check_button') }}</button>
+            </form>
+            @if ($scamCheckResult)
+                <p class="mt-2 text-sm text-dc-header" role="status">{{ $scamCheckResult }}</p>
+            @endif
+        </div>
     </section>
 
     <section id="antiraid" class="card scroll-mt-20">

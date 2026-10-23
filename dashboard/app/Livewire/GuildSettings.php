@@ -6,6 +6,7 @@ use App\Models\Guild;
 use App\Models\TagGuildBlock;
 use App\Services\Discord;
 use App\Services\GuildAccess;
+use App\Services\ScamList;
 use App\Support\DomainList;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Log;
@@ -87,6 +88,12 @@ class GuildSettings extends Component
 
     public string $linkAction = 'delete';
 
+    public array $linkExemptRoles = [];
+
+    public string $scamCheck = '';
+
+    public ?string $scamCheckResult = null;
+
     public bool $raidEnabled = false;
 
     public int $raidJoins = 10;
@@ -156,6 +163,7 @@ class GuildSettings extends Component
         $this->linkAllowlist = (string) $row->link_allowlist;
         $this->linkBlocklist = (string) $row->link_blocklist;
         $this->linkAction = $row->link_action ?: 'delete';
+        $this->linkExemptRoles = array_values(array_filter(explode(',', (string) $row->link_exempt_roles)));
         $this->raidEnabled = (bool) $row->raid_enabled;
         $this->raidJoins = (int) $row->raid_joins;
         $this->raidSeconds = (int) $row->raid_seconds;
@@ -227,6 +235,8 @@ class GuildSettings extends Component
                 'linkAllowlist' => ['nullable', 'string', 'max:4000', $this->domainRule()],
                 'linkBlocklist' => ['nullable', 'string', 'max:4000', $this->domainRule()],
                 'linkAction' => ['required', Rule::in(Guild::LINK_ACTIONS)],
+                'linkExemptRoles' => ['array', 'max:25'],
+                'linkExemptRoles.*' => [Rule::in($mentionableRoleIds)],
                 'raidJoins' => ['required', 'integer', 'min:3', 'max:100'],
                 'raidSeconds' => ['required', 'integer', 'min:5', 'max:300'],
                 'raidMinutes' => ['required', 'integer', 'min:1', 'max:1440'],
@@ -251,6 +261,7 @@ class GuildSettings extends Component
                 'verifyRole.required' => __('protection.verify_role_required'),
                 'verifyRole.in' => __('guild.role_invalid'),
                 'verifyChannel.in' => __('guild.channel_invalid'),
+                'linkExemptRoles.*' => __('guild.role_invalid'),
                 'raidJoins.*' => __('protection.number_range', ['min' => 3, 'max' => 100]),
                 'raidSeconds.*' => __('protection.number_range', ['min' => 5, 'max' => 300]),
                 'raidMinutes.*' => __('protection.number_range', ['min' => 1, 'max' => 1440]),
@@ -295,6 +306,7 @@ class GuildSettings extends Component
                 'link_allowlist' => DomainList::serialize($this->linkAllowlist),
                 'link_blocklist' => DomainList::serialize($this->linkBlocklist),
                 'link_action' => $this->linkAction,
+                'link_exempt_roles' => $this->linkExemptRoles === [] ? null : implode(',', array_unique($this->linkExemptRoles)),
                 'raid_enabled' => $this->raidEnabled,
                 'raid_joins' => $this->raidJoins,
                 'raid_seconds' => $this->raidSeconds,
@@ -364,6 +376,27 @@ class GuildSettings extends Component
         $row->forceFill(['verify_message_id' => $messageId])->save();
         $this->verifyMessagePosted = true;
         $this->protectionNotice = __('protection.post_done');
+    }
+
+    public function checkScamDomain(ScamList $scamList): void
+    {
+        $host = DomainList::entries($this->scamCheck)[0] ?? '';
+        if ($host === '' || DomainList::invalid($host) !== []) {
+            $this->scamCheckResult = __('protection.scam_check_invalid');
+
+            return;
+        }
+
+        if ($scamList->count() === 0) {
+            $this->scamCheckResult = __('protection.scam_check_unavailable');
+
+            return;
+        }
+
+        $match = $scamList->listed($host);
+        $this->scamCheckResult = $match
+            ? __('protection.scam_check_listed', ['domain' => $match])
+            : __('protection.scam_check_clean', ['domain' => $host]);
     }
 
     public function endRaid(): void
