@@ -44,6 +44,7 @@ import 'package:toxbot/commands/roleplay/wave.dart';
 import 'package:toxbot/commands/roleplay/wink.dart';
 import 'package:toxbot/commands/roleplay/yeet.dart';
 import 'package:toxbot/commands/tags/tag.dart';
+import 'package:toxbot/commands/tickets/ticket.dart';
 import 'package:toxbot/services/levels.dart';
 import 'package:toxbot/services/premium.dart';
 import 'package:toxbot/services/protection.dart';
@@ -114,6 +115,7 @@ CommandsPlugin setupCommandHandler(CommandsPlugin commands) {
   commands.addCommand(mod);
 
   commands.addCommand(tag);
+  commands.addCommand(ticket);
 
   commands.addCommand(bite);
   commands.addCommand(blush);
@@ -378,23 +380,6 @@ void setupCommandPostCallHandler(
           '${user.globalName ?? user.username} (${user.id}) executed ${bold(command)}.');
     } catch (e) {
       print('Error in setupCommandPostCallHandler: $e');
-    }
-  });
-}
-
-void setupButtonInteractionHandler(NyxxGateway client) async {
-  client.onMessageComponentInteraction.listen((context) async {
-    try {
-      final customId = context.interaction.data.customId;
-
-      if (customId.startsWith('role_select:')) {}
-
-      if (customId == 'create_ticket') {}
-
-      if (customId == 'close_ticket') {}
-    } catch (e) {
-      print('Error in setupButtonInteractionHandler: $e');
-      return;
     }
   });
 }
