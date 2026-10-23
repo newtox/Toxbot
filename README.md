@@ -108,6 +108,19 @@ To update: push to `main`, wait for the action to finish, then use **Pull and re
 
 Toxbot uses slash commands. Type `/` in Discord to see all of them, for example `/ping` to check whether the bot is online, `/profile` for your profile card or `/tag show` to use a tag.
 
+## Code structure
+
+The bot lives in `bot/lib`:
+
+- `config.dart`: every setting from the environment (`.env` or stack variables)
+- `database.dart`: the database connection, `withConnection` and translated texts
+- `models/`: data classes such as `Tag`, `ModCase` or the economy results
+- `utils/reply.dart`: `replySuccess`, `replyError` and `replyException` for command replies
+- `commands/`: one file per command or command group
+- `events.dart`, `levels.dart`, `live_role.dart`, `moderation.dart`, `premium.dart`: event handlers and the logic behind them
+
+Every Dart file is ordered the same way: imports, then constants and top-level variables, then private helper functions, then public functions, then commands, with the exported command or `setup…Handler` function last. Subcommands of a group are private (`_warn`) and listed before the group (`mod`) that uses them.
+
 ## Contributing
 
 - Fork the repository.
