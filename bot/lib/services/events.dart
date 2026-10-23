@@ -348,7 +348,6 @@ void setupCommandPreCallHandler(
       if (context is InteractionInteractiveContext && !opensModal) {
         await (context as InteractionInteractiveContext).acknowledge();
       }
-
     } catch (e) {
       print('Error in setupCommandPreCallHandler: $e');
       return;

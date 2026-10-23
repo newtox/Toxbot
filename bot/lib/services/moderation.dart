@@ -292,6 +292,9 @@ Duration? parseDuration(String input) {
   return seconds > 0 ? Duration(seconds: seconds) : null;
 }
 
+Duration? parseOptionalDuration(String? input) =>
+    input == null || input.trim().isEmpty ? null : parseDuration(input);
+
 String formatDuration(Duration duration) {
   final parts = <String>[];
   var rest = duration.inSeconds;
@@ -615,9 +618,6 @@ Future<void> runModerationCommand(
     await replyError(context, 'mod_error_unknown');
   }
 }
-
-Duration? parseOptionalDuration(String? input) =>
-    input == null || input.trim().isEmpty ? null : parseDuration(input);
 
 void setupModerationHandlers(NyxxGateway client) {
   client.onGuildAuditLogCreate.listen((event) async {
