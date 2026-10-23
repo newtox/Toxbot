@@ -5,7 +5,7 @@
         ['icon' => 'card', 'key' => 'profile'],
         ['icon' => 'tag', 'key' => 'tags'],
         ['icon' => 'stream', 'key' => 'streams'],
-        ['icon' => 'live', 'key' => 'live'],
+        ['icon' => 'shield', 'key' => 'mod'],
         ['icon' => 'welcome', 'key' => 'welcome'],
         ['icon' => 'heart', 'key' => 'fun'],
         ['icon' => 'globe', 'key' => 'lang'],
