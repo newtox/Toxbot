@@ -3,6 +3,7 @@ import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:toxbot/database.dart';
+import 'package:toxbot/utils/reply.dart';
 
 var env = DotEnv(includePlatformEnvironment: true)..load();
 
@@ -65,15 +66,7 @@ final autorole = ChatGroup('autorole', 'Set an autorole for your server.',
               [context.guild?.id.toString()]);
 
           if (results.first['autorole'] == null && role == null) {
-            await context.respond(
-                MessageBuilder(embeds: [
-                  EmbedBuilder(
-                      color: DiscordColor.parseHexString('#c41111'),
-                      title: await getString(context.user, 'global_error'),
-                      description:
-                          await getString(context.user, 'autorole_norole'))
-                ]),
-                level: ResponseLevel.hint);
+            await replyError(context, 'autorole_norole');
             return;
           } else {
             final bot =
@@ -89,40 +82,19 @@ final autorole = ChatGroup('autorole', 'Set an autorole for your server.',
                     'UPDATE `guilds` SET `autorole` = ? WHERE `id` = ? LIMIT 1;',
                     [role.id.toString(), context.guild?.id.toString()]);
 
-                await context.respond(MessageBuilder(embeds: [
-                  EmbedBuilder(
-                      color: DiscordColor.parseHexString('#6dbe33'),
-                      description:
-                          (await getString(context.user, 'autorole_set'))
-                              .replaceAll('&autorole', '<@&${role.id}>'))
-                ]));
+                await replySuccess(context, 'autorole_set',
+                    replace: {'&autorole': '<@&${role.id}>'});
                 return;
               } else {
-                await context.respond(
-                    MessageBuilder(embeds: [
-                      EmbedBuilder(
-                          color: DiscordColor.parseHexString('#c41111'),
-                          title: await getString(context.user, 'global_error'),
-                          description:
-                              await getString(context.user, 'autorole_highest'))
-                    ]),
-                    level: ResponseLevel.hint);
+                await replyError(context, 'autorole_highest');
                 return;
               }
             }
           }
         } catch (e) {
           print('Error in autorole command: $e');
-          await context.respond(
-              MessageBuilder(embeds: [
-                EmbedBuilder(
-                    color: DiscordColor.parseHexString('#c41111'),
-                    title: await getString(context.user, 'global_error'),
-                    description:
-                        await getString(context.user, 'autorole_error') +
-                            codeBlock(e.toString(), 'sh'))
-              ]),
-              level: ResponseLevel.hint);
+          await replyError(context, 'autorole_error',
+              details: codeBlock(e.toString(), 'sh'));
           return;
         }
       }),
@@ -146,15 +118,7 @@ final autorole = ChatGroup('autorole', 'Set an autorole for your server.',
             [context.guild?.id.toString()]);
 
         if (results.first['autorole'] == null) {
-          await context.respond(
-              MessageBuilder(embeds: [
-                EmbedBuilder(
-                    color: DiscordColor.parseHexString('#c41111'),
-                    title: await getString(context.user, 'global_error'),
-                    description:
-                        await getString(context.user, 'autorole_norole'))
-              ]),
-              level: ResponseLevel.hint);
+          await replyError(context, 'autorole_norole');
           return;
         } else {
           if (results.first['autorole'] != null) {
@@ -163,16 +127,8 @@ final autorole = ChatGroup('autorole', 'Set an autorole for your server.',
             final autorole =
                 await context.guild?.roles.get(autoroleIdAsSnowflake);
 
-            await context.respond(MessageBuilder(embeds: [
-              EmbedBuilder(
-                  color: DiscordColor.parseHexString('#6dbe33'),
-                  description:
-                      (await getString(context.user, 'autorole_current'))
-                          .replaceAll(
-                    '&autorole',
-                    '<@&${autorole?.id}>',
-                  ))
-            ]));
+            await replySuccess(context, 'autorole_current',
+                replace: {'&autorole': '<@&${autorole?.id}>'});
             return;
           }
         }
@@ -205,15 +161,7 @@ final autorole = ChatGroup('autorole', 'Set an autorole for your server.',
             [context.guild?.id.toString()]);
 
         if (results.first['autorole'] == null) {
-          await context.respond(
-              MessageBuilder(embeds: [
-                EmbedBuilder(
-                    color: DiscordColor.parseHexString('#c41111'),
-                    title: await getString(context.user, 'global_error'),
-                    description:
-                        await getString(context.user, 'autorole_norole'))
-              ]),
-              level: ResponseLevel.hint);
+          await replyError(context, 'autorole_norole');
           return;
         } else {
           try {
@@ -221,24 +169,12 @@ final autorole = ChatGroup('autorole', 'Set an autorole for your server.',
                 'UPDATE `guilds` SET `autorole` = ? WHERE `id` = ? LIMIT 1;',
                 [null, context.guild?.id.toString()]);
 
-            await context.respond(MessageBuilder(embeds: [
-              EmbedBuilder(
-                  color: DiscordColor.parseHexString('#6dbe33'),
-                  description: await getString(context.user, 'autorole_reset'))
-            ]));
+            await replySuccess(context, 'autorole_reset');
             return;
           } catch (e) {
             print('Error in autorole command: $e');
-            await context.respond(
-                MessageBuilder(embeds: [
-                  EmbedBuilder(
-                      color: DiscordColor.parseHexString('#c41111'),
-                      title: await getString(context.user, 'global_error'),
-                      description:
-                          await getString(context.user, 'autorole_error') +
-                              codeBlock(e.toString(), 'sh'))
-                ]),
-                level: ResponseLevel.hint);
+            await replyError(context, 'autorole_error',
+                details: codeBlock(e.toString(), 'sh'));
             return;
           }
         }

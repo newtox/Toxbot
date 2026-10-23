@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:mysql1/mysql1.dart';
 import 'package:nyxx/nyxx.dart';
-import 'package:toxbot/database.dart';
 import 'package:toxbot/levels.dart';
+import 'package:toxbot/utils/reply.dart';
 
 const modTypes = ['warn', 'timeout', 'untimeout', 'kick', 'ban', 'unban'];
 
@@ -17,8 +17,6 @@ const _colors = {
   'ban': '#ed4245',
   'unban': '#57f287',
 };
-
-final _noMentions = AllowedMentions(parse: []);
 
 class ModerationException implements Exception {
   final String key;
@@ -108,13 +106,6 @@ String formatDuration(Duration duration) {
   return parts.isEmpty ? '0s' : parts.join(' ');
 }
 
-Future<String> modText(User user, String key,
-    [Map<String, String> replace = const {}]) async {
-  var text = await getString(user, key);
-  replace.forEach((from, to) => text = text.replaceAll(from, to));
-  return text;
-}
-
 Future<Map<String, dynamic>> _guildSettings(Snowflake guildId) =>
     withConnection((connection) async {
       final rows = await connection.query(
@@ -127,7 +118,8 @@ Future<Map<String, dynamic>> _guildSettings(Snowflake guildId) =>
       };
     });
 
-int _highestPosition(Iterable<Snowflake> roleIds, Map<Snowflake, int> positions) {
+int _highestPosition(
+    Iterable<Snowflake> roleIds, Map<Snowflake, int> positions) {
   var highest = 0;
   for (final id in roleIds) {
     final position = positions[id] ?? 0;
@@ -213,7 +205,9 @@ Future<ModCase> performAction(
 
   if (type == 'timeout') {
     if (duration == null) throw ModerationException('mod_error_duration');
-    if (duration > maxTimeout) throw ModerationException('mod_error_timeout_max');
+    if (duration > maxTimeout) {
+      throw ModerationException('mod_error_timeout_max');
+    }
   }
 
   if (type == 'unban') {
@@ -237,7 +231,8 @@ Future<ModCase> performAction(
         await guild.members.update(
             targetId,
             MemberUpdateBuilder(
-                communicationDisabledUntil: DateTime.now().toUtc().add(duration!)),
+                communicationDisabledUntil:
+                    DateTime.now().toUtc().add(duration!)),
             auditLogReason: auditReason);
       case 'untimeout':
         await guild.members.update(
@@ -283,19 +278,20 @@ Future<bool> _sendDm(NyxxGateway client, User target, Guild guild, String type,
     final dm = await client.users.createDm(target.id);
     final fields = <EmbedFieldBuilder>[
       EmbedFieldBuilder(
-          name: await modText(target, 'mod_field_reason'),
-          value: reason ?? await modText(target, 'mod_no_reason'),
+          name: await localized(target, 'mod_field_reason'),
+          value: reason ?? await localized(target, 'mod_no_reason'),
           isInline: false),
       if (duration != null)
         EmbedFieldBuilder(
-            name: await modText(target, 'mod_field_duration'),
+            name: await localized(target, 'mod_field_duration'),
             value: formatDuration(duration),
             isInline: true),
     ];
-    await dm.sendMessage(MessageBuilder(allowedMentions: _noMentions, embeds: [
+    await dm.sendMessage(MessageBuilder(allowedMentions: noMentions, embeds: [
       EmbedBuilder(
         color: DiscordColor.parseHexString(_colors[type]!),
-        description: await modText(target, 'mod_dm_$type', {'&server': guild.name}),
+        description:
+            await localized(target, 'mod_dm_$type', {'&server': guild.name}),
         fields: fields,
         timestamp: DateTime.now().toUtc(),
       )
@@ -370,38 +366,39 @@ Future<ModCase> createCase({
 Future<EmbedBuilder> caseEmbed(ModCase modCase, User reader) async {
   final fields = <EmbedFieldBuilder>[
     EmbedFieldBuilder(
-        name: await modText(reader, 'mod_field_user'),
+        name: await localized(reader, 'mod_field_user'),
         value: '<@${modCase.userId}> · ${modCase.userName ?? modCase.userId}',
         isInline: true),
     EmbedFieldBuilder(
-        name: await modText(reader, 'mod_field_moderator'),
+        name: await localized(reader, 'mod_field_moderator'),
         value: modCase.moderatorId == null
             ? '–'
             : '<@${modCase.moderatorId}> · ${modCase.moderatorName ?? ''}',
         isInline: true),
     if (modCase.duration != null)
       EmbedFieldBuilder(
-          name: await modText(reader, 'mod_field_duration'),
+          name: await localized(reader, 'mod_field_duration'),
           value: modCase.expiresAt == null
               ? formatDuration(Duration(seconds: modCase.duration!))
               : '${formatDuration(Duration(seconds: modCase.duration!))} · <t:${modCase.expiresAt!.millisecondsSinceEpoch ~/ 1000}:R>',
           isInline: true),
     EmbedFieldBuilder(
-        name: await modText(reader, 'mod_field_reason'),
-        value: modCase.reason ?? await modText(reader, 'mod_no_reason'),
+        name: await localized(reader, 'mod_field_reason'),
+        value: modCase.reason ?? await localized(reader, 'mod_no_reason'),
         isInline: false),
   ];
 
   return EmbedBuilder(
     color: DiscordColor.parseHexString(_colors[modCase.type] ?? '#5865f2'),
-    title: await modText(reader, 'mod_case_title', {
+    title: await localized(reader, 'mod_case_title', {
       '&number': '${modCase.number}',
-      '&type': await modText(reader, 'mod_type_${modCase.type}'),
+      '&type': await localized(reader, 'mod_type_${modCase.type}'),
     }),
     fields: fields,
     footer: modCase.source == 'command'
         ? null
-        : EmbedFooterBuilder(text: await modText(reader, 'mod_source_${modCase.source}')),
+        : EmbedFooterBuilder(
+            text: await localized(reader, 'mod_source_${modCase.source}')),
     timestamp: modCase.createdAt,
   );
 }
@@ -416,7 +413,8 @@ Future<void> postModlog(
     final channel = await client.channels[Snowflake.parse(channelId)].get();
     if (channel is! TextChannel) return;
     final message = await channel.sendMessage(MessageBuilder(
-        allowedMentions: _noMentions, embeds: [await caseEmbed(modCase, reader)]));
+        allowedMentions: noMentions,
+        embeds: [await caseEmbed(modCase, reader)]));
     await withConnection((connection) => connection.query(
         'UPDATE `mod_cases` SET `log_message_id` = ? WHERE `id` = ?;',
         [message.id.toString(), modCase.id]));
@@ -435,7 +433,11 @@ Future<void> _escalate(NyxxGateway client, Guild guild, User target) async {
         'SELECT `action`, `duration` FROM `warn_rules` WHERE `guild` = ? AND `warns` = ? LIMIT 1;',
         [guild.id.toString(), warns]);
     if (rules.isEmpty) return null;
-    return (warns, rules.first['action'] as String, rules.first['duration'] as int?);
+    return (
+      warns,
+      rules.first['action'] as String,
+      rules.first['duration'] as int?
+    );
   });
 
   if (rule == null) return;
@@ -449,7 +451,7 @@ Future<void> _escalate(NyxxGateway client, Guild guild, User target) async {
       type: action,
       targetId: target.id,
       moderator: bot,
-      reason: await modText(bot, 'mod_auto_reason', {'&count': '$warns'}),
+      reason: await localized(bot, 'mod_auto_reason', {'&count': '$warns'}),
       duration: seconds == null ? null : Duration(seconds: seconds),
       source: 'automod',
     );
@@ -458,7 +460,8 @@ Future<void> _escalate(NyxxGateway client, Guild guild, User target) async {
   }
 }
 
-Future<List<ModCase>> casesFor(Snowflake guildId, {Snowflake? userId, int limit = 10}) =>
+Future<List<ModCase>> casesFor(Snowflake guildId,
+        {Snowflake? userId, int limit = 10}) =>
     withConnection((connection) async {
       final rows = await connection.query(
           'SELECT * FROM `mod_cases` WHERE `guild` = ?${userId == null ? '' : ' AND `user_id` = ?'} ORDER BY `number` DESC LIMIT $limit;',
@@ -579,7 +582,8 @@ Future<void> _processQueue(NyxxGateway client) async {
     int? caseId;
 
     try {
-      final guild = await client.guilds.get(Snowflake.parse(row['guild'] as String));
+      final guild =
+          await client.guilds.get(Snowflake.parse(row['guild'] as String));
       final moderatorId = Snowflake.parse(row['moderator_id'] as String);
       final targetId = Snowflake.parse(row['user_id'] as String);
       final type = row['type'] as String;
@@ -642,7 +646,8 @@ Future<void> _expire(NyxxGateway client) async {
         type: 'unban',
         targetId: Snowflake.parse(ban.userId),
         moderator: bot,
-        reason: await modText(bot, 'mod_tempban_expired', {'&number': '${ban.number}'}),
+        reason: await localized(
+            bot, 'mod_tempban_expired', {'&number': '${ban.number}'}),
         source: 'automod',
       );
     } catch (e) {

@@ -8,13 +8,11 @@ import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:toxbot/database.dart';
 import 'package:toxbot/premium.dart';
 import 'package:toxbot/utils/functions.dart';
+import 'package:toxbot/utils/reply.dart';
 
 var env = DotEnv(includePlatformEnvironment: true)..load();
 
 const modalCommands = {'tag create', 'tag edit'};
-
-const _red = '#c41111';
-const _green = '#6dbe33';
 
 final _namePattern = RegExp(r'^[a-z0-9_-]{1,32}$');
 final _invitePattern = RegExp(
@@ -32,8 +30,6 @@ Set<String> get allowedImageHosts => (env['tag_image_hosts'] ??
     .map((host) => host.trim().toLowerCase())
     .where((host) => host.isNotEmpty)
     .toSet();
-
-final _noMentions = AllowedMentions(parse: []);
 
 class Tag {
   final int id;
@@ -116,52 +112,6 @@ Future<bool> _isAllowedInGuild(Tag tag, Snowflake? guild) async {
   });
 }
 
-Future<void> _error(
-  InteractiveContext context,
-  User user,
-  String key, {
-  Map<String, String> replace = const {},
-}) async {
-  var text = await getString(user, key);
-  replace.forEach((from, to) => text = text.replaceAll(from, to));
-  await context.respond(
-    MessageBuilder(
-      allowedMentions: _noMentions,
-      embeds: [
-        EmbedBuilder(
-          color: DiscordColor.parseHexString(_red),
-          title: await getString(user, 'global_error'),
-          description: text,
-        ),
-      ],
-    ),
-    level: ResponseLevel.hint,
-  );
-}
-
-Future<void> _success(
-  InteractiveContext context,
-  User user,
-  String key, {
-  Map<String, String> replace = const {},
-  ResponseLevel? level,
-}) async {
-  var text = await getString(user, key);
-  replace.forEach((from, to) => text = text.replaceAll(from, to));
-  await context.respond(
-    MessageBuilder(
-      allowedMentions: _noMentions,
-      embeds: [
-        EmbedBuilder(
-          color: DiscordColor.parseHexString(_green),
-          description: text,
-        ),
-      ],
-    ),
-    level: level,
-  );
-}
-
 Future<void> _unexpected(
   InteractiveContext context,
   User user,
@@ -169,23 +119,8 @@ Future<void> _unexpected(
   Object e,
 ) async {
   print('Error in tag $command command: $e');
-  await context.respond(
-    MessageBuilder(
-      embeds: [
-        EmbedBuilder(
-          color: DiscordColor.parseHexString(_red),
-          title: await getString(user, 'global_error'),
-          description: (await getString(
-                user,
-                'tag_error',
-              ))
-                  .replaceAll('&command', command) +
-              codeBlock(e.toString(), 'sh'),
-        ),
-      ],
-    ),
-    level: ResponseLevel.hint,
-  );
+  await replyError(context, 'tag_error',
+      replace: {'&command': command}, details: codeBlock(e.toString(), 'sh'));
 }
 
 String? _contentProblem(String content) {
@@ -291,24 +226,23 @@ final _create = ChatCommand(
       name = name.toLowerCase().trim();
 
       if (await _isBlacklisted(user.id)) {
-        await _error(context, user, 'tag_blacklisted');
+        await replyError(context, 'tag_blacklisted');
         return;
       }
       if (!_namePattern.hasMatch(name)) {
-        await _error(context, user, 'tag_name_invalid');
+        await replyError(context, 'tag_name_invalid');
         return;
       }
       if (await _findTag(name) != null) {
-        await _error(context, user, 'tag_exists', replace: {'&tag': name});
+        await replyError(context, 'tag_exists', replace: {'&tag': name});
         return;
       }
 
       final premium = await isUserPremium(user.id, context: context);
       final limit = premium ? premiumTagLimit : freeTagLimit;
       if (await _countTags(user.id) >= limit) {
-        await _error(
+        await replyError(
           context,
-          user,
           premium ? 'tag_limit_premium' : 'tag_limit_free',
           replace: {'&limit': limit.toString()},
         );
@@ -335,7 +269,7 @@ final _create = ChatCommand(
       final content = modal['content'] ?? '';
       final problem = _contentProblem(content);
       if (problem != null) {
-        await _error(modal, user, problem);
+        await replyError(modal, problem);
         return;
       }
 
@@ -349,13 +283,13 @@ final _create = ChatCommand(
         );
       } on MySqlException catch (e) {
         if (e.errorNumber == 1062) {
-          await _error(modal, user, 'tag_exists', replace: {'&tag': name});
+          await replyError(modal, 'tag_exists', replace: {'&tag': name});
           return;
         }
         rethrow;
       }
 
-      await _success(modal, user, 'tag_created', replace: {'&tag': name});
+      await replySuccess(modal, 'tag_created', replace: {'&tag': name});
     } catch (e) {
       await _unexpected(context, user, 'create', e);
     }
@@ -398,11 +332,11 @@ final _edit = ChatCommand(
     try {
       final tag = await _findTag(name);
       if (tag == null) {
-        await _error(context, user, 'tag_not_found', replace: {'&tag': name});
+        await replyError(context, 'tag_not_found', replace: {'&tag': name});
         return;
       }
       if (!_isOwnerOrBotOwner(tag, user)) {
-        await _error(context, user, 'tag_not_owner');
+        await replyError(context, 'tag_not_owner');
         return;
       }
 
@@ -427,7 +361,7 @@ final _edit = ChatCommand(
       final content = modal['content'] ?? '';
       final problem = _contentProblem(content);
       if (problem != null) {
-        await _error(modal, user, problem);
+        await replyError(modal, problem);
         return;
       }
 
@@ -437,9 +371,8 @@ final _edit = ChatCommand(
           [content, tag.id],
         ),
       );
-      await _success(
+      await replySuccess(
         modal,
-        user,
         'tag_edited',
         replace: {'&tag': tag.name},
         level: ResponseLevel.hint,
@@ -486,11 +419,11 @@ final _delete = ChatCommand(
     try {
       final tag = await _findTag(name);
       if (tag == null) {
-        await _error(context, user, 'tag_not_found', replace: {'&tag': name});
+        await replyError(context, 'tag_not_found', replace: {'&tag': name});
         return;
       }
       if (!_isOwnerOrBotOwner(tag, user)) {
-        await _error(context, user, 'tag_not_owner');
+        await replyError(context, 'tag_not_owner');
         return;
       }
 
@@ -498,9 +431,8 @@ final _delete = ChatCommand(
         (connection) =>
             connection.query('DELETE FROM `tags` WHERE `id` = ?;', [tag.id]),
       );
-      await _success(
+      await replySuccess(
         context,
-        user,
         'tag_deleted',
         replace: {'&tag': tag.name},
         level: ResponseLevel.hint,
@@ -547,11 +479,11 @@ final _show = ChatCommand(
     try {
       final tag = await _findTag(name);
       if (tag == null) {
-        await _error(context, user, 'tag_not_found', replace: {'&tag': name});
+        await replyError(context, 'tag_not_found', replace: {'&tag': name});
         return;
       }
       if (!await _isAllowedInGuild(tag, context.guild?.id)) {
-        await _error(context, user, 'tag_blocked_here');
+        await replyError(context, 'tag_blocked_here');
         return;
       }
 
@@ -566,7 +498,7 @@ final _show = ChatCommand(
             : await getUserColorFromDatabase(tag.owner);
         await context.respond(
           MessageBuilder(
-            allowedMentions: _noMentions,
+            allowedMentions: noMentions,
             embeds: [
               EmbedBuilder(
                 color: color,
@@ -580,7 +512,7 @@ final _show = ChatCommand(
         );
       } else {
         await context.respond(
-          MessageBuilder(allowedMentions: _noMentions, content: content),
+          MessageBuilder(allowedMentions: noMentions, content: content),
         );
       }
 
@@ -632,13 +564,13 @@ final _info = ChatCommand(
     try {
       final tag = await _findTag(name);
       if (tag == null) {
-        await _error(context, user, 'tag_not_found', replace: {'&tag': name});
+        await replyError(context, 'tag_not_found', replace: {'&tag': name});
         return;
       }
 
       await context.respond(
         MessageBuilder(
-          allowedMentions: _noMentions,
+          allowedMentions: noMentions,
           embeds: [
             EmbedBuilder(
               color: await getUserColorFromDatabase(user.id),
@@ -727,7 +659,7 @@ final _list = ChatCommand(
 
       await context.respond(
         MessageBuilder(
-          allowedMentions: _noMentions,
+          allowedMentions: noMentions,
           embeds: [
             EmbedBuilder(
               color: await getUserColorFromDatabase(user.id),
@@ -807,24 +739,23 @@ final _transfer = ChatCommand(
     try {
       final tag = await _findTag(name);
       if (tag == null) {
-        await _error(context, user, 'tag_not_found', replace: {'&tag': name});
+        await replyError(context, 'tag_not_found', replace: {'&tag': name});
         return;
       }
       if (!_isOwnerOrBotOwner(tag, user)) {
-        await _error(context, user, 'tag_not_owner');
+        await replyError(context, 'tag_not_owner');
         return;
       }
       if (target.isBot || target.id == tag.owner) {
-        await _error(context, user, 'tag_transfer_invalid');
+        await replyError(context, 'tag_transfer_invalid');
         return;
       }
 
       final targetLimit =
           await isUserPremium(target.id) ? premiumTagLimit : freeTagLimit;
       if (await _countTags(target.id) >= targetLimit) {
-        await _error(
+        await replyError(
           context,
-          user,
           'tag_transfer_full',
           replace: {'&user': target.globalName ?? target.username},
         );
@@ -837,9 +768,8 @@ final _transfer = ChatCommand(
           [target.id.toString(), tag.id],
         ),
       );
-      await _success(
+      await replySuccess(
         context,
-        user,
         'tag_transferred',
         replace: {
           '&tag': tag.name,
@@ -927,20 +857,20 @@ final _embed = ChatCommand(
     try {
       final tag = await _findTag(name);
       if (tag == null) {
-        await _error(context, user, 'tag_not_found', replace: {'&tag': name});
+        await replyError(context, 'tag_not_found', replace: {'&tag': name});
         return;
       }
       if (!_isOwnerOrBotOwner(tag, user)) {
-        await _error(context, user, 'tag_not_owner');
+        await replyError(context, 'tag_not_owner');
         return;
       }
       if (!await isUserPremium(user.id, context: context)) {
-        await _error(context, user, 'tag_premium_only');
+        await replyError(context, 'tag_premium_only');
         return;
       }
       if (color != null &&
           !RegExp(r'^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$').hasMatch(color)) {
-        await _error(context, user, 'color_invalid_format');
+        await replyError(context, 'color_invalid_format');
         return;
       }
       if (image != null) {
@@ -948,9 +878,8 @@ final _embed = ChatCommand(
         if (uri == null ||
             uri.scheme != 'https' ||
             !allowedImageHosts.contains(uri.host.toLowerCase())) {
-          await _error(
+          await replyError(
             context,
-            user,
             'tag_image_invalid',
             replace: {'&hosts': allowedImageHosts.join(', ')},
           );
@@ -965,9 +894,8 @@ final _embed = ChatCommand(
           [enabled ? 1 : 0, color, image, tag.id],
         ),
       );
-      await _success(
+      await replySuccess(
         context,
-        user,
         enabled ? 'tag_embed_on' : 'tag_embed_off',
         replace: {'&tag': tag.name},
         level: ResponseLevel.hint,
@@ -1027,7 +955,7 @@ final _report = ChatCommand(
     try {
       final tag = await _findTag(name);
       if (tag == null) {
-        await _error(context, user, 'tag_not_found', replace: {'&tag': name});
+        await replyError(context, 'tag_not_found', replace: {'&tag': name});
         return;
       }
       if (reason.length > 500) reason = reason.substring(0, 500);
@@ -1042,7 +970,7 @@ final _report = ChatCommand(
       });
 
       if (!inserted) {
-        await _error(context, user, 'tag_already_reported');
+        await replyError(context, 'tag_already_reported');
         return;
       }
 
@@ -1053,10 +981,10 @@ final _report = ChatCommand(
         if (channel is TextChannel) {
           await channel.sendMessage(
             MessageBuilder(
-              allowedMentions: _noMentions,
+              allowedMentions: noMentions,
               embeds: [
                 EmbedBuilder(
-                  color: DiscordColor.parseHexString(_red),
+                  color: DiscordColor.parseHexString(errorColor),
                   title: 'Tag report: ${tag.name}',
                   timestamp: DateTime.now().toUtc(),
                   fields: [
@@ -1090,7 +1018,7 @@ final _report = ChatCommand(
         }
       }
 
-      await _success(context, user, 'tag_reported', level: ResponseLevel.hint);
+      await replySuccess(context, 'tag_reported', level: ResponseLevel.hint);
     } catch (e) {
       await _unexpected(context, user, 'report', e);
     }
@@ -1137,7 +1065,7 @@ final _block = ChatCommand(
     try {
       final tag = await _findTag(name);
       if (tag == null) {
-        await _error(context, user, 'tag_not_found', replace: {'&tag': name});
+        await replyError(context, 'tag_not_found', replace: {'&tag': name});
         return;
       }
       await _withConnection(
@@ -1146,7 +1074,7 @@ final _block = ChatCommand(
           [context.guild!.id.toString(), tag.id],
         ),
       );
-      await _success(context, user, 'tag_blocked', replace: {'&tag': tag.name});
+      await replySuccess(context, 'tag_blocked', replace: {'&tag': tag.name});
     } catch (e) {
       await _unexpected(context, user, 'block', e);
     }
@@ -1193,7 +1121,7 @@ final _unblock = ChatCommand(
     try {
       final tag = await _findTag(name);
       if (tag == null) {
-        await _error(context, user, 'tag_not_found', replace: {'&tag': name});
+        await replyError(context, 'tag_not_found', replace: {'&tag': name});
         return;
       }
       await _withConnection(
@@ -1202,9 +1130,8 @@ final _unblock = ChatCommand(
           [context.guild!.id.toString(), tag.id],
         ),
       );
-      await _success(
+      await replySuccess(
         context,
-        user,
         'tag_unblocked',
         replace: {'&tag': tag.name},
       );
@@ -1257,9 +1184,8 @@ final _toggle = ChatCommand(
           [enabled ? 1 : 0, context.guild!.id.toString()],
         ),
       );
-      await _success(
+      await replySuccess(
         context,
-        user,
         enabled ? 'tag_toggle_on' : 'tag_toggle_off',
       );
     } catch (e) {

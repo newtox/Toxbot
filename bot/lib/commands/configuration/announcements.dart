@@ -4,6 +4,7 @@ import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:toxbot/database.dart';
+import 'package:toxbot/utils/reply.dart';
 
 String announcementTypeToString(String type) => type;
 
@@ -112,26 +113,13 @@ final announcements = ChatGroup('announcements', 'Manage server announcements.',
               'UPDATE `guilds` SET `$channelColumn` = ?, `$messageColumn` = ? WHERE `id` = ? LIMIT 1;',
               [channel.id.toString(), message, context.guild?.id.toString()]);
 
-          await context.respond(MessageBuilder(embeds: [
-            EmbedBuilder(
-                color: DiscordColor.parseHexString('#6dbe33'),
-                description:
-                    (await getString(context.user, 'announcements_set'))
-                        .replaceAll('&type', type))
-          ]));
+          await replySuccess(context, 'announcements_set',
+              replace: {'&type': type});
           return;
         } catch (e) {
           print('Error while setting announcements: $e');
-          await context.respond(
-              MessageBuilder(embeds: [
-                EmbedBuilder(
-                    color: DiscordColor.parseHexString('#c41111'),
-                    title: await getString(context.user, 'global_error'),
-                    description:
-                        await getString(context.user, 'announcements_error') +
-                            codeBlock(e.toString(), 'sh'))
-              ]),
-              level: ResponseLevel.hint);
+          await replyError(context, 'announcements_error',
+              details: codeBlock(e.toString(), 'sh'));
           return;
         } finally {
           await connection.close();
@@ -171,15 +159,7 @@ final announcements = ChatGroup('announcements', 'Manage server announcements.',
             [welcomeId, welcomeMsg, byeId, byeMsg].any((v) => v != null);
 
         if (!hasAnySettings) {
-          await context.respond(
-              MessageBuilder(embeds: [
-                EmbedBuilder(
-                    color: DiscordColor.parseHexString('#c41111'),
-                    title: await getString(context.user, 'global_error'),
-                    description:
-                        await getString(context.user, 'announcements_none'))
-              ]),
-              level: ResponseLevel.hint);
+          await replyError(context, 'announcements_none');
           return;
         } else {
           try {
@@ -195,7 +175,7 @@ final announcements = ChatGroup('announcements', 'Manage server announcements.',
 
             await context.respond(MessageBuilder(embeds: [
               EmbedBuilder(
-                color: DiscordColor.parseHexString('#6dbe33'),
+                color: DiscordColor.parseHexString(successColor),
                 fields: [
                   EmbedFieldBuilder(
                     name: ' ',
@@ -212,16 +192,8 @@ final announcements = ChatGroup('announcements', 'Manage server announcements.',
             ]));
           } catch (e) {
             print('Error while showing announcements: $e');
-            await context.respond(
-                MessageBuilder(embeds: [
-                  EmbedBuilder(
-                      color: DiscordColor.parseHexString('#c41111'),
-                      title: await getString(context.user, 'global_error'),
-                      description:
-                          await getString(context.user, 'announcements_error') +
-                              codeBlock(e.toString(), 'sh'))
-                ]),
-                level: ResponseLevel.hint);
+            await replyError(context, 'announcements_error',
+                details: codeBlock(e.toString(), 'sh'));
             return;
           } finally {
             await connection.close();
@@ -277,25 +249,12 @@ final announcements = ChatGroup('announcements', 'Manage server announcements.',
               'UPDATE `guilds` SET `$channelColumn` = ?, `$messageColumn` = ? WHERE `id` = ? LIMIT 1;',
               [null, null, context.guild?.id.toString()]);
 
-          await context.respond(MessageBuilder(embeds: [
-            EmbedBuilder(
-                color: DiscordColor.parseHexString('#6dbe33'),
-                description:
-                    (await getString(context.user, 'announcements_reset'))
-                        .replaceAll('&type', type))
-          ]));
+          await replySuccess(context, 'announcements_reset',
+              replace: {'&type': type});
         } catch (e) {
           print('Error while resetting announcements: $e');
-          await context.respond(
-              MessageBuilder(embeds: [
-                EmbedBuilder(
-                    color: DiscordColor.parseHexString('#c41111'),
-                    title: await getString(context.user, 'global_error'),
-                    description:
-                        await getString(context.user, 'announcements_error') +
-                            codeBlock(e.toString(), 'sh'))
-              ]),
-              level: ResponseLevel.hint);
+          await replyError(context, 'announcements_error',
+              details: codeBlock(e.toString(), 'sh'));
           return;
         } finally {
           await connection.close();

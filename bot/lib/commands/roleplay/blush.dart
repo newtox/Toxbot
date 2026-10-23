@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:toxbot/database.dart';
 import 'package:toxbot/utils/functions.dart';
+import 'package:toxbot/utils/reply.dart';
 
 final blush = ChatCommand('blush', 'Blush.', localizedDescriptions: {
   Locale.da: 'Rødme.',
@@ -35,14 +35,7 @@ final blush = ChatCommand('blush', 'Blush.', localizedDescriptions: {
     ]));
   } catch (e) {
     print('Error in blush command: $e');
-    await context.respond(
-        MessageBuilder(embeds: [
-          EmbedBuilder(
-              color: DiscordColor.parseHexString('#c41111'),
-              title: await getString(context.user, 'global_error'),
-              description: codeBlock(e.toString(), 'sh'))
-        ]),
-        level: ResponseLevel.hint);
+    await replyException(context, e);
     return;
   }
 });

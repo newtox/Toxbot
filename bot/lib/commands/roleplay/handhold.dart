@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:toxbot/database.dart';
 import 'package:toxbot/utils/functions.dart';
+import 'package:toxbot/utils/reply.dart';
 
 final handhold =
     ChatCommand('handhold', 'Hold someone\'s hand.', localizedDescriptions: {
@@ -60,14 +60,7 @@ final handhold =
     }
   } catch (e) {
     print('Error in handhold command: $e');
-    await context.respond(
-        MessageBuilder(embeds: [
-          EmbedBuilder(
-              color: DiscordColor.parseHexString('#c41111'),
-              title: await getString(context.user, 'global_error'),
-              description: codeBlock(e.toString(), 'sh'))
-        ]),
-        level: ResponseLevel.hint);
+    await replyException(context, e);
     return;
   }
 });
