@@ -7,6 +7,7 @@ use App\Models\StreamSubscription;
 use App\Services\Discord;
 use App\Services\GuildAccess;
 use App\Services\Premium;
+use App\Services\Streams\PlatformException;
 use App\Services\Streams\SourceManager;
 use App\Services\Streams\Twitch;
 use App\Services\Streams\YouTube;
@@ -65,9 +66,10 @@ class StreamList extends Component
             $manager->add($this->guildId, $this->platform, $this->input);
             $this->input = '';
         } catch (RuntimeException $e) {
+            $replace = $e instanceof PlatformException ? $e->replace : [];
             $this->error = str_starts_with($e->getMessage(), 'streams.')
-                ? __($e->getMessage(), ['limit' => $manager->limit($this->guildId)])
-                : __('streams.platform_error');
+                ? __($e->getMessage(), $replace + ['limit' => $manager->limit($this->guildId)])
+                : __('streams.youtube_unreachable');
         }
     }
 

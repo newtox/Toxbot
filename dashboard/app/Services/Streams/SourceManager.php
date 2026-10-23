@@ -5,7 +5,9 @@ namespace App\Services\Streams;
 use App\Models\StreamSource;
 use App\Models\StreamSubscription;
 use App\Services\Premium;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\RequestException;
+use Illuminate\Support\Str;
 use RuntimeException;
 use Throwable;
 
@@ -96,9 +98,9 @@ class SourceManager
 
         try {
             $user = $this->twitch->user($login);
-        } catch (RequestException|RuntimeException $e) {
+        } catch (ConnectionException|RequestException|RuntimeException $e) {
             report($e);
-            throw new RuntimeException('streams.platform_error');
+            throw new RuntimeException('streams.twitch_error');
         }
 
         if (! $user) {
@@ -120,10 +122,13 @@ class SourceManager
                 throw $e;
             }
             report($e);
-            throw new RuntimeException('streams.platform_error');
+            throw new RuntimeException('streams.youtube_unreachable');
+        } catch (ConnectionException $e) {
+            report($e);
+            throw new RuntimeException('streams.youtube_unreachable');
         } catch (RequestException $e) {
             report($e);
-            throw new RuntimeException('streams.platform_error');
+            throw new PlatformException('streams.youtube_api_error', ['reason' => $this->youtubeReason($e)]);
         }
 
         if (! $channel) {
@@ -134,5 +139,12 @@ class SourceManager
             ['platform' => StreamSource::YOUTUBE, 'external_id' => $channel['id']],
             ['login' => $channel['handle'], 'name' => $channel['name'], 'avatar_url' => $channel['avatar']],
         );
+    }
+
+    private function youtubeReason(RequestException $e): string
+    {
+        $message = trim(strip_tags((string) $e->response->json('error.message')));
+
+        return Str::limit($message !== '' ? $message : 'HTTP '.$e->response->status(), 200);
     }
 }

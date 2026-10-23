@@ -56,6 +56,7 @@ class StreamsTest extends TestCase
                 str_contains($url, 'api.twitch.tv/helix/streams') => Http::response(['data' => [['title' => 'Valheim mit Freunden', 'game_name' => 'Valheim', 'thumbnail_url' => 'https://img/{width}x{height}.jpg']]]),
                 str_contains($url, 'api.twitch.tv/helix/videos') => Http::response(['data' => [['url' => 'https://www.twitch.tv/videos/1']]]),
                 str_contains($url, 'pubsubhubbub.appspot.com') => Http::response('', 202),
+                str_contains($url, 'googleapis.com/youtube/v3/channels') => Http::response(['error' => ['code' => 403, 'message' => 'YouTube Data API v3 has not been used in project 123 before or it is disabled.']], 403),
                 str_contains($url, 'youtube.com/feeds/videos.xml') => Http::response('<feed xmlns="http://www.w3.org/2005/Atom"><title>Kanal</title><author><name>Mein Kanal</name></author></feed>'),
                 str_contains($url, 'discord.com/api/v10/channels') && $request->method() === 'POST' => $this->recordPost($request),
                 str_contains($url, 'discord.com/api/v10/channels') => Http::response(['id' => '900']),
@@ -240,6 +241,18 @@ class StreamsTest extends TestCase
         Livewire::test(StreamList::class, ['guildId' => self::GUILD])
             ->set('platform', 'youtube')->set('input', '@someone')
             ->call('add')->assertSet('error', __('streams.youtube_need_id'));
+    }
+
+    public function test_youtube_api_errors_show_the_reason(): void
+    {
+        $this->login();
+        config(['toxbot.streams.youtube_api_key' => 'key']);
+
+        Livewire::test(StreamList::class, ['guildId' => self::GUILD])
+            ->set('platform', 'youtube')->set('input', '@someone')
+            ->call('add')
+            ->assertSet('error', __('streams.youtube_api_error', ['reason' => 'YouTube Data API v3 has not been used in project 123 before or it is disabled.']));
+        $this->assertSame(0, StreamSource::count());
     }
 
     public function test_premium_servers_can_ping_an_own_role_per_streamer(): void
