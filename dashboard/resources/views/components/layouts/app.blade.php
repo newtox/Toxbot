@@ -41,6 +41,7 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
+    @stack('head')
 </head>
 <body class="min-h-dvh" x-data="{ nav: false }" x-on:keydown.escape.window="nav = false">
     @auth
@@ -110,6 +111,7 @@
                                 'streams' => 'stream',
                                 'tags' => 'tag',
                                 'moderation' => 'shield',
+                                'protection' => 'lock',
                             ] as $section => $icon)
                                 <a href="{{ route('servers.settings', [$guild['id'], $section]) }}"
                                    @class(['nav-item', 'nav-item-active' => request()->routeIs('servers.settings') && request()->route('section') === $section])>

@@ -20,4 +20,5 @@ return [
     'section_streams' => 'स्ट्रीम',
     'section_tags' => 'टैग',
     'section_moderation' => 'मॉडरेशन',
+    'section_protection' => 'सुरक्षा',
 ];

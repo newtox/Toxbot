@@ -4,11 +4,20 @@ use App\Http\Controllers\DiscordAuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ServerController;
+use App\Http\Controllers\VerifyController;
 use App\Http\Middleware\EnsureBotOwner;
 use App\Livewire\GuildSettings;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
+
+Route::get('/verify/{guild}', [VerifyController::class, 'show'])
+    ->whereNumber('guild')
+    ->name('verify.show');
+Route::post('/verify/{guild}', [VerifyController::class, 'submit'])
+    ->whereNumber('guild')
+    ->middleware('throttle:10,1')
+    ->name('verify.submit');
 
 Route::get('/language/{locale}', [LanguageController::class, 'switch'])->name('language.switch');
 

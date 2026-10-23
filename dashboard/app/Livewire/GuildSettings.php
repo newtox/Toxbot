@@ -6,7 +6,9 @@ use App\Models\Guild;
 use App\Models\TagGuildBlock;
 use App\Services\Discord;
 use App\Services\GuildAccess;
+use App\Support\DomainList;
 use Illuminate\Http\Client\RequestException;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
@@ -17,7 +19,7 @@ class GuildSettings extends Component
 
     private const CATEGORY_TYPE = 4;
 
-    public const SECTIONS = ['general', 'levels', 'streams', 'tags', 'moderation'];
+    public const SECTIONS = ['general', 'levels', 'streams', 'tags', 'moderation', 'protection'];
 
     #[Locked]
     public string $section = 'general';
@@ -67,6 +69,46 @@ class GuildSettings extends Component
 
     public bool $modDm = true;
 
+    public bool $verifyEnabled = false;
+
+    public ?string $verifyRole = null;
+
+    public ?string $verifyChannel = null;
+
+    public bool $linkInvites = false;
+
+    public bool $linkScam = false;
+
+    public bool $linkAllowlistEnabled = false;
+
+    public string $linkAllowlist = '';
+
+    public string $linkBlocklist = '';
+
+    public string $linkAction = 'delete';
+
+    public bool $raidEnabled = false;
+
+    public int $raidJoins = 10;
+
+    public int $raidSeconds = 10;
+
+    public int $raidMinutes = 10;
+
+    public bool $raidKick = true;
+
+    public bool $raidLevel = true;
+
+    public int $minAccountAge = 0;
+
+    #[Locked]
+    public ?string $raidUntil = null;
+
+    #[Locked]
+    public bool $verifyMessagePosted = false;
+
+    public ?string $protectionNotice = null;
+
     public function mount(array $guild, string $section = 'general'): void
     {
         $this->section = in_array($section, self::SECTIONS, true) ? $section : 'general';
@@ -103,6 +145,25 @@ class GuildSettings extends Component
         $this->liveRoleRequired = $row->live_role_required;
         $this->modlogChannel = $row->modlog_channel;
         $this->modDm = $row->exists ? (bool) $row->mod_dm : true;
+
+        $this->verifyEnabled = (bool) $row->verify_enabled;
+        $this->verifyRole = $row->verify_role;
+        $this->verifyChannel = $row->verify_channel;
+        $this->verifyMessagePosted = $row->verify_message_id !== null;
+        $this->linkInvites = (bool) $row->link_invites;
+        $this->linkScam = (bool) $row->link_scam;
+        $this->linkAllowlistEnabled = (bool) $row->link_allowlist_enabled;
+        $this->linkAllowlist = (string) $row->link_allowlist;
+        $this->linkBlocklist = (string) $row->link_blocklist;
+        $this->linkAction = $row->link_action ?: 'delete';
+        $this->raidEnabled = (bool) $row->raid_enabled;
+        $this->raidJoins = (int) $row->raid_joins;
+        $this->raidSeconds = (int) $row->raid_seconds;
+        $this->raidMinutes = (int) $row->raid_minutes;
+        $this->raidKick = (bool) $row->raid_kick;
+        $this->raidLevel = (bool) $row->raid_level;
+        $this->minAccountAge = (int) $row->min_account_age;
+        $this->raidUntil = $row->raidActive() ? $row->raid_until->toIso8601String() : null;
 
         $this->resetValidation();
     }
@@ -160,6 +221,17 @@ class GuildSettings extends Component
             'moderation' => [
                 'modlogChannel' => ['nullable', Rule::in($channelIds)],
             ],
+            'protection' => [
+                'verifyRole' => $this->verifyEnabled ? ['required', Rule::in($roleIds)] : ['nullable'],
+                'verifyChannel' => ['nullable', Rule::in($channelIds)],
+                'linkAllowlist' => ['nullable', 'string', 'max:4000', $this->domainRule()],
+                'linkBlocklist' => ['nullable', 'string', 'max:4000', $this->domainRule()],
+                'linkAction' => ['required', Rule::in(Guild::LINK_ACTIONS)],
+                'raidJoins' => ['required', 'integer', 'min:3', 'max:100'],
+                'raidSeconds' => ['required', 'integer', 'min:5', 'max:300'],
+                'raidMinutes' => ['required', 'integer', 'min:1', 'max:1440'],
+                'minAccountAge' => ['required', 'integer', 'min:0', 'max:365'],
+            ],
         ];
 
         $sectionRules = $rules[$this->section];
@@ -176,6 +248,13 @@ class GuildSettings extends Component
                 'streamRole.in' => __('guild.role_invalid'),
                 'liveRole.in' => __('guild.role_invalid'),
                 'liveRoleRequired.in' => __('guild.role_invalid'),
+                'verifyRole.required' => __('protection.verify_role_required'),
+                'verifyRole.in' => __('guild.role_invalid'),
+                'verifyChannel.in' => __('guild.channel_invalid'),
+                'raidJoins.*' => __('protection.number_range', ['min' => 3, 'max' => 100]),
+                'raidSeconds.*' => __('protection.number_range', ['min' => 5, 'max' => 300]),
+                'raidMinutes.*' => __('protection.number_range', ['min' => 1, 'max' => 1440]),
+                'minAccountAge.*' => __('protection.number_range', ['min' => 0, 'max' => 365]),
             ]);
         }
 
@@ -206,12 +285,97 @@ class GuildSettings extends Component
                 'modlog_channel' => $this->modlogChannel ?: null,
                 'mod_dm' => $this->modDm,
             ],
+            'protection' => [
+                'verify_enabled' => $this->verifyEnabled,
+                'verify_role' => $this->verifyRole ?: null,
+                'verify_channel' => $this->verifyChannel ?: null,
+                'link_invites' => $this->linkInvites,
+                'link_scam' => $this->linkScam,
+                'link_allowlist_enabled' => $this->linkAllowlistEnabled,
+                'link_allowlist' => DomainList::serialize($this->linkAllowlist),
+                'link_blocklist' => DomainList::serialize($this->linkBlocklist),
+                'link_action' => $this->linkAction,
+                'raid_enabled' => $this->raidEnabled,
+                'raid_joins' => $this->raidJoins,
+                'raid_seconds' => $this->raidSeconds,
+                'raid_minutes' => $this->raidMinutes,
+                'raid_kick' => $this->raidKick,
+                'raid_level' => $this->raidLevel,
+                'min_account_age' => $this->minAccountAge,
+            ],
         };
 
         Guild::forDiscordId($this->guildId)->fill($fields)->save();
 
         $this->loadFromDatabase();
         $this->dispatch('saved');
+    }
+
+    public function postVerifyMessage(): void
+    {
+        abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
+
+        $row = Guild::forDiscordId($this->guildId);
+        if (! $row->verify_enabled || ! $row->verify_channel) {
+            $this->protectionNotice = __('protection.post_needs_settings');
+
+            return;
+        }
+
+        $discord = app(Discord::class);
+        $payload = [
+            'embeds' => [[
+                'color' => 0x6DBE33,
+                'title' => __('protection.message_title', ['server' => $this->guildName]),
+                'description' => __('protection.message_text'),
+            ]],
+            'components' => [[
+                'type' => 1,
+                'components' => [[
+                    'type' => 2,
+                    'style' => 5,
+                    'label' => __('protection.message_button'),
+                    'url' => route('verify.show', $this->guildId),
+                ]],
+            ]],
+            'allowed_mentions' => ['parse' => []],
+        ];
+
+        try {
+            $messageId = null;
+            if ($row->verify_message_id) {
+                try {
+                    $discord->editMessage($row->verify_channel, $row->verify_message_id, $payload);
+                    $messageId = $row->verify_message_id;
+                } catch (RequestException $e) {
+                    if ($e->response->status() !== 404) {
+                        throw $e;
+                    }
+                }
+            }
+            $messageId ??= $discord->sendMessage($row->verify_channel, $payload);
+        } catch (RequestException $e) {
+            Log::warning('Posting the verification message failed', ['guild' => $this->guildId, 'status' => $e->response->status()]);
+            $this->protectionNotice = __('protection.post_failed');
+
+            return;
+        }
+
+        $row->forceFill(['verify_message_id' => $messageId])->save();
+        $this->verifyMessagePosted = true;
+        $this->protectionNotice = __('protection.post_done');
+    }
+
+    public function endRaid(): void
+    {
+        abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
+
+        $row = Guild::forDiscordId($this->guildId);
+        if ($row->raidActive()) {
+            $row->forceFill(['raid_until' => now()])->save();
+        }
+        $this->raidUntil = null;
+        $this->protectionNotice = __('protection.raid_ending');
     }
 
     public function unblockTag(int $tagId): void
@@ -273,6 +437,16 @@ class GuildSettings extends Component
                     : 'https://cdn.discordapp.com/embed/avatars/0.png',
             ],
         ]);
+    }
+
+    private function domainRule(): \Closure
+    {
+        return function (string $attribute, mixed $value, \Closure $fail) {
+            $invalid = DomainList::invalid((string) $value);
+            if ($invalid !== []) {
+                $fail(__('protection.domains_invalid', ['domains' => implode(', ', array_slice($invalid, 0, 5))]));
+            }
+        };
     }
 
     private function channelGroups(Discord $discord): array

@@ -24,7 +24,7 @@ return [
     'f_streams_t' => 'Stream-notifikationer',
     'f_streams_d' => 'Melder, når Twitch- eller YouTube-kanaler går live eller uploader, med ping-rolle og egen besked. Medlemmer, der streamer, får en live-rolle.',
     'f_mod_t' => 'Moderation',
-    'f_mod_d' => 'Advarsler, timeouts, kicks og bans med nummererede sager, modlog, automatiske handlinger efter advarsler og medlemsprofiler i dashboardet.',
+    'f_mod_d' => 'Advarsler, timeouts, kicks og bans med nummererede sager, modlog, automatiske handlinger efter advarsler og medlemsprofiler i dashboardet. Plus verificering med captcha, linkfilter mod invitationer og svindellinks samt anti-raid.',
     'f_welcome_t' => 'Velkomst & autorolle',
     'f_welcome_d' => 'Velkomst- og farvelbeskeder med live-forhåndsvisning og en rolle til hvert nyt medlem.',
     'f_fun_t' => 'Rollespil & sjov',

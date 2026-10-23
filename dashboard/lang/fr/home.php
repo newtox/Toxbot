@@ -24,7 +24,7 @@ return [
     'f_streams_t' => 'Notifications de stream',
     'f_streams_d' => 'Annonce quand des chaînes Twitch ou YouTube passent en live ou publient, avec rôle à mentionner et message personnalisé. Les membres qui streament reçoivent un rôle live.',
     'f_mod_t' => 'Modération',
-    'f_mod_d' => 'Avertissements, exclusions, expulsions et bannissements avec des cas numérotés, des logs, des actions automatiques après des avertissements et des profils de membres dans le tableau de bord.',
+    'f_mod_d' => 'Avertissements, exclusions, expulsions et bannissements avec des cas numérotés, des logs, des actions automatiques après des avertissements et des profils de membres dans le tableau de bord. En plus : vérification par captcha, filtre de liens contre les invitations et arnaques, et anti-raid.',
     'f_welcome_t' => 'Accueil & rôle auto',
     'f_welcome_d' => 'Messages de bienvenue et d\'au revoir avec aperçu en direct, et un rôle pour chaque nouveau membre.',
     'f_fun_t' => 'Roleplay & fun',

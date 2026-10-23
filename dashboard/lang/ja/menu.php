@@ -20,4 +20,5 @@ return [
     'section_streams' => '配信',
     'section_tags' => 'タグ',
     'section_moderation' => 'モデレーション',
+    'section_protection' => '保護',
 ];

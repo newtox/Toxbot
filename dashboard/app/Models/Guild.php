@@ -27,7 +27,13 @@ class Guild extends Model
         'tags_enabled', 'levelup_enabled', 'levelup_channel',
         'notify', 'stream', 'stream_msg', 'stream_video_msg', 'live_role', 'live_role_required',
         'modlog_channel', 'mod_dm',
+        'verify_enabled', 'verify_role', 'verify_channel', 'verify_message_id',
+        'link_invites', 'link_scam', 'link_allowlist_enabled', 'link_allowlist', 'link_blocklist', 'link_action',
+        'raid_enabled', 'raid_joins', 'raid_seconds', 'raid_minutes', 'raid_kick', 'raid_level', 'raid_until',
+        'min_account_age',
     ];
+
+    public const LINK_ACTIONS = ['delete', 'warn', 'timeout'];
 
     public const STREAM_PLACEHOLDERS = [
         '&channel' => 'streams.placeholder_channel',
@@ -45,15 +51,48 @@ class Guild extends Model
         'tags_enabled' => true,
         'levelup_enabled' => false,
         'mod_dm' => true,
+        'verify_enabled' => false,
+        'link_invites' => false,
+        'link_scam' => false,
+        'link_allowlist_enabled' => false,
+        'link_action' => 'delete',
+        'raid_enabled' => false,
+        'raid_joins' => 10,
+        'raid_seconds' => 10,
+        'raid_minutes' => 10,
+        'raid_kick' => true,
+        'raid_level' => true,
+        'min_account_age' => 0,
     ];
 
     protected function casts(): array
     {
-        return ['tags_enabled' => 'boolean', 'levelup_enabled' => 'boolean', 'mod_dm' => 'boolean'];
+        return [
+            'tags_enabled' => 'boolean',
+            'levelup_enabled' => 'boolean',
+            'mod_dm' => 'boolean',
+            'verify_enabled' => 'boolean',
+            'link_invites' => 'boolean',
+            'link_scam' => 'boolean',
+            'link_allowlist_enabled' => 'boolean',
+            'raid_enabled' => 'boolean',
+            'raid_joins' => 'integer',
+            'raid_seconds' => 'integer',
+            'raid_minutes' => 'integer',
+            'raid_kick' => 'boolean',
+            'raid_level' => 'boolean',
+            'raid_until' => 'datetime',
+            'min_account_age' => 'integer',
+        ];
     }
 
     public static function forDiscordId(string $id): self
     {
         return static::firstOrNew(['id' => $id]);
+    }
+
+    public function raidActive(): bool
+    {
+        return $this->raid_until !== null && $this->raid_until->isFuture();
     }
 }

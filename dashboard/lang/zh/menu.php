@@ -20,4 +20,5 @@ return [
     'section_streams' => '直播',
     'section_tags' => '标签',
     'section_moderation' => '管理',
+    'section_protection' => '保护',
 ];

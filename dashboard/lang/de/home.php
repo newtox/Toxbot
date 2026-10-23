@@ -24,7 +24,7 @@ return [
     'f_streams_t' => 'Stream-Benachrichtigungen',
     'f_streams_d' => 'Meldet, wenn Twitch- oder YouTube-Kanäle live gehen oder hochladen, mit Ping-Rolle und eigener Nachricht. Wer streamt, bekommt eine Live-Rolle.',
     'f_mod_t' => 'Moderation',
-    'f_mod_d' => 'Verwarnungen, Timeouts, Kicks und Banns mit nummerierten Fällen, Modlog, automatischen Aktionen nach Verwarnungen und Mitgliederprofilen im Dashboard.',
+    'f_mod_d' => 'Verwarnungen, Timeouts, Kicks und Banns mit nummerierten Fällen, Modlog, automatischen Aktionen nach Verwarnungen und Mitgliederprofilen im Dashboard. Dazu Verifizierung mit Captcha, ein Link-Filter gegen Einladungen und Scam-Links und Anti-Raid.',
     'f_welcome_t' => 'Begrüßung & Autorole',
     'f_welcome_d' => 'Willkommens- und Abschiedsnachrichten mit Live-Vorschau und eine Rolle für jedes neue Mitglied.',
     'f_fun_t' => 'Roleplay & Spaß',

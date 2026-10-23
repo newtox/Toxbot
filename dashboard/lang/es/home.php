@@ -24,7 +24,7 @@ return [
     'f_streams_t' => 'Avisos de streams',
     'f_streams_d' => 'Avisa cuando canales de Twitch o YouTube empiezan un directo o suben un vídeo, con rol de mención y mensaje propio. Quien hace directo recibe un rol en directo.',
     'f_mod_t' => 'Moderación',
-    'f_mod_d' => 'Advertencias, aislamientos, expulsiones y baneos con casos numerados, registro de moderación, acciones automáticas tras advertencias y perfiles de miembros en el panel.',
+    'f_mod_d' => 'Advertencias, aislamientos, expulsiones y baneos con casos numerados, registro de moderación, acciones automáticas tras advertencias y perfiles de miembros en el panel. Además, verificación con captcha, filtro de enlaces contra invitaciones y estafas, y anti-raid.',
     'f_welcome_t' => 'Bienvenida y autorol',
     'f_welcome_d' => 'Mensajes de bienvenida y despedida con vista previa en vivo, y un rol para cada miembro nuevo.',
     'f_fun_t' => 'Rol y diversión',
