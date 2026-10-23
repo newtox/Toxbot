@@ -17,6 +17,7 @@ import 'package:toxbot/commands/image/neko.dart';
 import 'package:toxbot/commands/image/waifu.dart';
 import 'package:toxbot/commands/levels/levels.dart';
 import 'package:toxbot/commands/moderation/clear.dart';
+import 'package:toxbot/commands/moderation/mod.dart';
 import 'package:toxbot/commands/roleplay/bite.dart';
 import 'package:toxbot/commands/roleplay/blush.dart';
 import 'package:toxbot/commands/roleplay/bonk.dart';
@@ -82,6 +83,7 @@ CommandsPlugin setupCommandHandler(CommandsPlugin commands) {
   commands.addCommand(shop);
 
   commands.addCommand(clear);
+  commands.addCommand(mod);
 
   commands.addCommand(tag);
 
