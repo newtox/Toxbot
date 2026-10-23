@@ -47,8 +47,13 @@ final _close = ChatCommand(
       return;
     }
 
-    await replySuccess(context, 'ticket_closing',
-        replace: {'&user': '<@${context.user.id}>'});
+    await context.respond(MessageBuilder(allowedMentions: noMentions, embeds: [
+      EmbedBuilder(
+        color: DiscordColor.parseHexString(successColor),
+        description: await guildLocalized(
+            ticket.guild, 'ticket_closing', {'&user': '<@${context.user.id}>'}),
+      ),
+    ]));
     await closeTicket(context.client, ticket, context.user, reason: reason);
   },
 );

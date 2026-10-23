@@ -345,15 +345,15 @@ Future<void> _open(NyxxGateway client, MessageComponentInteraction interaction,
           color: DiscordColor.parseHexString(_ticketColor),
           title: '${type.label} · #${ticket.paddedNumber}',
           description: type.description ??
-              await localized(
-                  user, 'ticket_welcome_default', {'&user': user.username}),
+              await guildLocalized(
+                  guildId, 'ticket_welcome_default', {'&user': user.username}),
         ),
       ],
       components: [
         ActionRowBuilder(components: [
           ButtonBuilder.danger(
               customId: ticketCloseId,
-              label: await localized(user, 'ticket_close_button')),
+              label: await guildLocalized(guildId, 'ticket_close_button')),
         ]),
       ],
     ));
@@ -389,8 +389,8 @@ Future<void> _closeFromButton(
 
   await interaction.respond(MessageBuilder(
     allowedMentions: noMentions,
-    content:
-        await localized(user, 'ticket_closing', {'&user': '<@${user.id}>'}),
+    content: await guildLocalized(
+        ticket.guild, 'ticket_closing', {'&user': '<@${user.id}>'}),
   ));
   await closeTicket(client, ticket, user);
 }
