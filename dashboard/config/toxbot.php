@@ -28,6 +28,11 @@ return [
         'youtube_api_key' => env('YOUTUBE_API_KEY'),
     ],
 
+    'turnstile' => [
+        'site_key' => env('TURNSTILE_SITE_KEY'),
+        'secret_key' => env('TURNSTILE_SECRET_KEY'),
+    ],
+
     'topgg' => [
         'webhook_secret' => env('TOPGG_WEBHOOK_SECRET'),
         'vote_reward' => (int) env('TOPGG_VOTE_REWARD', 200),

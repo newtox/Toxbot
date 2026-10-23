@@ -20,4 +20,5 @@ return [
     'section_streams' => '방송',
     'section_tags' => '태그',
     'section_moderation' => '관리',
+    'section_protection' => '보호',
 ];

@@ -271,6 +271,190 @@
     </section>
     @endif
 
+    @if ($section === 'protection')
+    @if ($protectionNotice)
+        <p class="rounded-lg border-l-4 border-accent bg-dc-800 px-4 py-3 text-sm" role="status">{{ $protectionNotice }}</p>
+    @endif
+
+    @if ($raidUntil)
+        <div class="flex flex-wrap items-center gap-3 rounded-lg border-l-4 border-dc-red bg-dc-800 px-4 py-3">
+            <p class="min-w-0 flex-1 basis-56 text-sm text-dc-header">{{ __('protection.raid_active', ['time' => \App\Support\Timezone::format(\Illuminate\Support\Carbon::parse($raidUntil), 'LT')]) }}</p>
+            <button type="button" wire:click="endRaid" class="btn px-3 py-1.5 text-dc-red hover:bg-dc-red hover:text-white">{{ __('protection.raid_end') }}</button>
+        </div>
+    @endif
+
+    <section id="verification" class="card scroll-mt-20">
+        <div class="flex items-start gap-4">
+            <div class="flex-1">
+                <h2 class="text-lg font-semibold text-dc-header">{{ __('protection.verify_title') }}</h2>
+                <p class="text-sm text-dc-muted">{{ __('protection.verify_description') }}</p>
+            </div>
+            <label class="relative mt-1 inline-flex shrink-0 cursor-pointer items-center">
+                <input type="checkbox" wire:model="verifyEnabled" class="peer sr-only">
+                <span class="h-6 w-10 rounded-full bg-dc-400 transition-colors peer-checked:bg-accent peer-focus-visible:ring-2 peer-focus-visible:ring-accent-fg peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-dc-800"></span>
+                <span class="absolute top-0.5 left-0.5 size-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-4"></span>
+                <span class="sr-only">{{ __('guild.enable', ['name' => __('protection.verify_title')]) }}</span>
+            </label>
+        </div>
+
+        <div x-show="$wire.verifyEnabled" x-collapse.duration.200ms class="mt-6 space-y-4">
+            <div class="grid gap-4 sm:grid-cols-2">
+                <div>
+                    <label class="label" for="verify-role">{{ __('protection.verify_role') }}</label>
+                    <select id="verify-role" wire:model="verifyRole" class="input">
+                        <option value="">{{ __('protection.choose_role') }}</option>
+                        @foreach ($roles as $role)
+                            <option value="{{ $role['id'] }}" @disabled(! $role['assignable'])>
+                                {{ $role['name'] }}{{ $role['assignable'] ? '' : ' ('.__('guild.above_bot').')' }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('verifyRole') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+                </div>
+                <div>
+                    <label class="label" for="verify-channel">{{ __('protection.verify_channel') }}</label>
+                    <select id="verify-channel" wire:model="verifyChannel" class="input">
+                        <option value="">{{ __('protection.no_channel') }}</option>
+                        @foreach ($channelGroups as $group)
+                            @if ($group['name'])
+                                <optgroup label="{{ $group['name'] }}">
+                            @endif
+                            @foreach ($group['channels'] as $c)
+                                <option value="{{ $c['id'] }}"># {{ $c['name'] }}</option>
+                            @endforeach
+                            @if ($group['name'])
+                                </optgroup>
+                            @endif
+                        @endforeach
+                    </select>
+                    @error('verifyChannel') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+                </div>
+            </div>
+            <p class="text-sm text-dc-faint">{{ __('protection.verify_hint') }}</p>
+            <div class="flex flex-wrap items-center gap-3">
+                <button type="button" wire:click="postVerifyMessage" wire:loading.attr="disabled" class="btn-secondary">
+                    {{ $verifyMessagePosted ? __('protection.post_update') : __('protection.post_message') }}
+                </button>
+                <span class="text-xs text-dc-faint">{{ __('protection.post_hint') }}</span>
+            </div>
+            @unless (config('toxbot.turnstile.site_key') && config('toxbot.turnstile.secret_key'))
+                <p class="rounded-lg border-l-4 border-dc-yellow bg-dc-900 px-3 py-2 text-sm">{{ __('protection.turnstile_missing') }}</p>
+            @endunless
+        </div>
+    </section>
+
+    <section id="links" class="card scroll-mt-20 space-y-5">
+        <div>
+            <h2 class="text-lg font-semibold text-dc-header">{{ __('protection.links_title') }}</h2>
+            <p class="text-sm text-dc-muted">{{ __('protection.links_description') }}</p>
+        </div>
+
+        <div class="grid gap-3 sm:grid-cols-2">
+            <label class="flex items-start gap-3 rounded-lg bg-dc-900 p-3">
+                    <input type="checkbox" wire:model="linkInvites" class="mt-1 accent-[var(--color-accent)]">
+                    <span>
+                        <span class="block text-sm font-medium text-dc-header">{{ __('protection.links_invites') }}</span>
+                        <span class="block text-xs text-dc-muted">{{ __('protection.links_invites_hint') }}</span>
+                    </span>
+                </label>
+            <label class="flex items-start gap-3 rounded-lg bg-dc-900 p-3">
+                    <input type="checkbox" wire:model="linkScam" class="mt-1 accent-[var(--color-accent)]">
+                    <span>
+                        <span class="block text-sm font-medium text-dc-header">{{ __('protection.links_scam') }}</span>
+                        <span class="block text-xs text-dc-muted">{{ __('protection.links_scam_hint') }}</span>
+                    </span>
+                </label>
+        </div>
+
+        <div class="grid gap-4 sm:grid-cols-2">
+            <div>
+                <label class="label" for="link-blocklist">{{ __('protection.links_blocklist') }}</label>
+                <textarea id="link-blocklist" wire:model="linkBlocklist" rows="4" placeholder="example.com" class="input resize-y font-mono text-sm"></textarea>
+                @error('linkBlocklist') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+            </div>
+            <div>
+                <label class="mb-2 flex items-center gap-2 text-sm font-medium text-dc-header" for="link-allowlist">
+                    <input type="checkbox" wire:model="linkAllowlistEnabled" class="accent-[var(--color-accent)]">
+                    {{ __('protection.links_allowlist') }}
+                </label>
+                <textarea id="link-allowlist" wire:model="linkAllowlist" rows="4" placeholder="youtube.com&#10;twitch.tv" class="input resize-y font-mono text-sm"></textarea>
+                @error('linkAllowlist') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+            </div>
+        </div>
+        <p class="text-sm text-dc-faint">{{ __('protection.links_lists_hint') }}</p>
+
+        <div class="max-w-md">
+            <label class="label" for="link-action">{{ __('protection.links_action') }}</label>
+            <select id="link-action" wire:model="linkAction" class="input">
+                @foreach (\App\Models\Guild::LINK_ACTIONS as $action)
+                    <option value="{{ $action }}">{{ __('protection.links_action_'.$action) }}</option>
+                @endforeach
+            </select>
+            @error('linkAction') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+        </div>
+        <p class="text-sm text-dc-faint">{{ __('protection.links_exempt_hint') }}</p>
+    </section>
+
+    <section id="antiraid" class="card scroll-mt-20">
+        <div class="flex items-start gap-4">
+            <div class="flex-1">
+                <h2 class="text-lg font-semibold text-dc-header">{{ __('protection.raid_title') }}</h2>
+                <p class="text-sm text-dc-muted">{{ __('protection.raid_description') }}</p>
+            </div>
+            <label class="relative mt-1 inline-flex shrink-0 cursor-pointer items-center">
+                <input type="checkbox" wire:model="raidEnabled" class="peer sr-only">
+                <span class="h-6 w-10 rounded-full bg-dc-400 transition-colors peer-checked:bg-accent peer-focus-visible:ring-2 peer-focus-visible:ring-accent-fg peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-dc-800"></span>
+                <span class="absolute top-0.5 left-0.5 size-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-4"></span>
+                <span class="sr-only">{{ __('guild.enable', ['name' => __('protection.raid_title')]) }}</span>
+            </label>
+        </div>
+
+        <div x-show="$wire.raidEnabled" x-collapse.duration.200ms class="mt-6 space-y-4">
+            <div class="grid gap-4 sm:grid-cols-3">
+                <div>
+                    <label class="label" for="raid-joins">{{ __('protection.raid_joins') }}</label>
+                    <input id="raid-joins" type="number" min="3" max="100" wire:model="raidJoins" class="input">
+                    @error('raidJoins') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+                </div>
+                <div>
+                    <label class="label" for="raid-seconds">{{ __('protection.raid_seconds') }}</label>
+                    <input id="raid-seconds" type="number" min="5" max="300" wire:model="raidSeconds" class="input">
+                    @error('raidSeconds') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+                </div>
+                <div>
+                    <label class="label" for="raid-minutes">{{ __('protection.raid_minutes') }}</label>
+                    <input id="raid-minutes" type="number" min="1" max="1440" wire:model="raidMinutes" class="input">
+                    @error('raidMinutes') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+                </div>
+            </div>
+            <div class="grid gap-3 sm:grid-cols-2">
+                <label class="flex items-start gap-3 rounded-lg bg-dc-900 p-3">
+                    <input type="checkbox" wire:model="raidLevel" class="mt-1 accent-[var(--color-accent)]">
+                    <span>
+                        <span class="block text-sm font-medium text-dc-header">{{ __('protection.raid_level') }}</span>
+                        <span class="block text-xs text-dc-muted">{{ __('protection.raid_level_hint') }}</span>
+                    </span>
+                </label>
+                <label class="flex items-start gap-3 rounded-lg bg-dc-900 p-3">
+                    <input type="checkbox" wire:model="raidKick" class="mt-1 accent-[var(--color-accent)]">
+                    <span>
+                        <span class="block text-sm font-medium text-dc-header">{{ __('protection.raid_kick') }}</span>
+                        <span class="block text-xs text-dc-muted">{{ __('protection.raid_kick_hint') }}</span>
+                    </span>
+                </label>
+            </div>
+            <p class="text-sm text-dc-faint">{{ __('protection.raid_hint') }}</p>
+        </div>
+
+        <div class="mt-6 max-w-md border-t border-white/5 pt-5">
+            <label class="label" for="min-age">{{ __('protection.min_age') }}</label>
+            <input id="min-age" type="number" min="0" max="365" wire:model="minAccountAge" class="input">
+            @error('minAccountAge') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+            <p class="mt-2 text-sm text-dc-faint">{{ __('protection.min_age_hint') }}</p>
+        </div>
+    </section>
+    @endif
+
     <x-unsaved-bar />
 
     @if ($errors->any())

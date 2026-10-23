@@ -105,6 +105,27 @@ class ServerController extends Controller
                     'active' => $row->modlog_channel !== null,
                     'extra' => trans_choice('moderation.cases_count', ModCase::query()->forGuild($guild)->count()),
                 ],
+                [
+                    'section' => 'protection',
+                    'icon' => 'lock',
+                    'title' => __('protection.verify_title'),
+                    'description' => __('protection.verify_description'),
+                    'active' => (bool) $row->verify_enabled,
+                ],
+                [
+                    'section' => 'protection',
+                    'icon' => 'link',
+                    'title' => __('protection.links_title'),
+                    'description' => __('protection.links_description'),
+                    'active' => $row->link_invites || $row->link_scam || $row->link_allowlist_enabled || $row->link_blocklist !== null,
+                ],
+                [
+                    'section' => 'protection',
+                    'icon' => 'alert',
+                    'title' => __('protection.raid_title'),
+                    'description' => __('protection.raid_description'),
+                    'active' => (bool) $row->raid_enabled || $row->min_account_age > 0,
+                ],
             ],
         ]);
     }

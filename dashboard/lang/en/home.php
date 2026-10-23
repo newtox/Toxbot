@@ -24,7 +24,7 @@ return [
     'f_streams_t' => 'Stream notifications',
     'f_streams_d' => 'Announces when Twitch or YouTube channels go live or upload, with ping role and your own message. Members who stream get a live role.',
     'f_mod_t' => 'Moderation',
-    'f_mod_d' => 'Warnings, timeouts, kicks and bans with numbered cases, a modlog, automatic actions after warnings and member profiles in the dashboard.',
+    'f_mod_d' => 'Warnings, timeouts, kicks and bans with numbered cases, a modlog, automatic actions after warnings and member profiles in the dashboard. Plus verification with captcha, a link filter against invites and scam links, and anti-raid.',
     'f_welcome_t' => 'Welcome & autorole',
     'f_welcome_d' => 'Welcome and goodbye messages with live preview, and a role for every new member.',
     'f_fun_t' => 'Roleplay & fun',
