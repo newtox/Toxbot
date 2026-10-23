@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Guild;
+use App\Models\ModCase;
 use App\Models\StreamSubscription;
 use App\Models\TagGuildBlock;
 use App\Services\Discord;
@@ -96,6 +97,14 @@ class ServerController extends Controller
                     'active' => $row->exists ? (bool) $row->tags_enabled : true,
                     'extra' => trans_choice('overview.blocked_tags', TagGuildBlock::query()->where('guild', $guild)->count()),
                 ],
+                [
+                    'section' => 'moderation',
+                    'icon' => 'shield',
+                    'title' => __('moderation.settings_title'),
+                    'description' => __('moderation.settings_description'),
+                    'active' => $row->modlog_channel !== null,
+                    'extra' => trans_choice('moderation.cases_count', ModCase::query()->forGuild($guild)->count()),
+                ],
             ],
         ]);
     }
@@ -105,6 +114,27 @@ class ServerController extends Controller
         [$found, $guilds] = $this->resolve($request, $guild);
 
         return view('servers.settings', ['guild' => $found, 'guilds' => $guilds, 'section' => $section]);
+    }
+
+    public function members(Request $request, string $guild): View
+    {
+        [$found, $guilds] = $this->resolve($request, $guild);
+
+        return view('servers.members', ['guild' => $found, 'guilds' => $guilds]);
+    }
+
+    public function member(Request $request, string $guild, string $user): View
+    {
+        [$found, $guilds] = $this->resolve($request, $guild);
+
+        return view('servers.member', ['guild' => $found, 'guilds' => $guilds, 'userId' => $user]);
+    }
+
+    public function modlog(Request $request, string $guild): View
+    {
+        [$found, $guilds] = $this->resolve($request, $guild);
+
+        return view('servers.modlog', ['guild' => $found, 'guilds' => $guilds]);
     }
 
     private function resolve(Request $request, string $guild): array

@@ -95,6 +95,14 @@
                                @class(['nav-item', 'nav-item-active' => request()->routeIs('servers.show')])>
                                 <x-icon name="servers" />{{ __('menu.overview') }}
                             </a>
+                            <a href="{{ route('servers.members', $guild['id']) }}"
+                               @class(['nav-item', 'nav-item-active' => request()->routeIs('servers.members', 'servers.member')])>
+                                <x-icon name="users" />{{ __('moderation.members_title') }}
+                            </a>
+                            <a href="{{ route('servers.modlog', $guild['id']) }}"
+                               @class(['nav-item', 'nav-item-active' => request()->routeIs('servers.modlog')])>
+                                <x-icon name="list" />{{ __('moderation.modlog_title') }}
+                            </a>
                         </div>
 
                         <div class="space-y-1.5">

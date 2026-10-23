@@ -24,6 +24,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/servers/{guild}', [ServerController::class, 'show'])
         ->whereNumber('guild')
         ->name('servers.show');
+    Route::get('/servers/{guild}/members', [ServerController::class, 'members'])
+        ->whereNumber('guild')
+        ->name('servers.members');
+    Route::get('/servers/{guild}/members/{user}', [ServerController::class, 'member'])
+        ->whereNumber('guild')
+        ->whereNumber('user')
+        ->name('servers.member');
+    Route::get('/servers/{guild}/modlog', [ServerController::class, 'modlog'])
+        ->whereNumber('guild')
+        ->name('servers.modlog');
     Route::get('/servers/{guild}/{section}', [ServerController::class, 'settings'])
         ->whereNumber('guild')
         ->whereIn('section', GuildSettings::SECTIONS)
@@ -35,4 +45,3 @@ Route::middleware('auth')->group(function () {
 
     Route::view('/admin', 'admin')->middleware(EnsureBotOwner::class)->name('admin');
 });
-
