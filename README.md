@@ -30,6 +30,7 @@ Both share the same MySQL database. Whatever you change in the dashboard (welcom
 - **Tags**: global custom commands with `/tag`, reportable and blockable per server
 - **Stream notifications** for Twitch and YouTube: a message with role ping when a streamer goes live or uploads a video
 - **Live role**: members who stream on Discord get a role while they are live
+- **Moderation**: `/mod warn`, `timeout`, `untimeout`, `kick`, `ban` (also temporary) and `unban`, numbered cases in a modlog channel, DMs to members, automatic actions after a number of warnings, and bans, kicks and timeouts done in Discord or by other bots are logged too
 - **Premium** through Discord subscriptions: double XP and daily reward, premium backgrounds, more tags and tags as embeds, plus a 24 hour XP boost to buy
 - **Server Premium** for one server of the subscriber's choice, included in Premium: more streamers, a custom message and ping role per streamer, game and title filters, and editing or deleting the notification when the stream ends
 
@@ -77,6 +78,12 @@ chown 33:33 /docker_volumes/toxbot-dashboard/backgrounds
 - `PREMIUM_USERS` gives Premium to the listed user IDs without a subscription, for example for testing.
 - For vote rewards, add `https://<dashboard>/webhooks/topgg` as webhook on Top.gg and put the generated secret into `TOPGG_WEBHOOK_SECRET`.
 - Server Premium comes with the user subscription: subscribers pick one server on their profile page in the dashboard. Discord only allows one published subscription per app, so a separate server subscription is optional; if you ever sell one, put its SKU ID into `PREMIUM_GUILD_SKUS`. `PREMIUM_GUILDS` gives Server Premium to the listed server IDs without a subscription.
+
+### Moderation
+
+For moderation, Toxbot needs the permissions **Kick Members**, **Ban Members**, **Moderate Members** and **View Audit Log**. New invites ask for them; on servers where Toxbot already is, give them to its role. Its role has to be above the roles of the members it should moderate.
+
+Actions in the dashboard are written to the `mod_actions` table and carried out by the bot within a few seconds, so DMs, modlog and warning levels work the same as with `/mod`.
 
 ### Stream notifications
 
