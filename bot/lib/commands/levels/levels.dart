@@ -2,11 +2,11 @@ import 'package:http/http.dart' as http;
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
-import 'package:toxbot/config.dart';
-import 'package:toxbot/data/economy.dart' as economy;
-import 'package:toxbot/database.dart';
-import 'package:toxbot/levels.dart';
-import 'package:toxbot/premium.dart';
+import 'package:toxbot/services/economy.dart' as economy;
+import 'package:toxbot/services/levels.dart';
+import 'package:toxbot/services/premium.dart';
+import 'package:toxbot/utils/config.dart';
+import 'package:toxbot/utils/database.dart';
 import 'package:toxbot/utils/functions.dart';
 import 'package:toxbot/utils/reply.dart';
 

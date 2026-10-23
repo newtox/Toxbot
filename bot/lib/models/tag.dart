@@ -1,6 +1,6 @@
 import 'package:mysql1/mysql1.dart';
 import 'package:nyxx/nyxx.dart';
-import 'package:toxbot/database.dart';
+import 'package:toxbot/utils/database.dart';
 
 class Tag {
   final int id;

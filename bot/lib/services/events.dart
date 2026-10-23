@@ -43,10 +43,10 @@ import 'package:toxbot/commands/roleplay/wave.dart';
 import 'package:toxbot/commands/roleplay/wink.dart';
 import 'package:toxbot/commands/roleplay/yeet.dart';
 import 'package:toxbot/commands/tags/tag.dart';
-import 'package:toxbot/config.dart';
-import 'package:toxbot/database.dart';
-import 'package:toxbot/levels.dart';
-import 'package:toxbot/premium.dart';
+import 'package:toxbot/services/levels.dart';
+import 'package:toxbot/services/premium.dart';
+import 'package:toxbot/utils/config.dart';
+import 'package:toxbot/utils/database.dart';
 import 'package:toxbot/utils/functions.dart';
 import 'package:toxbot/utils/reply.dart';
 

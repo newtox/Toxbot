@@ -1,6 +1,6 @@
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:toxbot/database.dart';
+import 'package:toxbot/utils/database.dart';
 
 const latencyTypeConverter = SimpleConverter.fixed(
   elements: ['Basic', 'Real', 'Gateway'],

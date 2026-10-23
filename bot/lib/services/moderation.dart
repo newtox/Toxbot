@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:mysql1/mysql1.dart';
 import 'package:nyxx/nyxx.dart';
-import 'package:toxbot/database.dart';
 import 'package:toxbot/models/mod_case.dart';
 import 'package:toxbot/models/moderation_exception.dart';
+import 'package:toxbot/utils/database.dart';
 import 'package:toxbot/utils/reply.dart';
 
 const modTypes = ['warn', 'timeout', 'untimeout', 'kick', 'ban', 'unban'];

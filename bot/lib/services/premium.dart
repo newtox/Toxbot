@@ -1,7 +1,7 @@
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:toxbot/config.dart';
-import 'package:toxbot/database.dart';
+import 'package:toxbot/utils/config.dart';
+import 'package:toxbot/utils/database.dart';
 
 bool _isActive(Entitlement entitlement) {
   if (entitlement.isDeleted) return false;
