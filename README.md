@@ -88,6 +88,12 @@ The server overview and the Moderation, Protection and Tickets settings have an 
 
 Messages for the whole server (ticket and verify buttons, ticket logs, raid alarms, automatic reasons) use the server language from Welcome & roles. It is taken from the dashboard language of whoever first saves a setting and can be changed there.
 
+### Resetting and deleting data
+
+- The server overview has a **Reset or delete** card. Anyone who can manage the server can reset all settings: modules are turned off, ticket types, warning rules, followed creators and blocked tags are removed, and the ticket and verify messages are deleted. Levels, cases, tickets and appeals stay.
+- Only the server owner can delete all data of the server (settings, levels, cases, tickets with transcripts, appeals, verifications and its Server Premium slot). Toxbot then leaves the server.
+- Users can delete their own data on their profile page. Their ticket messages are kept without name, ID and avatar; moderation cases and purchase records stay.
+
 ### Moderation
 
 For moderation, Toxbot needs the permissions **Kick Members**, **Ban Members**, **Moderate Members** and **View Audit Log**. New invites ask for them; on servers where Toxbot already is, give them to its role. Its role has to be above the roles of the members it should moderate.

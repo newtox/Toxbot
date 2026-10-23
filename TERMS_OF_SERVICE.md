@@ -1,6 +1,6 @@
 # Terms of Service for Toxbot Discord Bot
 
-Last Updated: 22.10.2026
+Last Updated: 24.10.2026
 
 ## Acceptance of Terms
 
@@ -53,6 +53,17 @@ Tags are custom commands that you create and that can be used on every server To
 
 - Server moderators decide about warnings, timeouts, kicks and bans on their server, including actions they take through Toxbot. We are not responsible for these decisions; questions about them go to the server's team.
 - Toxbot keeps a record of these actions (cases) so that moderators of the server can look them up.
+
+## Tickets and Unban Appeals
+
+- Server teams decide about tickets and unban appeals on their server. We are not responsible for these decisions.
+- Messages in a ticket are saved as a transcript when the ticket is closed with Toxbot and can be read by the server's team.
+
+## Deleting Data
+
+- Server administrators can reset all settings of their server in the dashboard. The server owner can delete all data of the server, after which Toxbot leaves the server.
+- You can delete your own data in the dashboard. Credits, levels, backgrounds and tags are lost and cannot be restored; Premium purchases are not refunded by deleting your data.
+- Deleting cannot be undone.
 
 ## Voting Rewards
 
