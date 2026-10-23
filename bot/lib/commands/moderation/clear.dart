@@ -1,6 +1,6 @@
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:toxbot/database.dart';
+import 'package:toxbot/utils/reply.dart';
 
 final clear = ChatCommand('clear', 'Clear messages in your current channel.',
     localizedDescriptions: {
@@ -78,11 +78,5 @@ final clear = ChatCommand('clear', 'Clear messages in your current channel.',
     amount -= toRemove.length;
   }
 
-  await context.respond(
-      MessageBuilder(embeds: [
-        EmbedBuilder(
-            color: DiscordColor.parseHexString('#6dbe33'),
-            description: await getString(context.user, 'clear_cleared'))
-      ]),
-      level: ResponseLevel.hint);
+  await replySuccess(context, 'clear_cleared', level: ResponseLevel.hint);
 });

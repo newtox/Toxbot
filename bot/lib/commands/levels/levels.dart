@@ -8,13 +8,9 @@ import 'package:toxbot/database.dart';
 import 'package:toxbot/levels.dart';
 import 'package:toxbot/premium.dart';
 import 'package:toxbot/utils/functions.dart';
+import 'package:toxbot/utils/reply.dart';
 
 var env = DotEnv(includePlatformEnvironment: true)..load();
-
-const _red = '#c41111';
-const _green = '#6dbe33';
-
-final _noMentions = AllowedMentions(parse: []);
 
 String? get dashboardUrl {
   final url = (env['dashboard_url'] ?? '').trim();
@@ -29,37 +25,6 @@ String? get xpBoostSku {
   return sku.isEmpty ? null : sku;
 }
 
-Future<String> _text(
-  User user,
-  String key, [
-  Map<String, String> replace = const {},
-]) async {
-  var text = await getString(user, key);
-  replace.forEach((from, to) => text = text.replaceAll(from, to));
-  return text;
-}
-
-Future<void> _error(
-  InteractiveContext context,
-  User user,
-  String key, [
-  Map<String, String> replace = const {},
-]) async {
-  await context.respond(
-    MessageBuilder(
-      allowedMentions: _noMentions,
-      embeds: [
-        EmbedBuilder(
-          color: DiscordColor.parseHexString(_red),
-          title: await getString(user, 'global_error'),
-          description: await _text(user, key, replace),
-        ),
-      ],
-    ),
-    level: ResponseLevel.hint,
-  );
-}
-
 Future<void> _unexpected(
   InteractiveContext context,
   User user,
@@ -67,20 +32,8 @@ Future<void> _unexpected(
   Object e,
 ) async {
   print('Error in $command command: $e');
-  await context.respond(
-    MessageBuilder(
-      embeds: [
-        EmbedBuilder(
-          color: DiscordColor.parseHexString(_red),
-          title: await getString(user, 'global_error'),
-          description:
-              await _text(user, 'levels_error', {'&command': command}) +
-                  codeBlock(e.toString(), 'sh'),
-        ),
-      ],
-    ),
-    level: ResponseLevel.hint,
-  );
+  await replyError(context, 'levels_error',
+      replace: {'&command': command}, details: codeBlock(e.toString(), 'sh'));
 }
 
 Future<List<int>?> _fetchCard(
@@ -145,7 +98,7 @@ final profile = ChatCommand(
     final who = target ?? user;
     try {
       if (who.isBot) {
-        await _error(context, user, 'profile_bot');
+        await replyError(context, 'profile_bot');
         return;
       }
 
@@ -153,7 +106,7 @@ final profile = ChatCommand(
       if (card != null) {
         await context.respond(
           MessageBuilder(
-            allowedMentions: _noMentions,
+            allowedMentions: noMentions,
             attachments: [
               AttachmentBuilder(data: card, fileName: 'profile.png'),
             ],
@@ -172,7 +125,7 @@ final profile = ChatCommand(
       final progress = levelFromXp(stats.xp);
       await context.respond(
         MessageBuilder(
-          allowedMentions: _noMentions,
+          allowedMentions: noMentions,
           embeds: [
             EmbedBuilder(
               color: await getUserColorFromDatabase(who.id),
@@ -253,7 +206,7 @@ final daily = ChatCommand(
 
       if (!claimed) {
         final next = DateTime.now().toUtc().add(Duration(seconds: waitSeconds));
-        await _error(context, user, 'daily_wait', {
+        await replyError(context, 'daily_wait', replace: {
           '&time': '<t:${next.millisecondsSinceEpoch ~/ 1000}:R>',
         });
         return;
@@ -263,9 +216,9 @@ final daily = ChatCommand(
         MessageBuilder(
           embeds: [
             EmbedBuilder(
-              color: DiscordColor.parseHexString(_green),
+              color: DiscordColor.parseHexString(successColor),
               title: await getString(user, 'daily_title'),
-              description: await _text(user, 'daily_claimed', {
+              description: await localized(user, 'daily_claimed', {
                 '&amount': formatCredits(amount),
                 '&streak': streak.toString(),
               }),
@@ -315,7 +268,7 @@ final shop = ChatCommand(
       });
 
       if (backgrounds.isEmpty) {
-        await _error(context, user, 'shop_empty');
+        await replyError(context, 'shop_empty');
         return;
       }
 
@@ -331,7 +284,7 @@ final shop = ChatCommand(
       final choice = await context.getSelection<economy.ShopBackground>(
         backgrounds,
         MessageBuilder(
-          allowedMentions: _noMentions,
+          allowedMentions: noMentions,
           embeds: [
             EmbedBuilder(
               color: await getUserColorFromDatabase(user.id),
@@ -339,7 +292,7 @@ final shop = ChatCommand(
               description: '${await getString(user, 'shop_intro')}\n\n'
                   '${backgrounds.map((bg) => '**${bg.name}** · ${status(bg)}').join('\n')}',
               footer: EmbedFooterBuilder(
-                text: await _text(user, 'shop_balance', {
+                text: await localized(user, 'shop_balance', {
                   '&amount': formatCredits(credits),
                 }),
               ),
@@ -370,11 +323,11 @@ final shop = ChatCommand(
       if (choice.premiumOnly && !premium) {
         question = await getString(user, 'shop_needs_premium');
       } else if (isOwned) {
-        question = await _text(user, 'shop_equip_question', {
+        question = await localized(user, 'shop_equip_question', {
           '&name': choice.name,
         });
       } else {
-        question = await _text(user, 'shop_buy_question', {
+        question = await localized(user, 'shop_buy_question', {
           '&name': choice.name,
           '&price': formatCredits(choice.price),
           '&amount': formatCredits(credits),
@@ -382,7 +335,7 @@ final shop = ChatCommand(
       }
 
       final preview = MessageBuilder(
-        allowedMentions: _noMentions,
+        allowedMentions: noMentions,
         embeds: [
           EmbedBuilder(
             color: await getUserColorFromDatabase(user.id),
@@ -430,25 +383,12 @@ final shop = ChatCommand(
         ),
       );
       if (error != null) {
-        await _error(context, user, error);
+        await replyError(context, error);
         return;
       }
 
-      await context.respond(
-        MessageBuilder(
-          embeds: [
-            EmbedBuilder(
-              color: DiscordColor.parseHexString(_green),
-              description: await _text(
-                user,
-                isOwned ? 'shop_equipped' : 'shop_bought',
-                {'&name': choice.name},
-              ),
-            ),
-          ],
-        ),
-        level: ResponseLevel.hint,
-      );
+      await replySuccess(context, isOwned ? 'shop_equipped' : 'shop_bought',
+          replace: {'&name': choice.name}, level: ResponseLevel.hint);
     } on InteractionTimeoutException {
       return;
     } catch (e) {
@@ -525,21 +465,11 @@ final background = ChatCommand(
       });
 
       if (error != null) {
-        await _error(context, user, error, {'&name': name});
+        await replyError(context, error, replace: {'&name': name});
         return;
       }
-      await context.respond(
-        MessageBuilder(
-          allowedMentions: _noMentions,
-          embeds: [
-            EmbedBuilder(
-              color: DiscordColor.parseHexString(_green),
-              description: await _text(user, 'shop_equipped', {'&name': name}),
-            ),
-          ],
-        ),
-        level: ResponseLevel.hint,
-      );
+      await replySuccess(context, 'shop_equipped',
+          replace: {'&name': name}, level: ResponseLevel.hint);
     } catch (e) {
       await _unexpected(context, user, 'background', e);
     }
@@ -606,7 +536,7 @@ final leaderboard = ChatCommand(
 
       await context.respond(
         MessageBuilder(
-          allowedMentions: _noMentions,
+          allowedMentions: noMentions,
           embeds: [
             EmbedBuilder(
               color: await getUserColorFromDatabase(user.id),
@@ -647,7 +577,7 @@ final boost = ChatCommand(
     try {
       final sku = xpBoostSku;
       if (sku == null || context is! InteractionChatContext) {
-        await _error(context, user, 'boost_unavailable');
+        await replyError(context, 'boost_unavailable');
         return;
       }
 
@@ -693,8 +623,8 @@ final boost = ChatCommand(
         MessageBuilder(
           embeds: [
             EmbedBuilder(
-              color: DiscordColor.parseHexString(_green),
-              description: await _text(user, 'boost_active', {
+              color: DiscordColor.parseHexString(successColor),
+              description: await localized(user, 'boost_active', {
                 '&time':
                     '<t:${until.toUtc().millisecondsSinceEpoch ~/ 1000}:R>',
               }),

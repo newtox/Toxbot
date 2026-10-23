@@ -6,6 +6,7 @@ import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:toxbot/database.dart';
 import 'package:toxbot/utils/utils.dart';
+import 'package:toxbot/utils/reply.dart';
 
 final system =
     ChatGroup('system', 'Commands for the developer.', localizedDescriptions: {
@@ -100,15 +101,7 @@ final system =
             .respond(MessageBuilder(content: codeBlock(result, 'dart')));
       }
     } catch (e) {
-      await context.respond(
-          MessageBuilder(embeds: [
-            EmbedBuilder(
-              color: DiscordColor.parseHexString('#c41111'),
-              title: await getString(context.user, 'global_error'),
-              description: codeBlock(e.toString(), 'sh'),
-            )
-          ]),
-          level: ResponseLevel.hint);
+      await replyException(context, e);
       return;
     }
   }),
@@ -171,15 +164,7 @@ final system =
             .respond(MessageBuilder(content: codeBlock(result, 'dart')));
       }
     } catch (e) {
-      await context.respond(
-          MessageBuilder(embeds: [
-            EmbedBuilder(
-              color: DiscordColor.parseHexString('#c41111'),
-              title: await getString(context.user, 'global_error'),
-              description: codeBlock(e.toString(), 'sh'),
-            )
-          ]),
-          level: ResponseLevel.hint);
+      await replyException(context, e);
       return;
     }
   }),
@@ -219,19 +204,8 @@ final system =
         final dbFile = File(dbPath);
 
         if (!dbFile.existsSync()) {
-          await context.respond(
-            MessageBuilder(
-              embeds: [
-                EmbedBuilder(
-                  color: DiscordColor.parseHexString('#c41111'),
-                  title: await getString(context.user, 'global_error'),
-                  description:
-                      'SQLite file not found at the predefined path: $dbPath',
-                )
-              ],
-            ),
-            level: ResponseLevel.hint,
-          );
+          await replyErrorText(
+              context, 'SQLite file not found at the predefined path: $dbPath');
           return;
         }
 
@@ -279,18 +253,7 @@ final system =
           db.close();
         }
       } catch (e) {
-        await context.respond(
-          MessageBuilder(
-            embeds: [
-              EmbedBuilder(
-                color: DiscordColor.parseHexString('#c41111'),
-                title: await getString(context.user, 'global_error'),
-                description: codeBlock(e.toString(), 'sh'),
-              )
-            ],
-          ),
-          level: ResponseLevel.hint,
-        );
+        await replyException(context, e);
       }
     },
   )

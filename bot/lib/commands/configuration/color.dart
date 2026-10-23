@@ -3,6 +3,7 @@ import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:toxbot/database.dart';
+import 'package:toxbot/utils/reply.dart';
 
 var env = DotEnv(includePlatformEnvironment: true)..load();
 
@@ -37,38 +38,19 @@ final color = ChatCommand('color', 'Configure your color for embeds.',
   try {
     final matchesHex = RegExp(r'^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$');
     if (!matchesHex.hasMatch(color)) {
-      await context.respond(
-          MessageBuilder(embeds: [
-            EmbedBuilder(
-                color: DiscordColor.parseHexString('#c41111'),
-                title: await getString(context.user, 'global_error'),
-                description:
-                    await getString(context.user, 'color_invalid_format'))
-          ]),
-          level: ResponseLevel.hint);
+      await replyError(context, 'color_invalid_format');
       return;
     }
 
     await connection.query(
         'UPDATE `users` SET `color` = ? WHERE `id` = ? LIMIT 1;',
         [color, context.user.id.toString()]);
-    await context.respond(MessageBuilder(embeds: [
-      EmbedBuilder(
-          color: DiscordColor.parseHexString('#6dbe33'),
-          description: await getString(context.user, 'color_updated'))
-    ]));
+    await replySuccess(context, 'color_updated');
     return;
   } catch (e) {
     print('Error in color command: $e');
-    await context.respond(
-        MessageBuilder(embeds: [
-          EmbedBuilder(
-              color: DiscordColor.parseHexString('#c41111'),
-              title: await getString(context.user, 'global_error'),
-              description: await getString(context.user, 'color_error') +
-                  codeBlock(e.toString(), 'sh'))
-        ]),
-        level: ResponseLevel.hint);
+    await replyError(context, 'color_error',
+        details: codeBlock(e.toString(), 'sh'));
     return;
   } finally {
     await connection.close();

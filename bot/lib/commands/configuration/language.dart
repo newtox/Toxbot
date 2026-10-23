@@ -3,6 +3,7 @@ import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:toxbot/database.dart';
+import 'package:toxbot/utils/reply.dart';
 
 String languageCodeToString(String code) => code;
 
@@ -97,24 +98,13 @@ final language = ChatCommand('language', 'Set your preferred language.',
       }
     }
 
-    await context.respond(MessageBuilder(embeds: [
-      EmbedBuilder(
-          color: DiscordColor.parseHexString('#6dbe33'),
-          description: (await getString(context.user, 'language_changed'))
-              .replaceAll('&language', selectedLanguage))
-    ]));
+    await replySuccess(context, 'language_changed',
+        replace: {'&language': selectedLanguage});
     return;
   } catch (e) {
     print('Error updating language: $e');
-    await context.respond(
-        MessageBuilder(embeds: [
-          EmbedBuilder(
-              color: DiscordColor.parseHexString('#c41111'),
-              title: await getString(context.user, 'global_error'),
-              description: await getString(context.user, 'language_error') +
-                  codeBlock(e.toString(), 'sh'))
-        ]),
-        level: ResponseLevel.hint);
+    await replyError(context, 'language_error',
+        details: codeBlock(e.toString(), 'sh'));
     return;
   }
 });

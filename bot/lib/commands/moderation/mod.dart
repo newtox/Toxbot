@@ -1,9 +1,7 @@
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:toxbot/database.dart';
 import 'package:toxbot/moderation.dart';
-
-final _noMentions = AllowedMentions(parse: []);
+import 'package:toxbot/utils/reply.dart';
 
 const _userDescription = {
   Locale.da: 'Medlemmet.',
@@ -49,7 +47,8 @@ const _banDurationDescription = {
   Locale.de: 'Dauer für einen befristeten Bann, z. B. 7d. Leer = dauerhaft.',
   Locale.enUs: 'Duration of a temporary ban, e.g. 7d. Empty = permanent.',
   Locale.esEs: 'Duración de un baneo temporal, p. ej. 7d. Vacío = permanente.',
-  Locale.fr: 'Durée d\'un bannissement temporaire, par ex. 7d. Vide = permanent.',
+  Locale.fr:
+      'Durée d\'un bannissement temporaire, par ex. 7d. Vide = permanent.',
   Locale.ru: 'Срок временного бана, например 7d. Пусто = навсегда.',
   Locale.hi: 'अस्थायी बैन की अवधि, जैसे 7d। खाली = स्थायी।',
   Locale.zhCn: '临时封禁的时长，例如 7d。留空 = 永久。',
@@ -96,20 +95,6 @@ const _numberDescription = {
   Locale.ko: '케이스 번호.',
 };
 
-Future<void> _reply(ChatContext context, String key,
-    [Map<String, String> replace = const {}, bool error = false]) async {
-  await context.respond(
-    MessageBuilder(allowedMentions: _noMentions, embeds: [
-      EmbedBuilder(
-        color: DiscordColor.parseHexString(error ? '#c41111' : '#6dbe33'),
-        title: error ? await getString(context.user, 'global_error') : null,
-        description: await modText(context.user, key, replace),
-      )
-    ]),
-    level: error ? ResponseLevel.hint : ResponseLevel.public,
-  );
-}
-
 Future<void> _run(
   ChatContext context, {
   required String type,
@@ -137,15 +122,15 @@ Future<void> _run(
       deleteDays: deleteDays,
     );
 
-    await _reply(context, 'mod_done_$type', {
+    await replySuccess(context, 'mod_done_$type', replace: {
       '&user': modCase.userName ?? targetId.toString(),
       '&number': '${modCase.number}',
     });
   } on ModerationException catch (e) {
-    await _reply(context, e.key, e.replace, true);
+    await replyError(context, e.key, replace: e.replace);
   } catch (e) {
     print('Error in /mod $type: $e');
-    await _reply(context, 'mod_error_unknown', const {}, true);
+    await replyError(context, 'mod_error_unknown');
   }
 }
 
@@ -168,12 +153,10 @@ final _warn = ChatCommand(
     Locale.ko: '멤버에게 경고합니다.',
   },
   checks: [GuildCheck.all(), PermissionsCheck(Permissions.moderateMembers)],
-  (
-    ChatContext context,
-    @Description('The member.', _userDescription) Member member,
-    [@Description('The reason, shown in the modlog.', _reasonDescription)
-    String? reason]
-  ) =>
+  (ChatContext context,
+          @Description('The member.', _userDescription) Member member,
+          [@Description('The reason, shown in the modlog.', _reasonDescription)
+          String? reason]) =>
       _run(context, type: 'warn', targetId: member.id, reason: reason),
 );
 
@@ -193,17 +176,15 @@ final _timeout = ChatCommand(
     Locale.ko: '멤버를 타임아웃합니다.',
   },
   checks: [GuildCheck.all(), PermissionsCheck(Permissions.moderateMembers)],
-  (
-    ChatContext context,
-    @Description('The member.', _userDescription) Member member,
-    @Description('Duration, e.g. 10m, 2h, 7d.', _durationDescription)
-    String duration,
-    [@Description('The reason, shown in the modlog.', _reasonDescription)
-    String? reason]
-  ) async {
+  (ChatContext context,
+      @Description('The member.', _userDescription) Member member,
+      @Description('Duration, e.g. 10m, 2h, 7d.', _durationDescription)
+      String duration,
+      [@Description('The reason, shown in the modlog.', _reasonDescription)
+      String? reason]) async {
     final parsed = _durationOrError(duration);
     if (parsed == null) {
-      await _reply(context, 'mod_error_duration', const {}, true);
+      await replyError(context, 'mod_error_duration');
       return;
     }
     await _run(context,
@@ -227,12 +208,10 @@ final _untimeout = ChatCommand(
     Locale.ko: '멤버의 타임아웃을 해제합니다.',
   },
   checks: [GuildCheck.all(), PermissionsCheck(Permissions.moderateMembers)],
-  (
-    ChatContext context,
-    @Description('The member.', _userDescription) Member member,
-    [@Description('The reason, shown in the modlog.', _reasonDescription)
-    String? reason]
-  ) =>
+  (ChatContext context,
+          @Description('The member.', _userDescription) Member member,
+          [@Description('The reason, shown in the modlog.', _reasonDescription)
+          String? reason]) =>
       _run(context, type: 'untimeout', targetId: member.id, reason: reason),
 );
 
@@ -252,12 +231,10 @@ final _kick = ChatCommand(
     Locale.ko: '멤버를 서버에서 추방합니다.',
   },
   checks: [GuildCheck.all(), PermissionsCheck(Permissions.kickMembers)],
-  (
-    ChatContext context,
-    @Description('The member.', _userDescription) Member member,
-    [@Description('The reason, shown in the modlog.', _reasonDescription)
-    String? reason]
-  ) =>
+  (ChatContext context,
+          @Description('The member.', _userDescription) Member member,
+          [@Description('The reason, shown in the modlog.', _reasonDescription)
+          String? reason]) =>
       _run(context, type: 'kick', targetId: member.id, reason: reason),
 );
 
@@ -277,21 +254,19 @@ final _ban = ChatCommand(
     Locale.ko: '사용자를 차단합니다. 기간을 정할 수도 있습니다.',
   },
   checks: [GuildCheck.all(), PermissionsCheck(Permissions.banMembers)],
-  (
-    ChatContext context,
-    @Description('The member.', _userDescription) User user,
-    [@Description('The reason, shown in the modlog.', _reasonDescription)
-    String? reason,
-    @Description('Duration of a temporary ban, e.g. 7d. Empty = permanent.',
-        _banDurationDescription)
-    String? duration,
-    @Description('Delete messages from the last days (0-7).', _deleteDescription)
-    @UseConverter(IntConverter(min: 0, max: 7))
-    int? deleteMessages]
-  ) async {
+  (ChatContext context, @Description('The member.', _userDescription) User user,
+      [@Description('The reason, shown in the modlog.', _reasonDescription)
+      String? reason,
+      @Description('Duration of a temporary ban, e.g. 7d. Empty = permanent.',
+          _banDurationDescription)
+      String? duration,
+      @Description(
+          'Delete messages from the last days (0-7).', _deleteDescription)
+      @UseConverter(IntConverter(min: 0, max: 7))
+      int? deleteMessages]) async {
     final parsed = _durationOrError(duration);
     if (duration != null && duration.trim().isNotEmpty && parsed == null) {
-      await _reply(context, 'mod_error_duration', const {}, true);
+      await replyError(context, 'mod_error_duration');
       return;
     }
     await _run(context,
@@ -319,17 +294,15 @@ final _unban = ChatCommand(
     Locale.ko: '차단을 해제합니다.',
   },
   checks: [GuildCheck.all(), PermissionsCheck(Permissions.banMembers)],
-  (
-    ChatContext context,
-    @Description('User ID of the banned person.', _userIdDescription)
-    String userId,
-    [@Description('The reason, shown in the modlog.', _reasonDescription)
-    String? reason]
-  ) async {
+  (ChatContext context,
+      @Description('User ID of the banned person.', _userIdDescription)
+      String userId,
+      [@Description('The reason, shown in the modlog.', _reasonDescription)
+      String? reason]) async {
     final id = Snowflake.parse(
         int.tryParse(userId.replaceAll(RegExp(r'[^0-9]'), '')) ?? 0);
     if (id.value == 0) {
-      await _reply(context, 'mod_error_not_banned', const {}, true);
+      await replyError(context, 'mod_error_not_banned');
       return;
     }
     await _run(context, type: 'unban', targetId: id, reason: reason);
@@ -358,25 +331,25 @@ final _cases = ChatCommand(
   ) async {
     final cases = await casesFor(context.guild!.id, userId: user.id);
     if (cases.isEmpty) {
-      await _reply(context, 'mod_cases_none');
+      await replySuccess(context, 'mod_cases_none');
       return;
     }
 
     final lines = <String>[];
     for (final modCase in cases) {
-      final type = await modText(context.user, 'mod_type_${modCase.type}');
+      final type = await localized(context.user, 'mod_type_${modCase.type}');
       final reason =
-          modCase.reason ?? await modText(context.user, 'mod_no_reason');
+          modCase.reason ?? await localized(context.user, 'mod_no_reason');
       final short = reason.length > 80 ? '${reason.substring(0, 77)}…' : reason;
       lines.add(
           '**#${modCase.number}** · $type · <t:${modCase.createdAt.millisecondsSinceEpoch ~/ 1000}:d>\n$short');
     }
 
     await context.respond(
-      MessageBuilder(allowedMentions: _noMentions, embeds: [
+      MessageBuilder(allowedMentions: noMentions, embeds: [
         EmbedBuilder(
           color: DiscordColor.parseHexString('#5865f2'),
-          title: await modText(context.user, 'mod_cases_title',
+          title: await localized(context.user, 'mod_cases_title',
               {'&user': user.globalName ?? user.username}),
           description: lines.join('\n\n'),
         )
@@ -410,12 +383,13 @@ final _case = ChatCommand(
   ) async {
     final modCase = await caseByNumber(context.guild!.id, number);
     if (modCase == null) {
-      await _reply(context, 'mod_case_not_found', {'&number': '$number'}, true);
+      await replyError(context, 'mod_case_not_found',
+          replace: {'&number': '$number'});
       return;
     }
     await context.respond(
       MessageBuilder(
-          allowedMentions: _noMentions,
+          allowedMentions: noMentions,
           embeds: [await caseEmbed(modCase, context.user)]),
       level: ResponseLevel.hint,
     );
@@ -429,8 +403,10 @@ final mod = ChatGroup(
     Locale.da: 'Moderation: advarsler, timeouts, kicks, bans og sager.',
     Locale.de: 'Moderation: Verwarnungen, Timeouts, Kicks, Banns und Fälle.',
     Locale.enUs: 'Moderation: warnings, timeouts, kicks, bans and cases.',
-    Locale.esEs: 'Moderación: advertencias, aislamientos, expulsiones, baneos y casos.',
-    Locale.fr: 'Modération : avertissements, exclusions, expulsions, bannissements et cas.',
+    Locale.esEs:
+        'Moderación: advertencias, aislamientos, expulsiones, baneos y casos.',
+    Locale.fr:
+        'Modération : avertissements, exclusions, expulsions, bannissements et cas.',
     Locale.ru: 'Модерация: предупреждения, тайм-ауты, кики, баны и случаи.',
     Locale.hi: 'मॉडरेशन: चेतावनी, टाइमआउट, किक, बैन और केस।',
     Locale.zhCn: '管理：警告、禁言、踢出、封禁和案例。',

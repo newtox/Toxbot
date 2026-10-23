@@ -48,6 +48,7 @@ import 'package:toxbot/database.dart';
 import 'package:toxbot/levels.dart';
 import 'package:toxbot/premium.dart';
 import 'package:toxbot/utils/functions.dart';
+import 'package:toxbot/utils/reply.dart';
 
 var env = DotEnv(includePlatformEnvironment: true)..load();
 
@@ -320,28 +321,12 @@ void setupErrorHandler(CommandsPlugin commands) async {
   commands.onCommandError.listen((error) async {
     if (error is ConverterFailedException) {
       if (error.context case CommandContext context) {
-        await context.respond(
-            MessageBuilder(embeds: [
-              EmbedBuilder(
-                color: DiscordColor.parseHexString('#c41111'),
-                title: await getString(context.user, 'global_error'),
-                description: codeBlock(error.input.remaining, 'sh'),
-              )
-            ]),
-            level: ResponseLevel.hint);
+        await replyErrorText(context, codeBlock(error.input.remaining, 'sh'));
         return;
       }
     } else if (error is CheckFailedException) {
       if (error.context case CommandContext context) {
-        await context.respond(
-            MessageBuilder(embeds: [
-              EmbedBuilder(
-                color: DiscordColor.parseHexString('#c41111'),
-                title: await getString(context.user, 'global_error'),
-                description: codeBlock(error.toString(), 'sh'),
-              )
-            ]),
-            level: ResponseLevel.hint);
+        await replyException(context, error);
         return;
       }
     } else {
