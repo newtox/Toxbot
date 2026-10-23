@@ -229,6 +229,8 @@ class GuildSettings extends Component
         $roleIds = $allRoles->where('assignable', true)->pluck('id')->all();
         $mentionableRoleIds = $allRoles->pluck('id')->all();
 
+        $this->forgetDeletedChannels(array_column($discord->guildChannels($this->guildId), 'id'));
+
         $max = Guild::MAX_MESSAGE_LENGTH;
 
         $messageRules = fn (bool $enabled) => $enabled
@@ -522,6 +524,15 @@ class GuildSettings extends Component
                     : 'https://cdn.discordapp.com/embed/avatars/0.png',
             ],
         ]);
+    }
+
+    private function forgetDeletedChannels(array $existingIds): void
+    {
+        foreach (['welcomeChannel', 'byeChannel', 'levelupChannel', 'streamChannel', 'modlogChannel', 'verifyChannel', 'ticketCategory', 'ticketLogChannel', 'ticketPanelChannel'] as $property) {
+            if ($this->{$property} && ! in_array($this->{$property}, $existingIds, true)) {
+                $this->{$property} = null;
+            }
+        }
     }
 
     private function categories(Discord $discord): array

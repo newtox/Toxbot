@@ -131,6 +131,26 @@ class TicketsTest extends TestCase
             ->assertHasErrors(['ticketCategory', 'ticketLimit']);
     }
 
+    public function test_forgets_channels_that_were_deleted_in_discord(): void
+    {
+        $this->login();
+        Guild::create(['id' => self::GUILD, 'ticket_category' => '98', 'ticket_panel_channel' => '99', 'ticket_log_channel' => '12', 'ticket_panel_message_id' => '700']);
+
+        $this->settings()->call('save')->assertHasNoErrors();
+
+        $row = Guild::find(self::GUILD);
+        $this->assertNull($row->ticket_category);
+        $this->assertNull($row->ticket_panel_channel);
+        $this->assertSame('12', $row->ticket_log_channel);
+
+        $this->settings()
+            ->set('ticketCategory', '10')
+            ->set('ticketPanelChannel', '11')
+            ->call('postTicketPanel')
+            ->assertHasNoErrors()
+            ->assertSet('ticketNotice', __('tickets.panel_needs_type'));
+    }
+
     public function test_manages_ticket_types(): void
     {
         $this->login();
