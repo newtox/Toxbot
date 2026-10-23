@@ -2,5 +2,7 @@
 .dart_tool/
 .packages
 build/
-.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
 .idea/
