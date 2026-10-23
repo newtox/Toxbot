@@ -37,7 +37,7 @@ class AutoSetup
 
     private const ADMINISTRATOR = 0x8;
 
-    private const THREADS = (1 << 35) | (1 << 36);
+    private const READ_ONLY = 0x800 | 0x40 | (1 << 35) | (1 << 36) | (1 << 38);
 
     private const BOT_ACCESS = self::VIEW | self::SEND | self::EMBED | self::ATTACH | self::HISTORY;
 
@@ -185,7 +185,7 @@ class AutoSetup
         $overwrites = [
             ['id' => $this->guildId, 'type' => self::ROLE, 'allow' => '0', 'deny' => (string) self::VIEW],
             ['id' => $this->botId, 'type' => self::MEMBER, 'allow' => (string) self::BOT_ACCESS, 'deny' => '0'],
-            ['id' => $role, 'type' => self::ROLE, 'allow' => (string) (self::VIEW | self::HISTORY), 'deny' => (string) (self::SEND | self::THREADS)],
+            ['id' => $role, 'type' => self::ROLE, 'allow' => (string) (self::VIEW | self::HISTORY), 'deny' => (string) self::READ_ONLY],
             ...$this->teamOverwrites(),
         ];
         $reused = $this->found($row->verify_channel, 'channel_verify', self::TEXT) !== null;
@@ -195,7 +195,7 @@ class AutoSetup
         }
 
         if ($reused) {
-            $this->permit($channel, $role, self::VIEW | self::HISTORY, self::SEND | self::THREADS);
+            $this->permit($channel, $role, self::VIEW | self::HISTORY, self::READ_ONLY);
         }
 
         $hidden = 0;
@@ -348,7 +348,7 @@ class AutoSetup
     private function readOnlyOverwrites(): array
     {
         return [
-            ['id' => $this->guildId, 'type' => self::ROLE, 'allow' => (string) (self::VIEW | self::HISTORY), 'deny' => (string) (self::SEND | self::THREADS)],
+            ['id' => $this->guildId, 'type' => self::ROLE, 'allow' => (string) (self::VIEW | self::HISTORY), 'deny' => (string) self::READ_ONLY],
             ['id' => $this->botId, 'type' => self::MEMBER, 'allow' => (string) self::BOT_ACCESS, 'deny' => '0'],
         ];
     }

@@ -166,7 +166,7 @@ class AutoSetupTest extends TestCase
         $this->assertSame((string) 0x400, collect($modlog['permission_overwrites'])->firstWhere('id', self::GUILD)['deny']);
         $this->assertNotNull(collect($modlog['permission_overwrites'])->firstWhere('id', '30'));
         $this->assertNotNull(collect($modlog['permission_overwrites'])->firstWhere('id', self::BOT));
-        $this->assertSame((string) (0x800 | (1 << 35) | (1 << 36)), collect($this->channelNamed('tickets')['permission_overwrites'])->firstWhere('id', self::GUILD)['deny']);
+        $this->assertSame((string) (0x800 | 0x40 | (1 << 35) | (1 << 36) | (1 << 38)), collect($this->channelNamed('tickets')['permission_overwrites'])->firstWhere('id', self::GUILD)['deny']);
 
         foreach (['40', '41', '42', $category['id'], $modlog['id']] as $hidden) {
             Http::assertSent(fn (Request $r) => $r->method() === 'PUT'
