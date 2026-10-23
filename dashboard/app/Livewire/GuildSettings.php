@@ -4,16 +4,16 @@ namespace App\Livewire;
 
 use App\Models\Guild;
 use App\Models\TagGuildBlock;
-use App\Models\TicketType;
 use App\Services\Discord;
 use App\Services\GuildAccess;
 use App\Services\ScamList;
+use App\Services\SetupMessages;
 use App\Support\DomainList;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Locked;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class GuildSettings extends Component
@@ -200,6 +200,13 @@ class GuildSettings extends Component
         $this->resetValidation();
     }
 
+    #[On('auto-setup-done')]
+    public function reloadAfterAutoSetup(): void
+    {
+        app(Discord::class)->forgetGuildCache($this->guildId);
+        $this->loadFromDatabase();
+    }
+
     public function discard(): void
     {
         $this->loadFromDatabase();
@@ -365,7 +372,7 @@ class GuildSettings extends Component
         $this->dispatch('saved');
     }
 
-    public function postVerifyMessage(): void
+    public function postVerifyMessage(SetupMessages $messages): void
     {
         abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
 
@@ -376,38 +383,8 @@ class GuildSettings extends Component
             return;
         }
 
-        $discord = app(Discord::class);
-        $payload = [
-            'embeds' => [[
-                'color' => 0x6DBE33,
-                'title' => __('protection.message_title', ['server' => $this->guildName]),
-                'description' => __('protection.message_text'),
-            ]],
-            'components' => [[
-                'type' => 1,
-                'components' => [[
-                    'type' => 2,
-                    'style' => 5,
-                    'label' => __('protection.message_button'),
-                    'url' => route('verify.show', $this->guildId),
-                ]],
-            ]],
-            'allowed_mentions' => ['parse' => []],
-        ];
-
         try {
-            $messageId = null;
-            if ($row->verify_message_id) {
-                try {
-                    $discord->editMessage($row->verify_channel, $row->verify_message_id, $payload);
-                    $messageId = $row->verify_message_id;
-                } catch (RequestException $e) {
-                    if ($e->response->status() !== 404) {
-                        throw $e;
-                    }
-                }
-            }
-            $messageId ??= $discord->sendMessage($row->verify_channel, $payload);
+            $messages->postVerifyMessage($row, $this->guildName);
         } catch (RequestException $e) {
             Log::warning('Posting the verification message failed', ['guild' => $this->guildId, 'status' => $e->response->status()]);
             $this->protectionNotice = __('protection.post_failed');
@@ -415,7 +392,6 @@ class GuildSettings extends Component
             return;
         }
 
-        $row->forceFill(['verify_message_id' => $messageId])->save();
         $this->verifyMessagePosted = true;
         $this->protectionNotice = __('protection.post_done');
     }
@@ -441,18 +417,17 @@ class GuildSettings extends Component
             : __('protection.scam_check_clean', ['domain' => $host]);
     }
 
-    public function postTicketPanel(): void
+    public function postTicketPanel(SetupMessages $messages): void
     {
         abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
 
         $this->save();
 
         $row = Guild::forDiscordId($this->guildId);
-        $types = TicketType::query()->where('guild', $this->guildId)->orderBy('position')->orderBy('id')->get();
         $missing = match (true) {
             ! $row->ticket_category => 'panel_needs_category',
             ! $row->ticket_panel_channel => 'panel_needs_channel',
-            $types->isEmpty() => 'panel_needs_type',
+            $messages->ticketTypes($this->guildId)->isEmpty() => 'panel_needs_type',
             default => null,
         };
         if ($missing) {
@@ -461,44 +436,8 @@ class GuildSettings extends Component
             return;
         }
 
-        $payload = [
-            'embeds' => [[
-                'color' => 0x5865F2,
-                'title' => __('tickets.panel_title'),
-                'description' => __('tickets.panel_text'),
-                'fields' => $types->map(fn (TicketType $type) => [
-                    'name' => trim(($type->emoji && ! str_starts_with($type->emoji, '<') ? $type->emoji.' ' : '').$type->name),
-                    'value' => Str::limit($type->description ?: "\u{200B}", 1000),
-                    'inline' => false,
-                ])->all(),
-            ]],
-            'components' => [[
-                'type' => 1,
-                'components' => $types->map(fn (TicketType $type) => array_filter([
-                    'type' => 2,
-                    'style' => 1,
-                    'label' => Str::limit($type->name, 80, ''),
-                    'custom_id' => 'ticket_open:'.$type->id,
-                    'emoji' => $this->buttonEmoji($type->emoji),
-                ]))->all(),
-            ]],
-            'allowed_mentions' => ['parse' => []],
-        ];
-
-        $discord = app(Discord::class);
         try {
-            $messageId = null;
-            if ($row->ticket_panel_message_id) {
-                try {
-                    $discord->editMessage($row->ticket_panel_channel, $row->ticket_panel_message_id, $payload);
-                    $messageId = $row->ticket_panel_message_id;
-                } catch (RequestException $e) {
-                    if ($e->response->status() !== 404) {
-                        throw $e;
-                    }
-                }
-            }
-            $messageId ??= $discord->sendMessage($row->ticket_panel_channel, $payload);
+            $messages->postTicketPanel($row);
         } catch (RequestException $e) {
             Log::warning('Posting the ticket panel failed', ['guild' => $this->guildId, 'status' => $e->response->status()]);
             $this->ticketNotice = __('protection.post_failed');
@@ -506,7 +445,6 @@ class GuildSettings extends Component
             return;
         }
 
-        $row->forceFill(['ticket_panel_message_id' => $messageId])->save();
         $this->ticketPanelPosted = true;
         $this->ticketNotice = __('tickets.panel_done');
     }
@@ -584,18 +522,6 @@ class GuildSettings extends Component
                     : 'https://cdn.discordapp.com/embed/avatars/0.png',
             ],
         ]);
-    }
-
-    private function buttonEmoji(?string $emoji): ?array
-    {
-        if (! $emoji) {
-            return null;
-        }
-        if (preg_match('/^<(a?):(\w+):(\d+)>$/', $emoji, $m)) {
-            return ['id' => $m[3], 'name' => $m[2], 'animated' => $m[1] === 'a'];
-        }
-
-        return ['name' => $emoji];
     }
 
     private function categories(Discord $discord): array

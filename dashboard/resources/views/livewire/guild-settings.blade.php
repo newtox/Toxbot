@@ -226,6 +226,8 @@
     @endif
 
     @if ($section === 'moderation')
+    <livewire:auto-setup :guild-id="$guildId" :guild-name="$guildName" :areas="['moderation']" :compact="true" :key="'auto-setup-moderation'" />
+
     <section id="moderation" class="card scroll-mt-20 space-y-5">
         <div>
             <h2 class="text-lg font-semibold text-dc-header">{{ __('moderation.settings_title') }}</h2>
@@ -272,6 +274,8 @@
     @endif
 
     @if ($section === 'protection')
+    <livewire:auto-setup :guild-id="$guildId" :guild-name="$guildName" :areas="['protection', 'verification']" :compact="true" :key="'auto-setup-protection'" />
+
     @if ($protectionNotice)
         <p class="rounded-lg border-l-4 border-accent bg-dc-800 px-4 py-3 text-sm" role="status">{{ $protectionNotice }}</p>
     @endif
@@ -487,6 +491,8 @@
     @endif
 
     @if ($section === 'tickets')
+    <livewire:auto-setup :guild-id="$guildId" :guild-name="$guildName" :areas="['tickets']" :compact="true" :key="'auto-setup-tickets'" />
+
     @if ($ticketNotice)
         <p class="rounded-lg border-l-4 border-accent bg-dc-800 px-4 py-3 text-sm" role="status">{{ $ticketNotice }}</p>
     @endif
