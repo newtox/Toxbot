@@ -32,23 +32,27 @@
             @foreach ($subscriptions as $subscription)
                 @php($source = $subscription->source)
                 <li wire:key="stream-{{ $subscription->id }}" class="p-3">
-                    <div class="flex flex-wrap items-center gap-3">
-                        @if ($source->avatar_url)
-                            <img src="{{ $source->avatar_url }}" alt="" class="size-8 rounded-full">
-                        @else
-                            <span class="grid size-8 place-items-center rounded-full bg-dc-600 text-xs font-semibold">{{ mb_substr($source->name, 0, 1) }}</span>
-                        @endif
-                        <div class="min-w-0 flex-1">
-                            <a href="{{ $source->url() }}" target="_blank" rel="noopener" class="truncate font-medium text-dc-header hover:underline">{{ $source->name }}</a>
-                            <div class="text-xs text-dc-muted">
-                                {{ $source->platform === 'twitch' ? 'Twitch' : 'YouTube' }}
-                                @if ($source->live_item) · <span class="font-semibold text-dc-red">LIVE</span> @endif
-                                @if ($activeIds !== null && ! in_array((int) $subscription->id, $activeIds, true)) · <span class="font-semibold text-dc-yellow" title="{{ __('streams.paused_hint', ['limit' => config('toxbot.streams.free_limit')]) }}">{{ __('streams.paused') }}</span> @endif
+                    <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
+                        <div class="flex min-w-0 flex-1 basis-56 items-center gap-3">
+                            @if ($source->avatar_url)
+                                <img src="{{ $source->avatar_url }}" alt="" class="size-8 shrink-0 rounded-full">
+                            @else
+                                <span class="grid size-8 shrink-0 place-items-center rounded-full bg-dc-600 text-xs font-semibold">{{ mb_substr($source->name, 0, 1) }}</span>
+                            @endif
+                            <div class="min-w-0">
+                                <a href="{{ $source->url() }}" target="_blank" rel="noopener" class="block truncate font-medium text-dc-header hover:underline">{{ $source->name }}</a>
+                                <div class="text-xs text-dc-muted">
+                                    {{ $source->platform === 'twitch' ? 'Twitch' : 'YouTube' }}
+                                    @if ($source->live_item) · <span class="font-semibold text-dc-red">LIVE</span> @endif
+                                    @if ($activeIds !== null && ! in_array((int) $subscription->id, $activeIds, true)) · <span class="font-semibold text-dc-yellow" title="{{ __('streams.paused_hint', ['limit' => config('toxbot.streams.free_limit')]) }}">{{ __('streams.paused') }}</span> @endif
+                                </div>
                             </div>
                         </div>
-                        <button type="button" wire:click="edit({{ $subscription->id }})" class="btn-secondary px-3 py-1.5">{{ __('streams.settings') }}</button>
-                        <button type="button" wire:click="remove({{ $subscription->id }})" wire:confirm="{{ __('streams.confirm_remove', ['name' => $source->name]) }}"
-                                class="btn px-3 py-1.5 text-dc-red hover:bg-dc-red hover:text-white">{{ __('streams.remove') }}</button>
+                        <div class="ml-auto flex shrink-0 gap-2">
+                            <button type="button" wire:click="edit({{ $subscription->id }})" class="btn-secondary px-3 py-1.5">{{ __('streams.settings') }}</button>
+                            <button type="button" wire:click="remove({{ $subscription->id }})" wire:confirm="{{ __('streams.confirm_remove', ['name' => $source->name]) }}"
+                                    class="btn px-3 py-1.5 text-dc-red hover:bg-dc-red hover:text-white">{{ __('streams.remove') }}</button>
+                        </div>
                     </div>
 
                     @if ($editingId === $subscription->id)
