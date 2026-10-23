@@ -30,7 +30,7 @@
     @endif
 
     @if ($withoutBot)
-        <h2 class="mt-12 mb-4 text-xs font-bold tracking-wide text-dc-muted uppercase">{{ __('servers.without_bot') }}</h2>
+        <h2 class="mt-12 mb-4 text-lg font-semibold text-dc-header">{{ __('servers.without_bot') }}</h2>
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             @foreach ($withoutBot as $guild)
                 <div class="card flex items-center gap-4 opacity-70 transition hover:opacity-100">

@@ -19,21 +19,19 @@
 @endphp
 
 <x-layouts.app :description="__('home.hero_text')">
-    <section class="relative isolate overflow-hidden">
-        <div class="pointer-events-none absolute inset-x-0 -top-40 -z-10 mx-auto h-[28rem] max-w-3xl rounded-full bg-accent/20 blur-3xl"></div>
-
-        <div class="mx-auto flex max-w-6xl flex-col items-center gap-12 px-4 pt-12 pb-20 md:pt-20 lg:flex-row lg:gap-16">
-            <div class="flex-1 text-center lg:text-left">
-                <span class="inline-flex items-center gap-2 rounded-full bg-dc-800 px-3 py-1 text-sm font-medium text-dc-muted ring-1 ring-white/5">
+    <section>
+        <div class="mx-auto grid max-w-6xl items-center gap-12 px-4 pt-12 pb-16 md:pt-20 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
+            <div>
+                <p class="flex items-center gap-2 text-sm font-medium text-dc-muted">
                     <span class="size-2 rounded-full bg-accent"></span>{{ __('home.hero_badge') }}
-                </span>
-                <h1 class="mt-6 text-4xl leading-[1.08] font-bold tracking-tight text-balance text-dc-header md:text-6xl">
+                </p>
+                <h1 class="mt-5 text-[2.6rem] leading-[1.02] font-bold text-balance text-dc-header md:text-7xl">
                     {{ __('home.hero_title') }}
                 </h1>
-                <p class="mx-auto mt-6 max-w-[54ch] text-lg text-pretty text-dc-muted lg:mx-0">
+                <p class="mt-6 max-w-[52ch] text-lg text-pretty text-dc-muted">
                     {{ __('home.hero_text') }}
                 </p>
-                <div class="mt-9 flex flex-wrap justify-center gap-3 lg:justify-start">
+                <div class="mt-9 flex flex-wrap gap-3">
                     <a href="{{ $inviteUrl }}" target="_blank" rel="noopener" class="btn-primary px-6 py-3 text-base">
                         <x-discord-logo />{{ __('home.invite') }}
                     </a>
@@ -42,46 +40,41 @@
                     </a>
                 </div>
                 <p class="mt-3 text-xs text-dc-faint">{{ __('login.privacy') }}</p>
+
+                @if ($statItems)
+                    <dl class="mt-10 flex flex-wrap gap-x-10 gap-y-4">
+                        @foreach ($statItems as $label => $value)
+                            <div>
+                                <dd class="font-display text-3xl font-bold text-dc-header tabular-nums">{{ number_format($value, 0, '', ' ') }}</dd>
+                                <dt class="text-sm text-dc-muted">{{ __('home.'.$label) }}</dt>
+                            </div>
+                        @endforeach
+                    </dl>
+                @endif
             </div>
 
-            <div class="relative shrink-0 max-lg:order-first">
-                <div class="absolute inset-0 -z-10 rounded-full bg-accent/30 blur-2xl"></div>
+            <div class="hidden justify-self-center lg:block">
                 @if ($botAvatar)
-                    <img src="{{ str_replace('size=128', 'size=512', $botAvatar) }}" alt="" class="size-32 rounded-full ring-8 ring-dc-800 lg:size-64">
+                    <img src="{{ str_replace('size=128', 'size=512', $botAvatar) }}" alt="" class="size-72 rounded-full border border-white/10">
                 @else
-                    <div class="grid size-32 place-items-center rounded-full bg-accent text-6xl font-bold text-on-accent ring-8 ring-dc-800 lg:size-64 lg:text-8xl">t</div>
+                    <div class="grid size-72 place-items-center rounded-full bg-accent font-display text-9xl font-bold text-on-accent">t</div>
                 @endif
             </div>
         </div>
-
-        @if ($statItems)
-            <div class="mx-auto max-w-6xl px-4 pb-16">
-                <dl class="grid grid-cols-3 gap-2 sm:gap-3">
-                    @foreach ($statItems as $label => $value)
-                        <div class="tile text-center">
-                            <dd class="text-xl font-bold text-dc-header tabular-nums sm:text-3xl">{{ number_format($value, 0, '', ' ') }}</dd>
-                            <dt class="mt-1 text-xs text-dc-muted sm:text-sm">{{ __('home.'.$label) }}</dt>
-                        </div>
-                    @endforeach
-                </dl>
-            </div>
-        @endif
     </section>
 
-    <section id="features" class="scroll-mt-20 bg-dc-950/60 py-20">
+    <section id="features" class="scroll-mt-20 border-y border-white/[0.06] bg-dc-950 py-20">
         <div class="mx-auto max-w-6xl px-4">
-            <div class="mx-auto max-w-2xl text-center">
-                <h2 class="text-3xl font-bold tracking-tight text-dc-header md:text-4xl">{{ __('home.features_title') }}</h2>
+            <div class="max-w-2xl">
+                <h2 class="text-3xl font-bold text-dc-header md:text-5xl">{{ __('home.features_title') }}</h2>
                 <p class="mt-4 text-lg text-dc-muted">{{ __('home.features_text') }}</p>
             </div>
 
-            <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="mt-12 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach ($features as $feature)
-                    <div class="card">
-                        <span class="grid size-11 place-items-center rounded-lg bg-accent/15 text-accent-fg">
-                            <x-icon :name="$feature['icon']" />
-                        </span>
-                        <h3 class="mt-4 font-semibold text-dc-header">{{ __('home.f_'.$feature['key'].'_t') }}</h3>
+                    <div class="border-t border-white/[0.08] pt-5">
+                        <x-icon :name="$feature['icon']" class="size-6 text-accent-fg" />
+                        <h3 class="mt-3 text-lg font-semibold text-dc-header">{{ __('home.f_'.$feature['key'].'_t') }}</h3>
                         <p class="mt-1.5 text-sm text-dc-muted">{{ __('home.f_'.$feature['key'].'_d') }}</p>
                     </div>
                 @endforeach
@@ -90,17 +83,17 @@
     </section>
 
     <section id="premium" class="scroll-mt-20 py-20">
-        <div class="mx-auto max-w-5xl px-4">
-            <div class="mx-auto max-w-2xl text-center">
-                <h2 class="text-3xl font-bold tracking-tight text-dc-header md:text-4xl">{{ __('home.premium_title') }}</h2>
+        <div class="mx-auto max-w-6xl px-4">
+            <div class="max-w-2xl">
+                <h2 class="text-3xl font-bold text-dc-header md:text-5xl">{{ __('home.premium_title') }}</h2>
                 <p class="mt-4 text-lg text-dc-muted">{{ __('home.premium_text') }}</p>
             </div>
 
             <div class="mt-12 grid gap-4 md:grid-cols-2">
                 @foreach (['user', 'server'] as $plan)
                     <div @class([
-                        'rounded-xl p-6 ring-1',
-                        'bg-linear-to-br from-dc-yellow/15 to-dc-800 ring-dc-yellow/50' => $plan === 'user',
+                        'rounded-lg p-6 ring-1',
+                        'bg-dc-800 ring-dc-yellow/40 shadow-[inset_0_3px_0_var(--color-dc-yellow)]' => $plan === 'user',
                         'bg-dc-800 ring-white/5' => $plan === 'server',
                     ])>
                         <div class="flex items-center gap-3">
@@ -127,16 +120,17 @@
                     </div>
                 @endforeach
             </div>
-            <p class="mt-6 text-center text-sm text-dc-faint">{{ __('home.premium_hint') }}</p>
+            <p class="mt-6 text-sm text-dc-faint">{{ __('home.premium_hint') }}</p>
         </div>
     </section>
 
-    <section class="px-4 pb-20">
-        <div class="relative isolate mx-auto max-w-5xl overflow-hidden rounded-2xl bg-dc-800 px-6 py-14 text-center ring-1 ring-accent/40">
-            <div class="pointer-events-none absolute inset-0 -z-10 bg-linear-to-br from-accent/20 to-transparent"></div>
-            <h2 class="text-3xl font-bold tracking-tight text-dc-header">{{ __('home.cta_title') }}</h2>
-            <p class="mt-3 text-lg text-dc-muted">{{ __('home.cta_text') }}</p>
-            <div class="mt-8 flex flex-wrap justify-center gap-3">
+    <section class="mx-auto max-w-6xl px-4 pb-20">
+        <div class="flex flex-col gap-6 rounded-lg border border-white/[0.07] bg-dc-800 px-6 py-10 shadow-[inset_0_3px_0_var(--color-accent)] md:flex-row md:items-center md:justify-between md:px-10">
+            <div>
+            <h2 class="text-3xl font-bold text-dc-header">{{ __('home.cta_title') }}</h2>
+            <p class="mt-2 text-lg text-dc-muted">{{ __('home.cta_text') }}</p>
+            </div>
+            <div class="flex flex-wrap gap-3">
                 <a href="{{ $inviteUrl }}" target="_blank" rel="noopener" class="btn-primary px-6 py-3 text-base">
                     <x-discord-logo />{{ __('home.invite') }}
                 </a>
