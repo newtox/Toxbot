@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'server_title' => '초기화 또는 삭제',
+    'server_description' => '모든 설정을 끄거나 Toxbot이 이 서버에 대해 저장한 모든 것을 삭제합니다.',
+    'show' => '옵션 보기',
+    'reset_title' => '설정 초기화',
+    'reset_text' => '모든 모듈을 끄고 티켓 유형, 경고 규칙, 팔로우한 크리에이터, 차단한 태그를 지웁니다. 티켓 및 인증 메시지도 삭제됩니다. 레벨, 관리 기록, 티켓 기록, 신청은 남습니다.',
+    'reset_confirm' => '이 서버의 모든 설정을 초기화할까요? 되돌릴 수 없습니다.',
+    'reset_button' => '설정 초기화',
+    'reset_done' => '서버의 모든 설정을 초기화했습니다.',
+    'delete_title' => '모든 데이터 삭제 후 Toxbot 내보내기',
+    'delete_text' => '설정과 함께 이 서버의 모든 레벨, 관리 기록, 기록이 포함된 티켓, 차단 해제 신청, 인증을 삭제합니다. 이 서버의 프리미엄 자리가 비워집니다. 그다음 Toxbot이 서버를 나갑니다. 되돌릴 수 없습니다.',
+    'confirm_label' => '확인하려면 :name을(를) 입력하세요',
+    'confirm_mismatch' => '이름이 일치하지 않습니다.',
+    'delete_button' => '모두 삭제하고 Toxbot 내보내기',
+    'delete_done' => ':server을(를) 삭제했고 Toxbot이 서버를 나갔습니다.',
+    'leave_failed' => ':server의 데이터는 삭제했지만 Toxbot이 서버를 나가지 못했습니다. Discord에서 추방하세요.',
+    'owner_only' => '서버 소유자만 모든 데이터를 삭제할 수 있습니다.',
+    'account_title' => '내 데이터 삭제',
+    'account_description' => 'Toxbot이 나에 대해 저장한 모든 것과 대시보드 로그인을 삭제합니다.',
+    'account_deletes' => '삭제: 언어와 색상, 모든 서버의 레벨, 크레딧, 배경, 내 태그(모든 서버), 프리미엄 서버 자리, 차단 해제 신청, 대시보드 로그인.',
+    'account_anonymized' => '익명 처리: 티켓 기록 속 내 메시지는 서버를 위해 남지만 이름, ID, 아바타는 사라집니다.',
+    'account_keeps' => '유지: 각 서버에 속한 관리 기록과 Discord 구매 기록. 구매는 환불되지 않습니다.',
+    'account_button' => '내 데이터 삭제',
+    'account_deleted' => '데이터를 삭제하고 로그아웃했습니다.',
+];

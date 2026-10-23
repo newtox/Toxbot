@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'server_title' => 'Nulstil eller slet',
+    'server_description' => 'Slå alle indstillinger fra, eller slet alt, hvad Toxbot har gemt om denne server.',
+    'show' => 'Vis muligheder',
+    'reset_title' => 'Nulstil indstillinger',
+    'reset_text' => 'Slår alle moduler fra og fjerner ticket-typer, advarselsregler, fulgte creators og blokerede tags. Ticket- og verificeringsbeskeden slettes. Levels, moderationssager, ticket-historik og ansøgninger bliver.',
+    'reset_confirm' => 'Nulstil alle indstillinger for denne server? Det kan ikke fortrydes.',
+    'reset_button' => 'Nulstil indstillinger',
+    'reset_done' => 'Alle serverens indstillinger blev nulstillet.',
+    'delete_title' => 'Slet alle data og fjern Toxbot',
+    'delete_text' => 'Sletter indstillingerne og desuden alle levels, moderationssager, tickets med historik, ansøgninger om ophævelse af ban og verificeringer på denne server. En premium-plads på serveren bliver frigjort. Derefter forlader Toxbot serveren. Det kan ikke fortrydes.',
+    'confirm_label' => 'Skriv :name for at bekræfte',
+    'confirm_mismatch' => 'Navnet passer ikke.',
+    'delete_button' => 'Slet alt og fjern Toxbot',
+    'delete_done' => ':server blev slettet, og Toxbot har forladt serveren.',
+    'leave_failed' => 'Dataene for :server blev slettet, men Toxbot kunne ikke forlade serveren. Kick den i Discord.',
+    'owner_only' => 'Kun ejeren af serveren kan slette alle data.',
+    'account_title' => 'Slet mine data',
+    'account_description' => 'Slet alt, hvad Toxbot har gemt om dig, og dit dashboard-login.',
+    'account_deletes' => 'Slettes: dit sprog og din farve, dine levels på alle servere, credits, baggrunde, dine tags (på alle servere), dine premium-serverpladser, ansøgninger om ophævelse af ban og dit dashboard-login.',
+    'account_anonymized' => 'Anonymiseres: dine beskeder i ticket-historik bliver for serverne, men uden navn, ID og avatar.',
+    'account_keeps' => 'Beholdes: moderationssager på servere, som tilhører de servere, og købsbeviser fra Discord. Køb refunderes ikke.',
+    'account_button' => 'Slet mine data',
+    'account_deleted' => 'Dine data blev slettet, og du blev logget ud.',
+];

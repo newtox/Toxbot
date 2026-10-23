@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'server_title' => 'Réinitialiser ou supprimer',
+    'server_description' => 'Désactive tous les paramètres ou supprime tout ce que Toxbot a enregistré sur ce serveur.',
+    'show' => 'Afficher les options',
+    'reset_title' => 'Réinitialiser les paramètres',
+    'reset_text' => 'Désactive tous les modules et supprime les types de ticket, les règles d\'avertissement, les créateurs suivis et les tags bloqués. Les messages de ticket et de vérification sont supprimés. Les niveaux, les cas de modération, l\'historique des tickets et les demandes sont conservés.',
+    'reset_confirm' => 'Réinitialiser tous les paramètres de ce serveur ? C\'est irréversible.',
+    'reset_button' => 'Réinitialiser les paramètres',
+    'reset_done' => 'Tous les paramètres du serveur ont été réinitialisés.',
+    'delete_title' => 'Supprimer toutes les données et retirer Toxbot',
+    'delete_text' => 'Supprime les paramètres ainsi que tous les niveaux, cas de modération, tickets avec leur historique, demandes de débannissement et vérifications de ce serveur. Une place premium sur ce serveur est libérée. Ensuite, Toxbot quitte le serveur. C\'est irréversible.',
+    'confirm_label' => 'Saisis :name pour confirmer',
+    'confirm_mismatch' => 'Le nom ne correspond pas.',
+    'delete_button' => 'Tout supprimer et retirer Toxbot',
+    'delete_done' => ':server a été supprimé et Toxbot a quitté le serveur.',
+    'leave_failed' => 'Les données de :server ont été supprimées, mais Toxbot n\'a pas pu quitter le serveur. Expulse-le sur Discord.',
+    'owner_only' => 'Seul le propriétaire du serveur peut supprimer toutes les données.',
+    'account_title' => 'Supprimer mes données',
+    'account_description' => 'Supprime tout ce que Toxbot a enregistré sur toi et ton accès au tableau de bord.',
+    'account_deletes' => 'Supprimé : ta langue et ta couleur, tes niveaux sur tous les serveurs, crédits, fonds, tes tags (sur tous les serveurs), tes places de serveur premium, demandes de débannissement et ton accès au tableau de bord.',
+    'account_anonymized' => 'Anonymisé : tes messages dans l\'historique des tickets restent pour les serveurs, mais sans nom, ID ni avatar.',
+    'account_keeps' => 'Conservé : les cas de modération sur les serveurs, qui appartiennent à ces serveurs, et les justificatifs d\'achat de Discord. Les achats ne sont pas remboursés.',
+    'account_button' => 'Supprimer mes données',
+    'account_deleted' => 'Tes données ont été supprimées et tu as été déconnecté.',
+];

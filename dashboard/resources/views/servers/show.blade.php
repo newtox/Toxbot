@@ -57,5 +57,7 @@
                 @endforeach
             </div>
         </section>
+
+        <livewire:server-data :guild-id="$guild['id']" :guild-name="$guild['name']" />
     </div>
 </x-layouts.app>

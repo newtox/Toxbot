@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'server_title' => '重置或删除',
+    'server_description' => '关闭所有设置，或删除 Toxbot 保存的有关此服务器的全部内容。',
+    'show' => '显示选项',
+    'reset_title' => '重置设置',
+    'reset_text' => '关闭所有模块，并移除工单类型、警告规则、关注的创作者和屏蔽的标签。工单和验证消息会被删除。等级、管理记录、工单历史和申请会保留。',
+    'reset_confirm' => '要重置此服务器的所有设置吗？此操作无法撤销。',
+    'reset_button' => '重置设置',
+    'reset_done' => '服务器的所有设置已重置。',
+    'delete_title' => '删除所有数据并移除 Toxbot',
+    'delete_text' => '删除设置，以及此服务器的所有等级、管理记录、含历史的工单、解封申请和验证记录。此服务器占用的高级版名额会被释放。随后 Toxbot 会离开服务器。此操作无法撤销。',
+    'confirm_label' => '输入 :name 以确认',
+    'confirm_mismatch' => '名称不匹配。',
+    'delete_button' => '全部删除并移除 Toxbot',
+    'delete_done' => '已删除 :server，Toxbot 已离开服务器。',
+    'leave_failed' => ':server 的数据已删除，但 Toxbot 无法离开服务器。请在 Discord 中将其踢出。',
+    'owner_only' => '只有服务器所有者可以删除所有数据。',
+    'account_title' => '删除我的数据',
+    'account_description' => '删除 Toxbot 保存的有关你的全部内容以及你的控制面板登录。',
+    'account_deletes' => '将删除：你的语言和颜色、你在所有服务器上的等级、积分、背景、你的标签（所有服务器）、你的高级版服务器名额、解封申请和控制面板登录。',
+    'account_anonymized' => '将匿名：你在工单历史中的消息会为服务器保留，但不含名称、ID 和头像。',
+    'account_keeps' => '将保留：各服务器的管理记录（属于这些服务器）以及 Discord 的购买记录。购买不会退款。',
+    'account_button' => '删除我的数据',
+    'account_deleted' => '你的数据已删除，你已退出登录。',
+];

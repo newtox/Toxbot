@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'server_title' => 'Reset or delete',
+    'server_description' => 'Turn all settings off, or delete everything Toxbot stored about this server.',
+    'show' => 'Show options',
+    'reset_title' => 'Reset settings',
+    'reset_text' => 'Turns off every module and removes ticket types, warning rules, followed creators and blocked tags. The ticket and verify messages are deleted. Levels, moderation cases, ticket history and appeals stay.',
+    'reset_confirm' => 'Reset all settings of this server? This cannot be undone.',
+    'reset_button' => 'Reset settings',
+    'reset_done' => 'All settings of the server were reset.',
+    'delete_title' => 'Delete all data and remove Toxbot',
+    'delete_text' => 'Deletes the settings and also all levels, moderation cases, tickets with their transcripts, unban appeals and verifications of this server. A premium slot on this server is freed. Then Toxbot leaves the server. This cannot be undone.',
+    'confirm_label' => 'Type :name to confirm',
+    'confirm_mismatch' => 'The name does not match.',
+    'delete_button' => 'Delete everything and remove Toxbot',
+    'delete_done' => ':server was deleted and Toxbot has left the server.',
+    'leave_failed' => 'The data of :server was deleted, but Toxbot could not leave the server. Kick it in Discord.',
+    'owner_only' => 'Only the owner of the server can delete all data.',
+    'account_title' => 'Delete my data',
+    'account_description' => 'Delete everything Toxbot stored about you and your dashboard login.',
+    'account_deletes' => 'Deleted: your language and color, your levels on every server, credits, backgrounds, your tags (on every server), your premium server slots, unban appeals and your dashboard login.',
+    'account_anonymized' => 'Anonymized: your messages in ticket transcripts stay for the servers, but without your name, ID and avatar.',
+    'account_keeps' => 'Kept: moderation cases on servers, which belong to those servers, and purchase records from Discord. Purchases are not refunded.',
+    'account_button' => 'Delete my data',
+    'account_deleted' => 'Your data was deleted and you were logged out.',
+];
