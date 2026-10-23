@@ -17,7 +17,7 @@ return [
     'placeholder_game' => 'Juego (solo Twitch)',
     'placeholder_link' => 'Enlace al stream o vídeo',
     'placeholder_role' => 'Menciona el rol elegido',
-    'creadores' => 'Creadores',
+    'streamers' => 'Creadores',
     'count' => ':count de :limit',
     'not_configured' => 'Faltan credenciales de Twitch o YouTube en la configuración; las notificaciones llegarán después.',
     'platform' => 'Plataforma',
