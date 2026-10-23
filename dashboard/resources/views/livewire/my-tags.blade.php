@@ -85,8 +85,8 @@
         <div class="overflow-hidden rounded-xl bg-dc-800">
             <ul class="divide-y divide-black/25">
                 @foreach ($tags as $tag)
-                    <li wire:key="tag-{{ $tag->id }}" class="flex flex-wrap items-center gap-3 px-4 py-3">
-                        <div class="min-w-0 flex-1">
+                    <li wire:key="tag-{{ $tag->id }}" class="flex flex-wrap items-center gap-x-3 gap-y-2 px-4 py-3">
+                        <div class="min-w-0 flex-1 basis-56">
                             <div class="font-mono font-medium text-dc-header">{{ $tag->name }}
                                 @if ($tag->embed)
                                     <span class="ml-1 rounded bg-dc-600 px-1.5 py-0.5 font-sans text-xs text-dc-muted">Embed</span>
@@ -95,7 +95,7 @@
                             <div class="truncate text-sm text-dc-muted">{{ \Illuminate\Support\Str::limit($tag->content, 120) }}</div>
                         </div>
                         <div class="text-sm text-dc-faint tabular-nums">{{ __('tags.uses', ['count' => number_format($tag->uses, 0, '', ' ')]) }}</div>
-                        <div class="flex gap-2">
+                        <div class="ml-auto flex shrink-0 gap-2">
                             <button type="button" wire:click="edit({{ $tag->id }})" class="btn-secondary px-3 py-1.5">{{ __('tags.edit') }}</button>
                             <button type="button" wire:click="delete({{ $tag->id }})" wire:confirm="{{ __('tags.confirm_delete', ['name' => $tag->name]) }}"
                                     class="btn px-3 py-1.5 text-dc-red hover:bg-dc-red hover:text-white">{{ __('tags.delete') }}</button>
