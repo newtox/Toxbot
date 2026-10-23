@@ -18,6 +18,7 @@ This Privacy Policy explains how Toxbot ("we", "our", or "the bot") and the Toxb
 - **Stream notifications**: the Twitch and YouTube channels a server follows (channel ID, name and avatar), the server's notification settings, and which streams and videos were announced in which message
 - **Live role**: to give the live role, the bot sees on servers with a live role whether you are currently streaming on Discord. This status is not stored.
 - **Server Premium**: which server you chose for Server Premium
+- **Moderation**: when a moderator warns, times out, kicks, bans or unbans you on a server, or when Discord reports such an action from its audit log, we store a case with your ID and name, the moderator's ID and name, the reason and the duration. Moderators of that server can see these cases and your roles, join date and level in the dashboard. The member list in the dashboard is loaded from Discord when it is opened and is not stored.
 - **Purchases**: when you buy Premium or an XP boost, Discord tells us which product you bought and how long it is valid. **We never see your payment details**; payments are handled entirely by Discord.
 
 ### When you use the dashboard
@@ -62,6 +63,7 @@ We implement reasonable security measures to protect your information:
 - Your settings, levels, credits, purchases and tags are kept as long as you use Toxbot, or until you ask us to delete them.
 - A server's settings are deleted after Toxbot has been removed from that server, at the latest the next time the bot restarts.
 - Followed streamers are removed together with the server's settings. Announcement records are deleted after 30 days.
+- Moderation cases are kept as long as the server uses Toxbot, so moderators can see a member's history. You can ask us to delete them.
 - Server levels stay stored even after Toxbot leaves a server, so they are still there if it is added again. You can ask us to delete them.
 
 ## Your Rights

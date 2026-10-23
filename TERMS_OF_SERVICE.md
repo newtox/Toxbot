@@ -49,6 +49,11 @@ Tags are custom commands that you create and that can be used on every server To
 - Stream notifications depend on Twitch and YouTube. We cannot guarantee that every stream or video is announced, or that it is announced on time.
 - Server administrators are responsible for the messages and role pings they set up.
 
+## Moderation
+
+- Server moderators decide about warnings, timeouts, kicks and bans on their server, including actions they take through Toxbot. We are not responsible for these decisions; questions about them go to the server's team.
+- Toxbot keeps a record of these actions (cases) so that moderators of the server can look them up.
+
 ## Voting Rewards
 
 If you vote for Toxbot on Top.gg, you may receive credits. Voting rewards are voluntary, can change at any time and are not guaranteed, for example if Top.gg or the connection to Top.gg is unavailable.
