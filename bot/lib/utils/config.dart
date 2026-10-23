@@ -49,6 +49,8 @@ Set<String> get allowedImageHosts => _list('tag_image_hosts',
     .map((host) => host.toLowerCase())
     .toSet();
 
+Snowflake get logChannel => Snowflake(_int('log_channel', 1288846653704376462));
+
 int? get tagReportChannel => int.tryParse(_string('tag_report_channel') ?? '');
 
 Set<String> get premiumUserSkus => _list('premium_user_skus');

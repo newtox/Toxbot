@@ -51,6 +51,7 @@ services:
       xp_boost_sku: ${XP_BOOST_SKU:-}
       currency: ${CURRENCY:-Credits}
       tag_report_channel: ${TAG_REPORT_CHANNEL:-}
+      log_channel: ${LOG_CHANNEL:-}
     extra_hosts:
       - host.docker.internal:host-gateway
     volumes:

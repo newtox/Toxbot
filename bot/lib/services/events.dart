@@ -52,11 +52,35 @@ import 'package:toxbot/utils/reply.dart';
 
 const _modalCommands = {'tag create', 'tag edit', 'system eval'};
 
+const _joinColor = '#57f287';
+
+const _leaveColor = '#ed4245';
+
+const _commandColor = '#7289da';
+
 final Set<Snowflake> currentGuildIds = {};
 
 late DateTime botStartTime;
 
 bool isBotReady = false;
+
+final Map<Snowflake, (String, int)> _knownGuilds = {};
+
+Future<void> _sendLog(NyxxGateway client, String color, String text) async {
+  final channel = await client.channels[logChannel].get();
+  if (channel is! TextChannel) return;
+
+  await channel.sendMessage(MessageBuilder(
+    allowedMentions: noMentions,
+    embeds: [
+      EmbedBuilder(
+        timestamp: DateTime.now().toUtc(),
+        color: DiscordColor.parseHexString(color),
+        description: text,
+      )
+    ],
+  ));
+}
 
 CommandsPlugin setupCommandHandler(CommandsPlugin commands) {
   commands.addCommand(announcements);
@@ -137,29 +161,21 @@ void setupReadyHandler(NyxxGateway client) async {
 void setupGuildCreateHandler(NyxxGateway client) async {
   client.onGuildCreate.listen((event) async {
     try {
-      final fullGuild = await client.guilds.get(event.guild.id);
-      await checkForDatabase(fullGuild);
+      if (event is! GuildCreateEvent) return;
 
-      if (currentGuildIds.contains(event.guild.id)) {
+      final guild = event.guild;
+      _knownGuilds[guild.id] = (guild.name, event.memberCount);
+      await checkForDatabase(guild);
+
+      if (currentGuildIds.contains(guild.id)) {
         return;
       }
+      currentGuildIds.add(guild.id);
 
-      final channelId = Snowflake(1288846653704376462);
-      final channel = await client.channels[channelId].get();
-
-      if (channel is TextChannel) {
-        await channel.sendMessage(MessageBuilder(embeds: [
-          EmbedBuilder(
-              timestamp: DateTime.now().toUtc(),
-              color: DiscordColor.parseHexString('#57f287'),
-              description:
-                  'Joined Server: ${fullGuild.name} which has ${fullGuild.members.cache.length} members.')
-        ]));
-        return;
-      }
+      await _sendLog(client, _joinColor,
+          'Joined Server: ${guild.name} which has ${event.memberCount} members.');
     } catch (e) {
       print('Error in setupGuildCreateHandler: $e');
-      return;
     }
   });
 }
@@ -285,34 +301,17 @@ void setupGuildMemberRemoveHandler(NyxxGateway client) async {
 void setupGuildDeleteHandler(NyxxGateway client) async {
   client.onGuildDelete.listen((event) async {
     try {
-      if (event.isUnavailable) {
-        return;
-      }
+      if (event.isUnavailable) return;
 
-      if (client.guilds.cache.containsKey(event.guild.id)) {
-        if (event.deletedGuild != null) {
-          final fullGuild = await client.guilds.get(event.guild.id);
-          await checkForDatabase(fullGuild);
+      final id = event.guild.id;
+      final known = _knownGuilds.remove(id);
+      currentGuildIds.remove(id);
 
-          final channelId = Snowflake(1288846653704376462);
-          final channel = await client.channels[channelId].get();
-
-          if (channel is TextChannel) {
-            await channel.sendMessage(MessageBuilder(embeds: [
-              EmbedBuilder(
-                  timestamp: DateTime.now().toUtc(),
-                  color: DiscordColor.parseHexString('#ed4245'),
-                  description:
-                      'Left Server: ${fullGuild.name} which had ${fullGuild.members.cache.length} members.')
-            ]));
-          }
-        } else {
-          return;
-        }
-      }
+      final name = event.deletedGuild?.name ?? known?.$1 ?? id.toString();
+      final members = known == null ? '' : ' which had ${known.$2} members';
+      await _sendLog(client, _leaveColor, 'Left Server: $name$members.');
     } catch (e) {
       print('Error in setupGuildDeleteHandler: $e');
-      return;
     }
   });
 }
@@ -363,24 +362,13 @@ void setupCommandPostCallHandler(
     countCommand(client, context);
 
     try {
-      final channelId = Snowflake(1288846653704376462);
-      final channel = await client.channels[channelId].get();
+      if (context.user.id == ownerId) return;
 
-      if (channel is TextChannel) {
-        if (context.user.id != ownerId) {
-          await channel.sendMessage(MessageBuilder(embeds: [
-            EmbedBuilder(
-                timestamp: DateTime.now().toUtc(),
-                color: DiscordColor.parseHexString('#7289da'),
-                description:
-                    '${context.user.globalName} (${context.user.id}) executed ${bold(context.command.name)}.')
-          ]));
-          return;
-        }
-      }
+      final user = context.user;
+      await _sendLog(client, _commandColor,
+          '${user.globalName ?? user.username} (${user.id}) executed ${bold(context.command.fullName)}.');
     } catch (e) {
       print('Error in setupCommandPostCallHandler: $e');
-      return;
     }
   });
 }

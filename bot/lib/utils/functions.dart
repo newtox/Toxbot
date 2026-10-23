@@ -10,18 +10,6 @@ Future<String> getClientStatus(Member member, NyxxGateway client) async {
   return '';
 }
 
-Future<DiscordColor> getHighestRoleColor(Member member) async {
-  DiscordColor color = DiscordColor.parseHexString('#7289da');
-
-  if (member.roles.isNotEmpty) {
-    var highestRole = await member.roles.first.get();
-
-    color = highestRole.colors.primary;
-  }
-
-  return color;
-}
-
 Future<DiscordColor?> getUserColorFromDatabase(Snowflake userId) async {
   final connection = await getMySqlConnection();
 
