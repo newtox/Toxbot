@@ -506,6 +506,9 @@
                         <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
                     @endforeach
                 </select>
+                @if ($categories === [] && ! $loadError)
+                    <p class="mt-2 text-sm text-dc-faint">{{ __('tickets.no_categories') }}</p>
+                @endif
                 @error('ticketCategory') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
             </div>
             <div>

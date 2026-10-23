@@ -39,7 +39,7 @@ class TicketTypes extends Component
 
         $this->validate([
             'name' => ['required', 'string', 'max:80'],
-            'emoji' => ['nullable', 'string', 'max:50', 'regex:/^(<a?:\w{2,32}:\d{15,22}>|[^\s<>]{1,16})$/u'],
+            'emoji' => ['nullable', 'string', 'max:50', 'regex:/^(<a?:\w{2,32}:\d{15,22}>|[^\s<>:A-Za-z]{1,16})$/u'],
             'description' => ['nullable', 'string', 'max:1000'],
             'teamRoles' => ['array', 'max:10'],
             'teamRoles.*' => [Rule::in(array_column($this->roles, 'id'))],
