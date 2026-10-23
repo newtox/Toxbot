@@ -445,10 +445,18 @@ class GuildSettings extends Component
     {
         abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
 
+        $this->save();
+
         $row = Guild::forDiscordId($this->guildId);
         $types = TicketType::query()->where('guild', $this->guildId)->orderBy('position')->orderBy('id')->get();
-        if (! $row->ticket_category || ! $row->ticket_panel_channel || $types->isEmpty()) {
-            $this->ticketNotice = __('tickets.panel_needs_settings');
+        $missing = match (true) {
+            ! $row->ticket_category => 'panel_needs_category',
+            ! $row->ticket_panel_channel => 'panel_needs_channel',
+            $types->isEmpty() => 'panel_needs_type',
+            default => null,
+        };
+        if ($missing) {
+            $this->ticketNotice = __('tickets.'.$missing);
 
             return;
         }

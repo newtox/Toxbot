@@ -152,6 +152,7 @@ class TicketsTest extends TestCase
         $this->assertSame('Hilfe', $type->fresh()->name);
 
         $component->set('name', 'X')->set('emoji', 'not an emoji')->call('save')->assertHasErrors(['emoji']);
+        $component->set('emoji', ':ticket:')->call('save')->assertHasErrors(['emoji']);
         $component->set('emoji', '')->set('teamRoles', ['999'])->call('save')->assertHasErrors(['teamRoles.0']);
 
         foreach (range(2, 5) as $i) {
@@ -167,9 +168,11 @@ class TicketsTest extends TestCase
     {
         $this->login();
 
-        $this->settings()->call('postTicketPanel')->assertSet('ticketNotice', __('tickets.panel_needs_settings'));
+        $this->settings()->call('postTicketPanel')->assertSet('ticketNotice', __('tickets.panel_needs_category'));
+        $this->settings()->set('ticketCategory', '10')->call('postTicketPanel')->assertSet('ticketNotice', __('tickets.panel_needs_channel'));
+        $this->settings()->set('ticketPanelChannel', '11')->call('postTicketPanel')->assertSet('ticketNotice', __('tickets.panel_needs_type'));
+        $this->assertSame('11', Guild::find(self::GUILD)->ticket_panel_channel);
 
-        Guild::create(['id' => self::GUILD, 'ticket_category' => '10', 'ticket_panel_channel' => '11']);
         $support = TicketType::create(['guild' => self::GUILD, 'name' => 'Support', 'emoji' => '🎫']);
         $report = TicketType::create(['guild' => self::GUILD, 'name' => 'Meldung', 'emoji' => '<a:alarm:123456789012345678>']);
 
