@@ -50,6 +50,8 @@ import 'package:toxbot/utils/database.dart';
 import 'package:toxbot/utils/functions.dart';
 import 'package:toxbot/utils/reply.dart';
 
+const _modalCommands = {'tag create', 'tag edit', 'system eval'};
+
 final Set<Snowflake> currentGuildIds = {};
 
 late DateTime botStartTime;
@@ -344,7 +346,7 @@ void setupCommandPreCallHandler(
       }
 
       final opensModal = context is ChatContext &&
-          modalCommands.contains(context.command.fullName);
+          _modalCommands.contains(context.command.fullName);
       if (context is InteractionInteractiveContext && !opensModal) {
         await (context as InteractionInteractiveContext).acknowledge();
       }

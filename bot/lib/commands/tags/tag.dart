@@ -8,8 +8,6 @@ import 'package:toxbot/utils/database.dart';
 import 'package:toxbot/utils/functions.dart';
 import 'package:toxbot/utils/reply.dart';
 
-const modalCommands = {'tag create', 'tag edit'};
-
 final _create = ChatCommand(
   'create',
   'Create a new tag.',
