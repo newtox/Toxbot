@@ -40,6 +40,8 @@ class ProtectionTest extends TestCase
 
             return match (true) {
                 str_contains($url, 'challenges.cloudflare.com') => Http::response(['success' => $this->captcha]),
+                str_contains($url, 'Discord-AntiScam') => Http::response("free-nitro.example\nsteam-gift.example\n"),
+                str_contains($url, 'discord-phishing-links') => Http::response("old-scam.example\n"),
                 ! $isBot && str_contains($url, '/users/@me/guilds') => Http::response([
                     ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon' => null, 'owner' => false, 'permissions' => (string) 0x20],
                 ]),
@@ -131,6 +133,42 @@ class ProtectionTest extends TestCase
         $this->assertSame(8, $row->raid_joins);
         $this->assertFalse($row->raid_kick);
         $this->assertSame(7, $row->min_account_age);
+    }
+
+    public function test_saves_roles_without_link_filter(): void
+    {
+        $this->login();
+
+        $this->settings()
+            ->set('linkExemptRoles', ['31', '30'])
+            ->call('save')
+            ->assertHasNoErrors();
+        $this->assertSame('31,30', Guild::find(self::GUILD)->link_exempt_roles);
+
+        $this->settings()
+            ->assertSet('linkExemptRoles', ['31', '30'])
+            ->set('linkExemptRoles', ['999'])
+            ->call('save')
+            ->assertHasErrors(['linkExemptRoles.0']);
+    }
+
+    public function test_checks_a_domain_against_both_scam_lists(): void
+    {
+        $this->login();
+
+        $this->settings()
+            ->set('scamCheck', 'https://login.free-nitro.example/claim')
+            ->call('checkScamDomain')
+            ->assertSet('scamCheckResult', __('protection.scam_check_listed', ['domain' => 'free-nitro.example']))
+            ->set('scamCheck', 'old-scam.example')
+            ->call('checkScamDomain')
+            ->assertSet('scamCheckResult', __('protection.scam_check_listed', ['domain' => 'old-scam.example']))
+            ->set('scamCheck', 'youtube.com')
+            ->call('checkScamDomain')
+            ->assertSet('scamCheckResult', __('protection.scam_check_clean', ['domain' => 'youtube.com']))
+            ->set('scamCheck', 'nope')
+            ->call('checkScamDomain')
+            ->assertSet('scamCheckResult', __('protection.scam_check_invalid'));
     }
 
     public function test_rejects_missing_role_bad_domains_and_numbers(): void

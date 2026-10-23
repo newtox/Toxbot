@@ -28,7 +28,7 @@ class Guild extends Model
         'notify', 'stream', 'stream_msg', 'stream_video_msg', 'live_role', 'live_role_required',
         'modlog_channel', 'mod_dm',
         'verify_enabled', 'verify_role', 'verify_channel', 'verify_message_id',
-        'link_invites', 'link_scam', 'link_allowlist_enabled', 'link_allowlist', 'link_blocklist', 'link_action',
+        'link_invites', 'link_scam', 'link_allowlist_enabled', 'link_allowlist', 'link_blocklist', 'link_action', 'link_exempt_roles',
         'raid_enabled', 'raid_joins', 'raid_seconds', 'raid_minutes', 'raid_kick', 'raid_level', 'raid_until',
         'min_account_age',
     ];
