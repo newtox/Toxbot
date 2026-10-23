@@ -32,6 +32,7 @@ Both share the same MySQL database. Whatever you change in the dashboard (welcom
 - **Stream notifications** for Twitch and YouTube: a message with role ping when a streamer goes live or uploads a video
 - **Live role**: members who stream on Discord get a role while they are live
 - **Moderation**: `/mod warn`, `timeout`, `untimeout`, `kick`, `ban` (also temporary) and `unban`, numbered cases in a modlog channel, DMs to members, automatic actions after a number of warnings, and bans, kicks and timeouts done in Discord or by other bots are logged too
+- **Protection**: verification of new members with a captcha in the dashboard, a link filter against invites to other servers, scam links and blocked domains (or only allowed ones), anti-raid that raises the verification level and kicks new joins, and a minimum account age
 - **Premium** through Discord subscriptions: double XP and daily reward, premium backgrounds, more tags and tags as embeds, plus a 24 hour XP boost to buy
 - **Server Premium** for one server of the subscriber's choice, included in Premium: more streamers, a custom message and ping role per streamer, game and title filters, and editing or deleting the notification when the stream ends
 
@@ -45,7 +46,7 @@ The bot lives in `bot/lib`:
 
 - `commands/`: one file per command or command group. These files only hold option descriptions, converters and the command definitions; every function they use lives in `services/` or `utils/`
 - `models/`: data classes such as `Tag`, `ModCase` or the economy results
-- `services/`: the logic behind the commands and the event handlers, for example levels, moderation, premium and the live role; `events.dart` registers the commands and handlers
+- `services/`: the logic behind the commands and the event handlers, for example levels, moderation, protection, premium and the live role; `events.dart` registers the commands and handlers
 - `utils/`: shared helpers: `config.dart` for every setting from the environment, `database.dart` for the connection and translated texts, `reply.dart` for command replies, and the translations in `languages.yaml`
 
 Every Dart file is ordered the same way: imports, then constants and top-level variables, then private functions and getters, then public functions and getters, then commands, with the exported command or `setup…Handler` function last. All of `bin/` and `lib/` is formatted with `dart format`. Subcommands of a group are private (`_warn`) and listed before the group (`mod`) that uses them.
