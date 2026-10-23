@@ -18,7 +18,9 @@ class Discord
 
     public const PERMISSION_MANAGE_ROLES = 0x10000000;
 
-    public const INVITE_PERMISSIONS = 0x10000000 | 0x800 | 0x400 | 0x2000 | 0x4000;
+    public const INVITE_PERMISSIONS = 0x10000000 | 0x800 | 0x400 | 0x2000 | 0x4000 | 0x2 | 0x4 | 0x80 | 0x10000000000;
+
+    public const MEMBER_LIMIT = 5000;
 
     public function __construct(
         private readonly ?string $clientId,
@@ -179,9 +181,51 @@ class Discord
         return Cache::remember("discord:guild:{$guildId}:info", 300, fn () => $this->asBot()->get("/guilds/{$guildId}", ['with_counts' => 'true'])->throw()->json());
     }
 
+    public function guildMembers(string $guildId): array
+    {
+        return Cache::remember("discord:guild:{$guildId}:members", 120, function () use ($guildId) {
+            $members = [];
+            $after = '0';
+
+            do {
+                $page = $this->asBot()
+                    ->get("/guilds/{$guildId}/members", ['limit' => 1000, 'after' => $after])
+                    ->throw()
+                    ->json();
+
+                array_push($members, ...$page);
+                $after = end($page)['user']['id'] ?? null;
+            } while (count($page) === 1000 && count($members) < self::MEMBER_LIMIT);
+
+            return $members;
+        });
+    }
+
+    public function searchGuildMembers(string $guildId, string $query): array
+    {
+        return Cache::remember('discord:guild:'.$guildId.':search:'.md5($query), 60, fn () => $this->asBot()
+            ->get("/guilds/{$guildId}/members/search", ['query' => $query, 'limit' => 100])
+            ->throw()
+            ->json());
+    }
+
+    public function guildMember(string $guildId, string $userId): ?array
+    {
+        $response = $this->asBot()->get("/guilds/{$guildId}/members/{$userId}");
+
+        return $response->status() === 404 ? null : $response->throw()->json();
+    }
+
+    public function guildBan(string $guildId, string $userId): ?array
+    {
+        $response = $this->asBot()->get("/guilds/{$guildId}/bans/{$userId}");
+
+        return $response->status() === 404 ? null : $response->throw()->json();
+    }
+
     public function forgetGuildCache(string $guildId): void
     {
-        foreach (['channels', 'roles', 'bot-member', 'info'] as $key) {
+        foreach (['channels', 'roles', 'bot-member', 'info', 'members'] as $key) {
             Cache::forget("discord:guild:{$guildId}:{$key}");
         }
     }
