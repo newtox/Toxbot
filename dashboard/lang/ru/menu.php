@@ -21,4 +21,5 @@ return [
     'section_tags' => 'Теги',
     'section_moderation' => 'Модерация',
     'section_protection' => 'Защита',
+    'section_tickets' => 'Тикеты',
 ];

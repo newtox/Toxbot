@@ -21,4 +21,5 @@ return [
     'section_tags' => '태그',
     'section_moderation' => '관리',
     'section_protection' => '보호',
+    'section_tickets' => '티켓',
 ];

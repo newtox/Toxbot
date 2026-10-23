@@ -4,12 +4,14 @@ namespace App\Livewire;
 
 use App\Models\Guild;
 use App\Models\TagGuildBlock;
+use App\Models\TicketType;
 use App\Services\Discord;
 use App\Services\GuildAccess;
 use App\Services\ScamList;
 use App\Support\DomainList;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
@@ -20,7 +22,7 @@ class GuildSettings extends Component
 
     private const CATEGORY_TYPE = 4;
 
-    public const SECTIONS = ['general', 'levels', 'streams', 'tags', 'moderation', 'protection'];
+    public const SECTIONS = ['general', 'levels', 'streams', 'tags', 'moderation', 'protection', 'tickets'];
 
     #[Locked]
     public string $section = 'general';
@@ -116,6 +118,21 @@ class GuildSettings extends Component
 
     public ?string $protectionNotice = null;
 
+    public ?string $ticketCategory = null;
+
+    public ?string $ticketLogChannel = null;
+
+    public int $ticketLimit = 1;
+
+    public ?string $ticketPanelChannel = null;
+
+    public bool $unbanEnabled = false;
+
+    #[Locked]
+    public bool $ticketPanelPosted = false;
+
+    public ?string $ticketNotice = null;
+
     public function mount(array $guild, string $section = 'general'): void
     {
         $this->section = in_array($section, self::SECTIONS, true) ? $section : 'general';
@@ -173,6 +190,13 @@ class GuildSettings extends Component
         $this->minAccountAge = (int) $row->min_account_age;
         $this->raidUntil = $row->raidActive() ? $row->raid_until->toIso8601String() : null;
 
+        $this->ticketCategory = $row->ticket_category;
+        $this->ticketLogChannel = $row->ticket_log_channel;
+        $this->ticketLimit = (int) $row->ticket_limit;
+        $this->ticketPanelChannel = $row->ticket_panel_channel;
+        $this->ticketPanelPosted = $row->ticket_panel_message_id !== null;
+        $this->unbanEnabled = (bool) $row->unban_enabled;
+
         $this->resetValidation();
     }
 
@@ -193,6 +217,7 @@ class GuildSettings extends Component
         abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
 
         $channelIds = collect($this->channelGroups($discord))->flatMap(fn ($g) => array_column($g['channels'], 'id'))->all();
+        $categoryIds = array_column($this->categories($discord), 'id');
         $allRoles = collect($this->roles($discord));
         $roleIds = $allRoles->where('assignable', true)->pluck('id')->all();
         $mentionableRoleIds = $allRoles->pluck('id')->all();
@@ -242,6 +267,12 @@ class GuildSettings extends Component
                 'raidMinutes' => ['required', 'integer', 'min:1', 'max:1440'],
                 'minAccountAge' => ['required', 'integer', 'min:0', 'max:365'],
             ],
+            'tickets' => [
+                'ticketCategory' => ['nullable', Rule::in($categoryIds)],
+                'ticketLogChannel' => ['nullable', Rule::in($channelIds)],
+                'ticketPanelChannel' => ['nullable', Rule::in($channelIds)],
+                'ticketLimit' => ['required', 'integer', 'min:1', 'max:10'],
+            ],
         ];
 
         $sectionRules = $rules[$this->section];
@@ -266,6 +297,10 @@ class GuildSettings extends Component
                 'raidSeconds.*' => __('protection.number_range', ['min' => 5, 'max' => 300]),
                 'raidMinutes.*' => __('protection.number_range', ['min' => 1, 'max' => 1440]),
                 'minAccountAge.*' => __('protection.number_range', ['min' => 0, 'max' => 365]),
+                'ticketCategory.in' => __('tickets.category_invalid'),
+                'ticketLogChannel.in' => __('guild.channel_invalid'),
+                'ticketPanelChannel.in' => __('guild.channel_invalid'),
+                'ticketLimit.*' => __('protection.number_range', ['min' => 1, 'max' => 10]),
             ]);
         }
 
@@ -314,6 +349,13 @@ class GuildSettings extends Component
                 'raid_kick' => $this->raidKick,
                 'raid_level' => $this->raidLevel,
                 'min_account_age' => $this->minAccountAge,
+            ],
+            'tickets' => [
+                'ticket_category' => $this->ticketCategory ?: null,
+                'ticket_log_channel' => $this->ticketLogChannel ?: null,
+                'ticket_limit' => $this->ticketLimit,
+                'ticket_panel_channel' => $this->ticketPanelChannel ?: null,
+                'unban_enabled' => $this->unbanEnabled,
             ],
         };
 
@@ -399,6 +441,68 @@ class GuildSettings extends Component
             : __('protection.scam_check_clean', ['domain' => $host]);
     }
 
+    public function postTicketPanel(): void
+    {
+        abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
+
+        $row = Guild::forDiscordId($this->guildId);
+        $types = TicketType::query()->where('guild', $this->guildId)->orderBy('position')->orderBy('id')->get();
+        if (! $row->ticket_category || ! $row->ticket_panel_channel || $types->isEmpty()) {
+            $this->ticketNotice = __('tickets.panel_needs_settings');
+
+            return;
+        }
+
+        $payload = [
+            'embeds' => [[
+                'color' => 0x5865F2,
+                'title' => __('tickets.panel_title'),
+                'description' => __('tickets.panel_text'),
+                'fields' => $types->map(fn (TicketType $type) => [
+                    'name' => trim(($type->emoji && ! str_starts_with($type->emoji, '<') ? $type->emoji.' ' : '').$type->name),
+                    'value' => Str::limit($type->description ?: "\u{200B}", 1000),
+                    'inline' => false,
+                ])->all(),
+            ]],
+            'components' => [[
+                'type' => 1,
+                'components' => $types->map(fn (TicketType $type) => array_filter([
+                    'type' => 2,
+                    'style' => 1,
+                    'label' => Str::limit($type->name, 80, ''),
+                    'custom_id' => 'ticket_open:'.$type->id,
+                    'emoji' => $this->buttonEmoji($type->emoji),
+                ]))->all(),
+            ]],
+            'allowed_mentions' => ['parse' => []],
+        ];
+
+        $discord = app(Discord::class);
+        try {
+            $messageId = null;
+            if ($row->ticket_panel_message_id) {
+                try {
+                    $discord->editMessage($row->ticket_panel_channel, $row->ticket_panel_message_id, $payload);
+                    $messageId = $row->ticket_panel_message_id;
+                } catch (RequestException $e) {
+                    if ($e->response->status() !== 404) {
+                        throw $e;
+                    }
+                }
+            }
+            $messageId ??= $discord->sendMessage($row->ticket_panel_channel, $payload);
+        } catch (RequestException $e) {
+            Log::warning('Posting the ticket panel failed', ['guild' => $this->guildId, 'status' => $e->response->status()]);
+            $this->ticketNotice = __('protection.post_failed');
+
+            return;
+        }
+
+        $row->forceFill(['ticket_panel_message_id' => $messageId])->save();
+        $this->ticketPanelPosted = true;
+        $this->ticketNotice = __('tickets.panel_done');
+    }
+
     public function endRaid(): void
     {
         abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
@@ -424,12 +528,13 @@ class GuildSettings extends Component
 
         try {
             $channelGroups = $this->channelGroups($discord);
+            $categories = $this->categories($discord);
             $roles = $this->roles($discord);
             $bot = $discord->botUser();
             $loadError = null;
         } catch (RequestException $e) {
             report($e);
-            $channelGroups = $roles = [];
+            $channelGroups = $categories = $roles = [];
             $bot = null;
             $loadError = __('guild.load_error', ['status' => $e->response->status()]);
         }
@@ -452,6 +557,7 @@ class GuildSettings extends Component
             'blockedTags' => TagGuildBlock::query()->with('tag')->where('guild', $this->guildId)->get()
                 ->filter(fn ($block) => $block->tag !== null),
             'channelGroups' => $channelGroups,
+            'categories' => $categories,
             'roles' => $roles,
             'loadError' => $loadError,
             'previewContext' => [
@@ -470,6 +576,28 @@ class GuildSettings extends Component
                     : 'https://cdn.discordapp.com/embed/avatars/0.png',
             ],
         ]);
+    }
+
+    private function buttonEmoji(?string $emoji): ?array
+    {
+        if (! $emoji) {
+            return null;
+        }
+        if (preg_match('/^<(a?):(\w+):(\d+)>$/', $emoji, $m)) {
+            return ['id' => $m[3], 'name' => $m[2], 'animated' => $m[1] === 'a'];
+        }
+
+        return ['name' => $emoji];
+    }
+
+    private function categories(Discord $discord): array
+    {
+        return collect($discord->guildChannels($this->guildId))
+            ->where('type', self::CATEGORY_TYPE)
+            ->sortBy('position')
+            ->map(fn ($c) => ['id' => $c['id'], 'name' => $c['name']])
+            ->values()
+            ->all();
     }
 
     private function domainRule(): \Closure

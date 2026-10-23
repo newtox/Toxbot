@@ -18,7 +18,7 @@ class Discord
 
     public const PERMISSION_MANAGE_ROLES = 0x10000000;
 
-    public const INVITE_PERMISSIONS = 0x20 | 0x10000000 | 0x800 | 0x400 | 0x2000 | 0x4000 | 0x2 | 0x4 | 0x80 | 0x10000000000;
+    public const INVITE_PERMISSIONS = 0x10 | 0x8000 | 0x10000 | 0x20 | 0x10000000 | 0x800 | 0x400 | 0x2000 | 0x4000 | 0x2 | 0x4 | 0x80 | 0x10000000000;
 
     public const MEMBER_LIMIT = 5000;
 
@@ -233,6 +233,13 @@ class Discord
     {
         $this->asBot()->withHeaders(['X-Audit-Log-Reason' => rawurlencode($reason)])
             ->delete("/guilds/{$guildId}/members/{$userId}/roles/{$roleId}")->throw();
+    }
+
+    public function sendDirectMessage(string $userId, array $payload): ?string
+    {
+        $channelId = $this->asBot()->post('/users/@me/channels', ['recipient_id' => $userId])->throw()->json('id');
+
+        return $this->sendMessage($channelId, $payload);
     }
 
     public function forgetGuildCache(string $guildId): void

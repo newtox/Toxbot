@@ -21,4 +21,5 @@ return [
     'section_tags' => 'Tags',
     'section_moderation' => 'Moderation',
     'section_protection' => 'Schutz',
+    'section_tickets' => 'Tickets',
 ];

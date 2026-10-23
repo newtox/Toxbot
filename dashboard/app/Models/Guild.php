@@ -31,6 +31,8 @@ class Guild extends Model
         'link_invites', 'link_scam', 'link_allowlist_enabled', 'link_allowlist', 'link_blocklist', 'link_action', 'link_exempt_roles',
         'raid_enabled', 'raid_joins', 'raid_seconds', 'raid_minutes', 'raid_kick', 'raid_level', 'raid_until',
         'min_account_age',
+        'ticket_category', 'ticket_log_channel', 'ticket_limit', 'ticket_panel_channel', 'ticket_panel_message_id',
+        'unban_enabled',
     ];
 
     public const LINK_ACTIONS = ['delete', 'warn', 'timeout'];
@@ -63,6 +65,8 @@ class Guild extends Model
         'raid_kick' => true,
         'raid_level' => true,
         'min_account_age' => 0,
+        'ticket_limit' => 1,
+        'unban_enabled' => false,
     ];
 
     protected function casts(): array
@@ -83,6 +87,8 @@ class Guild extends Model
             'raid_level' => 'boolean',
             'raid_until' => 'datetime',
             'min_account_age' => 'integer',
+            'ticket_limit' => 'integer',
+            'unban_enabled' => 'boolean',
         ];
     }
 

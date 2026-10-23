@@ -6,6 +6,7 @@ use App\Models\Guild;
 use App\Models\ModCase;
 use App\Models\StreamSubscription;
 use App\Models\TagGuildBlock;
+use App\Models\Ticket;
 use App\Services\Discord;
 use App\Services\GuildAccess;
 use App\Services\Premium;
@@ -106,6 +107,14 @@ class ServerController extends Controller
                     'extra' => trans_choice('moderation.cases_count', ModCase::query()->forGuild($guild)->count()),
                 ],
                 [
+                    'section' => 'tickets',
+                    'icon' => 'ticket',
+                    'title' => __('tickets.title'),
+                    'description' => __('tickets.description'),
+                    'active' => $row->ticket_category !== null,
+                    'extra' => trans_choice('tickets.open_count', Ticket::query()->forGuild($guild)->where('status', 'open')->count()),
+                ],
+                [
                     'section' => 'protection',
                     'icon' => 'lock',
                     'title' => __('protection.verify_title'),
@@ -135,6 +144,41 @@ class ServerController extends Controller
         [$found, $guilds] = $this->resolve($request, $guild);
 
         return view('servers.settings', ['guild' => $found, 'guilds' => $guilds, 'section' => $section]);
+    }
+
+    public function tickets(Request $request, string $guild): View
+    {
+        [$found, $guilds] = $this->resolve($request, $guild);
+        $status = in_array($request->query('status'), ['open', 'closed'], true) ? $request->query('status') : null;
+
+        return view('servers.tickets', [
+            'guild' => $found,
+            'guilds' => $guilds,
+            'status' => $status,
+            'tickets' => Ticket::query()->forGuild($guild)
+                ->when($status, fn ($query) => $query->where('status', $status))
+                ->orderByDesc('number')
+                ->paginate(25)
+                ->withQueryString(),
+        ]);
+    }
+
+    public function ticket(Request $request, string $guild, int $ticket): View
+    {
+        [$found, $guilds] = $this->resolve($request, $guild);
+
+        return view('servers.ticket', [
+            'guild' => $found,
+            'guilds' => $guilds,
+            'ticket' => Ticket::query()->forGuild($guild)->with('messages')->findOrFail($ticket),
+        ]);
+    }
+
+    public function appeals(Request $request, string $guild): View
+    {
+        [$found, $guilds] = $this->resolve($request, $guild);
+
+        return view('servers.appeals', ['guild' => $found, 'guilds' => $guilds]);
     }
 
     public function members(Request $request, string $guild): View

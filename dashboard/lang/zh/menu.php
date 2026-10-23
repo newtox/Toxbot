@@ -21,4 +21,5 @@ return [
     'section_tags' => '标签',
     'section_moderation' => '管理',
     'section_protection' => '保护',
+    'section_tickets' => '工单',
 ];

@@ -486,6 +486,108 @@
     </section>
     @endif
 
+    @if ($section === 'tickets')
+    @if ($ticketNotice)
+        <p class="rounded-lg border-l-4 border-accent bg-dc-800 px-4 py-3 text-sm" role="status">{{ $ticketNotice }}</p>
+    @endif
+
+    <section id="tickets" class="card scroll-mt-20 space-y-5">
+        <div>
+            <h2 class="text-lg font-semibold text-dc-header">{{ __('tickets.title') }}</h2>
+            <p class="text-sm text-dc-muted">{{ __('tickets.description') }}</p>
+        </div>
+
+        <div class="grid gap-4 sm:grid-cols-2">
+            <div>
+                <label class="label" for="ticket-category">{{ __('tickets.category') }}</label>
+                <select id="ticket-category" wire:model="ticketCategory" class="input">
+                    <option value="">{{ __('tickets.choose_category') }}</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
+                    @endforeach
+                </select>
+                @error('ticketCategory') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+            </div>
+            <div>
+                <label class="label" for="ticket-log">{{ __('tickets.log_channel') }}</label>
+                <select id="ticket-log" wire:model="ticketLogChannel" class="input">
+                    <option value="">{{ __('protection.no_channel') }}</option>
+                    @foreach ($channelGroups as $group)
+                            @if ($group['name'])
+                                <optgroup label="{{ $group['name'] }}">
+                            @endif
+                            @foreach ($group['channels'] as $c)
+                                <option value="{{ $c['id'] }}"># {{ $c['name'] }}</option>
+                            @endforeach
+                            @if ($group['name'])
+                                </optgroup>
+                            @endif
+                        @endforeach
+                </select>
+                @error('ticketLogChannel') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+            </div>
+            <div>
+                <label class="label" for="ticket-panel">{{ __('tickets.panel_channel') }}</label>
+                <select id="ticket-panel" wire:model="ticketPanelChannel" class="input">
+                    <option value="">{{ __('protection.no_channel') }}</option>
+                    @foreach ($channelGroups as $group)
+                            @if ($group['name'])
+                                <optgroup label="{{ $group['name'] }}">
+                            @endif
+                            @foreach ($group['channels'] as $c)
+                                <option value="{{ $c['id'] }}"># {{ $c['name'] }}</option>
+                            @endforeach
+                            @if ($group['name'])
+                                </optgroup>
+                            @endif
+                        @endforeach
+                </select>
+                @error('ticketPanelChannel') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+            </div>
+            <div>
+                <label class="label" for="ticket-limit">{{ __('tickets.limit') }}</label>
+                <input id="ticket-limit" type="number" min="1" max="10" wire:model="ticketLimit" class="input">
+                @error('ticketLimit') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+            </div>
+        </div>
+        <p class="text-sm text-dc-faint">{{ __('tickets.hint') }}</p>
+        <div class="flex flex-wrap items-center gap-3">
+            <button type="button" wire:click="postTicketPanel" wire:loading.attr="disabled" class="btn-secondary">
+                {{ $ticketPanelPosted ? __('protection.post_update') : __('tickets.panel_post') }}
+            </button>
+            <span class="text-xs text-dc-faint">{{ __('tickets.panel_hint') }}</span>
+        </div>
+    </section>
+
+    <section class="card space-y-4">
+        <div>
+            <h2 class="text-lg font-semibold text-dc-header">{{ __('tickets.types_title') }}</h2>
+            <p class="text-sm text-dc-muted">{{ __('tickets.types_description') }}</p>
+        </div>
+        <livewire:ticket-types :guild-id="$guildId" :roles="$roles" />
+    </section>
+
+    <section id="appeals" class="card scroll-mt-20">
+        <div class="flex items-start gap-4">
+            <div class="flex-1">
+                <h2 class="text-lg font-semibold text-dc-header">{{ __('tickets.appeals_title') }}</h2>
+                <p class="text-sm text-dc-muted">{{ __('tickets.appeals_description') }}</p>
+            </div>
+            <label class="relative mt-1 inline-flex shrink-0 cursor-pointer items-center">
+                <input type="checkbox" wire:model="unbanEnabled" class="peer sr-only">
+                <span class="h-6 w-10 rounded-full bg-dc-400 transition-colors peer-checked:bg-accent peer-focus-visible:ring-2 peer-focus-visible:ring-accent-fg peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-dc-800"></span>
+                <span class="absolute top-0.5 left-0.5 size-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-4"></span>
+                <span class="sr-only">{{ __('guild.enable', ['name' => __('tickets.appeals_title')]) }}</span>
+            </label>
+        </div>
+        <div x-show="$wire.unbanEnabled" x-collapse.duration.200ms class="mt-4 space-y-2 text-sm">
+            <p class="text-dc-muted">{{ __('tickets.appeals_link') }}</p>
+            <p class="rounded-md bg-dc-900 px-3 py-2 font-mono text-xs break-all text-dc-header">{{ route('appeals.show', $guildId) }}</p>
+            <p class="text-dc-faint">{{ __('tickets.appeals_hint') }}</p>
+        </div>
+    </section>
+    @endif
+
     <x-unsaved-bar />
 
     @if ($errors->any())
