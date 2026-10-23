@@ -20,6 +20,7 @@ class HomeTest extends TestCase
             ->assertOk()
             ->assertSee(__('home.hero_title'))
             ->assertSee(__('home.f_streams_t'))
+            ->assertSee(__('home.f_mod_t'))
             ->assertSee(__('home.premium_server_1'))
             ->assertSee('client_id=561253410591211520', false)
             ->assertSee(__('home.stat_servers'));
