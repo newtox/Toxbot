@@ -104,6 +104,7 @@
                                 'levels' => 'level',
                                 'streams' => 'stream',
                                 'tags' => 'tag',
+                                'moderation' => 'shield',
                             ] as $section => $icon)
                                 <a href="{{ route('servers.settings', [$guild['id'], $section]) }}"
                                    @class(['nav-item', 'nav-item-active' => request()->routeIs('servers.settings') && request()->route('section') === $section])>

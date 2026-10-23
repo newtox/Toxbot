@@ -19,4 +19,5 @@ return [
     'section_levels' => 'लेवल',
     'section_streams' => 'स्ट्रीम',
     'section_tags' => 'टैग',
+    'section_moderation' => 'मॉडरेशन',
 ];

@@ -17,7 +17,7 @@ class GuildSettings extends Component
 
     private const CATEGORY_TYPE = 4;
 
-    public const SECTIONS = ['general', 'levels', 'streams', 'tags'];
+    public const SECTIONS = ['general', 'levels', 'streams', 'tags', 'moderation'];
 
     #[Locked]
     public string $section = 'general';
@@ -63,6 +63,10 @@ class GuildSettings extends Component
 
     public ?string $liveRoleRequired = null;
 
+    public ?string $modlogChannel = null;
+
+    public bool $modDm = true;
+
     public function mount(array $guild, string $section = 'general'): void
     {
         $this->section = in_array($section, self::SECTIONS, true) ? $section : 'general';
@@ -97,6 +101,8 @@ class GuildSettings extends Component
         $this->streamVideoMsg = (string) $row->stream_video_msg;
         $this->liveRole = $row->live_role;
         $this->liveRoleRequired = $row->live_role_required;
+        $this->modlogChannel = $row->modlog_channel;
+        $this->modDm = $row->exists ? (bool) $row->mod_dm : true;
 
         $this->resetValidation();
     }
@@ -151,6 +157,9 @@ class GuildSettings extends Component
                 'liveRoleRequired' => ['nullable', Rule::in($mentionableRoleIds)],
             ],
             'tags' => [],
+            'moderation' => [
+                'modlogChannel' => ['nullable', Rule::in($channelIds)],
+            ],
         ];
 
         $sectionRules = $rules[$this->section];
@@ -163,6 +172,7 @@ class GuildSettings extends Component
                 'autorole.in' => __('guild.role_invalid'),
                 'levelupChannel.in' => __('guild.channel_invalid'),
                 'streamChannel.in' => __('guild.channel_invalid'),
+                'modlogChannel.in' => __('guild.channel_invalid'),
                 'streamRole.in' => __('guild.role_invalid'),
                 'liveRole.in' => __('guild.role_invalid'),
                 'liveRoleRequired.in' => __('guild.role_invalid'),
@@ -191,6 +201,10 @@ class GuildSettings extends Component
             ],
             'tags' => [
                 'tags_enabled' => $this->tagsEnabled,
+            ],
+            'moderation' => [
+                'modlog_channel' => $this->modlogChannel ?: null,
+                'mod_dm' => $this->modDm,
             ],
         };
 

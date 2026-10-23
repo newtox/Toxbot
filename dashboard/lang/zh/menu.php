@@ -19,4 +19,5 @@ return [
     'section_levels' => '等级',
     'section_streams' => '直播',
     'section_tags' => '标签',
+    'section_moderation' => '管理',
 ];
