@@ -2,6 +2,7 @@ import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:toxbot/utils/database.dart';
+import 'package:toxbot/utils/functions.dart';
 import 'package:toxbot/utils/reply.dart';
 
 const languageCodeConverter = SimpleConverter.fixed(
@@ -17,10 +18,8 @@ const languageCodeConverter = SimpleConverter.fixed(
     '日本語',
     '한국어'
   ],
-  stringify: languageCodeToString,
+  stringify: stringifyOption,
 );
-
-String languageCodeToString(String code) => code;
 
 final language = ChatCommand('language', 'Set your preferred language.',
     localizedDescriptions: {

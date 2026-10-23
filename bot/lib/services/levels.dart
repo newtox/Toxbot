@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:http/http.dart' as http;
 import 'package:mysql1/mysql1.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
@@ -121,6 +122,52 @@ Future<void> countCommand(NyxxGateway client, CommandContext context) async {
     channelId: context.channel.id,
     context: context,
   );
+}
+
+Future<List<int>?> fetchProfileCard(
+  Snowflake userId, {
+  Snowflake? guildId,
+  int? background,
+}) async {
+  final base = dashboardUrl;
+  if (base == null) return null;
+  try {
+    final uri = Uri.parse('$base/card/$userId.png').replace(
+      queryParameters: {
+        if (guildId != null) 'guild': guildId.toString(),
+        if (background != null) 'bg': background.toString(),
+      },
+    );
+    final response = await http.get(uri).timeout(const Duration(seconds: 10));
+    if (response.statusCode != 200) {
+      print('Profile card: dashboard answered ${response.statusCode}');
+      return null;
+    }
+    return response.bodyBytes;
+  } catch (e) {
+    print('Profile card could not be loaded: $e');
+    return null;
+  }
+}
+
+Future<Iterable<CommandOptionChoiceBuilder<String>>> ownedBackgroundChoices(
+  AutocompleteContext context,
+) async {
+  try {
+    final names = await withConnection(
+      (connection) => economy.usableBackgroundNames(
+        connection,
+        context.user.id.toString(),
+        context.currentValue,
+      ),
+    );
+    return names.map(
+      (name) => CommandOptionChoiceBuilder(name: name, value: name),
+    );
+  } catch (e) {
+    print('Error in background autocomplete: $e');
+    return const [];
+  }
 }
 
 void setupMessageXpHandler(NyxxGateway client) {

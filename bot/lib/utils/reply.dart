@@ -70,3 +70,15 @@ Future<void> replyErrorText(
     level: ResponseLevel.hint,
   );
 }
+
+Future<void> replyCommandError(
+  InteractiveContext context,
+  String key,
+  String command,
+  Object error,
+) async {
+  print('Error in $command command: $error');
+  await replyError(context, key,
+      replace: {'&command': command},
+      details: codeBlock(error.toString(), 'sh'));
+}

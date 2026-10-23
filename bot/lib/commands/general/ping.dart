@@ -1,13 +1,12 @@
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:toxbot/utils/database.dart';
+import 'package:toxbot/utils/functions.dart';
 
 const latencyTypeConverter = SimpleConverter.fixed(
   elements: ['Basic', 'Real', 'Gateway'],
-  stringify: latencyTypeToString,
+  stringify: stringifyOption,
 );
-
-String latencyTypeToString(String type) => type;
 
 final ping = ChatCommand(
     'ping', 'A simple ping command to check the bot\'s latency.',
