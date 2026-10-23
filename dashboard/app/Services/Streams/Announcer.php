@@ -209,10 +209,10 @@ class Announcer
         $role = ($premium && $subscription->role) ? $subscription->role : $guild->notify;
 
         $content = strtr($template, [
-            '&channel' => $source->name,
-            '&streamer' => $source->name,
-            '&title' => $details['title'],
-            '&game' => $details['game'],
+            '&channel' => $this->escapeMarkdown($source->name),
+            '&streamer' => $this->escapeMarkdown($source->name),
+            '&title' => $this->escapeMarkdown($details['title']),
+            '&game' => $this->escapeMarkdown($details['game']),
             '&link' => $details['url'],
             '&role' => $role ? "<@&{$role}>" : '',
         ]);
@@ -236,6 +236,11 @@ class Announcer
             'message_id' => $messageId,
             'started_at' => $details['started'],
         ]);
+    }
+
+    private function escapeMarkdown(?string $text): string
+    {
+        return preg_replace('/([\\\\*_~`|\[\]])/', '\\\\$1', (string) $text);
     }
 
     private function embed(StreamSource $source, array $details): array

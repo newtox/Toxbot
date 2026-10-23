@@ -243,6 +243,20 @@ class StreamsTest extends TestCase
             ->call('add')->assertSet('error', __('streams.youtube_need_id'));
     }
 
+    public function test_placeholders_escape_markdown(): void
+    {
+        $this->guild()->update(['stream_video_msg' => '[&title](&link)']);
+        $source = StreamSource::create(['platform' => 'youtube', 'external_id' => 'UC1234567890123456789012', 'name' => 'Mein_Kanal']);
+        StreamSubscription::create(['guild' => self::GUILD, 'stream_source_id' => $source->id]);
+
+        $xml = '<feed xmlns:yt="http://www.youtube.com/xml/schemas/2015" xmlns="http://www.w3.org/2005/Atom"><entry>'
+            .'<id>yt:video:abc</id><yt:videoId>abc</yt:videoId><yt:channelId>UC1234567890123456789012</yt:channelId>'
+            .'<title>GTA V - [4K] #07 - *Fliegen*</title><published>'.now()->toAtomString().'</published></entry></feed>';
+        $this->call('POST', '/webhooks/youtube', [], [], [], ['HTTP_X_HUB_SIGNATURE' => 'sha1='.hash_hmac('sha1', $xml, self::SECRET)], $xml)->assertNoContent();
+
+        $this->assertSame('[GTA V - \\[4K\\] #07 - \\*Fliegen\\*](https://www.youtube.com/watch?v=abc)', $this->discordPosts[0]['content']);
+    }
+
     public function test_youtube_api_errors_show_the_reason(): void
     {
         $this->login();
