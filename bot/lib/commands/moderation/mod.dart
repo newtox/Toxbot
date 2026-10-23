@@ -3,102 +3,10 @@ import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:toxbot/services/moderation.dart';
 import 'package:toxbot/utils/reply.dart';
 
-const _userDescription = {
-  Locale.da: 'Medlemmet.',
-  Locale.de: 'Das Mitglied.',
-  Locale.enUs: 'The member.',
-  Locale.esEs: 'El miembro.',
-  Locale.fr: 'Le membre.',
-  Locale.ru: 'Участник.',
-  Locale.hi: 'सदस्य।',
-  Locale.zhCn: '成员。',
-  Locale.ja: '対象のメンバー。',
-  Locale.ko: '대상 멤버.',
-};
-
-const _reasonDescription = {
-  Locale.da: 'Årsagen, vises i modloggen.',
-  Locale.de: 'Der Grund, erscheint im Modlog.',
-  Locale.enUs: 'The reason, shown in the modlog.',
-  Locale.esEs: 'El motivo, aparece en el registro de moderación.',
-  Locale.fr: 'La raison, affichée dans le journal de modération.',
-  Locale.ru: 'Причина, видна в журнале модерации.',
-  Locale.hi: 'कारण, मॉडलॉग में दिखता है।',
-  Locale.zhCn: '原因，会显示在管理日志中。',
-  Locale.ja: '理由。モデレーションログに表示されます。',
-  Locale.ko: '사유, 관리 로그에 표시됩니다.',
-};
-
-const _durationDescription = {
-  Locale.da: 'Varighed, f.eks. 10m, 2h, 7d.',
-  Locale.de: 'Dauer, z. B. 10m, 2h, 7d.',
-  Locale.enUs: 'Duration, e.g. 10m, 2h, 7d.',
-  Locale.esEs: 'Duración, p. ej. 10m, 2h, 7d.',
-  Locale.fr: 'Durée, par ex. 10m, 2h, 7d.',
-  Locale.ru: 'Длительность, например 10m, 2h, 7d.',
-  Locale.hi: 'अवधि, जैसे 10m, 2h, 7d।',
-  Locale.zhCn: '时长，例如 10m、2h、7d。',
-  Locale.ja: '期間（例: 10m、2h、7d）。',
-  Locale.ko: '기간, 예: 10m, 2h, 7d.',
-};
-
-const _banDurationDescription = {
-  Locale.da: 'Varighed for en midlertidig ban, f.eks. 7d. Tom = permanent.',
-  Locale.de: 'Dauer für einen befristeten Bann, z. B. 7d. Leer = dauerhaft.',
-  Locale.enUs: 'Duration of a temporary ban, e.g. 7d. Empty = permanent.',
-  Locale.esEs: 'Duración de un baneo temporal, p. ej. 7d. Vacío = permanente.',
-  Locale.fr:
-      'Durée d\'un bannissement temporaire, par ex. 7d. Vide = permanent.',
-  Locale.ru: 'Срок временного бана, например 7d. Пусто = навсегда.',
-  Locale.hi: 'अस्थायी बैन की अवधि, जैसे 7d। खाली = स्थायी।',
-  Locale.zhCn: '临时封禁的时长，例如 7d。留空 = 永久。',
-  Locale.ja: '一時 BAN の期間（例: 7d）。空欄で永久。',
-  Locale.ko: '임시 차단 기간, 예: 7d. 비우면 영구.',
-};
-
-const _deleteDescription = {
-  Locale.da: 'Slet beskeder fra de sidste dage (0-7).',
-  Locale.de: 'Nachrichten der letzten Tage löschen (0-7).',
-  Locale.enUs: 'Delete messages from the last days (0-7).',
-  Locale.esEs: 'Borrar mensajes de los últimos días (0-7).',
-  Locale.fr: 'Supprimer les messages des derniers jours (0-7).',
-  Locale.ru: 'Удалить сообщения за последние дни (0-7).',
-  Locale.hi: 'पिछले दिनों के संदेश हटाएँ (0-7)।',
-  Locale.zhCn: '删除最近几天的消息（0-7）。',
-  Locale.ja: '直近の日数分のメッセージを削除（0〜7）。',
-  Locale.ko: '최근 며칠간의 메시지 삭제 (0-7).',
-};
-
-const _userIdDescription = {
-  Locale.da: 'Bruger-ID på den bannede person.',
-  Locale.de: 'Benutzer-ID der gebannten Person.',
-  Locale.enUs: 'User ID of the banned person.',
-  Locale.esEs: 'ID de usuario de la persona baneada.',
-  Locale.fr: 'ID de l\'utilisateur banni.',
-  Locale.ru: 'ID забаненного пользователя.',
-  Locale.hi: 'बैन किए गए व्यक्ति की यूज़र ID।',
-  Locale.zhCn: '被封禁者的用户 ID。',
-  Locale.ja: 'BAN されたユーザーの ID。',
-  Locale.ko: '차단된 사용자의 ID.',
-};
-
-const _numberDescription = {
-  Locale.da: 'Sagens nummer.',
-  Locale.de: 'Die Nummer des Falls.',
-  Locale.enUs: 'The case number.',
-  Locale.esEs: 'El número del caso.',
-  Locale.fr: 'Le numéro du cas.',
-  Locale.ru: 'Номер случая.',
-  Locale.hi: 'केस नंबर।',
-  Locale.zhCn: '案例编号。',
-  Locale.ja: 'ケース番号。',
-  Locale.ko: '케이스 번호.',
-};
-
 final _warn = ChatCommand(
   'warn',
   'Warn a member.',
-  localizedDescriptions: const {
+  localizedDescriptions: {
     Locale.da: 'Giv et medlem en advarsel.',
     Locale.de: 'Ein Mitglied verwarnen.',
     Locale.enUs: 'Warn a member.',
@@ -112,8 +20,31 @@ final _warn = ChatCommand(
   },
   checks: [GuildCheck.all(), PermissionsCheck(Permissions.moderateMembers)],
   (ChatContext context,
-          @Description('The member.', _userDescription) Member member,
-          [@Description('The reason, shown in the modlog.', _reasonDescription)
+          @Description('The member.', {
+            Locale.da: 'Medlemmet.',
+            Locale.de: 'Das Mitglied.',
+            Locale.enUs: 'The member.',
+            Locale.esEs: 'El miembro.',
+            Locale.fr: 'Le membre.',
+            Locale.ru: 'Участник.',
+            Locale.hi: 'सदस्य।',
+            Locale.zhCn: '成员。',
+            Locale.ja: '対象のメンバー。',
+            Locale.ko: '대상 멤버.',
+          })
+          Member member,
+          [@Description('The reason, shown in the modlog.', {
+            Locale.da: 'Årsagen, vises i modloggen.',
+            Locale.de: 'Der Grund, erscheint im Modlog.',
+            Locale.enUs: 'The reason, shown in the modlog.',
+            Locale.esEs: 'El motivo, aparece en el registro de moderación.',
+            Locale.fr: 'La raison, affichée dans le journal de modération.',
+            Locale.ru: 'Причина, видна в журнале модерации.',
+            Locale.hi: 'कारण, मॉडलॉग में दिखता है।',
+            Locale.zhCn: '原因，会显示在管理日志中。',
+            Locale.ja: '理由。モデレーションログに表示されます。',
+            Locale.ko: '사유, 관리 로그에 표시됩니다.',
+          })
           String? reason]) =>
       runModerationCommand(context,
           type: 'warn', targetId: member.id, reason: reason),
@@ -122,7 +53,7 @@ final _warn = ChatCommand(
 final _timeout = ChatCommand(
   'timeout',
   'Time out a member.',
-  localizedDescriptions: const {
+  localizedDescriptions: {
     Locale.da: 'Giv et medlem timeout.',
     Locale.de: 'Ein Mitglied in den Timeout schicken.',
     Locale.enUs: 'Time out a member.',
@@ -136,10 +67,44 @@ final _timeout = ChatCommand(
   },
   checks: [GuildCheck.all(), PermissionsCheck(Permissions.moderateMembers)],
   (ChatContext context,
-      @Description('The member.', _userDescription) Member member,
-      @Description('Duration, e.g. 10m, 2h, 7d.', _durationDescription)
+      @Description('The member.', {
+        Locale.da: 'Medlemmet.',
+        Locale.de: 'Das Mitglied.',
+        Locale.enUs: 'The member.',
+        Locale.esEs: 'El miembro.',
+        Locale.fr: 'Le membre.',
+        Locale.ru: 'Участник.',
+        Locale.hi: 'सदस्य।',
+        Locale.zhCn: '成员。',
+        Locale.ja: '対象のメンバー。',
+        Locale.ko: '대상 멤버.',
+      })
+      Member member,
+      @Description('Duration, e.g. 10m, 2h, 7d.', {
+        Locale.da: 'Varighed, f.eks. 10m, 2h, 7d.',
+        Locale.de: 'Dauer, z. B. 10m, 2h, 7d.',
+        Locale.enUs: 'Duration, e.g. 10m, 2h, 7d.',
+        Locale.esEs: 'Duración, p. ej. 10m, 2h, 7d.',
+        Locale.fr: 'Durée, par ex. 10m, 2h, 7d.',
+        Locale.ru: 'Длительность, например 10m, 2h, 7d.',
+        Locale.hi: 'अवधि, जैसे 10m, 2h, 7d।',
+        Locale.zhCn: '时长，例如 10m、2h、7d。',
+        Locale.ja: '期間（例: 10m、2h、7d）。',
+        Locale.ko: '기간, 예: 10m, 2h, 7d.',
+      })
       String duration,
-      [@Description('The reason, shown in the modlog.', _reasonDescription)
+      [@Description('The reason, shown in the modlog.', {
+        Locale.da: 'Årsagen, vises i modloggen.',
+        Locale.de: 'Der Grund, erscheint im Modlog.',
+        Locale.enUs: 'The reason, shown in the modlog.',
+        Locale.esEs: 'El motivo, aparece en el registro de moderación.',
+        Locale.fr: 'La raison, affichée dans le journal de modération.',
+        Locale.ru: 'Причина, видна в журнале модерации.',
+        Locale.hi: 'कारण, मॉडलॉग में दिखता है।',
+        Locale.zhCn: '原因，会显示在管理日志中。',
+        Locale.ja: '理由。モデレーションログに表示されます。',
+        Locale.ko: '사유, 관리 로그에 표시됩니다.',
+      })
       String? reason]) async {
     final parsed = parseOptionalDuration(duration);
     if (parsed == null) {
@@ -154,7 +119,7 @@ final _timeout = ChatCommand(
 final _untimeout = ChatCommand(
   'untimeout',
   'Remove a member\'s timeout.',
-  localizedDescriptions: const {
+  localizedDescriptions: {
     Locale.da: 'Fjern et medlems timeout.',
     Locale.de: 'Den Timeout eines Mitglieds aufheben.',
     Locale.enUs: 'Remove a member\'s timeout.',
@@ -168,8 +133,31 @@ final _untimeout = ChatCommand(
   },
   checks: [GuildCheck.all(), PermissionsCheck(Permissions.moderateMembers)],
   (ChatContext context,
-          @Description('The member.', _userDescription) Member member,
-          [@Description('The reason, shown in the modlog.', _reasonDescription)
+          @Description('The member.', {
+            Locale.da: 'Medlemmet.',
+            Locale.de: 'Das Mitglied.',
+            Locale.enUs: 'The member.',
+            Locale.esEs: 'El miembro.',
+            Locale.fr: 'Le membre.',
+            Locale.ru: 'Участник.',
+            Locale.hi: 'सदस्य।',
+            Locale.zhCn: '成员。',
+            Locale.ja: '対象のメンバー。',
+            Locale.ko: '대상 멤버.',
+          })
+          Member member,
+          [@Description('The reason, shown in the modlog.', {
+            Locale.da: 'Årsagen, vises i modloggen.',
+            Locale.de: 'Der Grund, erscheint im Modlog.',
+            Locale.enUs: 'The reason, shown in the modlog.',
+            Locale.esEs: 'El motivo, aparece en el registro de moderación.',
+            Locale.fr: 'La raison, affichée dans le journal de modération.',
+            Locale.ru: 'Причина, видна в журнале модерации.',
+            Locale.hi: 'कारण, मॉडलॉग में दिखता है।',
+            Locale.zhCn: '原因，会显示在管理日志中。',
+            Locale.ja: '理由。モデレーションログに表示されます。',
+            Locale.ko: '사유, 관리 로그에 표시됩니다.',
+          })
           String? reason]) =>
       runModerationCommand(context,
           type: 'untimeout', targetId: member.id, reason: reason),
@@ -178,7 +166,7 @@ final _untimeout = ChatCommand(
 final _kick = ChatCommand(
   'kick',
   'Kick a member from the server.',
-  localizedDescriptions: const {
+  localizedDescriptions: {
     Locale.da: 'Smid et medlem ud af serveren.',
     Locale.de: 'Ein Mitglied vom Server kicken.',
     Locale.enUs: 'Kick a member from the server.',
@@ -192,8 +180,31 @@ final _kick = ChatCommand(
   },
   checks: [GuildCheck.all(), PermissionsCheck(Permissions.kickMembers)],
   (ChatContext context,
-          @Description('The member.', _userDescription) Member member,
-          [@Description('The reason, shown in the modlog.', _reasonDescription)
+          @Description('The member.', {
+            Locale.da: 'Medlemmet.',
+            Locale.de: 'Das Mitglied.',
+            Locale.enUs: 'The member.',
+            Locale.esEs: 'El miembro.',
+            Locale.fr: 'Le membre.',
+            Locale.ru: 'Участник.',
+            Locale.hi: 'सदस्य।',
+            Locale.zhCn: '成员。',
+            Locale.ja: '対象のメンバー。',
+            Locale.ko: '대상 멤버.',
+          })
+          Member member,
+          [@Description('The reason, shown in the modlog.', {
+            Locale.da: 'Årsagen, vises i modloggen.',
+            Locale.de: 'Der Grund, erscheint im Modlog.',
+            Locale.enUs: 'The reason, shown in the modlog.',
+            Locale.esEs: 'El motivo, aparece en el registro de moderación.',
+            Locale.fr: 'La raison, affichée dans le journal de modération.',
+            Locale.ru: 'Причина, видна в журнале модерации.',
+            Locale.hi: 'कारण, मॉडलॉग में दिखता है।',
+            Locale.zhCn: '原因，会显示在管理日志中。',
+            Locale.ja: '理由。モデレーションログに表示されます。',
+            Locale.ko: '사유, 관리 로그에 표시됩니다.',
+          })
           String? reason]) =>
       runModerationCommand(context,
           type: 'kick', targetId: member.id, reason: reason),
@@ -202,7 +213,7 @@ final _kick = ChatCommand(
 final _ban = ChatCommand(
   'ban',
   'Ban a user, optionally only for a while.',
-  localizedDescriptions: const {
+  localizedDescriptions: {
     Locale.da: 'Ban en bruger, eventuelt kun midlertidigt.',
     Locale.de: 'Einen Nutzer bannen, auf Wunsch nur befristet.',
     Locale.enUs: 'Ban a user, optionally only for a while.',
@@ -215,14 +226,62 @@ final _ban = ChatCommand(
     Locale.ko: '사용자를 차단합니다. 기간을 정할 수도 있습니다.',
   },
   checks: [GuildCheck.all(), PermissionsCheck(Permissions.banMembers)],
-  (ChatContext context, @Description('The member.', _userDescription) User user,
-      [@Description('The reason, shown in the modlog.', _reasonDescription)
+  (ChatContext context,
+      @Description('The member.', {
+        Locale.da: 'Medlemmet.',
+        Locale.de: 'Das Mitglied.',
+        Locale.enUs: 'The member.',
+        Locale.esEs: 'El miembro.',
+        Locale.fr: 'Le membre.',
+        Locale.ru: 'Участник.',
+        Locale.hi: 'सदस्य।',
+        Locale.zhCn: '成员。',
+        Locale.ja: '対象のメンバー。',
+        Locale.ko: '대상 멤버.',
+      })
+      User user,
+      [@Description('The reason, shown in the modlog.', {
+        Locale.da: 'Årsagen, vises i modloggen.',
+        Locale.de: 'Der Grund, erscheint im Modlog.',
+        Locale.enUs: 'The reason, shown in the modlog.',
+        Locale.esEs: 'El motivo, aparece en el registro de moderación.',
+        Locale.fr: 'La raison, affichée dans le journal de modération.',
+        Locale.ru: 'Причина, видна в журнале модерации.',
+        Locale.hi: 'कारण, मॉडलॉग में दिखता है।',
+        Locale.zhCn: '原因，会显示在管理日志中。',
+        Locale.ja: '理由。モデレーションログに表示されます。',
+        Locale.ko: '사유, 관리 로그에 표시됩니다.',
+      })
       String? reason,
-      @Description('Duration of a temporary ban, e.g. 7d. Empty = permanent.',
-          _banDurationDescription)
+      @Description('Duration of a temporary ban, e.g. 7d. Empty = permanent.', {
+        Locale.da:
+            'Varighed for en midlertidig ban, f.eks. 7d. Tom = permanent.',
+        Locale.de:
+            'Dauer für einen befristeten Bann, z. B. 7d. Leer = dauerhaft.',
+        Locale.enUs: 'Duration of a temporary ban, e.g. 7d. Empty = permanent.',
+        Locale.esEs:
+            'Duración de un baneo temporal, p. ej. 7d. Vacío = permanente.',
+        Locale.fr:
+            'Durée d\'un bannissement temporaire, par ex. 7d. Vide = permanent.',
+        Locale.ru: 'Срок временного бана, например 7d. Пусто = навсегда.',
+        Locale.hi: 'अस्थायी बैन की अवधि, जैसे 7d। खाली = स्थायी।',
+        Locale.zhCn: '临时封禁的时长，例如 7d。留空 = 永久。',
+        Locale.ja: '一時 BAN の期間（例: 7d）。空欄で永久。',
+        Locale.ko: '임시 차단 기간, 예: 7d. 비우면 영구.',
+      })
       String? duration,
-      @Description(
-          'Delete messages from the last days (0-7).', _deleteDescription)
+      @Description('Delete messages from the last days (0-7).', {
+        Locale.da: 'Slet beskeder fra de sidste dage (0-7).',
+        Locale.de: 'Nachrichten der letzten Tage löschen (0-7).',
+        Locale.enUs: 'Delete messages from the last days (0-7).',
+        Locale.esEs: 'Borrar mensajes de los últimos días (0-7).',
+        Locale.fr: 'Supprimer les messages des derniers jours (0-7).',
+        Locale.ru: 'Удалить сообщения за последние дни (0-7).',
+        Locale.hi: 'पिछले दिनों के संदेश हटाएँ (0-7)।',
+        Locale.zhCn: '删除最近几天的消息（0-7）。',
+        Locale.ja: '直近の日数分のメッセージを削除（0〜7）。',
+        Locale.ko: '최근 며칠간의 메시지 삭제 (0-7).',
+      })
       @UseConverter(IntConverter(min: 0, max: 7))
       int? deleteMessages]) async {
     final parsed = parseOptionalDuration(duration);
@@ -242,7 +301,7 @@ final _ban = ChatCommand(
 final _unban = ChatCommand(
   'unban',
   'Lift a ban.',
-  localizedDescriptions: const {
+  localizedDescriptions: {
     Locale.da: 'Ophæv en ban.',
     Locale.de: 'Einen Bann aufheben.',
     Locale.enUs: 'Lift a ban.',
@@ -256,9 +315,31 @@ final _unban = ChatCommand(
   },
   checks: [GuildCheck.all(), PermissionsCheck(Permissions.banMembers)],
   (ChatContext context,
-      @Description('User ID of the banned person.', _userIdDescription)
+      @Description('User ID of the banned person.', {
+        Locale.da: 'Bruger-ID på den bannede person.',
+        Locale.de: 'Benutzer-ID der gebannten Person.',
+        Locale.enUs: 'User ID of the banned person.',
+        Locale.esEs: 'ID de usuario de la persona baneada.',
+        Locale.fr: 'ID de l\'utilisateur banni.',
+        Locale.ru: 'ID забаненного пользователя.',
+        Locale.hi: 'बैन किए गए व्यक्ति की यूज़र ID।',
+        Locale.zhCn: '被封禁者的用户 ID。',
+        Locale.ja: 'BAN されたユーザーの ID。',
+        Locale.ko: '차단된 사용자의 ID.',
+      })
       String userId,
-      [@Description('The reason, shown in the modlog.', _reasonDescription)
+      [@Description('The reason, shown in the modlog.', {
+        Locale.da: 'Årsagen, vises i modloggen.',
+        Locale.de: 'Der Grund, erscheint im Modlog.',
+        Locale.enUs: 'The reason, shown in the modlog.',
+        Locale.esEs: 'El motivo, aparece en el registro de moderación.',
+        Locale.fr: 'La raison, affichée dans le journal de modération.',
+        Locale.ru: 'Причина, видна в журнале модерации.',
+        Locale.hi: 'कारण, मॉडलॉग में दिखता है।',
+        Locale.zhCn: '原因，会显示在管理日志中。',
+        Locale.ja: '理由。モデレーションログに表示されます。',
+        Locale.ko: '사유, 관리 로그에 표시됩니다.',
+      })
       String? reason]) async {
     final id = Snowflake.parse(
         int.tryParse(userId.replaceAll(RegExp(r'[^0-9]'), '')) ?? 0);
@@ -274,7 +355,7 @@ final _unban = ChatCommand(
 final _cases = ChatCommand(
   'cases',
   'Show the latest cases of a user.',
-  localizedDescriptions: const {
+  localizedDescriptions: {
     Locale.da: 'Vis de seneste sager for en bruger.',
     Locale.de: 'Die letzten Fälle eines Nutzers anzeigen.',
     Locale.enUs: 'Show the latest cases of a user.',
@@ -289,7 +370,19 @@ final _cases = ChatCommand(
   checks: [GuildCheck.all(), PermissionsCheck(Permissions.moderateMembers)],
   (
     ChatContext context,
-    @Description('The member.', _userDescription) User user,
+    @Description('The member.', {
+      Locale.da: 'Medlemmet.',
+      Locale.de: 'Das Mitglied.',
+      Locale.enUs: 'The member.',
+      Locale.esEs: 'El miembro.',
+      Locale.fr: 'Le membre.',
+      Locale.ru: 'Участник.',
+      Locale.hi: 'सदस्य।',
+      Locale.zhCn: '成员。',
+      Locale.ja: '対象のメンバー。',
+      Locale.ko: '대상 멤버.',
+    })
+    User user,
   ) async {
     final cases = await casesFor(context.guild!.id, userId: user.id);
     if (cases.isEmpty) {
@@ -324,7 +417,7 @@ final _cases = ChatCommand(
 final _case = ChatCommand(
   'case',
   'Show a single case.',
-  localizedDescriptions: const {
+  localizedDescriptions: {
     Locale.da: 'Vis en enkelt sag.',
     Locale.de: 'Einen einzelnen Fall anzeigen.',
     Locale.enUs: 'Show a single case.',
@@ -339,7 +432,18 @@ final _case = ChatCommand(
   checks: [GuildCheck.all(), PermissionsCheck(Permissions.moderateMembers)],
   (
     ChatContext context,
-    @Description('The case number.', _numberDescription)
+    @Description('The case number.', {
+      Locale.da: 'Sagens nummer.',
+      Locale.de: 'Die Nummer des Falls.',
+      Locale.enUs: 'The case number.',
+      Locale.esEs: 'El número del caso.',
+      Locale.fr: 'Le numéro du cas.',
+      Locale.ru: 'Номер случая.',
+      Locale.hi: 'केस नंबर।',
+      Locale.zhCn: '案例编号。',
+      Locale.ja: 'ケース番号。',
+      Locale.ko: '케이스 번호.',
+    })
     @UseConverter(IntConverter(min: 1))
     int number,
   ) async {
@@ -361,7 +465,7 @@ final _case = ChatCommand(
 final mod = ChatGroup(
   'mod',
   'Moderation: warnings, timeouts, kicks, bans and cases.',
-  localizedDescriptions: const {
+  localizedDescriptions: {
     Locale.da: 'Moderation: advarsler, timeouts, kicks, bans og sager.',
     Locale.de: 'Moderation: Verwarnungen, Timeouts, Kicks, Banns und Fälle.',
     Locale.enUs: 'Moderation: warnings, timeouts, kicks, bans and cases.',
