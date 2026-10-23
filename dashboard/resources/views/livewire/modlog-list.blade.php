@@ -50,7 +50,7 @@
                             {{ $case->moderator_name ?? '–' }}
                             <div class="text-xs text-dc-faint">{{ __('moderation.source_'.$case->source) }}</div>
                         </td>
-                        <td class="px-4 py-3 text-right whitespace-nowrap text-dc-muted">{{ $case->created_at->locale(app()->getLocale())->isoFormat('lll') }}</td>
+                        <td class="px-4 py-3 text-right whitespace-nowrap text-dc-muted">{{ \App\Support\Timezone::format($case->created_at) }}</td>
                     </tr>
                 @empty
                     <tr>

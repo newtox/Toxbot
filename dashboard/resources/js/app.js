@@ -91,3 +91,14 @@ function setAccent(hex) {
 }
 
 window.toxbot = { renderDiscordMessage, insertAtCursor, discordTimestamp, setAccent };
+
+function rememberTimezone() {
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const cookie = `tz=${encodeURIComponent(timezone ?? '')}`;
+
+    if (timezone && !document.cookie.split('; ').includes(cookie)) {
+        document.cookie = `${cookie}; path=/; max-age=31536000; samesite=lax`;
+    }
+}
+
+rememberTimezone();

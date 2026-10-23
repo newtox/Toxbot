@@ -225,6 +225,21 @@ class ModerationTest extends TestCase
             ->set('type', '')->set('search', '#1')->assertSee('Kevin')->assertDontSee('Lisa');
     }
 
+    public function test_dates_follow_the_viewers_timezone(): void
+    {
+        $case = $this->modCase(1, 'warn');
+        $case->forceFill(['created_at' => '2026-10-23 11:49:00'])->save();
+
+        $this->withUnencryptedCookie('tz', 'Europe/Berlin')
+            ->get('/servers/'.self::GUILD.'/modlog')
+            ->assertSee('1:49')
+            ->assertDontSee('11:49');
+
+        $this->withUnencryptedCookie('tz', 'Not/AZone')
+            ->get('/servers/'.self::GUILD.'/modlog')
+            ->assertSee('11:49');
+    }
+
     public function test_overview_lists_moderation(): void
     {
         $this->modCase(1, 'warn');
