@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AppealController;
 use App\Http\Controllers\DiscordAuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LanguageController;
@@ -18,6 +19,14 @@ Route::post('/verify/{guild}', [VerifyController::class, 'submit'])
     ->whereNumber('guild')
     ->middleware('throttle:10,1')
     ->name('verify.submit');
+
+Route::get('/appeal/{guild}', [AppealController::class, 'show'])
+    ->whereNumber('guild')
+    ->name('appeals.show');
+Route::post('/appeal/{guild}', [AppealController::class, 'submit'])
+    ->whereNumber('guild')
+    ->middleware('throttle:5,1')
+    ->name('appeals.submit');
 
 Route::get('/language/{locale}', [LanguageController::class, 'switch'])->name('language.switch');
 
@@ -43,6 +52,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/servers/{guild}/modlog', [ServerController::class, 'modlog'])
         ->whereNumber('guild')
         ->name('servers.modlog');
+    Route::get('/servers/{guild}/ticket-history', [ServerController::class, 'tickets'])
+        ->whereNumber('guild')
+        ->name('servers.tickets');
+    Route::get('/servers/{guild}/ticket-history/{ticket}', [ServerController::class, 'ticket'])
+        ->whereNumber('guild')
+        ->whereNumber('ticket')
+        ->name('servers.ticket');
+    Route::get('/servers/{guild}/appeals', [ServerController::class, 'appeals'])
+        ->whereNumber('guild')
+        ->name('servers.appeals');
     Route::get('/servers/{guild}/{section}', [ServerController::class, 'settings'])
         ->whereNumber('guild')
         ->whereIn('section', GuildSettings::SECTIONS)

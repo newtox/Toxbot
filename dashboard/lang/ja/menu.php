@@ -21,4 +21,5 @@ return [
     'section_tags' => 'タグ',
     'section_moderation' => 'モデレーション',
     'section_protection' => '保護',
+    'section_tickets' => 'チケット',
 ];

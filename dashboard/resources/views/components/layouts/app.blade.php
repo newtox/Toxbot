@@ -101,6 +101,14 @@
                                @class(['nav-item', 'nav-item-active' => request()->routeIs('servers.modlog')])>
                                 <x-icon name="list" />{{ __('moderation.modlog_title') }}
                             </a>
+                            <a href="{{ route('servers.tickets', $guild['id']) }}"
+                               @class(['nav-item', 'nav-item-active' => request()->routeIs('servers.tickets', 'servers.ticket')])>
+                                <x-icon name="ticket" />{{ __('tickets.history_title') }}
+                            </a>
+                            <a href="{{ route('servers.appeals', $guild['id']) }}"
+                               @class(['nav-item', 'nav-item-active' => request()->routeIs('servers.appeals')])>
+                                <x-icon name="gavel" />{{ __('tickets.appeals_list_title') }}
+                            </a>
                         </div>
 
                         <div class="space-y-1.5">
@@ -112,6 +120,7 @@
                                 'tags' => 'tag',
                                 'moderation' => 'shield',
                                 'protection' => 'lock',
+                                'tickets' => 'ticket',
                             ] as $section => $icon)
                                 <a href="{{ route('servers.settings', [$guild['id'], $section]) }}"
                                    @class(['nav-item', 'nav-item-active' => request()->routeIs('servers.settings') && request()->route('section') === $section])>
