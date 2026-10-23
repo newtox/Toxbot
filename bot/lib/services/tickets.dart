@@ -206,35 +206,37 @@ Future<void> _postLog(NyxxGateway client, ResultRow settings, Ticket ticket,
     final channel = await client.channels[Snowflake.parse(channelId)].get();
     if (channel is! TextChannel) return;
 
-    final bot = await client.users.get(client.user.id);
     final baseUrl = publicDashboardUrl;
     await channel.sendMessage(MessageBuilder(
       allowedMentions: noMentions,
       embeds: [
         EmbedBuilder(
           color: DiscordColor.parseHexString(_closedColor),
-          title: await localized(
-              bot, 'ticket_log_title', {'&number': ticket.paddedNumber}),
+          title: await guildLocalized(ticket.guild, 'ticket_log_title',
+              {'&number': ticket.paddedNumber}),
           url: baseUrl == null
               ? null
               : Uri.parse(
                   '$baseUrl/servers/${ticket.guild}/ticket-history/${ticket.id}'),
           fields: [
             EmbedFieldBuilder(
-                name: await localized(bot, 'ticket_log_opened_by'),
+                name:
+                    await guildLocalized(ticket.guild, 'ticket_log_opened_by'),
                 value: '<@${ticket.userId}> `${ticket.userId}`',
                 isInline: true),
             EmbedFieldBuilder(
-                name: await localized(bot, 'ticket_log_type'),
+                name: await guildLocalized(ticket.guild, 'ticket_log_type'),
                 value: ticket.typeName ?? '–',
                 isInline: true),
             EmbedFieldBuilder(
-                name: await localized(bot, 'ticket_log_closed_by'),
+                name:
+                    await guildLocalized(ticket.guild, 'ticket_log_closed_by'),
                 value: '<@${closer.id}>',
                 isInline: true),
             EmbedFieldBuilder(
-                name: await localized(bot, 'ticket_log_reason'),
-                value: reason ?? await localized(bot, 'ticket_no_reason'),
+                name: await guildLocalized(ticket.guild, 'ticket_log_reason'),
+                value: reason ??
+                    await guildLocalized(ticket.guild, 'ticket_no_reason'),
                 isInline: false),
           ],
           timestamp: DateTime.now().toUtc(),

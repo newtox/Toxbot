@@ -8,6 +8,13 @@ import 'package:yaml/yaml.dart';
 
 final Map<String, bool> cached = {};
 
+Future<String> _translation(String language, String key) async {
+  final yamlFile = File('${Directory.current.path}/lib/utils/languages.yaml');
+  final yamlContent = loadYaml(await yamlFile.readAsString());
+
+  return yamlContent[language]?[key] ?? yamlContent['en_us'][key] ?? '';
+}
+
 Future<Guild?> checkForDatabase(Guild guild) async {
   final guildId = guild.id.toString();
   if (cached.containsKey(guildId)) {
@@ -63,12 +70,7 @@ Future<String> getString(User user, String dbString) async {
       language = utf8.decode(languageBytes);
     }
 
-    final yamlFile = File('${Directory.current.path}/lib/utils/languages.yaml');
-    final yamlContent = loadYaml(await yamlFile.readAsString());
-
-    return yamlContent[language]?[dbString] ??
-        yamlContent['en_us'][dbString] ??
-        '';
+    return await _translation(language, dbString);
   } catch (e) {
     print('Error in getString: $e');
   } finally {
@@ -76,6 +78,21 @@ Future<String> getString(User user, String dbString) async {
   }
 
   return '';
+}
+
+Future<String> getGuildString(String guildId, String key) async {
+  try {
+    final language = await withConnection((connection) async {
+      final rows = await connection.query(
+          'SELECT `language` FROM `guilds` WHERE `id` = ? LIMIT 1;', [guildId]);
+      return rows.isEmpty ? null : textOrNull(rows.first['language']);
+    });
+    return await _translation(
+        language == null || language.isEmpty ? 'en_us' : language, key);
+  } catch (e) {
+    print('Error in getGuildString: $e');
+    return _translation('en_us', key);
+  }
 }
 
 Future<void> clearOldGuilds(NyxxGateway client) async {

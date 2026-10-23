@@ -98,12 +98,13 @@ class AppealController extends Controller
             return;
         }
 
+        $locale = $settings->messageLocale();
         rescue(fn () => $this->discord->sendMessage($channel, [
             'embeds' => [[
                 'color' => 0xFEE75C,
-                'title' => __('tickets.appeal_new_title'),
+                'title' => __('tickets.appeal_new_title', [], $locale),
                 'description' => Str::limit($appeal->reason, 1500),
-                'fields' => [['name' => __('tickets.appeal_user'), 'value' => "<@{$appeal->user_id}> `{$appeal->user_id}`", 'inline' => false]],
+                'fields' => [['name' => __('tickets.appeal_user', [], $locale), 'value' => "<@{$appeal->user_id}> `{$appeal->user_id}`", 'inline' => false]],
                 'url' => route('servers.appeals', $appeal->guild),
                 'timestamp' => now()->toIso8601String(),
             ]],

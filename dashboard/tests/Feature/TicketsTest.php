@@ -212,6 +212,36 @@ class TicketsTest extends TestCase
         });
     }
 
+    public function test_posts_in_the_server_language_and_saves_it(): void
+    {
+        $this->login();
+        app()->setLocale('de');
+
+        Livewire::test(GuildSettings::class, [
+            'guild' => ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon_url' => null],
+            'section' => 'general',
+        ])->assertSet('language', 'de_de')->set('language', 'fr_fr')->call('save')->assertHasNoErrors();
+        $this->assertSame('fr_fr', Guild::find(self::GUILD)->language);
+
+        Guild::query()->whereKey(self::GUILD)->update(['ticket_category' => '10', 'ticket_panel_channel' => '11']);
+        TicketType::create(['guild' => self::GUILD, 'name' => 'Support']);
+        $this->settings()->call('postTicketPanel')->assertSet('ticketNotice', __('tickets.panel_done'));
+
+        Http::assertSent(fn (Request $r) => str_ends_with($r->url(), '/channels/11/messages')
+            && $r['embeds'][0]['title'] === __('tickets.panel_title', [], 'fr'));
+        $this->assertNotSame(__('tickets.panel_title', [], 'fr'), __('tickets.panel_title', [], 'de'));
+    }
+
+    public function test_first_save_remembers_the_dashboard_language(): void
+    {
+        $this->login();
+        app()->setLocale('ja');
+
+        $this->settings()->set('ticketLimit', 2)->call('save')->assertHasNoErrors();
+
+        $this->assertSame('ja_jp', Guild::find(self::GUILD)->language);
+    }
+
     public function test_ticket_history_and_transcript(): void
     {
         $this->login();

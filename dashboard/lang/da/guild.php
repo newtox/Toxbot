@@ -46,4 +46,7 @@ return [
     'no_blocked_tags' => 'Ingen tags blokeret.',
     'unblock' => 'Fjern blokering',
     'block_hint' => 'Bloker enkelte tags i Discord med /tag block.',
+    'language_title' => 'Serverens sprog',
+    'language_description' => 'Toxbot skriver beskeder til hele serveren på dette sprog: ticket- og verificeringsknapper, ticket-logs, raid-alarmer, automatiske begrundelser og kanalerne og rollerne fra den automatiske opsætning.',
+    'language_label' => 'Sprog',
 ];

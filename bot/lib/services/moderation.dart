@@ -130,7 +130,8 @@ Future<void> _escalate(NyxxGateway client, Guild guild, User target) async {
       type: action,
       targetId: target.id,
       moderator: bot,
-      reason: await localized(bot, 'mod_auto_reason', {'&count': '$warns'}),
+      reason: await guildLocalized(
+          guild.id, 'mod_auto_reason', {'&count': '$warns'}),
       duration: seconds == null ? null : Duration(seconds: seconds),
       source: 'automod',
     );
@@ -271,8 +272,8 @@ Future<void> _expire(NyxxGateway client) async {
         type: 'unban',
         targetId: Snowflake.parse(ban.userId),
         moderator: bot,
-        reason: await localized(
-            bot, 'mod_tempban_expired', {'&number': '${ban.number}'}),
+        reason: await guildLocalized(
+            ban.guild, 'mod_tempban_expired', {'&number': '${ban.number}'}),
         source: 'automod',
       );
     } catch (e) {

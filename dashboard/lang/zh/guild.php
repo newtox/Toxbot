@@ -46,4 +46,7 @@ return [
     'no_blocked_tags' => '没有屏蔽的标签。',
     'unblock' => '取消屏蔽',
     'block_hint' => '在 Discord 中用 /tag block 屏蔽单个标签。',
+    'language_title' => '服务器语言',
+    'language_description' => 'Toxbot 会用这种语言发送面向整个服务器的消息：工单和验证按钮、工单日志、突袭警报、自动原因，以及自动设置创建的频道和身份组。',
+    'language_label' => '语言',
 ];

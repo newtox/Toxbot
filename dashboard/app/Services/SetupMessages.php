@@ -20,12 +20,14 @@ class SetupMessages
     public function postTicketPanel(Guild $row): void
     {
         $types = $this->ticketTypes($row->id);
+        $row->rememberLanguage();
+        $locale = $row->messageLocale();
 
         $payload = [
             'embeds' => [[
                 'color' => 0x5865F2,
-                'title' => __('tickets.panel_title'),
-                'description' => __('tickets.panel_text'),
+                'title' => __('tickets.panel_title', [], $locale),
+                'description' => __('tickets.panel_text', [], $locale),
                 'fields' => $types->map(fn (TicketType $type) => [
                     'name' => trim(($type->emoji && ! str_starts_with($type->emoji, '<') ? $type->emoji.' ' : '').$type->name),
                     'value' => Str::limit($type->description ?: "\u{200B}", 1000),
@@ -51,18 +53,20 @@ class SetupMessages
 
     public function postVerifyMessage(Guild $row, string $guildName): void
     {
+        $row->rememberLanguage();
+        $locale = $row->messageLocale();
         $payload = [
             'embeds' => [[
                 'color' => 0x6DBE33,
-                'title' => __('protection.message_title', ['server' => $guildName]),
-                'description' => __('protection.message_text'),
+                'title' => __('protection.message_title', ['server' => $guildName], $locale),
+                'description' => __('protection.message_text', [], $locale),
             ]],
             'components' => [[
                 'type' => 1,
                 'components' => [[
                     'type' => 2,
                     'style' => 5,
-                    'label' => __('protection.message_button'),
+                    'label' => __('protection.message_button', [], $locale),
                     'url' => route('verify.show', $row->id),
                 ]],
             ]],

@@ -57,6 +57,8 @@ class AutoSetup
 
     private array $steps = [];
 
+    private string $locale;
+
     public function __construct(private Discord $discord, private SetupMessages $messages) {}
 
     public function run(string $guildId, string $guildName, array $areas, array $teamRoles, string $userName): array
@@ -65,6 +67,10 @@ class AutoSetup
         $this->teamRoles = array_values(array_unique($teamRoles));
         $this->reason = __('setup.audit_reason', ['user' => $userName]);
         $this->steps = [];
+
+        $row = Guild::forDiscordId($guildId);
+        $row->rememberLanguage();
+        $this->locale = $row->messageLocale();
 
         $this->discord->forgetGuildCache($guildId);
         try {
@@ -87,6 +93,8 @@ class AutoSetup
 
             return $this->steps;
         }
+
+        $row->save();
 
         foreach (self::AREAS as $area) {
             if (in_array($area, $areas, true)) {
@@ -128,13 +136,13 @@ class AutoSetup
         if ($this->messages->ticketTypes($this->guildId)->isEmpty()) {
             TicketType::create([
                 'guild' => $this->guildId,
-                'name' => __('setup.ticket_type_name'),
+                'name' => __('setup.ticket_type_name', [], $this->locale),
                 'emoji' => '🎫',
-                'description' => __('setup.ticket_type_text'),
+                'description' => __('setup.ticket_type_text', [], $this->locale),
                 'roles' => $this->teamRoles === [] ? null : implode(',', $this->teamRoles),
                 'position' => 0,
             ]);
-            $this->done(__('setup.step_ticket_type', ['name' => __('setup.ticket_type_name')]));
+            $this->done(__('setup.step_ticket_type', ['name' => __('setup.ticket_type_name', [], $this->locale)]));
         } else {
             $this->done(__('setup.step_ticket_types_kept'));
         }
@@ -245,13 +253,13 @@ class AutoSetup
 
         try {
             $created = $this->discord->createRole($this->guildId, [
-                'name' => __('setup.role_unverified'),
+                'name' => __('setup.role_unverified', [], $this->locale),
                 'permissions' => '0',
                 'mentionable' => false,
                 'hoist' => false,
             ], $this->reason);
         } catch (RequestException $e) {
-            $this->fail(__('setup.step_role_failed', ['role' => __('setup.role_unverified')]));
+            $this->fail(__('setup.step_role_failed', ['role' => __('setup.role_unverified', [], $this->locale)]));
 
             return null;
         }
@@ -273,7 +281,7 @@ class AutoSetup
 
         try {
             $created = $this->discord->createChannel($this->guildId, array_filter([
-                'name' => __('setup.'.$key),
+                'name' => __('setup.'.$key, [], $this->locale),
                 'type' => $type,
                 'parent_id' => $parent,
                 'permission_overwrites' => $overwrites,
@@ -310,6 +318,7 @@ class AutoSetup
     {
         return array_values(array_unique(array_map('mb_strtolower', [
             __('setup.'.$key),
+            __('setup.'.$key, [], $this->locale),
             __('setup.'.$key, [], 'en'),
         ])));
     }
