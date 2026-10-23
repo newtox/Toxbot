@@ -2,12 +2,12 @@ import 'dart:io';
 
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:toxbot/config.dart';
-import 'package:toxbot/events.dart';
-import 'package:toxbot/levels.dart';
-import 'package:toxbot/live_role.dart';
-import 'package:toxbot/moderation.dart';
-import 'package:toxbot/premium.dart';
+import 'package:toxbot/services/events.dart';
+import 'package:toxbot/services/levels.dart';
+import 'package:toxbot/services/live_role.dart';
+import 'package:toxbot/services/moderation.dart';
+import 'package:toxbot/services/premium.dart';
+import 'package:toxbot/utils/config.dart';
 
 void main() async {
   final commands = CommandsPlugin(

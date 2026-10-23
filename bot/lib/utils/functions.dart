@@ -4,7 +4,7 @@ import 'dart:math';
 
 import 'package:nyxx/nyxx.dart';
 import 'package:path/path.dart' as path;
-import 'package:toxbot/database.dart';
+import 'package:toxbot/utils/database.dart';
 
 Future<String> getClientStatus(Member member, NyxxGateway client) async {
   return '';

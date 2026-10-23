@@ -1,6 +1,6 @@
 import 'package:nyxx/nyxx.dart';
-import 'package:toxbot/database.dart';
 import 'package:toxbot/models/live_role_settings.dart';
+import 'package:toxbot/utils/database.dart';
 
 final Map<Snowflake, (LiveRoleSettings?, DateTime)> _settingsCache = {};
 

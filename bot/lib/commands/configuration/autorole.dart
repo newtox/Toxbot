@@ -1,7 +1,7 @@
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
-import 'package:toxbot/database.dart';
+import 'package:toxbot/utils/database.dart';
 import 'package:toxbot/utils/reply.dart';
 
 final autorole = ChatGroup('autorole', 'Set an autorole for your server.',

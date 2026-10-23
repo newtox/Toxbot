@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:mysql1/mysql1.dart';
 import 'package:nyxx/nyxx.dart';
-import 'package:toxbot/config.dart';
+import 'package:toxbot/utils/config.dart';
 import 'package:yaml/yaml.dart';
 
 final Map<String, bool> cached = {};

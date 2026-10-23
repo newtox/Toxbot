@@ -1,5 +1,5 @@
 import 'package:mysql1/mysql1.dart';
-import 'package:toxbot/database.dart';
+import 'package:toxbot/utils/database.dart';
 
 class ModCase {
   final int id;

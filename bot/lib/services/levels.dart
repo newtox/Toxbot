@@ -3,12 +3,12 @@ import 'dart:math';
 import 'package:mysql1/mysql1.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:toxbot/config.dart';
-import 'package:toxbot/data/economy.dart' as economy;
-import 'package:toxbot/database.dart';
-import 'package:toxbot/premium.dart';
+import 'package:toxbot/services/economy.dart' as economy;
+import 'package:toxbot/services/premium.dart';
+import 'package:toxbot/utils/config.dart';
+import 'package:toxbot/utils/database.dart';
 
-export 'package:toxbot/data/economy.dart' show levelFromXp, LevelProgress;
+export 'package:toxbot/services/economy.dart' show levelFromXp, LevelProgress;
 
 final _random = Random();
 
