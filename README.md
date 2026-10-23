@@ -33,6 +33,7 @@ Both share the same MySQL database. Whatever you change in the dashboard (welcom
 - **Live role**: members who stream on Discord get a role while they are live
 - **Moderation**: `/mod warn`, `timeout`, `untimeout`, `kick`, `ban` (also temporary) and `unban`, numbered cases in a modlog channel, DMs to members, automatic actions after a number of warnings, and bans, kicks and timeouts done in Discord or by other bots are logged too
 - **Protection**: verification of new members with a captcha in the dashboard, a link filter against invites to other servers, scam links and blocked domains (or only allowed ones), anti-raid that raises the verification level and kicks new joins, and a minimum account age
+- **Tickets and unban appeals**: ticket types with their own button, text and team roles, private ticket channels, `/ticket close`, `add` and `remove`, transcripts saved on close and shown in the dashboard, and a dashboard page where banned members can ask to be unbanned
 - **Premium** through Discord subscriptions: double XP and daily reward, premium backgrounds, more tags and tags as embeds, plus a 24 hour XP boost to buy
 - **Server Premium** for one server of the subscriber's choice, included in Premium: more streamers, a custom message and ping role per streamer, game and title filters, and editing or deleting the notification when the stream ends
 
@@ -95,6 +96,13 @@ Actions in the dashboard are written to the `mod_actions` table and carried out 
 - Toxbot needs **Manage Roles** for verification, **Manage Messages** for the link filter, **Kick Members** for anti-raid and the minimum account age, and **Manage Server** to raise the verification level during a raid. Its role has to be above the verification role.
 - Scam links are checked against [DSP Scam Links](https://github.com/Discord-AntiScam/scam-links) and [discord-phishing-links](https://github.com/nikolaischunk/discord-phishing-links), reloaded every six hours. The dashboard can check a single domain against them. Roles can be excluded from the link filter.
 
+### Tickets
+
+- In the server settings under Tickets, pick a category for the ticket channels, a log channel and the channel for the buttons, add ticket types and post the buttons.
+- Toxbot needs **Manage Channels** to create and delete ticket channels, **Manage Roles** for their permissions, **Read Message History** for the transcript and **Attach Files** to post it in the log channel.
+- When a ticket is closed, up to 2000 messages are saved and shown under Tickets in the dashboard; the log channel gets the transcript as a text file.
+- Banned members find the appeal form at `https://<dashboard>/appeal/<server>`. With appeals turned on, ban DMs contain this link. Accepting an appeal unbans the member through the bot.
+
 ### Stream notifications
 
 - Create an application at [dev.twitch.tv/console](https://dev.twitch.tv/console) (OAuth redirect `http://localhost`, category "Chat Bot" or "Other") and put its client ID and secret into `TWITCH_CLIENT_ID` and `TWITCH_CLIENT_SECRET`.
@@ -124,7 +132,7 @@ The bot lives in `bot/lib`:
 
 - `commands/`: one file per command or command group. These files only hold option descriptions, converters and the command definitions; every function they use lives in `services/` or `utils/`
 - `models/`: data classes such as `Tag`, `ModCase` or the economy results
-- `services/`: the logic behind the commands and the event handlers, for example levels, moderation, protection, premium and the live role; `events.dart` registers the commands and handlers
+- `services/`: the logic behind the commands and the event handlers, for example levels, moderation, protection, tickets, premium and the live role; `events.dart` registers the commands and handlers
 - `utils/`: shared helpers: `config.dart` for every setting from the environment, `database.dart` for the connection and translated texts, `reply.dart` for command replies, and the translations in `languages.yaml`
 
 Every Dart file is ordered the same way: imports, then constants and top-level variables, then private functions and getters, then public functions and getters, then commands, with the exported command or `setup…Handler` function last. All of `bin/` and `lib/` is formatted with `dart format`. Subcommands of a group are private (`_warn`) and listed before the group (`mod`) that uses them.

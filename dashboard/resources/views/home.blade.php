@@ -6,8 +6,11 @@
         ['icon' => 'tag', 'key' => 'tags'],
         ['icon' => 'stream', 'key' => 'streams'],
         ['icon' => 'shield', 'key' => 'mod'],
+        ['icon' => 'lock', 'key' => 'protect'],
+        ['icon' => 'ticket', 'key' => 'tickets'],
         ['icon' => 'welcome', 'key' => 'welcome'],
         ['icon' => 'heart', 'key' => 'fun'],
+        ['icon' => 'sparkles', 'key' => 'tools'],
         ['icon' => 'globe', 'key' => 'lang'],
     ];
     $statItems = array_filter([
