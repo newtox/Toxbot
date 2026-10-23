@@ -87,7 +87,7 @@ String _cell(Object? value) {
       : text;
 }
 
-String _table(Result results) {
+String _table(Results results) {
   final columns = results.fields.map((field) => field.name ?? '?').toList();
   final rows = results
       .take(_maxRows)
