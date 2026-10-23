@@ -93,7 +93,7 @@ Actions in the dashboard are written to the `mod_actions` table and carried out 
 - The captcha is [Cloudflare Turnstile](https://dash.cloudflare.com/?to=/:account/turnstile). Create a widget for the dashboard domain and put its keys into `TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY`. Without them, the page only asks for the Discord login.
 - The bot sends the verification link by DM using `public_dashboard_url`, which `docker-compose.yml` sets to `APP_URL`.
 - Toxbot needs **Manage Roles** for verification, **Manage Messages** for the link filter, **Kick Members** for anti-raid and the minimum account age, and **Manage Server** to raise the verification level during a raid. Its role has to be above the verification role.
-- The scam link list comes from [nikolaischunk/discord-phishing-links](https://github.com/nikolaischunk/discord-phishing-links) and is reloaded every six hours.
+- Scam links are checked against [DSP Scam Links](https://github.com/Discord-AntiScam/scam-links) and [discord-phishing-links](https://github.com/nikolaischunk/discord-phishing-links), reloaded every six hours. The dashboard can check a single domain against them. Roles can be excluded from the link filter.
 
 ### Stream notifications
 

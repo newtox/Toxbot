@@ -11,8 +11,10 @@ import 'package:toxbot/utils/reply.dart';
 
 export 'package:toxbot/models/protection_settings.dart';
 
-const _scamListUrl =
-    'https://raw.githubusercontent.com/nikolaischunk/discord-phishing-links/main/domain-list.json';
+const _scamListUrls = [
+  'https://raw.githubusercontent.com/Discord-AntiScam/scam-links/main/list.txt',
+  'https://raw.githubusercontent.com/nikolaischunk/discord-phishing-links/main/txt/domain-list.txt',
+];
 
 const _alwaysAllowed = {
   'discord.com',
@@ -158,10 +160,12 @@ Future<(String, String)?> _violation(NyxxGateway client, Snowflake guildId,
   return null;
 }
 
-Future<bool> _isExempt(Guild guild, Snowflake userId) async {
+Future<bool> _isExempt(
+    Guild guild, Snowflake userId, ProtectionSettings settings) async {
   if (userId == guild.ownerId) return true;
 
   final member = await guild.members.get(userId);
+  if (member.roleIds.any(settings.exemptRoles.contains)) return true;
   final roles = await guild.roles.list();
   var value = 0;
   for (final role in roles) {
@@ -176,17 +180,20 @@ Future<bool> _isExempt(Guild guild, Snowflake userId) async {
 }
 
 Future<void> _refreshScamList() async {
-  try {
-    final response = await http.get(Uri.parse(_scamListUrl));
-    if (response.statusCode != 200) return;
-    final domains = (jsonDecode(response.body)['domains'] as List)
-        .map((domain) => _normalizeHost(domain.toString()))
-        .where((domain) => domain.isNotEmpty)
-        .toSet();
-    if (domains.isNotEmpty) _scamDomains = domains;
-  } catch (e) {
-    print('Failed to load the scam domain list: $e');
+  final domains = <String>{};
+  for (final url in _scamListUrls) {
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode != 200) continue;
+      domains.addAll(const LineSplitter()
+          .convert(response.body)
+          .map(_normalizeHost)
+          .where((domain) => domain.contains('.')));
+    } catch (e) {
+      print('Failed to load the scam list $url: $e');
+    }
   }
+  if (domains.isNotEmpty) _scamDomains = domains;
 }
 
 Future<void> _postModlog(
@@ -368,7 +375,7 @@ Future<void> _handleMessage(
   final (reason, host) = violation;
 
   final guild = await client.guilds.get(guildId);
-  if (await _isExempt(guild, author.id)) return;
+  if (await _isExempt(guild, author.id, settings)) return;
 
   try {
     await message.manager

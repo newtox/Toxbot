@@ -12,6 +12,7 @@ class ProtectionSettings {
   final Set<String> allowlist;
   final Set<String> blocklist;
   final String linkAction;
+  final Set<Snowflake> exemptRoles;
   final bool raidEnabled;
   final int raidJoins;
   final int raidSeconds;
@@ -32,6 +33,7 @@ class ProtectionSettings {
         allowlist = _domains(row['link_allowlist']),
         blocklist = _domains(row['link_blocklist']),
         linkAction = textOrNull(row['link_action']) ?? 'delete',
+        exemptRoles = _snowflakes(row['link_exempt_roles']),
         raidEnabled = _flag(row['raid_enabled']),
         raidJoins = row['raid_joins'] as int? ?? 10,
         raidSeconds = row['raid_seconds'] as int? ?? 10,
@@ -51,6 +53,13 @@ class ProtectionSettings {
     final text = textOrNull(value);
     return text == null ? null : Snowflake.parse(text);
   }
+
+  static Set<Snowflake> _snowflakes(Object? value) => (textOrNull(value) ?? '')
+      .split(',')
+      .map((id) => int.tryParse(id.trim()))
+      .whereType<int>()
+      .map(Snowflake.new)
+      .toSet();
 
   static Set<String> _domains(Object? value) => (textOrNull(value) ?? '')
       .split('\n')
