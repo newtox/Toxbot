@@ -46,6 +46,7 @@ import 'package:toxbot/commands/roleplay/yeet.dart';
 import 'package:toxbot/commands/tags/tag.dart';
 import 'package:toxbot/services/levels.dart';
 import 'package:toxbot/services/premium.dart';
+import 'package:toxbot/services/protection.dart';
 import 'package:toxbot/utils/config.dart';
 import 'package:toxbot/utils/database.dart';
 import 'package:toxbot/utils/functions.dart';
@@ -193,10 +194,13 @@ void setupGuildMemberAddHandler(NyxxGateway client) async {
           'SELECT * FROM `guilds` WHERE `id` = ? LIMIT 1;',
           [fullGuild.id.toString()]);
 
+      final protection = await protectJoin(client, fullGuild, event.member);
+      if (protection.removed) return;
+
       if (result.isNotEmpty) {
         var guildSettings = result.first;
 
-        if (guildSettings['autorole'] != null) {
+        if (guildSettings['autorole'] != null && !protection.verifying) {
           try {
             await event.member
                 .addRole(Snowflake(int.parse(guildSettings['autorole'])));

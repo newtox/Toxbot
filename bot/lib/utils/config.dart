@@ -24,6 +24,9 @@ Snowflake get ownerId =>
 String? get dashboardUrl =>
     _string('dashboard_url')?.replaceAll(RegExp(r'/+$'), '');
 
+String? get publicDashboardUrl =>
+    _string('public_dashboard_url')?.replaceAll(RegExp(r'/+$'), '');
+
 String get currency => _string('currency') ?? 'Credits';
 
 int get xpCooldown => _int('xp_cooldown', 60);

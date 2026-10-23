@@ -105,6 +105,7 @@ Future<void> clearOldGuilds(NyxxGateway client) async {
             'mod_cases',
             'mod_actions',
             'warn_rules',
+            'verifications',
           ]) {
             try {
               await connection.query(
