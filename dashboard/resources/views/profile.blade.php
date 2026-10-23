@@ -11,5 +11,6 @@
         <livewire:profile-overview />
         <livewire:premium-server-picker />
         <livewire:profile-settings />
+        <livewire:delete-account />
     </div>
 </x-layouts.app>

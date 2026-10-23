@@ -264,6 +264,15 @@ class Discord
             ])->throw();
     }
 
+    public function leaveGuild(string $guildId): void
+    {
+        $response = $this->asBot()->delete("/users/@me/guilds/{$guildId}");
+        if ($response->status() !== 404) {
+            $response->throw();
+        }
+        Cache::forget('discord:bot:guild-ids');
+    }
+
     public function forgetGuildCache(string $guildId): void
     {
         foreach (['channels', 'roles', 'bot-member', 'info', 'members'] as $key) {

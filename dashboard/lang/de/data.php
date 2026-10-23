@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'server_title' => 'Zurücksetzen oder löschen',
+    'server_description' => 'Alle Einstellungen ausschalten oder alles löschen, was Toxbot zu diesem Server gespeichert hat.',
+    'show' => 'Optionen anzeigen',
+    'reset_title' => 'Einstellungen zurücksetzen',
+    'reset_text' => 'Schaltet alle Module aus und entfernt Ticket-Arten, Verwarnungsregeln, gefolgte Creator und gesperrte Tags. Die Ticket- und Verifizierungsnachricht werden gelöscht. Levels, Modfälle, Ticket-Verläufe und Anträge bleiben.',
+    'reset_confirm' => 'Alle Einstellungen dieses Servers zurücksetzen? Das lässt sich nicht rückgängig machen.',
+    'reset_button' => 'Einstellungen zurücksetzen',
+    'reset_done' => 'Alle Einstellungen des Servers wurden zurückgesetzt.',
+    'delete_title' => 'Alle Daten löschen und Toxbot entfernen',
+    'delete_text' => 'Löscht die Einstellungen und dazu alle Levels, Modfälle, Tickets mit Verläufen, Entbannungsanträge und Verifizierungen dieses Servers. Ein Premium-Platz auf diesem Server wird frei. Danach verlässt Toxbot den Server. Das lässt sich nicht rückgängig machen.',
+    'confirm_label' => 'Gib :name ein, um zu bestätigen',
+    'confirm_mismatch' => 'Der Name stimmt nicht überein.',
+    'delete_button' => 'Alles löschen und Toxbot entfernen',
+    'delete_done' => ':server wurde gelöscht und Toxbot hat den Server verlassen.',
+    'leave_failed' => 'Die Daten von :server wurden gelöscht, aber Toxbot konnte den Server nicht verlassen. Kick ihn in Discord.',
+    'owner_only' => 'Nur der Owner des Servers kann alle Daten löschen.',
+    'account_title' => 'Meine Daten löschen',
+    'account_description' => 'Lösche alles, was Toxbot über dich gespeichert hat, und deinen Dashboard-Zugang.',
+    'account_deletes' => 'Gelöscht: deine Sprache und Farbe, deine Levels auf allen Servern, Credits, Hintergründe, deine Tags (auf allen Servern), deine Premium-Server-Plätze, Entbannungsanträge und dein Dashboard-Zugang.',
+    'account_anonymized' => 'Anonymisiert: deine Nachrichten in Ticket-Verläufen bleiben für die Server erhalten, aber ohne Name, ID und Avatar.',
+    'account_keeps' => 'Behalten: Modfälle auf Servern, die zu diesen Servern gehören, und Kaufbelege von Discord. Käufe werden nicht erstattet.',
+    'account_button' => 'Meine Daten löschen',
+    'account_deleted' => 'Deine Daten wurden gelöscht und du wurdest abgemeldet.',
+];
