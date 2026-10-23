@@ -8,6 +8,7 @@ import 'package:toxbot/services/live_role.dart';
 import 'package:toxbot/services/moderation.dart';
 import 'package:toxbot/services/premium.dart';
 import 'package:toxbot/services/protection.dart';
+import 'package:toxbot/services/tickets.dart';
 import 'package:toxbot/utils/config.dart';
 
 void main() async {
@@ -45,4 +46,5 @@ void main() async {
   setupLiveRoleHandler(client);
   setupModerationHandlers(client);
   setupProtectionHandlers(client);
+  setupTicketHandlers(client);
 }

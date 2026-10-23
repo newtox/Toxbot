@@ -5,6 +5,7 @@ import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:toxbot/models/mod_case.dart';
 import 'package:toxbot/models/moderation_exception.dart';
+import 'package:toxbot/utils/config.dart';
 import 'package:toxbot/utils/database.dart';
 import 'package:toxbot/utils/reply.dart';
 
@@ -42,12 +43,15 @@ String _name(User user) =>
 Future<Map<String, dynamic>> _guildSettings(Snowflake guildId) =>
     withConnection((connection) async {
       final rows = await connection.query(
-          'SELECT `modlog_channel`, `mod_dm` FROM `guilds` WHERE `id` = ? LIMIT 1;',
+          'SELECT `modlog_channel`, `mod_dm`, `unban_enabled` FROM `guilds` WHERE `id` = ? LIMIT 1;',
           [guildId.toString()]);
-      if (rows.isEmpty) return {'modlog_channel': null, 'mod_dm': true};
+      if (rows.isEmpty) {
+        return {'modlog_channel': null, 'mod_dm': true, 'unban_enabled': false};
+      }
       return {
         'modlog_channel': rows.first['modlog_channel'] as String?,
         'mod_dm': (rows.first['mod_dm'] as int? ?? 1) == 1,
+        'unban_enabled': (rows.first['unban_enabled'] as int? ?? 0) == 1,
       };
     });
 
@@ -62,7 +66,9 @@ int _highestPosition(
 }
 
 Future<bool> _sendDm(NyxxGateway client, User target, Guild guild, String type,
-    String? reason, Duration? duration) async {
+    String? reason, Duration? duration,
+    {bool appeals = false}) async {
+  final baseUrl = publicDashboardUrl;
   try {
     final dm = await client.users.createDm(target.id);
     final fields = <EmbedFieldBuilder>[
@@ -75,6 +81,11 @@ Future<bool> _sendDm(NyxxGateway client, User target, Guild guild, String type,
             name: await localized(target, 'mod_field_duration'),
             value: formatDuration(duration),
             isInline: true),
+      if (type == 'ban' && appeals && baseUrl != null)
+        EmbedFieldBuilder(
+            name: await localized(target, 'mod_field_appeal'),
+            value: '$baseUrl/appeal/${guild.id}',
+            isInline: false),
     ];
     await dm.sendMessage(MessageBuilder(allowedMentions: noMentions, embeds: [
       EmbedBuilder(
@@ -392,7 +403,8 @@ Future<ModCase> performAction(
   if (settings['mod_dm'] == true &&
       const ['warn', 'timeout', 'kick', 'ban'].contains(type) &&
       !target.isBot) {
-    dmSent = await _sendDm(client, target, guild, type, cleanReason, duration);
+    dmSent = await _sendDm(client, target, guild, type, cleanReason, duration,
+        appeals: settings['unban_enabled'] == true);
   }
 
   try {

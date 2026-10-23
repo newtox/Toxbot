@@ -100,12 +100,20 @@ Future<void> clearOldGuilds(NyxxGateway client) async {
           await connection
               .query('DELETE FROM `guilds` WHERE `id` = ?;', [guildIdAsString]);
           cached.remove(guildIdAsString);
+          try {
+            await connection.query(
+                'DELETE FROM `ticket_messages` WHERE `ticket_id` IN (SELECT `id` FROM `tickets` WHERE `guild` = ?);',
+                [guildIdAsString]);
+          } catch (_) {}
           for (final table in [
             'stream_subscriptions',
             'mod_cases',
             'mod_actions',
             'warn_rules',
             'verifications',
+            'tickets',
+            'ticket_types',
+            'unban_appeals',
           ]) {
             try {
               await connection.query(
