@@ -16,7 +16,7 @@
                 @endif
                 @if ($member['timeout_until'])
                     <span class="rounded-full bg-[#f57c00]/20 px-2 py-0.5 text-xs font-semibold text-[#ffb366]">
-                        {{ __('moderation.timed_out_until', ['date' => $member['timeout_until']->locale(app()->getLocale())->isoFormat('lll')]) }}
+                        {{ __('moderation.timed_out_until', ['date' => \App\Support\Timezone::format($member['timeout_until'])]) }}
                     </span>
                 @endif
             </div>
@@ -30,11 +30,11 @@
     <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <div class="tile">
             <div class="text-xs text-dc-muted">{{ __('moderation.account_created') }}</div>
-            <div class="mt-1 font-semibold text-dc-header">{{ $createdAt->locale(app()->getLocale())->isoFormat('ll') }}</div>
+            <div class="mt-1 font-semibold text-dc-header">{{ \App\Support\Timezone::format($createdAt, 'll') }}</div>
         </div>
         <div class="tile">
             <div class="text-xs text-dc-muted">{{ __('moderation.member_since') }}</div>
-            <div class="mt-1 font-semibold text-dc-header">{{ $member['joined_at']?->locale(app()->getLocale())->isoFormat('ll') ?? '–' }}</div>
+            <div class="mt-1 font-semibold text-dc-header">{{ \App\Support\Timezone::format($member['joined_at'], 'll') ?? '–' }}</div>
         </div>
         <div class="tile">
             <div class="text-xs text-dc-muted">{{ __('moderation.level_server') }}</div>
@@ -66,7 +66,7 @@
                                 @if ($case->type === 'warn' && ! $case->active)
                                     <span class="rounded-full bg-dc-600 px-2 text-xs text-dc-muted">{{ __('moderation.revoked') }}</span>
                                 @endif
-                                <span class="ml-auto text-xs text-dc-faint">{{ $case->created_at->locale(app()->getLocale())->isoFormat('lll') }}</span>
+                                <span class="ml-auto text-xs text-dc-faint">{{ \App\Support\Timezone::format($case->created_at) }}</span>
                             </div>
                             <p class="mt-1 text-sm text-dc-text">{{ $case->reason ?? __('moderation.no_reason') }}</p>
                             <div class="mt-2 flex flex-wrap items-center gap-2 text-xs text-dc-muted">

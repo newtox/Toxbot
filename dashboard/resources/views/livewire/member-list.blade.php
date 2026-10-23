@@ -38,7 +38,7 @@
                     <div class="truncate text-xs text-dc-muted">
                         {{ $member['username'] }}
                         @if ($member['joined_at'])
-                            · {{ __('moderation.joined', ['date' => $member['joined_at']->locale(app()->getLocale())->isoFormat('ll')]) }}
+                            · {{ __('moderation.joined', ['date' => \App\Support\Timezone::format($member['joined_at'], 'll')]) }}
                         @endif
                     </div>
                 </div>
