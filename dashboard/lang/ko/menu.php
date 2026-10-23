@@ -19,4 +19,5 @@ return [
     'section_levels' => '레벨',
     'section_streams' => '방송',
     'section_tags' => '태그',
+    'section_moderation' => '관리',
 ];

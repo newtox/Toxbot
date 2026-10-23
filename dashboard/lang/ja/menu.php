@@ -19,4 +19,5 @@ return [
     'section_levels' => 'レベル',
     'section_streams' => '配信',
     'section_tags' => 'タグ',
+    'section_moderation' => 'モデレーション',
 ];

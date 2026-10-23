@@ -225,6 +225,52 @@
 
     @endif
 
+    @if ($section === 'moderation')
+    <section id="moderation" class="card scroll-mt-20 space-y-5">
+        <div>
+            <h2 class="text-lg font-semibold text-dc-header">{{ __('moderation.settings_title') }}</h2>
+            <p class="text-sm text-dc-muted">{{ __('moderation.settings_description') }}</p>
+        </div>
+
+        <div class="grid gap-4 sm:grid-cols-2">
+            <div>
+                <label class="label" for="modlog-channel">{{ __('moderation.modlog_channel') }}</label>
+                <select id="modlog-channel" wire:model="modlogChannel" class="input">
+                    <option value="">{{ __('moderation.no_modlog') }}</option>
+                    @foreach ($channelGroups as $group)
+                        @if ($group['name'])
+                            <optgroup label="{{ $group['name'] }}">
+                        @endif
+                        @foreach ($group['channels'] as $c)
+                            <option value="{{ $c['id'] }}"># {{ $c['name'] }}</option>
+                        @endforeach
+                        @if ($group['name'])
+                            </optgroup>
+                        @endif
+                    @endforeach
+                </select>
+                @error('modlogChannel') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+            </div>
+            <label class="flex items-start gap-3 self-end rounded-lg bg-dc-900 p-3">
+                <input type="checkbox" wire:model="modDm" class="mt-1 accent-[var(--color-accent)]">
+                <span>
+                    <span class="block text-sm font-medium text-dc-header">{{ __('moderation.dm_title') }}</span>
+                    <span class="block text-xs text-dc-muted">{{ __('moderation.dm_hint') }}</span>
+                </span>
+            </label>
+        </div>
+        <p class="text-sm text-dc-faint">{{ __('moderation.audit_hint') }}</p>
+    </section>
+
+    <section class="card space-y-4">
+        <div>
+            <h2 class="text-lg font-semibold text-dc-header">{{ __('moderation.rules_title') }}</h2>
+            <p class="text-sm text-dc-muted">{{ __('moderation.rules_description') }}</p>
+        </div>
+        <livewire:warn-rules :guild-id="$guildId" />
+    </section>
+    @endif
+
     <x-unsaved-bar />
 
     @if ($errors->any())
