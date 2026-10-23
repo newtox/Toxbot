@@ -1,8 +1,8 @@
-import 'package:dotenv/dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
+import 'package:toxbot/config.dart';
 import 'package:toxbot/data/economy.dart' as economy;
 import 'package:toxbot/database.dart';
 import 'package:toxbot/levels.dart';
@@ -10,20 +10,10 @@ import 'package:toxbot/premium.dart';
 import 'package:toxbot/utils/functions.dart';
 import 'package:toxbot/utils/reply.dart';
 
-var env = DotEnv(includePlatformEnvironment: true)..load();
-
-String? get dashboardUrl {
-  final url = (env['dashboard_url'] ?? '').trim();
-  return url.isEmpty ? null : url.replaceAll(RegExp(r'/+$'), '');
-}
-
-int get dailyReward => int.tryParse(env['daily_reward'] ?? '') ?? 100;
-int get dailyStreakBonus => int.tryParse(env['daily_streak_bonus'] ?? '') ?? 10;
-
-String? get xpBoostSku {
-  final sku = (env['xp_boost_sku'] ?? '').trim();
-  return sku.isEmpty ? null : sku;
-}
+const _scopeConverter = SimpleConverter.fixed(
+  elements: ['Global', 'Server'],
+  stringify: _scopeToString,
+);
 
 Future<void> _unexpected(
   InteractiveContext context,
@@ -59,6 +49,28 @@ Future<List<int>?> _fetchCard(
   } catch (e) {
     print('Profile card could not be loaded: $e');
     return null;
+  }
+}
+
+String _scopeToString(String scope) => scope;
+
+Future<Iterable<CommandOptionChoiceBuilder<String>>> ownedBackgroundChoices(
+  AutocompleteContext context,
+) async {
+  try {
+    final names = await withConnection(
+      (connection) => economy.usableBackgroundNames(
+        connection,
+        context.user.id.toString(),
+        context.currentValue,
+      ),
+    );
+    return names.map(
+      (name) => CommandOptionChoiceBuilder(name: name, value: name),
+    );
+  } catch (e) {
+    print('Error in background autocomplete: $e');
+    return const [];
   }
 }
 
@@ -397,26 +409,6 @@ final shop = ChatCommand(
   },
 );
 
-Future<Iterable<CommandOptionChoiceBuilder<String>>> ownedBackgroundChoices(
-  AutocompleteContext context,
-) async {
-  try {
-    final names = await withConnection(
-      (connection) => economy.usableBackgroundNames(
-        connection,
-        context.user.id.toString(),
-        context.currentValue,
-      ),
-    );
-    return names.map(
-      (name) => CommandOptionChoiceBuilder(name: name, value: name),
-    );
-  } catch (e) {
-    print('Error in background autocomplete: $e');
-    return const [];
-  }
-}
-
 final background = ChatCommand(
   'background',
   'Change the background of your profile card.',
@@ -474,13 +466,6 @@ final background = ChatCommand(
       await _unexpected(context, user, 'background', e);
     }
   },
-);
-
-String _scopeToString(String scope) => scope;
-
-const _scopeConverter = SimpleConverter.fixed(
-  elements: ['Global', 'Server'],
-  stringify: _scopeToString,
 );
 
 final leaderboard = ChatCommand(

@@ -4,7 +4,7 @@ import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:sqlite3/sqlite3.dart';
-import 'package:toxbot/database.dart';
+import 'package:toxbot/config.dart';
 import 'package:toxbot/utils/utils.dart';
 import 'package:toxbot/utils/reply.dart';
 

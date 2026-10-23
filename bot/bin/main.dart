@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:dotenv/dotenv.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
+import 'package:toxbot/config.dart';
 import 'package:toxbot/events.dart';
 import 'package:toxbot/levels.dart';
 import 'package:toxbot/live_role.dart';
@@ -10,8 +10,6 @@ import 'package:toxbot/moderation.dart';
 import 'package:toxbot/premium.dart';
 
 void main() async {
-  var env = DotEnv(includePlatformEnvironment: true)..load();
-
   final commands = CommandsPlugin(
       prefix: mentionOr((_) => '..'),
       options: CommandsOptions(
@@ -20,7 +18,7 @@ void main() async {
           defaultResponseLevel: ResponseLevel.public,
           type: CommandType.slashOnly));
 
-  final client = await Nyxx.connectGateway(env['token']!, GatewayIntents.all,
+  final client = await Nyxx.connectGateway(botToken, GatewayIntents.all,
       options: GatewayClientOptions(plugins: [
         Logging(
             stderrLevel: Level.SEVERE,

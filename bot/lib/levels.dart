@@ -1,29 +1,52 @@
 import 'dart:math';
 
-import 'package:dotenv/dotenv.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
+import 'package:toxbot/config.dart';
 import 'package:toxbot/data/economy.dart' as economy;
 import 'package:toxbot/database.dart';
 import 'package:toxbot/premium.dart';
 
 export 'package:toxbot/data/economy.dart' show levelFromXp, LevelProgress;
 
-var env = DotEnv(includePlatformEnvironment: true)..load();
-
 final _random = Random();
 
-int _envInt(String key, int fallback) =>
-    int.tryParse(env[key] ?? '') ?? fallback;
+Future<void> _announceLevelUp(
+  NyxxGateway client,
+  MySqlConnection connection,
+  User user,
+  Snowflake guildId,
+  Snowflake? channelId,
+  int level,
+) async {
+  final (enabled, configured) = await economy.levelUpSettings(
+    connection,
+    guildId.toString(),
+  );
+  if (!enabled) return;
 
-int get xpCooldown => _envInt('xp_cooldown', 60);
-int get xpMin => _envInt('xp_min', 15);
-int get xpMax => _envInt('xp_max', 25);
+  final target =
+      configured != null ? Snowflake(int.parse(configured)) : channelId;
+  if (target == null) return;
 
-int get levelUpReward => _envInt('levelup_reward', 25);
+  try {
+    final channel = await client.channels[target].get();
+    if (channel is! TextChannel) return;
 
-String get currency => env['currency'] ?? 'Credits';
+    final text = (await getString(user, 'level_up'))
+        .replaceAll('&mention', '<@${user.id}>')
+        .replaceAll('&level', formatNumber(level));
+    await channel.sendMessage(
+      MessageBuilder(
+        content: text,
+        allowedMentions: AllowedMentions(users: [user.id]),
+      ),
+    );
+  } catch (e) {
+    print('Error announcing level-up: $e');
+  }
+}
 
 String formatNumber(int value) {
   final digits = value.abs().toString();
@@ -36,17 +59,6 @@ String formatNumber(int value) {
 }
 
 String formatCredits(int value) => '${formatNumber(value)} $currency';
-
-Future<T> withConnection<T>(
-  Future<T> Function(MySqlConnection connection) action,
-) async {
-  final connection = await getMySqlConnection();
-  try {
-    return await action(connection);
-  } finally {
-    await connection.close();
-  }
-}
 
 Future<void> giveXp(
   NyxxGateway client, {
@@ -91,56 +103,6 @@ Future<void> giveXp(
   }
 }
 
-Future<void> _announceLevelUp(
-  NyxxGateway client,
-  MySqlConnection connection,
-  User user,
-  Snowflake guildId,
-  Snowflake? channelId,
-  int level,
-) async {
-  final (enabled, configured) = await economy.levelUpSettings(
-    connection,
-    guildId.toString(),
-  );
-  if (!enabled) return;
-
-  final target =
-      configured != null ? Snowflake(int.parse(configured)) : channelId;
-  if (target == null) return;
-
-  try {
-    final channel = await client.channels[target].get();
-    if (channel is! TextChannel) return;
-
-    final text = (await getString(user, 'level_up'))
-        .replaceAll('&mention', '<@${user.id}>')
-        .replaceAll('&level', formatNumber(level));
-    await channel.sendMessage(
-      MessageBuilder(
-        content: text,
-        allowedMentions: AllowedMentions(users: [user.id]),
-      ),
-    );
-  } catch (e) {
-    print('Error announcing level-up: $e');
-  }
-}
-
-void setupMessageXpHandler(NyxxGateway client) {
-  client.onMessageCreate.listen((event) async {
-    final author = event.message.author;
-    if (author is! User || author.isBot || event.guildId == null) return;
-
-    await giveXp(
-      client,
-      user: author,
-      guildId: event.guildId,
-      channelId: event.message.channelId,
-    );
-  });
-}
-
 Future<void> countCommand(NyxxGateway client, CommandContext context) async {
   if (context.user.isBot) return;
   try {
@@ -159,4 +121,18 @@ Future<void> countCommand(NyxxGateway client, CommandContext context) async {
     channelId: context.channel.id,
     context: context,
   );
+}
+
+void setupMessageXpHandler(NyxxGateway client) {
+  client.onMessageCreate.listen((event) async {
+    final author = event.message.author;
+    if (author is! User || author.isBot || event.guildId == null) return;
+
+    await giveXp(
+      client,
+      user: author,
+      guildId: event.guildId,
+      channelId: event.message.channelId,
+    );
+  });
 }

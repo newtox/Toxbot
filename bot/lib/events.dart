@@ -1,4 +1,3 @@
-import 'package:dotenv/dotenv.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
@@ -44,13 +43,12 @@ import 'package:toxbot/commands/roleplay/wave.dart';
 import 'package:toxbot/commands/roleplay/wink.dart';
 import 'package:toxbot/commands/roleplay/yeet.dart';
 import 'package:toxbot/commands/tags/tag.dart';
+import 'package:toxbot/config.dart';
 import 'package:toxbot/database.dart';
 import 'package:toxbot/levels.dart';
 import 'package:toxbot/premium.dart';
 import 'package:toxbot/utils/functions.dart';
 import 'package:toxbot/utils/reply.dart';
-
-var env = DotEnv(includePlatformEnvironment: true)..load();
 
 final Set<Snowflake> currentGuildIds = {};
 

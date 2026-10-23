@@ -1,21 +1,7 @@
-import 'package:dotenv/dotenv.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
+import 'package:toxbot/config.dart';
 import 'package:toxbot/database.dart';
-
-var env = DotEnv(includePlatformEnvironment: true)..load();
-
-Set<String> get premiumUserSkus => (env['premium_user_skus'] ?? '')
-    .split(',')
-    .map((sku) => sku.trim())
-    .where((sku) => sku.isNotEmpty)
-    .toSet();
-
-Set<String> get premiumUserIds => (env['premium_users'] ?? '')
-    .split(',')
-    .map((id) => id.trim())
-    .where((id) => id.isNotEmpty)
-    .toSet();
 
 bool _isActive(Entitlement entitlement) {
   if (entitlement.isDeleted) return false;

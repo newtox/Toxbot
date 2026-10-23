@@ -1,16 +1,11 @@
 import 'dart:math';
 
 import 'package:mysql1/mysql1.dart';
+import 'package:toxbot/models/economy.dart';
+
+export 'package:toxbot/models/economy.dart';
 
 int xpToNext(int level) => 100 * level + 100;
-
-class LevelProgress {
-  final int level;
-  final int current;
-  final int needed;
-
-  const LevelProgress(this.level, this.current, this.needed);
-}
 
 LevelProgress levelFromXp(int xp) {
   var level = 1;
@@ -54,16 +49,6 @@ Future<int> getCredits(MySqlConnection connection, String userId) async {
     [userId],
   );
   return rows.isEmpty ? 0 : rows.first['credits'] as int;
-}
-
-class XpResult {
-  final bool global;
-
-  final List<int> globalLevelUps;
-
-  final int? serverLevelUp;
-
-  const XpResult(this.global, this.globalLevelUps, this.serverLevelUp);
 }
 
 Future<bool> hasXpBoost(MySqlConnection connection, String userId) async {
@@ -157,23 +142,6 @@ Future<(bool, String?)> levelUpSettings(
   );
 }
 
-class DailyResult {
-  final bool claimed;
-
-  final int waitSeconds;
-  final int amount;
-  final int streak;
-
-  const DailyResult.claimed(this.amount, this.streak)
-      : claimed = true,
-        waitSeconds = 0;
-
-  const DailyResult.wait(this.waitSeconds)
-      : claimed = false,
-        amount = 0,
-        streak = 0;
-}
-
 Future<DailyResult> claimDaily(
   MySqlConnection connection,
   String userId, {
@@ -207,21 +175,6 @@ Future<DailyResult> claimDaily(
 
   await addCredits(connection, userId, amount, 'daily');
   return DailyResult.claimed(amount, streak);
-}
-
-class ShopBackground {
-  final int id;
-  final String name;
-  final int price;
-  final bool premiumOnly;
-
-  ShopBackground.fromRow(ResultRow row)
-      : id = row['id'] as int,
-        name = row['name'] as String,
-        price = row['price'] as int,
-        premiumOnly = row['premium_only'] == 1;
-
-  bool get isFree => price == 0 && !premiumOnly;
 }
 
 Future<List<ShopBackground>> shopBackgrounds(
@@ -326,22 +279,6 @@ Future<List<(String, int)>> leaderboard(
           [guildId],
         );
   return rows.map((row) => (row['user'].toString(), row['xp'] as int)).toList();
-}
-
-class ProfileStats {
-  final int xp;
-  final int credits;
-  final int commands;
-  final int rank;
-  final int? serverXp;
-
-  const ProfileStats(
-    this.xp,
-    this.credits,
-    this.commands,
-    this.rank,
-    this.serverXp,
-  );
 }
 
 Future<ProfileStats> profileStats(

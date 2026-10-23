@@ -1,5 +1,6 @@
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
+import 'package:toxbot/models/moderation_exception.dart';
 import 'package:toxbot/moderation.dart';
 import 'package:toxbot/utils/reply.dart';
 

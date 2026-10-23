@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:mysql1/mysql1.dart';
 import 'package:nyxx/nyxx.dart';
-import 'package:toxbot/levels.dart';
+import 'package:toxbot/database.dart';
+import 'package:toxbot/models/mod_case.dart';
+import 'package:toxbot/models/moderation_exception.dart';
 import 'package:toxbot/utils/reply.dart';
 
 const modTypes = ['warn', 'timeout', 'untimeout', 'kick', 'ban', 'unban'];
@@ -18,59 +20,254 @@ const _colors = {
   'unban': '#57f287',
 };
 
-class ModerationException implements Exception {
-  final String key;
-  final Map<String, String> replace;
+final _requiredPermission = {
+  'warn': Permissions.moderateMembers,
+  'timeout': Permissions.moderateMembers,
+  'untimeout': Permissions.moderateMembers,
+  'kick': Permissions.kickMembers,
+  'ban': Permissions.banMembers,
+  'unban': Permissions.banMembers,
+};
 
-  ModerationException(this.key, [this.replace = const {}]);
+bool _queueBusy = false;
 
-  @override
-  String toString() => 'ModerationException($key)';
-}
-
-class ModCase {
-  final int id;
-  final String guild;
-  final int number;
-  final String type;
-  final String userId;
-  final String? userName;
-  final String? moderatorId;
-  final String? moderatorName;
-  final String? reason;
-  final int? duration;
-  final DateTime? expiresAt;
-  final bool active;
-  final String source;
-  final DateTime createdAt;
-
-  ModCase.fromRow(ResultRow row)
-      : id = row['id'] as int,
-        guild = row['guild'] as String,
-        number = row['number'] as int,
-        type = row['type'] as String,
-        userId = row['user_id'] as String,
-        userName = row['user_name'] as String?,
-        moderatorId = row['moderator_id'] as String?,
-        moderatorName = row['moderator_name'] as String?,
-        reason = _text(row['reason']),
-        duration = row['duration'] as int?,
-        expiresAt = (row['expires_at'] as DateTime?)?.toUtc(),
-        active = (row['active'] as int? ?? 0) == 1,
-        source = row['source'] as String,
-        createdAt = (row['created_at'] as DateTime).toUtc();
-}
-
-String? _text(dynamic value) {
-  if (value == null) return null;
-  if (value is Blob) return value.toString();
-  return value.toString();
-}
+bool _expiryBusy = false;
 
 String _name(User user) =>
     user.globalName != null && user.globalName != user.username
         ? '${user.globalName} (${user.username})'
         : user.username;
+
+Future<Map<String, dynamic>> _guildSettings(Snowflake guildId) =>
+    withConnection((connection) async {
+      final rows = await connection.query(
+          'SELECT `modlog_channel`, `mod_dm` FROM `guilds` WHERE `id` = ? LIMIT 1;',
+          [guildId.toString()]);
+      if (rows.isEmpty) return {'modlog_channel': null, 'mod_dm': true};
+      return {
+        'modlog_channel': rows.first['modlog_channel'] as String?,
+        'mod_dm': (rows.first['mod_dm'] as int? ?? 1) == 1,
+      };
+    });
+
+int _highestPosition(
+    Iterable<Snowflake> roleIds, Map<Snowflake, int> positions) {
+  var highest = 0;
+  for (final id in roleIds) {
+    final position = positions[id] ?? 0;
+    if (position > highest) highest = position;
+  }
+  return highest;
+}
+
+Future<bool> _sendDm(NyxxGateway client, User target, Guild guild, String type,
+    String? reason, Duration? duration) async {
+  try {
+    final dm = await client.users.createDm(target.id);
+    final fields = <EmbedFieldBuilder>[
+      EmbedFieldBuilder(
+          name: await localized(target, 'mod_field_reason'),
+          value: reason ?? await localized(target, 'mod_no_reason'),
+          isInline: false),
+      if (duration != null)
+        EmbedFieldBuilder(
+            name: await localized(target, 'mod_field_duration'),
+            value: formatDuration(duration),
+            isInline: true),
+    ];
+    await dm.sendMessage(MessageBuilder(allowedMentions: noMentions, embeds: [
+      EmbedBuilder(
+        color: DiscordColor.parseHexString(_colors[type]!),
+        description:
+            await localized(target, 'mod_dm_$type', {'&server': guild.name}),
+        fields: fields,
+        timestamp: DateTime.now().toUtc(),
+      )
+    ]));
+    return true;
+  } catch (_) {
+    return false;
+  }
+}
+
+Future<void> _escalate(NyxxGateway client, Guild guild, User target) async {
+  final rule = await withConnection((connection) async {
+    final count = await connection.query(
+        "SELECT COUNT(*) AS `warns` FROM `mod_cases` WHERE `guild` = ? AND `user_id` = ? AND `type` = 'warn' AND `active` = 1;",
+        [guild.id.toString(), target.id.toString()]);
+    final warns = (count.first['warns'] as num).toInt();
+    final rules = await connection.query(
+        'SELECT `action`, `duration` FROM `warn_rules` WHERE `guild` = ? AND `warns` = ? LIMIT 1;',
+        [guild.id.toString(), warns]);
+    if (rules.isEmpty) return null;
+    return (
+      warns,
+      rules.first['action'] as String,
+      rules.first['duration'] as int?
+    );
+  });
+
+  if (rule == null) return;
+  final (warns, action, seconds) = rule;
+  final bot = await client.users.get(client.user.id);
+
+  try {
+    await performAction(
+      client,
+      guild: guild,
+      type: action,
+      targetId: target.id,
+      moderator: bot,
+      reason: await localized(bot, 'mod_auto_reason', {'&count': '$warns'}),
+      duration: seconds == null ? null : Duration(seconds: seconds),
+      source: 'automod',
+    );
+  } catch (e) {
+    print('Warn escalation failed in ${guild.id}: $e');
+  }
+}
+
+Future<void> _handleAuditEntry(
+    NyxxGateway client, GuildAuditLogCreateEvent event) async {
+  final entry = event.entry;
+  if (entry.userId == null || entry.userId == client.user.id) return;
+  if (entry.targetId == null) return;
+
+  String? type;
+  Duration? duration;
+
+  if (entry.actionType == AuditLogEvent.memberBanAdd) {
+    type = 'ban';
+  } else if (entry.actionType == AuditLogEvent.memberBanRemove) {
+    type = 'unban';
+  } else if (entry.actionType == AuditLogEvent.memberKick) {
+    type = 'kick';
+  } else if (entry.actionType == AuditLogEvent.memberUpdate) {
+    final change = entry.changes
+        ?.where((c) => c.key == 'communication_disabled_until')
+        .firstOrNull;
+    if (change == null) return;
+    if (change.newValue == null) {
+      type = 'untimeout';
+    } else {
+      final until = DateTime.tryParse(change.newValue.toString());
+      if (until == null) return;
+      type = 'timeout';
+      duration = until.toUtc().difference(DateTime.now().toUtc());
+      if (duration.isNegative) return;
+      duration = Duration(seconds: ((duration.inSeconds + 30) ~/ 60) * 60);
+    }
+  }
+
+  if (type == null) return;
+
+  final guild = await client.guilds.get(event.guildId);
+  final moderator = await client.users.get(entry.userId!);
+  final target = await client.users.get(entry.targetId!);
+
+  final modCase = await createCase(
+    guildId: guild.id,
+    type: type,
+    user: target,
+    moderator: moderator,
+    reason: entry.reason,
+    duration: duration,
+    source: 'discord',
+  );
+  await postModlog(client, guild, modCase, moderator);
+}
+
+Future<void> _processQueue(NyxxGateway client) async {
+  final rows = await withConnection((connection) async {
+    final pending = await connection.query(
+        "SELECT * FROM `mod_actions` WHERE `status` = 'pending' ORDER BY `id` LIMIT 10;");
+    for (final row in pending) {
+      await connection.query(
+          "UPDATE `mod_actions` SET `status` = 'running', `updated_at` = UTC_TIMESTAMP() WHERE `id` = ?;",
+          [row['id']]);
+    }
+    return pending.toList();
+  });
+
+  for (final row in rows) {
+    String status = 'done';
+    String? error;
+    int? caseId;
+
+    try {
+      final guild =
+          await client.guilds.get(Snowflake.parse(row['guild'] as String));
+      final moderatorId = Snowflake.parse(row['moderator_id'] as String);
+      final targetId = Snowflake.parse(row['user_id'] as String);
+      final type = row['type'] as String;
+
+      await checkPermission(guild, moderatorId, type);
+      if (type != 'unban') {
+        await checkHierarchy(client, guild, moderatorId, targetId,
+            requireMember: type != 'ban');
+      }
+
+      final modCase = await performAction(
+        client,
+        guild: guild,
+        type: type,
+        targetId: targetId,
+        moderator: await client.users.get(moderatorId),
+        reason: textOrNull(row['reason']),
+        duration: row['duration'] == null
+            ? null
+            : Duration(seconds: row['duration'] as int),
+        deleteDays: row['delete_days'] as int? ?? 0,
+        source: 'dashboard',
+      );
+      caseId = modCase.id;
+    } on ModerationException catch (e) {
+      status = 'failed';
+      error = e.key;
+    } catch (e) {
+      status = 'failed';
+      error = 'mod_error_unknown';
+      print('Moderation action ${row['id']} failed: $e');
+    }
+
+    await withConnection((connection) => connection.query(
+        'UPDATE `mod_actions` SET `status` = ?, `error` = ?, `case_id` = ?, `updated_at` = UTC_TIMESTAMP() WHERE `id` = ?;',
+        [status, error, caseId, row['id']]));
+  }
+}
+
+Future<void> _expire(NyxxGateway client) async {
+  final bans = await withConnection((connection) async {
+    await connection.query(
+        "UPDATE `mod_cases` SET `active` = 0 WHERE `type` = 'timeout' AND `active` = 1 AND `expires_at` <= UTC_TIMESTAMP();");
+    final rows = await connection.query(
+        "SELECT * FROM `mod_cases` WHERE `type` = 'ban' AND `active` = 1 AND `expires_at` IS NOT NULL AND `expires_at` <= UTC_TIMESTAMP() LIMIT 20;");
+    return rows.map(ModCase.fromRow).toList();
+  });
+
+  if (bans.isEmpty) return;
+  final bot = await client.users.get(client.user.id);
+
+  for (final ban in bans) {
+    await withConnection((connection) => connection.query(
+        'UPDATE `mod_cases` SET `active` = 0 WHERE `id` = ?;', [ban.id]));
+    try {
+      final guild = await client.guilds.get(Snowflake.parse(ban.guild));
+      await performAction(
+        client,
+        guild: guild,
+        type: 'unban',
+        targetId: Snowflake.parse(ban.userId),
+        moderator: bot,
+        reason: await localized(
+            bot, 'mod_tempban_expired', {'&number': '${ban.number}'}),
+        source: 'automod',
+      );
+    } catch (e) {
+      print('Failed to lift temporary ban ${ban.id}: $e');
+    }
+  }
+}
 
 Duration? parseDuration(String input) {
   final matches =
@@ -106,28 +303,6 @@ String formatDuration(Duration duration) {
   return parts.isEmpty ? '0s' : parts.join(' ');
 }
 
-Future<Map<String, dynamic>> _guildSettings(Snowflake guildId) =>
-    withConnection((connection) async {
-      final rows = await connection.query(
-          'SELECT `modlog_channel`, `mod_dm` FROM `guilds` WHERE `id` = ? LIMIT 1;',
-          [guildId.toString()]);
-      if (rows.isEmpty) return {'modlog_channel': null, 'mod_dm': true};
-      return {
-        'modlog_channel': rows.first['modlog_channel'] as String?,
-        'mod_dm': (rows.first['mod_dm'] as int? ?? 1) == 1,
-      };
-    });
-
-int _highestPosition(
-    Iterable<Snowflake> roleIds, Map<Snowflake, int> positions) {
-  var highest = 0;
-  for (final id in roleIds) {
-    final position = positions[id] ?? 0;
-    if (position > highest) highest = position;
-  }
-  return highest;
-}
-
 Future<void> checkHierarchy(
     NyxxGateway client, Guild guild, Snowflake moderatorId, Snowflake targetId,
     {bool requireMember = false}) async {
@@ -158,15 +333,6 @@ Future<void> checkHierarchy(
     throw ModerationException('mod_error_hierarchy');
   }
 }
-
-final _requiredPermission = {
-  'warn': Permissions.moderateMembers,
-  'timeout': Permissions.moderateMembers,
-  'untimeout': Permissions.moderateMembers,
-  'kick': Permissions.kickMembers,
-  'ban': Permissions.banMembers,
-  'unban': Permissions.banMembers,
-};
 
 Future<void> checkPermission(Guild guild, Snowflake userId, String type) async {
   if (userId == guild.ownerId) return;
@@ -270,36 +436,6 @@ Future<ModCase> performAction(
   }
 
   return modCase;
-}
-
-Future<bool> _sendDm(NyxxGateway client, User target, Guild guild, String type,
-    String? reason, Duration? duration) async {
-  try {
-    final dm = await client.users.createDm(target.id);
-    final fields = <EmbedFieldBuilder>[
-      EmbedFieldBuilder(
-          name: await localized(target, 'mod_field_reason'),
-          value: reason ?? await localized(target, 'mod_no_reason'),
-          isInline: false),
-      if (duration != null)
-        EmbedFieldBuilder(
-            name: await localized(target, 'mod_field_duration'),
-            value: formatDuration(duration),
-            isInline: true),
-    ];
-    await dm.sendMessage(MessageBuilder(allowedMentions: noMentions, embeds: [
-      EmbedBuilder(
-        color: DiscordColor.parseHexString(_colors[type]!),
-        description:
-            await localized(target, 'mod_dm_$type', {'&server': guild.name}),
-        fields: fields,
-        timestamp: DateTime.now().toUtc(),
-      )
-    ]));
-    return true;
-  } catch (_) {
-    return false;
-  }
 }
 
 Future<ModCase> createCase({
@@ -423,43 +559,6 @@ Future<void> postModlog(
   }
 }
 
-Future<void> _escalate(NyxxGateway client, Guild guild, User target) async {
-  final rule = await withConnection((connection) async {
-    final count = await connection.query(
-        "SELECT COUNT(*) AS `warns` FROM `mod_cases` WHERE `guild` = ? AND `user_id` = ? AND `type` = 'warn' AND `active` = 1;",
-        [guild.id.toString(), target.id.toString()]);
-    final warns = (count.first['warns'] as num).toInt();
-    final rules = await connection.query(
-        'SELECT `action`, `duration` FROM `warn_rules` WHERE `guild` = ? AND `warns` = ? LIMIT 1;',
-        [guild.id.toString(), warns]);
-    if (rules.isEmpty) return null;
-    return (
-      warns,
-      rules.first['action'] as String,
-      rules.first['duration'] as int?
-    );
-  });
-
-  if (rule == null) return;
-  final (warns, action, seconds) = rule;
-  final bot = await client.users.get(client.user.id);
-
-  try {
-    await performAction(
-      client,
-      guild: guild,
-      type: action,
-      targetId: target.id,
-      moderator: bot,
-      reason: await localized(bot, 'mod_auto_reason', {'&count': '$warns'}),
-      duration: seconds == null ? null : Duration(seconds: seconds),
-      source: 'automod',
-    );
-  } catch (e) {
-    print('Warn escalation failed in ${guild.id}: $e');
-  }
-}
-
 Future<List<ModCase>> casesFor(Snowflake guildId,
         {Snowflake? userId, int limit = 10}) =>
     withConnection((connection) async {
@@ -476,9 +575,6 @@ Future<ModCase?> caseByNumber(Snowflake guildId, int number) =>
           [guildId.toString(), number]);
       return rows.isEmpty ? null : ModCase.fromRow(rows.first);
     });
-
-bool _queueBusy = false;
-bool _expiryBusy = false;
 
 void setupModerationHandlers(NyxxGateway client) {
   client.onGuildAuditLogCreate.listen((event) async {
@@ -512,146 +608,4 @@ void setupModerationHandlers(NyxxGateway client) {
       _expiryBusy = false;
     }
   });
-}
-
-Future<void> _handleAuditEntry(
-    NyxxGateway client, GuildAuditLogCreateEvent event) async {
-  final entry = event.entry;
-  if (entry.userId == null || entry.userId == client.user.id) return;
-  if (entry.targetId == null) return;
-
-  String? type;
-  Duration? duration;
-
-  if (entry.actionType == AuditLogEvent.memberBanAdd) {
-    type = 'ban';
-  } else if (entry.actionType == AuditLogEvent.memberBanRemove) {
-    type = 'unban';
-  } else if (entry.actionType == AuditLogEvent.memberKick) {
-    type = 'kick';
-  } else if (entry.actionType == AuditLogEvent.memberUpdate) {
-    final change = entry.changes
-        ?.where((c) => c.key == 'communication_disabled_until')
-        .firstOrNull;
-    if (change == null) return;
-    if (change.newValue == null) {
-      type = 'untimeout';
-    } else {
-      final until = DateTime.tryParse(change.newValue.toString());
-      if (until == null) return;
-      type = 'timeout';
-      duration = until.toUtc().difference(DateTime.now().toUtc());
-      if (duration.isNegative) return;
-      duration = Duration(seconds: ((duration.inSeconds + 30) ~/ 60) * 60);
-    }
-  }
-
-  if (type == null) return;
-
-  final guild = await client.guilds.get(event.guildId);
-  final moderator = await client.users.get(entry.userId!);
-  final target = await client.users.get(entry.targetId!);
-
-  final modCase = await createCase(
-    guildId: guild.id,
-    type: type,
-    user: target,
-    moderator: moderator,
-    reason: entry.reason,
-    duration: duration,
-    source: 'discord',
-  );
-  await postModlog(client, guild, modCase, moderator);
-}
-
-Future<void> _processQueue(NyxxGateway client) async {
-  final rows = await withConnection((connection) async {
-    final pending = await connection.query(
-        "SELECT * FROM `mod_actions` WHERE `status` = 'pending' ORDER BY `id` LIMIT 10;");
-    for (final row in pending) {
-      await connection.query(
-          "UPDATE `mod_actions` SET `status` = 'running', `updated_at` = UTC_TIMESTAMP() WHERE `id` = ?;",
-          [row['id']]);
-    }
-    return pending.toList();
-  });
-
-  for (final row in rows) {
-    String status = 'done';
-    String? error;
-    int? caseId;
-
-    try {
-      final guild =
-          await client.guilds.get(Snowflake.parse(row['guild'] as String));
-      final moderatorId = Snowflake.parse(row['moderator_id'] as String);
-      final targetId = Snowflake.parse(row['user_id'] as String);
-      final type = row['type'] as String;
-
-      await checkPermission(guild, moderatorId, type);
-      if (type != 'unban') {
-        await checkHierarchy(client, guild, moderatorId, targetId,
-            requireMember: type != 'ban');
-      }
-
-      final modCase = await performAction(
-        client,
-        guild: guild,
-        type: type,
-        targetId: targetId,
-        moderator: await client.users.get(moderatorId),
-        reason: _text(row['reason']),
-        duration: row['duration'] == null
-            ? null
-            : Duration(seconds: row['duration'] as int),
-        deleteDays: row['delete_days'] as int? ?? 0,
-        source: 'dashboard',
-      );
-      caseId = modCase.id;
-    } on ModerationException catch (e) {
-      status = 'failed';
-      error = e.key;
-    } catch (e) {
-      status = 'failed';
-      error = 'mod_error_unknown';
-      print('Moderation action ${row['id']} failed: $e');
-    }
-
-    await withConnection((connection) => connection.query(
-        'UPDATE `mod_actions` SET `status` = ?, `error` = ?, `case_id` = ?, `updated_at` = UTC_TIMESTAMP() WHERE `id` = ?;',
-        [status, error, caseId, row['id']]));
-  }
-}
-
-Future<void> _expire(NyxxGateway client) async {
-  final bans = await withConnection((connection) async {
-    await connection.query(
-        "UPDATE `mod_cases` SET `active` = 0 WHERE `type` = 'timeout' AND `active` = 1 AND `expires_at` <= UTC_TIMESTAMP();");
-    final rows = await connection.query(
-        "SELECT * FROM `mod_cases` WHERE `type` = 'ban' AND `active` = 1 AND `expires_at` IS NOT NULL AND `expires_at` <= UTC_TIMESTAMP() LIMIT 20;");
-    return rows.map(ModCase.fromRow).toList();
-  });
-
-  if (bans.isEmpty) return;
-  final bot = await client.users.get(client.user.id);
-
-  for (final ban in bans) {
-    await withConnection((connection) => connection.query(
-        'UPDATE `mod_cases` SET `active` = 0 WHERE `id` = ?;', [ban.id]));
-    try {
-      final guild = await client.guilds.get(Snowflake.parse(ban.guild));
-      await performAction(
-        client,
-        guild: guild,
-        type: 'unban',
-        targetId: Snowflake.parse(ban.userId),
-        moderator: bot,
-        reason: await localized(
-            bot, 'mod_tempban_expired', {'&number': '${ban.number}'}),
-        source: 'automod',
-      );
-    } catch (e) {
-      print('Failed to lift temporary ban ${ban.id}: $e');
-    }
-  }
 }

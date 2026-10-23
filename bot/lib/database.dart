@@ -1,17 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:dotenv/dotenv.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:nyxx/nyxx.dart';
+import 'package:toxbot/config.dart';
 import 'package:yaml/yaml.dart';
 
-var env = DotEnv(includePlatformEnvironment: true)..load();
-
 final Map<String, bool> cached = {};
-
-Snowflake get ownerId =>
-    Snowflake(int.tryParse((env['owner_id'] ?? '').trim()) ?? 0);
 
 Future<Guild?> checkForDatabase(Guild guild) async {
   // ignore: collection_methods_unrelated_type
@@ -72,7 +67,9 @@ Future<String> getString(User user, String dbString) async {
     final yamlFile = File('${Directory.current.path}/lib/utils/languages.yaml');
     final yamlContent = loadYaml(await yamlFile.readAsString());
 
-    return yamlContent[language]?[dbString] ?? yamlContent['en_us'][dbString] ?? '';
+    return yamlContent[language]?[dbString] ??
+        yamlContent['en_us'][dbString] ??
+        '';
   } catch (e) {
     print('Error in getString: $e');
   } finally {
@@ -101,8 +98,8 @@ Future<void> clearOldGuilds(NyxxGateway client) async {
         await client.guilds.fetch(Snowflake(guildIdAsInt));
       } on HttpResponseError catch (e) {
         if (e.statusCode == 403 || e.statusCode == 404) {
-          await connection.query(
-              'DELETE FROM `guilds` WHERE `id` = ?;', [guildIdAsString]);
+          await connection
+              .query('DELETE FROM `guilds` WHERE `id` = ?;', [guildIdAsString]);
           for (final table in [
             'stream_subscriptions',
             'mod_cases',
@@ -132,3 +129,22 @@ Future<MySqlConnection> getMySqlConnection() async {
       db: env['db_name'],
       timeout: const Duration(seconds: 30)));
 }
+
+Future<T> withConnection<T>(
+  Future<T> Function(MySqlConnection connection) action,
+) async {
+  final connection = await getMySqlConnection();
+  try {
+    return await action(connection);
+  } finally {
+    await connection.close();
+  }
+}
+
+String textValue(Object? value) => switch (value) {
+      Blob blob => utf8.decode(blob.toBytes()),
+      null => '',
+      _ => value.toString(),
+    };
+
+String? textOrNull(Object? value) => value == null ? null : textValue(value);
