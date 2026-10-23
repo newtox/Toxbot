@@ -32,6 +32,8 @@ x-dashboard-env: &dashboard-env
   TWITCH_CLIENT_ID: ${TWITCH_CLIENT_ID:-}
   TWITCH_CLIENT_SECRET: ${TWITCH_CLIENT_SECRET:-}
   YOUTUBE_API_KEY: ${YOUTUBE_API_KEY:-}
+  TURNSTILE_SITE_KEY: ${TURNSTILE_SITE_KEY:-}
+  TURNSTILE_SECRET_KEY: ${TURNSTILE_SECRET_KEY:-}
 
 services:
   bot:
@@ -46,6 +48,7 @@ services:
       db_name: ${DB_DATABASE:-toxbot}
       owner_id: ${OWNER_ID}
       dashboard_url: http://toxbot-dashboard:8080
+      public_dashboard_url: ${APP_URL}
       premium_users: ${PREMIUM_USERS:-}
       premium_user_skus: ${PREMIUM_USER_SKUS:-}
       xp_boost_sku: ${XP_BOOST_SKU:-}
