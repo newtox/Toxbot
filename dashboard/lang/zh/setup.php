@@ -22,7 +22,7 @@ return [
     'run' => '立即设置',
     'running' => '正在设置 …',
     'again' => '重新设置',
-    'reload' => '刷新概览',
+    'reload' => '重新加载页面',
     'choose_area' => '请至少选择一项。',
     'choose_roles' => '请至少选择一个团队身份组。',
     'too_many_roles' => '最多选择 10 个团队身份组。',

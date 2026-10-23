@@ -22,7 +22,7 @@ return [
     'run' => '지금 설정',
     'running' => '설정 중 …',
     'again' => '다시 설정',
-    'reload' => '개요 새로고침',
+    'reload' => '페이지 새로고침',
     'choose_area' => '항목을 하나 이상 고르세요.',
     'choose_roles' => '팀 역할을 하나 이상 고르세요.',
     'too_many_roles' => '팀 역할은 최대 10개까지 고를 수 있습니다.',

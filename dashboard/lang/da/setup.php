@@ -22,7 +22,7 @@ return [
     'run' => 'Sæt op nu',
     'running' => 'Sætter op …',
     'again' => 'Sæt op igen',
-    'reload' => 'Opdater oversigten',
+    'reload' => 'Genindlæs siden',
     'choose_area' => 'Vælg mindst ét område.',
     'choose_roles' => 'Vælg mindst én team-rolle.',
     'too_many_roles' => 'Vælg højst 10 team-roller.',

@@ -22,7 +22,7 @@ return [
     'run' => 'Configurar ahora',
     'running' => 'Configurando …',
     'again' => 'Configurar de nuevo',
-    'reload' => 'Actualizar resumen',
+    'reload' => 'Recargar la página',
     'choose_area' => 'Elige al menos un área.',
     'choose_roles' => 'Elige al menos un rol de equipo.',
     'too_many_roles' => 'Elige como máximo 10 roles de equipo.',

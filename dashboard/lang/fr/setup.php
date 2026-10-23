@@ -22,7 +22,7 @@ return [
     'run' => 'Configurer maintenant',
     'running' => 'Configuration …',
     'again' => 'Reconfigurer',
-    'reload' => 'Actualiser l\'aperçu',
+    'reload' => 'Recharger la page',
     'choose_area' => 'Choisis au moins un domaine.',
     'choose_roles' => 'Choisis au moins un rôle d\'équipe.',
     'too_many_roles' => 'Choisis au plus 10 rôles d\'équipe.',
