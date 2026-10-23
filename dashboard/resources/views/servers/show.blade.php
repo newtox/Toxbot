@@ -27,6 +27,8 @@
             </div>
         </div>
 
+        <livewire:auto-setup :guild-id="$guild['id']" :guild-name="$guild['name']" />
+
         <section>
             <h2 class="mb-3 text-lg font-semibold text-dc-header">{{ __('overview.modules') }}</h2>
             <div class="grid gap-3 sm:grid-cols-2">

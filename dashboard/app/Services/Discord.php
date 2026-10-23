@@ -242,6 +242,28 @@ class Discord
         return $this->sendMessage($channelId, $payload);
     }
 
+    public function createChannel(string $guildId, array $payload, string $reason): array
+    {
+        return $this->asBot()->withHeaders(['X-Audit-Log-Reason' => rawurlencode($reason)])
+            ->post("/guilds/{$guildId}/channels", $payload)->throw()->json();
+    }
+
+    public function createRole(string $guildId, array $payload, string $reason): array
+    {
+        return $this->asBot()->withHeaders(['X-Audit-Log-Reason' => rawurlencode($reason)])
+            ->post("/guilds/{$guildId}/roles", $payload)->throw()->json();
+    }
+
+    public function setChannelPermission(string $channelId, string $targetId, int $type, int $allow, int $deny, string $reason): void
+    {
+        $this->asBot()->withHeaders(['X-Audit-Log-Reason' => rawurlencode($reason)])
+            ->put("/channels/{$channelId}/permissions/{$targetId}", [
+                'type' => $type,
+                'allow' => (string) $allow,
+                'deny' => (string) $deny,
+            ])->throw();
+    }
+
     public function forgetGuildCache(string $guildId): void
     {
         foreach (['channels', 'roles', 'bot-member', 'info', 'members'] as $key) {

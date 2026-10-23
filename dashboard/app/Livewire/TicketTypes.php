@@ -6,6 +6,7 @@ use App\Models\TicketType;
 use App\Services\GuildAccess;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Locked;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class TicketTypes extends Component
@@ -99,6 +100,9 @@ class TicketTypes extends Component
             $this->cancel();
         }
     }
+
+    #[On('auto-setup-done')]
+    public function refreshTypes(): void {}
 
     public function render()
     {

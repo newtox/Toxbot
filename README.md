@@ -82,6 +82,10 @@ chown 33:33 /docker_volumes/toxbot-dashboard/backgrounds
 - For vote rewards, add `https://<dashboard>/webhooks/topgg` as webhook on Top.gg and put the generated secret into `TOPGG_WEBHOOK_SECRET`.
 - Server Premium comes with the user subscription: subscribers pick one server on their profile page in the dashboard. Discord only allows one published subscription per app, so a separate server subscription is optional; if you ever sell one, put its SKU ID into `PREMIUM_GUILD_SKUS`. `PREMIUM_GUILDS` gives Server Premium to the listed server IDs without a subscription.
 
+### Automatic setup
+
+The server overview and the Moderation, Protection and Tickets settings have an automatic setup. Pick the team roles and the areas, and Toxbot creates what is missing: a private `#mod-log`, a `Tickets` category with `#tickets` and a private `#ticket-log`, a `Support` ticket type and the ticket buttons, the link filter and anti-raid, and for verification an `Unverified` role with a `#verify` channel that hides every other channel from that role. Channels and roles that are already set or have the same name are reused. It needs **Manage Channels** and **Manage Roles**.
+
 ### Moderation
 
 For moderation, Toxbot needs the permissions **Kick Members**, **Ban Members**, **Moderate Members** and **View Audit Log**. New invites ask for them; on servers where Toxbot already is, give them to its role. Its role has to be above the roles of the members it should moderate.
