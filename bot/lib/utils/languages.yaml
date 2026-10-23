@@ -200,6 +200,10 @@ da_dk:
   mod_case_not_found: "Sag #&number findes ikke."
   mod_auto_reason: "Automatisk: &count advarsler"
   mod_tempban_expired: "Midlertidig ban udløbet (sag #&number)"
+  generate_password_title: "Genereret adgangskode"
+  generate_hex_title: "Tilfældig hex (&bytes bytes)"
+  generate_color_title: "Tilfældig farve"
+  generate_color_tip: "Brug /color &hex for at gøre den til din embed-farve."
 
 de_de:
   global_error: "Ein Fehler ist aufgetreten!"
@@ -403,6 +407,10 @@ de_de:
   mod_case_not_found: "Fall #&number existiert nicht."
   mod_auto_reason: "Automatisch: &count Verwarnungen"
   mod_tempban_expired: "Befristeter Bann abgelaufen (Fall #&number)"
+  generate_password_title: "Generiertes Passwort"
+  generate_hex_title: "Zufälliger Hex-Wert (&bytes Bytes)"
+  generate_color_title: "Zufällige Farbe"
+  generate_color_tip: "Mit /color &hex wird sie deine Embed-Farbe."
 
 en_us:
   global_error: "An error has occurred!"
@@ -606,6 +614,10 @@ en_us:
   mod_case_not_found: "Case #&number does not exist."
   mod_auto_reason: "Automatic: &count warnings"
   mod_tempban_expired: "Temporary ban expired (case #&number)"
+  generate_password_title: "Generated password"
+  generate_hex_title: "Random hex (&bytes bytes)"
+  generate_color_title: "Random color"
+  generate_color_tip: "Use /color &hex to make it your embed color."
 
 es_es:
   global_error: "¡Ha ocurrido un error!"
@@ -809,6 +821,10 @@ es_es:
   mod_case_not_found: "El caso #&number no existe."
   mod_auto_reason: "Automático: &count advertencias"
   mod_tempban_expired: "Baneo temporal expirado (caso #&number)"
+  generate_password_title: "Contraseña generada"
+  generate_hex_title: "Hex aleatorio (&bytes bytes)"
+  generate_color_title: "Color aleatorio"
+  generate_color_tip: "Usa /color &hex para que sea el color de tus embeds."
 
 fr_fr:
   global_error: "Une erreur s'est produite !"
@@ -1012,6 +1028,10 @@ fr_fr:
   mod_case_not_found: "Le cas #&number n'existe pas."
   mod_auto_reason: "Automatique : &count avertissements"
   mod_tempban_expired: "Bannissement temporaire expiré (cas #&number)"
+  generate_password_title: "Mot de passe généré"
+  generate_hex_title: "Hex aléatoire (&bytes octets)"
+  generate_color_title: "Couleur aléatoire"
+  generate_color_tip: "Utilise /color &hex pour en faire la couleur de tes embeds."
 
 hi_hi:
   global_error: "एक त्रुटि हुई है!"
@@ -1215,6 +1235,10 @@ hi_hi:
   mod_case_not_found: "केस #&number मौजूद नहीं है।"
   mod_auto_reason: "अपने आप: &count चेतावनियाँ"
   mod_tempban_expired: "अस्थायी बैन खत्म हुआ (केस #&number)"
+  generate_password_title: "बनाया गया पासवर्ड"
+  generate_hex_title: "रैंडम हेक्स (&bytes बाइट)"
+  generate_color_title: "रैंडम रंग"
+  generate_color_tip: "इसे अपने एम्बेड का रंग बनाने के लिए /color &hex इस्तेमाल करें।"
 
 ja_jp:
   global_error: "エラーが発生しました！"
@@ -1418,6 +1442,10 @@ ja_jp:
   mod_case_not_found: "ケース #&number は存在しません。"
   mod_auto_reason: "自動: 警告 &count 回"
   mod_tempban_expired: "一時 BAN の期限切れ（ケース #&number）"
+  generate_password_title: "生成されたパスワード"
+  generate_hex_title: "ランダムな16進数（&bytes バイト）"
+  generate_color_title: "ランダムな色"
+  generate_color_tip: "/color &hex で埋め込みの色に設定できます。"
 
 ko_ko:
   global_error: "오류가 발생했습니다!"
@@ -1621,6 +1649,10 @@ ko_ko:
   mod_case_not_found: "케이스 #&number 이(가) 없습니다."
   mod_auto_reason: "자동: 경고 &count회"
   mod_tempban_expired: "임시 차단 만료 (케이스 #&number)"
+  generate_password_title: "생성된 비밀번호"
+  generate_hex_title: "무작위 16진수 (&bytes바이트)"
+  generate_color_title: "무작위 색상"
+  generate_color_tip: "/color &hex 로 임베드 색상으로 설정할 수 있습니다."
 
 ru_ru:
   global_error: "Произошла ошибка!"
@@ -1824,6 +1856,10 @@ ru_ru:
   mod_case_not_found: "Случая #&number не существует."
   mod_auto_reason: "Автоматически: предупреждений &count"
   mod_tempban_expired: "Временный бан истёк (случай #&number)"
+  generate_password_title: "Сгенерированный пароль"
+  generate_hex_title: "Случайный hex (&bytes байт)"
+  generate_color_title: "Случайный цвет"
+  generate_color_tip: "Используй /color &hex, чтобы сделать его цветом своих эмбедов."
 
 zh_cn:
   global_error: "发生错误！"
@@ -2027,3 +2063,7 @@ zh_cn:
   mod_case_not_found: "案例 #&number 不存在。"
   mod_auto_reason: "自动：&count 次警告"
   mod_tempban_expired: "临时封禁已到期（案例 #&number）"
+  generate_password_title: "生成的密码"
+  generate_hex_title: "随机十六进制（&bytes 字节）"
+  generate_color_title: "随机颜色"
+  generate_color_tip: "使用 /color &hex 将其设为你的嵌入颜色。"

@@ -9,6 +9,7 @@ import 'package:toxbot/commands/configuration/language.dart';
 import 'package:toxbot/commands/developer/system.dart';
 import 'package:toxbot/commands/fun/eightball.dart';
 import 'package:toxbot/commands/fun/someone.dart';
+import 'package:toxbot/commands/general/generate.dart';
 import 'package:toxbot/commands/general/info.dart';
 import 'package:toxbot/commands/general/ping.dart';
 import 'package:toxbot/commands/image/awoo.dart';
@@ -91,6 +92,7 @@ CommandsPlugin setupCommandHandler(CommandsPlugin commands) {
   commands.addCommand(system);
 
   commands.addCommand(eightball);
+  commands.addCommand(generate);
   commands.addCommand(someone);
 
   commands.addCommand(info);

@@ -23,6 +23,7 @@ Both share the same MySQL database. Whatever you change in the dashboard (welcom
 ## Features
 
 - **Roleplay, image and fun commands** like `/hug`, `/pat` or `/8ball`
+- **Generators**: `/generate password`, `/generate hex` (like `openssl rand -hex`) and `/generate color` with a preview
 - **Server setup**: welcome and goodbye messages, autorole, level-up messages
 - **Levels**: XP for messages and commands, with a global level and a separate level per server, plus `/leaderboard`
 - **Credits and shop**: `/daily`, credits for level-ups and Top.gg votes, profile backgrounds to buy with `/shop`
