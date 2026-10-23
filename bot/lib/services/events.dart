@@ -367,8 +367,11 @@ void setupCommandPostCallHandler(
       if (context.user.id == ownerId) return;
 
       final user = context.user;
+      final command = context is ChatContext
+          ? context.command.fullName
+          : context.command.name;
       await _sendLog(client, _commandColor,
-          '${user.globalName ?? user.username} (${user.id}) executed ${bold(context.command.fullName)}.');
+          '${user.globalName ?? user.username} (${user.id}) executed ${bold(command)}.');
     } catch (e) {
       print('Error in setupCommandPostCallHandler: $e');
     }
