@@ -1,16 +1,10 @@
 import 'package:nyxx/nyxx.dart';
 import 'package:toxbot/database.dart';
+import 'package:toxbot/models/live_role_settings.dart';
 
-class _LiveRoleSettings {
-  final Snowflake role;
-  final Snowflake? required;
+final Map<Snowflake, (LiveRoleSettings?, DateTime)> _settingsCache = {};
 
-  const _LiveRoleSettings(this.role, this.required);
-}
-
-final Map<Snowflake, (_LiveRoleSettings?, DateTime)> _settingsCache = {};
-
-Future<_LiveRoleSettings?> _settings(Snowflake guildId) async {
+Future<LiveRoleSettings?> _settings(Snowflake guildId) async {
   final cached = _settingsCache[guildId];
   if (cached != null &&
       DateTime.now().difference(cached.$2) < const Duration(minutes: 1)) {
@@ -27,7 +21,7 @@ Future<_LiveRoleSettings?> _settings(Snowflake guildId) async {
         rows.isEmpty ? null : rows.first['live_role_required'] as String?;
     final settings = role == null
         ? null
-        : _LiveRoleSettings(Snowflake.parse(role),
+        : LiveRoleSettings(Snowflake.parse(role),
             required == null ? null : Snowflake.parse(required));
     _settingsCache[guildId] = (settings, DateTime.now());
     return settings;

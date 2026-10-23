@@ -1,19 +1,16 @@
 import 'package:collection/collection.dart';
-import 'package:dotenv/dotenv.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:toxbot/database.dart';
 import 'package:toxbot/utils/reply.dart';
 
-String announcementTypeToString(String type) => type;
-
 const announcementTypeConverter = SimpleConverter.fixed(
   elements: ['Join', 'Leave'],
   stringify: announcementTypeToString,
 );
 
-var env = DotEnv(includePlatformEnvironment: true)..load();
+String announcementTypeToString(String type) => type;
 
 final announcements = ChatGroup('announcements', 'Manage server announcements.',
     localizedDescriptions: {

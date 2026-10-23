@@ -4,6 +4,7 @@ import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:toxbot/database.dart';
 
 const successColor = '#6dbe33';
+
 const errorColor = '#c41111';
 
 final noMentions = AllowedMentions(parse: []);

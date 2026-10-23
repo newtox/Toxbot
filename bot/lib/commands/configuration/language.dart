@@ -1,11 +1,8 @@
-import 'package:dotenv/dotenv.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:toxbot/database.dart';
 import 'package:toxbot/utils/reply.dart';
-
-String languageCodeToString(String code) => code;
 
 const languageCodeConverter = SimpleConverter.fixed(
   elements: [
@@ -23,7 +20,7 @@ const languageCodeConverter = SimpleConverter.fixed(
   stringify: languageCodeToString,
 );
 
-var env = DotEnv(includePlatformEnvironment: true)..load();
+String languageCodeToString(String code) => code;
 
 final language = ChatCommand('language', 'Set your preferred language.',
     localizedDescriptions: {

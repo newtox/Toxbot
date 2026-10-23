@@ -2,12 +2,9 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:dotenv/dotenv.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:path/path.dart' as path;
 import 'package:toxbot/database.dart';
-
-var env = DotEnv(includePlatformEnvironment: true)..load();
 
 Future<String> getClientStatus(Member member, NyxxGateway client) async {
   return '';

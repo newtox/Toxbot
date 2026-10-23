@@ -1,11 +1,8 @@
-import 'package:dotenv/dotenv.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:toxbot/database.dart';
 import 'package:toxbot/utils/reply.dart';
-
-var env = DotEnv(includePlatformEnvironment: true)..load();
 
 final autorole = ChatGroup('autorole', 'Set an autorole for your server.',
     localizedDescriptions: {

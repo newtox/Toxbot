@@ -1,75 +1,26 @@
-import 'dart:convert';
-
-import 'package:dotenv/dotenv.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
+import 'package:toxbot/config.dart';
 import 'package:toxbot/database.dart';
+import 'package:toxbot/models/tag.dart';
 import 'package:toxbot/premium.dart';
 import 'package:toxbot/utils/functions.dart';
 import 'package:toxbot/utils/reply.dart';
 
-var env = DotEnv(includePlatformEnvironment: true)..load();
-
 const modalCommands = {'tag create', 'tag edit'};
 
 final _namePattern = RegExp(r'^[a-z0-9_-]{1,32}$');
+
 final _invitePattern = RegExp(
   r'(discord\.gg|discord(app)?\.com/invite|dsc\.gg)/[A-Za-z0-9-]+',
   caseSensitive: false,
 );
+
 final _massMentionPattern = RegExp(r'@(everyone|here)');
 
-int get freeTagLimit => int.tryParse(env['tag_free_limit'] ?? '') ?? 10;
-int get premiumTagLimit => int.tryParse(env['tag_premium_limit'] ?? '') ?? 250;
-
-Set<String> get allowedImageHosts => (env['tag_image_hosts'] ??
-        'cdn.discordapp.com,media.discordapp.net,i.imgur.com')
-    .split(',')
-    .map((host) => host.trim().toLowerCase())
-    .where((host) => host.isNotEmpty)
-    .toSet();
-
-class Tag {
-  final int id;
-  final String name;
-  final Snowflake owner;
-  final String content;
-  final bool embed;
-  final String? embedColor;
-  final String? embedImage;
-  final int uses;
-  final DateTime? createdAt;
-
-  Tag.fromRow(ResultRow row)
-      : id = row['id'] as int,
-        name = row['name'] as String,
-        owner = Snowflake(int.parse(row['owner'].toString())),
-        content = _text(row['content']),
-        embed = row['embed'] == 1 || row['embed'] == true,
-        embedColor = row['embed_color'] as String?,
-        embedImage = row['embed_image'] as String?,
-        uses = row['uses'] as int,
-        createdAt = row['created_at'] as DateTime?;
-}
-
-String _text(Object? value) => switch (value) {
-      Blob blob => utf8.decode(blob.toBytes()),
-      null => '',
-      _ => value.toString(),
-    };
-
-Future<T> _withConnection<T>(Future<T> Function(MySqlConnection) action) async {
-  final connection = await getMySqlConnection();
-  try {
-    return await action(connection);
-  } finally {
-    await connection.close();
-  }
-}
-
-Future<Tag?> _findTag(String name) => _withConnection((connection) async {
+Future<Tag?> _findTag(String name) => withConnection((connection) async {
       final results = await connection.query(
         'SELECT * FROM `tags` WHERE `name` = ? LIMIT 1;',
         [name.toLowerCase()],
@@ -77,7 +28,7 @@ Future<Tag?> _findTag(String name) => _withConnection((connection) async {
       return results.isEmpty ? null : Tag.fromRow(results.first);
     });
 
-Future<int> _countTags(Snowflake owner) => _withConnection((connection) async {
+Future<int> _countTags(Snowflake owner) => withConnection((connection) async {
       final results = await connection.query(
         'SELECT COUNT(*) AS `count` FROM `tags` WHERE `owner` = ?;',
         [owner.toString()],
@@ -86,7 +37,7 @@ Future<int> _countTags(Snowflake owner) => _withConnection((connection) async {
     });
 
 Future<bool> _isBlacklisted(Snowflake user) =>
-    _withConnection((connection) async {
+    withConnection((connection) async {
       final results = await connection.query(
         'SELECT 1 FROM `blacklist` WHERE `user` = ? LIMIT 1;',
         [user.toString()],
@@ -96,7 +47,7 @@ Future<bool> _isBlacklisted(Snowflake user) =>
 
 Future<bool> _isAllowedInGuild(Tag tag, Snowflake? guild) async {
   if (guild == null) return true;
-  return _withConnection((connection) async {
+  return withConnection((connection) async {
     final settings = await connection.query(
       'SELECT `tags_enabled` FROM `guilds` WHERE `id` = ? LIMIT 1;',
       [guild.toString()],
@@ -139,7 +90,7 @@ Future<Iterable<CommandOptionChoiceBuilder<String>>> _autocomplete(
 }) async {
   try {
     final query = '${context.currentValue.toLowerCase()}%';
-    return await _withConnection((connection) async {
+    return await withConnection((connection) async {
       final results = await connection.query(
         ownOnly
             ? 'SELECT `name` FROM `tags` WHERE `owner` = ? AND `name` LIKE ? ORDER BY `uses` DESC LIMIT 25;'
@@ -158,16 +109,6 @@ Future<Iterable<CommandOptionChoiceBuilder<String>>> _autocomplete(
     return const [];
   }
 }
-
-Future<Iterable<CommandOptionChoiceBuilder<String>>> allTags(
-  AutocompleteContext context,
-) =>
-    _autocomplete(context, ownOnly: false);
-
-Future<Iterable<CommandOptionChoiceBuilder<String>>> ownTags(
-  AutocompleteContext context,
-) =>
-    _autocomplete(context, ownOnly: true);
 
 Future<String> _fillPlaceholders(String content, ChatContext context) async {
   var result = content
@@ -189,6 +130,16 @@ Future<String> _fillPlaceholders(String content, ChatContext context) async {
   }
   return result;
 }
+
+Future<Iterable<CommandOptionChoiceBuilder<String>>> allTags(
+  AutocompleteContext context,
+) =>
+    _autocomplete(context, ownOnly: false);
+
+Future<Iterable<CommandOptionChoiceBuilder<String>>> ownTags(
+  AutocompleteContext context,
+) =>
+    _autocomplete(context, ownOnly: true);
 
 final _create = ChatCommand(
   'create',
@@ -274,7 +225,7 @@ final _create = ChatCommand(
       }
 
       try {
-        await _withConnection(
+        await withConnection(
           (connection) => connection.query(
             'INSERT INTO `tags` (`name`, `owner`, `content`, `created_at`, `updated_at`) '
             'VALUES (?, ?, ?, UTC_TIMESTAMP(), UTC_TIMESTAMP());',
@@ -365,7 +316,7 @@ final _edit = ChatCommand(
         return;
       }
 
-      await _withConnection(
+      await withConnection(
         (connection) => connection.query(
           'UPDATE `tags` SET `content` = ?, `updated_at` = UTC_TIMESTAMP() WHERE `id` = ?;',
           [content, tag.id],
@@ -427,7 +378,7 @@ final _delete = ChatCommand(
         return;
       }
 
-      await _withConnection(
+      await withConnection(
         (connection) =>
             connection.query('DELETE FROM `tags` WHERE `id` = ?;', [tag.id]),
       );
@@ -516,7 +467,7 @@ final _show = ChatCommand(
         );
       }
 
-      await _withConnection(
+      await withConnection(
         (connection) => connection.query(
           'UPDATE `tags` SET `uses` = `uses` + 1 WHERE `id` = ?;',
           [tag.id],
@@ -638,7 +589,7 @@ final _list = ChatCommand(
     final user = context.user;
     try {
       target ??= user;
-      final names = await _withConnection((connection) async {
+      final names = await withConnection((connection) async {
         final results = await connection.query(
           'SELECT `name` FROM `tags` WHERE `owner` = ? ORDER BY `name`;',
           [target!.id.toString()],
@@ -762,7 +713,7 @@ final _transfer = ChatCommand(
         return;
       }
 
-      await _withConnection(
+      await withConnection(
         (connection) => connection.query(
           'UPDATE `tags` SET `owner` = ?, `updated_at` = UTC_TIMESTAMP() WHERE `id` = ?;',
           [target.id.toString(), tag.id],
@@ -887,7 +838,7 @@ final _embed = ChatCommand(
         }
       }
 
-      await _withConnection(
+      await withConnection(
         (connection) => connection.query(
           'UPDATE `tags` SET `embed` = ?, `embed_color` = COALESCE(?, `embed_color`), '
           '`embed_image` = COALESCE(?, `embed_image`), `updated_at` = UTC_TIMESTAMP() WHERE `id` = ?;',
@@ -960,7 +911,7 @@ final _report = ChatCommand(
       }
       if (reason.length > 500) reason = reason.substring(0, 500);
 
-      final inserted = await _withConnection((connection) async {
+      final inserted = await withConnection((connection) async {
         final result = await connection.query(
           'INSERT IGNORE INTO `tag_reports` (`tag_id`, `reporter`, `guild`, `reason`, `created_at`, `updated_at`) '
           'VALUES (?, ?, ?, ?, UTC_TIMESTAMP(), UTC_TIMESTAMP());',
@@ -974,7 +925,7 @@ final _report = ChatCommand(
         return;
       }
 
-      final reportChannel = int.tryParse(env['tag_report_channel'] ?? '');
+      final reportChannel = tagReportChannel;
       if (reportChannel != null) {
         final channel =
             await context.client.channels[Snowflake(reportChannel)].get();
@@ -1068,7 +1019,7 @@ final _block = ChatCommand(
         await replyError(context, 'tag_not_found', replace: {'&tag': name});
         return;
       }
-      await _withConnection(
+      await withConnection(
         (connection) => connection.query(
           'INSERT IGNORE INTO `tag_guild_blocks` (`guild`, `tag_id`) VALUES (?, ?);',
           [context.guild!.id.toString(), tag.id],
@@ -1124,7 +1075,7 @@ final _unblock = ChatCommand(
         await replyError(context, 'tag_not_found', replace: {'&tag': name});
         return;
       }
-      await _withConnection(
+      await withConnection(
         (connection) => connection.query(
           'DELETE FROM `tag_guild_blocks` WHERE `guild` = ? AND `tag_id` = ?;',
           [context.guild!.id.toString(), tag.id],
@@ -1178,7 +1129,7 @@ final _toggle = ChatCommand(
   ) async {
     final user = context.user;
     try {
-      await _withConnection(
+      await withConnection(
         (connection) => connection.query(
           'UPDATE `guilds` SET `tags_enabled` = ? WHERE `id` = ?;',
           [enabled ? 1 : 0, context.guild!.id.toString()],
