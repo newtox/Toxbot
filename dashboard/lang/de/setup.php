@@ -22,7 +22,7 @@ return [
     'run' => 'Jetzt einrichten',
     'running' => 'Wird eingerichtet …',
     'again' => 'Erneut einrichten',
-    'reload' => 'Übersicht aktualisieren',
+    'reload' => 'Seite neu laden',
     'choose_area' => 'Wähle mindestens einen Bereich.',
     'choose_roles' => 'Wähle mindestens eine Team-Rolle.',
     'too_many_roles' => 'Wähle höchstens 10 Team-Rollen.',

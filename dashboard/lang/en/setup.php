@@ -22,7 +22,7 @@ return [
     'run' => 'Set up now',
     'running' => 'Setting up …',
     'again' => 'Set up again',
-    'reload' => 'Refresh overview',
+    'reload' => 'Reload page',
     'choose_area' => 'Choose at least one area.',
     'choose_roles' => 'Choose at least one team role.',
     'too_many_roles' => 'Choose at most 10 team roles.',

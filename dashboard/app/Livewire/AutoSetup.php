@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Guild;
 use App\Services\AutoSetup as AutoSetupService;
 use App\Services\Discord;
 use App\Services\GuildAccess;
@@ -82,8 +83,10 @@ class AutoSetup extends Component
             return [];
         }
 
+        $verifyRole = Guild::query()->whereKey($this->guildId)->value('verify_role');
+
         return collect($roles)
-            ->reject(fn ($r) => $r['id'] === $this->guildId || ($r['managed'] ?? false))
+            ->reject(fn ($r) => $r['id'] === $this->guildId || $r['id'] === $verifyRole || ($r['managed'] ?? false))
             ->sortByDesc('position')
             ->map(fn ($r) => [
                 'id' => $r['id'],
