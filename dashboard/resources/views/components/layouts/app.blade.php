@@ -119,42 +119,71 @@
                                 </a>
                             @endforeach
                         </div>
-                    @endif
-
-                    <div class="space-y-1.5">
-                        <p class="nav-heading">{{ __('menu.general') }}</p>
-                        @foreach ([
-                            ['route' => 'servers.index', 'active' => 'servers.index', 'icon' => 'servers', 'label' => __('menu.servers')],
-                            ['route' => 'profile', 'active' => 'profile', 'icon' => 'profile', 'label' => __('menu.profile')],
-                            ['route' => 'shop', 'active' => 'shop', 'icon' => 'shop', 'label' => __('menu.shop')],
-                            ['route' => 'tags', 'active' => 'tags', 'icon' => 'tag', 'label' => __('menu.tags')],
-                            ...(\App\Http\Middleware\EnsureBotOwner::check(auth()->id())
-                                ? [['route' => 'admin', 'active' => 'admin', 'icon' => 'shield', 'label' => __('menu.admin')]]
-                                : []),
-                        ] as $item)
-                            <a href="{{ route($item['route']) }}"
-                               @class(['nav-item', 'nav-item-active' => request()->routeIs($item['active'])])>
-                                <x-icon :name="$item['icon']" />{{ $item['label'] }}
+                    @else
+                        @php
+                            $sidebarGuilds = rescue(
+                                fn () => array_values(array_filter(
+                                    app(\App\Services\GuildAccess::class)->manageableGuilds(auth()->user()),
+                                    fn ($g) => $g['has_bot'],
+                                )),
+                                [],
+                                report: false,
+                            );
+                        @endphp
+                        <div class="space-y-1.5">
+                            <p class="nav-heading">{{ __('menu.servers') }}</p>
+                            @foreach ($sidebarGuilds as $g)
+                                <a href="{{ route('servers.show', $g['id']) }}" class="nav-item">
+                                    <x-guild-icon :guild="$g" size="size-6" class="rounded-md text-[0.6rem]" />
+                                    <span class="truncate">{{ $g['name'] }}</span>
+                                </a>
+                            @endforeach
+                            <a href="{{ route('servers.index') }}"
+                               @class(['nav-item', 'nav-item-active' => request()->routeIs('servers.index')])>
+                                <x-icon name="servers" />{{ __('menu.all_servers') }}
                             </a>
-                        @endforeach
-                    </div>
+                        </div>
+                    @endif
                 </nav>
 
                 <div class="space-y-3 border-t border-white/[0.06] p-3">
                     <x-locale-switch />
 
-                    <div class="flex items-center gap-3 rounded-md bg-dc-800 p-2">
-                        <img src="{{ auth()->user()->avatar_url }}" alt="" class="size-9 rounded-full">
-                        <div class="min-w-0 flex-1">
-                            <div class="truncate text-sm font-semibold text-dc-header">{{ auth()->user()->display_name }}</div>
-                            <div class="truncate text-xs text-dc-muted">{{ auth()->user()->username }}</div>
+                    <div x-data="{ open: false }" class="relative" x-on:click.outside="open = false" x-on:keydown.escape.stop="open = false">
+                        <div x-show="open" x-transition.origin.bottom x-cloak
+                             class="absolute inset-x-0 bottom-full z-10 mb-2 space-y-0.5 rounded-lg bg-dc-900 p-1.5 shadow-2xl ring-1 ring-black/40">
+                            @foreach ([
+                                ['route' => 'servers.index', 'active' => 'servers.index', 'icon' => 'servers', 'label' => __('menu.servers')],
+                                ['route' => 'profile', 'active' => 'profile', 'icon' => 'profile', 'label' => __('menu.profile')],
+                                ['route' => 'shop', 'active' => 'shop', 'icon' => 'shop', 'label' => __('menu.shop')],
+                                ['route' => 'tags', 'active' => 'tags', 'icon' => 'tag', 'label' => __('menu.tags')],
+                                ...(\App\Http\Middleware\EnsureBotOwner::check(auth()->id())
+                                    ? [['route' => 'admin', 'active' => 'admin', 'icon' => 'shield', 'label' => __('menu.admin')]]
+                                    : []),
+                            ] as $item)
+                                <a href="{{ route($item['route']) }}"
+                                   @class(['nav-item', 'nav-item-active' => request()->routeIs($item['active'])])>
+                                    <x-icon :name="$item['icon']" />{{ $item['label'] }}
+                                </a>
+                            @endforeach
+                            <div class="my-1 border-t border-white/10"></div>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button class="nav-item w-full text-dc-red hover:bg-dc-red hover:text-white">
+                                    <x-icon name="logout" />{{ __('menu.logout') }}
+                                </button>
+                            </form>
                         </div>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button class="rounded-md p-2 text-dc-muted transition hover:bg-dc-red hover:text-white" title="{{ __('menu.logout') }}" aria-label="{{ __('menu.logout') }}">
-                                <x-icon name="logout" class="size-4.5" />
-                            </button>
-                        </form>
+
+                        <button type="button" x-on:click="open = !open" :aria-expanded="open"
+                                class="flex w-full items-center gap-3 rounded-md bg-dc-800 p-2 text-left transition hover:bg-dc-700">
+                            <img src="{{ auth()->user()->avatar_url }}" alt="" class="size-9 rounded-full">
+                            <span class="min-w-0 flex-1">
+                                <span class="block truncate text-sm font-semibold text-dc-header">{{ auth()->user()->display_name }}</span>
+                                <span class="block truncate text-xs text-dc-muted">{{ auth()->user()->username }}</span>
+                            </span>
+                            <x-icon name="chevrons" class="size-4 text-dc-muted" />
+                        </button>
                     </div>
                 </div>
             </aside>
@@ -165,7 +194,9 @@
                         <x-icon name="menu" />
                     </button>
                     <x-brand :bot-avatar="$botAvatar" />
-                    <img src="{{ auth()->user()->avatar_url }}" alt="" class="ml-auto size-8 rounded-full">
+                    <button type="button" x-on:click="nav = true" class="ml-auto rounded-full" aria-label="{{ __('menu.open_menu') }}">
+                        <img src="{{ auth()->user()->avatar_url }}" alt="" class="size-8 rounded-full">
+                    </button>
                 </header>
 
                 @include('components.layouts.partials.status')
