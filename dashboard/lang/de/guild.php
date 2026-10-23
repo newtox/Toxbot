@@ -46,4 +46,7 @@ return [
     'no_blocked_tags' => 'Keine Tags gesperrt.',
     'unblock' => 'Freigeben',
     'block_hint' => 'Einzelne Tags sperrst du in Discord mit /tag block.',
+    'language_title' => 'Sprache des Servers',
+    'language_description' => 'In dieser Sprache schreibt Toxbot Nachrichten für den ganzen Server: Ticket- und Verifizieren-Buttons, Ticket-Logs, Raid-Alarme, automatische Begründungen und die Kanäle und Rollen der automatischen Einrichtung.',
+    'language_label' => 'Sprache',
 ];

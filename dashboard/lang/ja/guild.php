@@ -46,4 +46,7 @@ return [
     'no_blocked_tags' => 'ブロック中のタグはありません。',
     'unblock' => 'ブロック解除',
     'block_hint' => '個別のタグはDiscordで /tag block を使ってブロックします。',
+    'language_title' => 'サーバーの言語',
+    'language_description' => 'Toxbot はサーバー全体向けのメッセージをこの言語で書きます: チケットと認証のボタン、チケットログ、レイドの警告、自動の理由、自動セットアップのチャンネルとロール。',
+    'language_label' => '言語',
 ];

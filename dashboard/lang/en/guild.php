@@ -46,4 +46,7 @@ return [
     'no_blocked_tags' => 'No tags blocked.',
     'unblock' => 'Unblock',
     'block_hint' => 'Block single tags in Discord with /tag block.',
+    'language_title' => 'Server language',
+    'language_description' => 'Toxbot writes messages for the whole server in this language: ticket and verify buttons, ticket logs, raid alarms, automatic reasons and the channels and roles of the automatic setup.',
+    'language_label' => 'Language',
 ];

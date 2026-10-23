@@ -178,6 +178,35 @@ class AutoSetupTest extends TestCase
             && $r->header('X-Audit-Log-Reason')[0] === rawurlencode(__('setup.audit_reason', ['user' => 'Newtox'])));
     }
 
+    public function test_names_channels_in_the_server_language(): void
+    {
+        $this->login();
+
+        $this->autoSetup(['verification'])->call('run')->assertHasNoErrors();
+        $this->assertSame('de_de', Guild::find(self::GUILD)->language);
+        $this->assertNotNull($this->channelNamed('verifizierung'));
+
+        Guild::query()->whereKey(self::GUILD)->update(['language' => 'en_us', 'verify_role' => null, 'verify_channel' => null]);
+        $this->channels = array_values(array_filter($this->channels, fn ($c) => $c['name'] !== 'verifizierung'));
+        $this->roles = array_values(array_filter($this->roles, fn ($r) => $r['name'] !== 'Unverifiziert'));
+
+        $steps = $this->autoSetup(['verification'])->call('run')->get('steps');
+
+        $this->assertNotNull($this->channelNamed('verify'));
+        $this->assertNotNull(collect($this->roles)->firstWhere('name', 'Unverified'));
+        $this->assertContains(__('setup.step_verify_on'), array_column($steps, 'text'));
+        Http::assertSent(fn (Request $r) => str_contains($r->url(), '/channels/'.$this->channelNamed('verify')['id'].'/messages')
+            && $r['components'][0]['components'][0]['label'] === __('protection.message_button', [], 'en'));
+    }
+
+    public function test_hides_the_verification_role_from_the_team_roles(): void
+    {
+        $this->login();
+        Guild::create(['id' => self::GUILD, 'verify_role' => '31']);
+
+        $this->autoSetup()->assertDontSeeHtml('setup-role-31')->assertSeeHtml('setup-role-30');
+    }
+
     public function test_reuses_configured_and_same_named_channels(): void
     {
         $this->login();

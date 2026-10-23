@@ -18,6 +18,13 @@ Future<String> localized(User user, String key,
   return text;
 }
 
+Future<String> guildLocalized(Object guildId, String key,
+    [Map<String, String> replace = const {}]) async {
+  var text = await getGuildString(guildId.toString(), key);
+  replace.forEach((from, to) => text = text.replaceAll(from, to));
+  return text;
+}
+
 Future<void> replySuccess(
   InteractiveContext context,
   String key, {

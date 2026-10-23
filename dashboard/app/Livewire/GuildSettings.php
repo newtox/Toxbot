@@ -50,6 +50,8 @@ class GuildSettings extends Component
 
     public ?string $autorole = null;
 
+    public ?string $language = null;
+
     public bool $tagsEnabled = true;
 
     public bool $levelupEnabled = false;
@@ -156,6 +158,7 @@ class GuildSettings extends Component
         $this->byeEnabled = $row->bye_channel !== null && $row->bye_msg !== null;
 
         $this->autorole = $row->autorole;
+        $this->language = $row->language ?? config('app.locales.'.app()->getLocale().'.bot');
 
         $this->tagsEnabled = (bool) $row->tags_enabled;
         $this->levelupEnabled = (bool) $row->levelup_enabled;
@@ -247,6 +250,7 @@ class GuildSettings extends Component
                 'byeChannel' => $channelRules($this->byeEnabled),
                 'byeMsg' => $messageRules($this->byeEnabled),
                 'autorole' => ['nullable', Rule::in($roleIds)],
+                'language' => ['required', Rule::in(array_column(config('app.locales'), 'bot'))],
             ],
             'levels' => [
                 'levelupChannel' => ['nullable', Rule::in($channelIds)],
@@ -320,6 +324,7 @@ class GuildSettings extends Component
                 'bye_channel' => $this->byeEnabled ? $this->byeChannel : null,
                 'bye_msg' => $this->byeMsg !== '' ? $this->byeMsg : null,
                 'autorole' => $this->autorole ?: null,
+                'language' => $this->language,
             ],
             'levels' => [
                 'levelup_enabled' => $this->levelupEnabled,
@@ -368,7 +373,9 @@ class GuildSettings extends Component
             ],
         };
 
-        Guild::forDiscordId($this->guildId)->fill($fields)->save();
+        $row = Guild::forDiscordId($this->guildId)->fill($fields);
+        $row->rememberLanguage();
+        $row->save();
 
         $this->loadFromDatabase();
         $this->dispatch('saved');

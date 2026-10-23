@@ -32,7 +32,7 @@ class Guild extends Model
         'raid_enabled', 'raid_joins', 'raid_seconds', 'raid_minutes', 'raid_kick', 'raid_level', 'raid_until',
         'min_account_age',
         'ticket_category', 'ticket_log_channel', 'ticket_limit', 'ticket_panel_channel', 'ticket_panel_message_id',
-        'unban_enabled',
+        'unban_enabled', 'language',
     ];
 
     public const LINK_ACTIONS = ['delete', 'warn', 'timeout'];
@@ -95,6 +95,20 @@ class Guild extends Model
     public static function forDiscordId(string $id): self
     {
         return static::firstOrNew(['id' => $id]);
+    }
+
+    public function messageLocale(): string
+    {
+        $locale = collect(config('app.locales'))->search(fn (array $l) => $l['bot'] === $this->language);
+
+        return $locale === false ? app()->getLocale() : $locale;
+    }
+
+    public function rememberLanguage(): void
+    {
+        if (! $this->language) {
+            $this->language = config('app.locales.'.app()->getLocale().'.bot');
+        }
     }
 
     public function raidActive(): bool

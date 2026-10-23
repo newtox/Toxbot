@@ -54,6 +54,19 @@
         @endif
     </section>
 
+    <section id="language" class="card scroll-mt-20">
+        <h2 class="text-lg font-semibold text-dc-header">{{ __('guild.language_title') }}</h2>
+        <p class="mb-5 text-sm text-dc-muted">{{ __('guild.language_description') }}</p>
+
+        <label class="label" for="language-select">{{ __('guild.language_label') }}</label>
+        <select id="language-select" wire:model="language" class="input max-w-md">
+            @foreach (config('app.locales') as $locale)
+                <option value="{{ $locale['bot'] }}">{{ $locale['name'] }}</option>
+            @endforeach
+        </select>
+        @error('language') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+    </section>
+
     @endif
 
     @if ($section === 'levels')

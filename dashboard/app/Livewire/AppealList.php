@@ -75,7 +75,7 @@ class AppealList extends Component
                 'user_id' => $appeal->user_id,
                 'moderator_id' => (string) $user->id,
                 'moderator_name' => $user->username,
-                'reason' => trim(__('tickets.appeal_case_reason').' '.($response ?? '')),
+                'reason' => trim(__('tickets.appeal_case_reason', [], Guild::forDiscordId($this->guildId)->messageLocale()).' '.($response ?? '')),
             ]);
         }
 

@@ -249,11 +249,11 @@ Future<void> _startRaid(NyxxGateway client, Guild guild,
     }
   }
 
-  final bot = await client.users.get(client.user.id);
   final accounts = joined.map((id) => '<@$id> `$id`').join('\n');
   final measures = [
-    if (previousLevel != null) await localized(bot, 'protect_raid_level'),
-    if (settings.raidKick) await localized(bot, 'protect_raid_kick'),
+    if (previousLevel != null)
+      await guildLocalized(guild.id, 'protect_raid_level'),
+    if (settings.raidKick) await guildLocalized(guild.id, 'protect_raid_kick'),
   ];
 
   await _postModlog(
@@ -261,23 +261,23 @@ Future<void> _startRaid(NyxxGateway client, Guild guild,
     settings,
     EmbedBuilder(
       color: DiscordColor.parseHexString(_alarmColor),
-      title: await localized(bot, 'protect_raid_title'),
-      description: await localized(bot, 'protect_raid_text', {
+      title: await guildLocalized(guild.id, 'protect_raid_title'),
+      description: await guildLocalized(guild.id, 'protect_raid_text', {
         '&count': '${joined.length}',
         '&seconds': '${settings.raidSeconds}',
         '&until': '<t:${until.millisecondsSinceEpoch ~/ 1000}:t>',
       }),
       fields: [
         EmbedFieldBuilder(
-            name: await localized(bot, 'protect_raid_accounts'),
+            name: await guildLocalized(guild.id, 'protect_raid_accounts'),
             value: accounts.length > 1024
                 ? '${accounts.substring(0, 1020)}…'
                 : accounts,
             isInline: false),
         EmbedFieldBuilder(
-            name: await localized(bot, 'protect_raid_measures'),
+            name: await guildLocalized(guild.id, 'protect_raid_measures'),
             value: measures.isEmpty
-                ? await localized(bot, 'protect_raid_none')
+                ? await guildLocalized(guild.id, 'protect_raid_none')
                 : measures.map((line) => '• $line').join('\n'),
             isInline: false),
       ],
@@ -313,11 +313,10 @@ Future<void> _endRaids(NyxxGateway client) async {
         [guildId.toString()]));
     _settingsCache.remove(guildId);
 
-    final bot = await client.users.get(client.user.id);
-    final text = await localized(bot, 'protect_raid_ended');
+    final text = await guildLocalized(guildId, 'protect_raid_ended');
     final restored = previousLevel == null
         ? ''
-        : ' ${await localized(bot, 'protect_raid_restored')}';
+        : ' ${await guildLocalized(guildId, 'protect_raid_restored')}';
     await _postModlog(
       client,
       ProtectionSettings.fromRow(row),
@@ -413,7 +412,8 @@ Future<void> _handleMessage(
       type: settings.linkAction == 'timeout' ? 'timeout' : 'warn',
       targetId: author.id,
       moderator: bot,
-      reason: await localized(bot, 'protect_link_case', {'&host': host}),
+      reason:
+          await guildLocalized(guildId, 'protect_link_case', {'&host': host}),
       duration: settings.linkAction == 'timeout' ? _linkTimeout : null,
       source: 'automod',
     );
@@ -468,7 +468,7 @@ Future<({bool removed, bool verifying})> protectJoin(
           type: 'kick',
           targetId: member.id,
           moderator: bot,
-          reason: await localized(bot, 'protect_young_case',
+          reason: await guildLocalized(guild.id, 'protect_young_case',
               {'&days': '${settings.minAccountAge}'}),
           source: 'automod',
         );
