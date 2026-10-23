@@ -112,7 +112,7 @@ Toxbot uses slash commands. Type `/` in Discord to see all of them, for example 
 
 The bot lives in `bot/lib`:
 
-- `commands/`: one file per command or command group
+- `commands/`: one file per command or command group. These files only hold option descriptions, converters and the command definitions; every function they use lives in `services/` or `utils/`
 - `models/`: data classes such as `Tag`, `ModCase` or the economy results
 - `services/`: the logic behind the commands and the event handlers, for example levels, moderation, premium and the live role; `events.dart` registers the commands and handlers
 - `utils/`: shared helpers: `config.dart` for every setting from the environment, `database.dart` for the connection and translated texts, `reply.dart` for command replies, and the translations in `languages.yaml`

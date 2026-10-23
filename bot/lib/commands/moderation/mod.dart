@@ -1,6 +1,5 @@
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:toxbot/models/moderation_exception.dart';
 import 'package:toxbot/services/moderation.dart';
 import 'package:toxbot/utils/reply.dart';
 
@@ -96,48 +95,6 @@ const _numberDescription = {
   Locale.ko: '케이스 번호.',
 };
 
-Future<void> _run(
-  ChatContext context, {
-  required String type,
-  required Snowflake targetId,
-  String? reason,
-  Duration? duration,
-  int deleteDays = 0,
-}) async {
-  final guild = await context.client.guilds.get(context.guild!.id);
-
-  try {
-    if (type != 'unban') {
-      await checkHierarchy(context.client, guild, context.user.id, targetId,
-          requireMember: type != 'ban');
-    }
-
-    final modCase = await performAction(
-      context.client,
-      guild: guild,
-      type: type,
-      targetId: targetId,
-      moderator: context.user,
-      reason: reason,
-      duration: duration,
-      deleteDays: deleteDays,
-    );
-
-    await replySuccess(context, 'mod_done_$type', replace: {
-      '&user': modCase.userName ?? targetId.toString(),
-      '&number': '${modCase.number}',
-    });
-  } on ModerationException catch (e) {
-    await replyError(context, e.key, replace: e.replace);
-  } catch (e) {
-    print('Error in /mod $type: $e');
-    await replyError(context, 'mod_error_unknown');
-  }
-}
-
-Duration? _durationOrError(String? input) =>
-    input == null || input.trim().isEmpty ? null : parseDuration(input);
-
 final _warn = ChatCommand(
   'warn',
   'Warn a member.',
@@ -158,7 +115,8 @@ final _warn = ChatCommand(
           @Description('The member.', _userDescription) Member member,
           [@Description('The reason, shown in the modlog.', _reasonDescription)
           String? reason]) =>
-      _run(context, type: 'warn', targetId: member.id, reason: reason),
+      runModerationCommand(context,
+          type: 'warn', targetId: member.id, reason: reason),
 );
 
 final _timeout = ChatCommand(
@@ -183,12 +141,12 @@ final _timeout = ChatCommand(
       String duration,
       [@Description('The reason, shown in the modlog.', _reasonDescription)
       String? reason]) async {
-    final parsed = _durationOrError(duration);
+    final parsed = parseOptionalDuration(duration);
     if (parsed == null) {
       await replyError(context, 'mod_error_duration');
       return;
     }
-    await _run(context,
+    await runModerationCommand(context,
         type: 'timeout', targetId: member.id, reason: reason, duration: parsed);
   },
 );
@@ -213,7 +171,8 @@ final _untimeout = ChatCommand(
           @Description('The member.', _userDescription) Member member,
           [@Description('The reason, shown in the modlog.', _reasonDescription)
           String? reason]) =>
-      _run(context, type: 'untimeout', targetId: member.id, reason: reason),
+      runModerationCommand(context,
+          type: 'untimeout', targetId: member.id, reason: reason),
 );
 
 final _kick = ChatCommand(
@@ -236,7 +195,8 @@ final _kick = ChatCommand(
           @Description('The member.', _userDescription) Member member,
           [@Description('The reason, shown in the modlog.', _reasonDescription)
           String? reason]) =>
-      _run(context, type: 'kick', targetId: member.id, reason: reason),
+      runModerationCommand(context,
+          type: 'kick', targetId: member.id, reason: reason),
 );
 
 final _ban = ChatCommand(
@@ -265,12 +225,12 @@ final _ban = ChatCommand(
           'Delete messages from the last days (0-7).', _deleteDescription)
       @UseConverter(IntConverter(min: 0, max: 7))
       int? deleteMessages]) async {
-    final parsed = _durationOrError(duration);
+    final parsed = parseOptionalDuration(duration);
     if (duration != null && duration.trim().isNotEmpty && parsed == null) {
       await replyError(context, 'mod_error_duration');
       return;
     }
-    await _run(context,
+    await runModerationCommand(context,
         type: 'ban',
         targetId: user.id,
         reason: reason,
@@ -306,7 +266,8 @@ final _unban = ChatCommand(
       await replyError(context, 'mod_error_not_banned');
       return;
     }
-    await _run(context, type: 'unban', targetId: id, reason: reason);
+    await runModerationCommand(context,
+        type: 'unban', targetId: id, reason: reason);
   },
 );
 

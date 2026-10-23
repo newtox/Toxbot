@@ -3,14 +3,13 @@ import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:toxbot/utils/database.dart';
+import 'package:toxbot/utils/functions.dart';
 import 'package:toxbot/utils/reply.dart';
 
 const announcementTypeConverter = SimpleConverter.fixed(
   elements: ['Join', 'Leave'],
-  stringify: announcementTypeToString,
+  stringify: stringifyOption,
 );
-
-String announcementTypeToString(String type) => type;
 
 final announcements = ChatGroup('announcements', 'Manage server announcements.',
     localizedDescriptions: {

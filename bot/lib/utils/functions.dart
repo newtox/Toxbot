@@ -132,3 +132,5 @@ List<String> splitMessage(String message, {int maxLength = 2000}) {
   chunks.add(message);
   return chunks;
 }
+
+String stringifyOption(String value) => value;

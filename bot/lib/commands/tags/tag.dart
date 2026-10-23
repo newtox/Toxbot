@@ -1,145 +1,14 @@
 import 'package:mysql1/mysql1.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:nyxx_extensions/nyxx_extensions.dart';
-import 'package:toxbot/models/tag.dart';
 import 'package:toxbot/services/premium.dart';
+import 'package:toxbot/services/tags.dart';
 import 'package:toxbot/utils/config.dart';
 import 'package:toxbot/utils/database.dart';
 import 'package:toxbot/utils/functions.dart';
 import 'package:toxbot/utils/reply.dart';
 
 const modalCommands = {'tag create', 'tag edit'};
-
-final _namePattern = RegExp(r'^[a-z0-9_-]{1,32}$');
-
-final _invitePattern = RegExp(
-  r'(discord\.gg|discord(app)?\.com/invite|dsc\.gg)/[A-Za-z0-9-]+',
-  caseSensitive: false,
-);
-
-final _massMentionPattern = RegExp(r'@(everyone|here)');
-
-Future<Tag?> _findTag(String name) => withConnection((connection) async {
-      final results = await connection.query(
-        'SELECT * FROM `tags` WHERE `name` = ? LIMIT 1;',
-        [name.toLowerCase()],
-      );
-      return results.isEmpty ? null : Tag.fromRow(results.first);
-    });
-
-Future<int> _countTags(Snowflake owner) => withConnection((connection) async {
-      final results = await connection.query(
-        'SELECT COUNT(*) AS `count` FROM `tags` WHERE `owner` = ?;',
-        [owner.toString()],
-      );
-      return results.first['count'] as int;
-    });
-
-Future<bool> _isBlacklisted(Snowflake user) =>
-    withConnection((connection) async {
-      final results = await connection.query(
-        'SELECT 1 FROM `blacklist` WHERE `user` = ? LIMIT 1;',
-        [user.toString()],
-      );
-      return results.isNotEmpty;
-    });
-
-Future<bool> _isAllowedInGuild(Tag tag, Snowflake? guild) async {
-  if (guild == null) return true;
-  return withConnection((connection) async {
-    final settings = await connection.query(
-      'SELECT `tags_enabled` FROM `guilds` WHERE `id` = ? LIMIT 1;',
-      [guild.toString()],
-    );
-    if (settings.isNotEmpty && settings.first['tags_enabled'] == 0) {
-      return false;
-    }
-    final blocked = await connection.query(
-      'SELECT 1 FROM `tag_guild_blocks` WHERE `guild` = ? AND `tag_id` = ? LIMIT 1;',
-      [guild.toString(), tag.id],
-    );
-    return blocked.isEmpty;
-  });
-}
-
-Future<void> _unexpected(
-  InteractiveContext context,
-  User user,
-  String command,
-  Object e,
-) async {
-  print('Error in tag $command command: $e');
-  await replyError(context, 'tag_error',
-      replace: {'&command': command}, details: codeBlock(e.toString(), 'sh'));
-}
-
-String? _contentProblem(String content) {
-  if (content.trim().isEmpty) return 'tag_content_empty';
-  if (_invitePattern.hasMatch(content)) return 'tag_content_invite';
-  if (_massMentionPattern.hasMatch(content)) return 'tag_content_mention';
-  return null;
-}
-
-bool _isOwnerOrBotOwner(Tag tag, User user) =>
-    tag.owner == user.id || user.id == ownerId;
-
-Future<Iterable<CommandOptionChoiceBuilder<String>>> _autocomplete(
-  AutocompleteContext context, {
-  required bool ownOnly,
-}) async {
-  try {
-    final query = '${context.currentValue.toLowerCase()}%';
-    return await withConnection((connection) async {
-      final results = await connection.query(
-        ownOnly
-            ? 'SELECT `name` FROM `tags` WHERE `owner` = ? AND `name` LIKE ? ORDER BY `uses` DESC LIMIT 25;'
-            : 'SELECT `name` FROM `tags` WHERE `name` LIKE ? ORDER BY `uses` DESC LIMIT 25;',
-        [if (ownOnly) context.user.id.toString(), query],
-      );
-      return results.map(
-        (row) => CommandOptionChoiceBuilder(
-          name: row['name'] as String,
-          value: row['name'] as String,
-        ),
-      );
-    });
-  } catch (e) {
-    print('Error in tag autocomplete: $e');
-    return const [];
-  }
-}
-
-Future<String> _fillPlaceholders(String content, ChatContext context) async {
-  var result = content
-      .replaceAll('&mention', '<@${context.user.id}>')
-      .replaceAll('&user', context.user.globalName ?? context.user.username);
-
-  if (context.guild != null &&
-      (result.contains('&server') || result.contains('&membercount'))) {
-    final guild = await context.client.guilds.fetch(
-      context.guild!.id,
-      withCounts: true,
-    );
-    result = result.replaceAll('&server', guild.name).replaceAll(
-          '&membercount',
-          (guild.approximateMemberCount ?? 0).toString(),
-        );
-  } else {
-    result = result.replaceAll('&server', '').replaceAll('&membercount', '');
-  }
-  return result;
-}
-
-Future<Iterable<CommandOptionChoiceBuilder<String>>> allTags(
-  AutocompleteContext context,
-) =>
-    _autocomplete(context, ownOnly: false);
-
-Future<Iterable<CommandOptionChoiceBuilder<String>>> ownTags(
-  AutocompleteContext context,
-) =>
-    _autocomplete(context, ownOnly: true);
 
 final _create = ChatCommand(
   'create',
@@ -176,22 +45,22 @@ final _create = ChatCommand(
     try {
       name = name.toLowerCase().trim();
 
-      if (await _isBlacklisted(user.id)) {
+      if (await isBlacklisted(user.id)) {
         await replyError(context, 'tag_blacklisted');
         return;
       }
-      if (!_namePattern.hasMatch(name)) {
+      if (!tagNamePattern.hasMatch(name)) {
         await replyError(context, 'tag_name_invalid');
         return;
       }
-      if (await _findTag(name) != null) {
+      if (await findTag(name) != null) {
         await replyError(context, 'tag_exists', replace: {'&tag': name});
         return;
       }
 
       final premium = await isUserPremium(user.id, context: context);
       final limit = premium ? premiumTagLimit : freeTagLimit;
-      if (await _countTags(user.id) >= limit) {
+      if (await countTags(user.id) >= limit) {
         await replyError(
           context,
           premium ? 'tag_limit_premium' : 'tag_limit_free',
@@ -218,7 +87,7 @@ final _create = ChatCommand(
       );
 
       final content = modal['content'] ?? '';
-      final problem = _contentProblem(content);
+      final problem = tagContentProblem(content);
       if (problem != null) {
         await replyError(modal, problem);
         return;
@@ -242,7 +111,7 @@ final _create = ChatCommand(
 
       await replySuccess(modal, 'tag_created', replace: {'&tag': name});
     } catch (e) {
-      await _unexpected(context, user, 'create', e);
+      await replyCommandError(context, 'tag_error', 'create', e);
     }
   },
 );
@@ -281,12 +150,12 @@ final _edit = ChatCommand(
   ) async {
     final user = context.user;
     try {
-      final tag = await _findTag(name);
+      final tag = await findTag(name);
       if (tag == null) {
         await replyError(context, 'tag_not_found', replace: {'&tag': name});
         return;
       }
-      if (!_isOwnerOrBotOwner(tag, user)) {
+      if (!isTagOwnerOrBotOwner(tag, user)) {
         await replyError(context, 'tag_not_owner');
         return;
       }
@@ -310,7 +179,7 @@ final _edit = ChatCommand(
       );
 
       final content = modal['content'] ?? '';
-      final problem = _contentProblem(content);
+      final problem = tagContentProblem(content);
       if (problem != null) {
         await replyError(modal, problem);
         return;
@@ -329,7 +198,7 @@ final _edit = ChatCommand(
         level: ResponseLevel.hint,
       );
     } catch (e) {
-      await _unexpected(context, user, 'edit', e);
+      await replyCommandError(context, 'tag_error', 'edit', e);
     }
   },
 );
@@ -368,12 +237,12 @@ final _delete = ChatCommand(
   ) async {
     final user = context.user;
     try {
-      final tag = await _findTag(name);
+      final tag = await findTag(name);
       if (tag == null) {
         await replyError(context, 'tag_not_found', replace: {'&tag': name});
         return;
       }
-      if (!_isOwnerOrBotOwner(tag, user)) {
+      if (!isTagOwnerOrBotOwner(tag, user)) {
         await replyError(context, 'tag_not_owner');
         return;
       }
@@ -389,7 +258,7 @@ final _delete = ChatCommand(
         level: ResponseLevel.hint,
       );
     } catch (e) {
-      await _unexpected(context, user, 'delete', e);
+      await replyCommandError(context, 'tag_error', 'delete', e);
     }
   },
 );
@@ -426,19 +295,18 @@ final _show = ChatCommand(
     @Autocomplete(allTags)
     String name,
   ) async {
-    final user = context.user;
     try {
-      final tag = await _findTag(name);
+      final tag = await findTag(name);
       if (tag == null) {
         await replyError(context, 'tag_not_found', replace: {'&tag': name});
         return;
       }
-      if (!await _isAllowedInGuild(tag, context.guild?.id)) {
+      if (!await isTagAllowedInGuild(tag, context.guild?.id)) {
         await replyError(context, 'tag_blocked_here');
         return;
       }
 
-      final content = await _fillPlaceholders(tag.content, context);
+      final content = await fillTagPlaceholders(tag.content, context);
 
       final asEmbed =
           tag.embed && await isUserPremium(tag.owner, context: context);
@@ -474,7 +342,7 @@ final _show = ChatCommand(
         ),
       );
     } catch (e) {
-      await _unexpected(context, user, 'show', e);
+      await replyCommandError(context, 'tag_error', 'show', e);
     }
   },
 );
@@ -513,7 +381,7 @@ final _info = ChatCommand(
   ) async {
     final user = context.user;
     try {
-      final tag = await _findTag(name);
+      final tag = await findTag(name);
       if (tag == null) {
         await replyError(context, 'tag_not_found', replace: {'&tag': name});
         return;
@@ -550,7 +418,7 @@ final _info = ChatCommand(
         ),
       );
     } catch (e) {
-      await _unexpected(context, user, 'info', e);
+      await replyCommandError(context, 'tag_error', 'info', e);
     }
   },
 );
@@ -636,7 +504,7 @@ final _list = ChatCommand(
         ),
       );
     } catch (e) {
-      await _unexpected(context, user, 'list', e);
+      await replyCommandError(context, 'tag_error', 'list', e);
     }
   },
 );
@@ -688,12 +556,12 @@ final _transfer = ChatCommand(
   ) async {
     final user = context.user;
     try {
-      final tag = await _findTag(name);
+      final tag = await findTag(name);
       if (tag == null) {
         await replyError(context, 'tag_not_found', replace: {'&tag': name});
         return;
       }
-      if (!_isOwnerOrBotOwner(tag, user)) {
+      if (!isTagOwnerOrBotOwner(tag, user)) {
         await replyError(context, 'tag_not_owner');
         return;
       }
@@ -704,7 +572,7 @@ final _transfer = ChatCommand(
 
       final targetLimit =
           await isUserPremium(target.id) ? premiumTagLimit : freeTagLimit;
-      if (await _countTags(target.id) >= targetLimit) {
+      if (await countTags(target.id) >= targetLimit) {
         await replyError(
           context,
           'tag_transfer_full',
@@ -728,7 +596,7 @@ final _transfer = ChatCommand(
         },
       );
     } catch (e) {
-      await _unexpected(context, user, 'transfer', e);
+      await replyCommandError(context, 'tag_error', 'transfer', e);
     }
   },
 );
@@ -806,12 +674,12 @@ final _embed = ChatCommand(
   ]) async {
     final user = context.user;
     try {
-      final tag = await _findTag(name);
+      final tag = await findTag(name);
       if (tag == null) {
         await replyError(context, 'tag_not_found', replace: {'&tag': name});
         return;
       }
-      if (!_isOwnerOrBotOwner(tag, user)) {
+      if (!isTagOwnerOrBotOwner(tag, user)) {
         await replyError(context, 'tag_not_owner');
         return;
       }
@@ -852,7 +720,7 @@ final _embed = ChatCommand(
         level: ResponseLevel.hint,
       );
     } catch (e) {
-      await _unexpected(context, user, 'embed', e);
+      await replyCommandError(context, 'tag_error', 'embed', e);
     }
   },
 );
@@ -904,7 +772,7 @@ final _report = ChatCommand(
   ) async {
     final user = context.user;
     try {
-      final tag = await _findTag(name);
+      final tag = await findTag(name);
       if (tag == null) {
         await replyError(context, 'tag_not_found', replace: {'&tag': name});
         return;
@@ -971,7 +839,7 @@ final _report = ChatCommand(
 
       await replySuccess(context, 'tag_reported', level: ResponseLevel.hint);
     } catch (e) {
-      await _unexpected(context, user, 'report', e);
+      await replyCommandError(context, 'tag_error', 'report', e);
     }
   },
 );
@@ -1012,9 +880,8 @@ final _block = ChatCommand(
     @Autocomplete(allTags)
     String name,
   ) async {
-    final user = context.user;
     try {
-      final tag = await _findTag(name);
+      final tag = await findTag(name);
       if (tag == null) {
         await replyError(context, 'tag_not_found', replace: {'&tag': name});
         return;
@@ -1027,7 +894,7 @@ final _block = ChatCommand(
       );
       await replySuccess(context, 'tag_blocked', replace: {'&tag': tag.name});
     } catch (e) {
-      await _unexpected(context, user, 'block', e);
+      await replyCommandError(context, 'tag_error', 'block', e);
     }
   },
 );
@@ -1068,9 +935,8 @@ final _unblock = ChatCommand(
     @Autocomplete(allTags)
     String name,
   ) async {
-    final user = context.user;
     try {
-      final tag = await _findTag(name);
+      final tag = await findTag(name);
       if (tag == null) {
         await replyError(context, 'tag_not_found', replace: {'&tag': name});
         return;
@@ -1087,7 +953,7 @@ final _unblock = ChatCommand(
         replace: {'&tag': tag.name},
       );
     } catch (e) {
-      await _unexpected(context, user, 'unblock', e);
+      await replyCommandError(context, 'tag_error', 'unblock', e);
     }
   },
 );
@@ -1127,7 +993,6 @@ final _toggle = ChatCommand(
     })
     bool enabled,
   ) async {
-    final user = context.user;
     try {
       await withConnection(
         (connection) => connection.query(
@@ -1140,7 +1005,7 @@ final _toggle = ChatCommand(
         enabled ? 'tag_toggle_on' : 'tag_toggle_off',
       );
     } catch (e) {
-      await _unexpected(context, user, 'toggle', e);
+      await replyCommandError(context, 'tag_error', 'toggle', e);
     }
   },
 );

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:mysql1/mysql1.dart';
 import 'package:nyxx/nyxx.dart';
+import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:toxbot/models/mod_case.dart';
 import 'package:toxbot/models/moderation_exception.dart';
 import 'package:toxbot/utils/database.dart';
@@ -575,6 +576,48 @@ Future<ModCase?> caseByNumber(Snowflake guildId, int number) =>
           [guildId.toString(), number]);
       return rows.isEmpty ? null : ModCase.fromRow(rows.first);
     });
+
+Future<void> runModerationCommand(
+  ChatContext context, {
+  required String type,
+  required Snowflake targetId,
+  String? reason,
+  Duration? duration,
+  int deleteDays = 0,
+}) async {
+  final guild = await context.client.guilds.get(context.guild!.id);
+
+  try {
+    if (type != 'unban') {
+      await checkHierarchy(context.client, guild, context.user.id, targetId,
+          requireMember: type != 'ban');
+    }
+
+    final modCase = await performAction(
+      context.client,
+      guild: guild,
+      type: type,
+      targetId: targetId,
+      moderator: context.user,
+      reason: reason,
+      duration: duration,
+      deleteDays: deleteDays,
+    );
+
+    await replySuccess(context, 'mod_done_$type', replace: {
+      '&user': modCase.userName ?? targetId.toString(),
+      '&number': '${modCase.number}',
+    });
+  } on ModerationException catch (e) {
+    await replyError(context, e.key, replace: e.replace);
+  } catch (e) {
+    print('Error in /mod $type: $e');
+    await replyError(context, 'mod_error_unknown');
+  }
+}
+
+Duration? parseOptionalDuration(String? input) =>
+    input == null || input.trim().isEmpty ? null : parseDuration(input);
 
 void setupModerationHandlers(NyxxGateway client) {
   client.onGuildAuditLogCreate.listen((event) async {

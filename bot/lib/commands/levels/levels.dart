@@ -1,7 +1,5 @@
-import 'package:http/http.dart' as http;
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:toxbot/services/economy.dart' as economy;
 import 'package:toxbot/services/levels.dart';
 import 'package:toxbot/services/premium.dart';
@@ -12,67 +10,8 @@ import 'package:toxbot/utils/reply.dart';
 
 const _scopeConverter = SimpleConverter.fixed(
   elements: ['Global', 'Server'],
-  stringify: _scopeToString,
+  stringify: stringifyOption,
 );
-
-Future<void> _unexpected(
-  InteractiveContext context,
-  User user,
-  String command,
-  Object e,
-) async {
-  print('Error in $command command: $e');
-  await replyError(context, 'levels_error',
-      replace: {'&command': command}, details: codeBlock(e.toString(), 'sh'));
-}
-
-Future<List<int>?> _fetchCard(
-  Snowflake userId, {
-  Snowflake? guildId,
-  int? background,
-}) async {
-  final base = dashboardUrl;
-  if (base == null) return null;
-  try {
-    final uri = Uri.parse('$base/card/$userId.png').replace(
-      queryParameters: {
-        if (guildId != null) 'guild': guildId.toString(),
-        if (background != null) 'bg': background.toString(),
-      },
-    );
-    final response = await http.get(uri).timeout(const Duration(seconds: 10));
-    if (response.statusCode != 200) {
-      print('Profile card: dashboard answered ${response.statusCode}');
-      return null;
-    }
-    return response.bodyBytes;
-  } catch (e) {
-    print('Profile card could not be loaded: $e');
-    return null;
-  }
-}
-
-String _scopeToString(String scope) => scope;
-
-Future<Iterable<CommandOptionChoiceBuilder<String>>> ownedBackgroundChoices(
-  AutocompleteContext context,
-) async {
-  try {
-    final names = await withConnection(
-      (connection) => economy.usableBackgroundNames(
-        connection,
-        context.user.id.toString(),
-        context.currentValue,
-      ),
-    );
-    return names.map(
-      (name) => CommandOptionChoiceBuilder(name: name, value: name),
-    );
-  } catch (e) {
-    print('Error in background autocomplete: $e');
-    return const [];
-  }
-}
 
 final profile = ChatCommand(
   'profile',
@@ -114,7 +53,7 @@ final profile = ChatCommand(
         return;
       }
 
-      final card = await _fetchCard(who.id, guildId: context.guild?.id);
+      final card = await fetchProfileCard(who.id, guildId: context.guild?.id);
       if (card != null) {
         await context.respond(
           MessageBuilder(
@@ -177,7 +116,7 @@ final profile = ChatCommand(
         ),
       );
     } catch (e) {
-      await _unexpected(context, user, 'profile', e);
+      await replyCommandError(context, 'levels_error', 'profile', e);
     }
   },
 );
@@ -244,7 +183,7 @@ final daily = ChatCommand(
         ),
       );
     } catch (e) {
-      await _unexpected(context, user, 'daily', e);
+      await replyCommandError(context, 'levels_error', 'daily', e);
     }
   },
 );
@@ -325,7 +264,7 @@ final shop = ChatCommand(
       );
 
       final isOwned = owned.contains(choice.id) || choice.isFree;
-      final card = await _fetchCard(
+      final card = await fetchProfileCard(
         user.id,
         guildId: context.guild?.id,
         background: choice.id,
@@ -404,7 +343,7 @@ final shop = ChatCommand(
     } on InteractionTimeoutException {
       return;
     } catch (e) {
-      await _unexpected(context, user, 'shop', e);
+      await replyCommandError(context, 'levels_error', 'shop', e);
     }
   },
 );
@@ -463,7 +402,7 @@ final background = ChatCommand(
       await replySuccess(context, 'shop_equipped',
           replace: {'&name': name}, level: ResponseLevel.hint);
     } catch (e) {
-      await _unexpected(context, user, 'background', e);
+      await replyCommandError(context, 'levels_error', 'background', e);
     }
   },
 );
@@ -537,7 +476,7 @@ final leaderboard = ChatCommand(
         ),
       );
     } catch (e) {
-      await _unexpected(context, user, 'leaderboard', e);
+      await replyCommandError(context, 'levels_error', 'leaderboard', e);
     }
   },
 );
@@ -618,7 +557,7 @@ final boost = ChatCommand(
         ),
       );
     } catch (e) {
-      await _unexpected(context, user, 'boost', e);
+      await replyCommandError(context, 'levels_error', 'boost', e);
     }
   },
 );
