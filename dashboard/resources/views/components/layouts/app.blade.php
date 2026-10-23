@@ -39,9 +39,6 @@
         <link rel="icon" type="image/svg+xml" href="{{ $fallbackIcon }}">
     @endif
 
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=rubik:400,500,600,700&display=swap" rel="stylesheet">
-
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
@@ -51,7 +48,7 @@
             <div x-show="nav" x-transition.opacity x-on:click="nav = false" x-cloak
                  class="fixed inset-0 z-30 bg-black/60 md:hidden"></div>
 
-            <aside class="fixed inset-y-0 left-0 z-40 flex w-72 flex-col bg-dc-800 transition-transform duration-200 max-md:-translate-x-full md:sticky md:top-3 md:bottom-auto md:m-3 md:h-[calc(100dvh-1.5rem)] md:w-64 md:shrink-0 md:rounded-xl"
+            <aside class="fixed inset-y-0 left-0 z-40 flex w-72 flex-col border-r border-white/[0.06] bg-dc-950 transition-transform duration-200 max-md:-translate-x-full md:sticky md:top-0 md:h-dvh md:w-64 md:shrink-0"
                    :class="nav && 'max-md:translate-x-0!'">
                 <div class="flex items-center justify-between px-4 pt-4 pb-3">
                     <x-brand :bot-avatar="$botAvatar" />
@@ -64,7 +61,7 @@
                     @if ($guild)
                         <div x-data="{ open: false }" class="relative" x-on:click.outside="open = false">
                             <button type="button" x-on:click="open = !open"
-                                    class="flex w-full items-center gap-2.5 rounded-lg bg-dc-900 p-2 text-left ring-1 ring-accent/50 transition hover:ring-accent">
+                                    class="flex w-full items-center gap-2.5 rounded-md border border-white/10 bg-dc-800 p-2 text-left transition hover:border-accent">
                                 <x-guild-icon :guild="$guild" size="size-8" class="rounded-lg" />
                                 <span class="min-w-0 flex-1 truncate text-sm font-semibold text-dc-header">{{ $guild['name'] }}</span>
                                 <x-icon name="chevrons" class="size-4 text-dc-muted" />
@@ -141,10 +138,10 @@
                     </div>
                 </nav>
 
-                <div class="space-y-3 border-t border-black/25 p-3">
+                <div class="space-y-3 border-t border-white/[0.06] p-3">
                     <x-locale-switch />
 
-                    <div class="flex items-center gap-3 rounded-lg bg-dc-900 p-2">
+                    <div class="flex items-center gap-3 rounded-md bg-dc-800 p-2">
                         <img src="{{ auth()->user()->avatar_url }}" alt="" class="size-9 rounded-full">
                         <div class="min-w-0 flex-1">
                             <div class="truncate text-sm font-semibold text-dc-header">{{ auth()->user()->display_name }}</div>
