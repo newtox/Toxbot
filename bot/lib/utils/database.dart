@@ -9,20 +9,19 @@ import 'package:yaml/yaml.dart';
 final Map<String, bool> cached = {};
 
 Future<Guild?> checkForDatabase(Guild guild) async {
-  // ignore: collection_methods_unrelated_type
-  if (cached.containsKey(guild.id)) {
+  final guildId = guild.id.toString();
+  if (cached.containsKey(guildId)) {
     return null;
   }
 
   final connection = await getMySqlConnection();
 
   try {
-    var guildId = guild.id.toString();
-
-    var results = await connection
+    final results = await connection
         .query('SELECT * FROM `guilds` WHERE `id` = ? LIMIT 1;', [guildId]);
 
     if (results.isNotEmpty) {
+      cached[guildId] = true;
       return null;
     }
 
@@ -100,6 +99,7 @@ Future<void> clearOldGuilds(NyxxGateway client) async {
         if (e.statusCode == 403 || e.statusCode == 404) {
           await connection
               .query('DELETE FROM `guilds` WHERE `id` = ?;', [guildIdAsString]);
+          cached.remove(guildIdAsString);
           for (final table in [
             'stream_subscriptions',
             'mod_cases',
