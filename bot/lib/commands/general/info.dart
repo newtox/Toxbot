@@ -28,7 +28,7 @@ final info = ChatCommand('info', 'Get generic information about the bot.',
   }
 
   final invite =
-      'https://discord.com/oauth2/authorize?client_id=561253410591211520&permissions=1757019580661079&integration_type=0&scope=bot+applications.commands';
+      'https://discord.com/oauth2/authorize?client_id=${context.client.user.id}&permissions=$invitePermissions&integration_type=0&scope=bot+applications.commands';
 
   await context.respond(MessageBuilder(embeds: [
     EmbedBuilder(
