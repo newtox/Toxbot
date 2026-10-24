@@ -65,3 +65,24 @@ class ProfileStats {
     this.serverXp,
   );
 }
+
+class CreditEntry {
+  final int amount;
+  final String reason;
+  final DateTime? createdAt;
+
+  CreditEntry.fromRow(ResultRow row)
+      : amount = row['amount'] as int,
+        reason = row['reason'] as String,
+        createdAt = (row['created_at'] as DateTime?)?.toUtc();
+}
+
+class CreditsOverview {
+  final int credits;
+  final int streak;
+  final DateTime? nextDaily;
+  final List<CreditEntry> entries;
+
+  const CreditsOverview(
+      this.credits, this.streak, this.nextDaily, this.entries);
+}

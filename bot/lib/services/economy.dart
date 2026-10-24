@@ -177,6 +177,35 @@ Future<DailyResult> claimDaily(
   return DailyResult.claimed(amount, streak);
 }
 
+Future<CreditsOverview> creditsOverview(
+  MySqlConnection connection,
+  String userId,
+) async {
+  final rows = await connection.query(
+    'SELECT `credits`, `daily_streak`, TIMESTAMPDIFF(SECOND, `daily_at`, UTC_TIMESTAMP()) AS `since` '
+    'FROM `users` WHERE `id` = ?;',
+    [userId],
+  );
+  final history = await connection.query(
+    'SELECT `amount`, `reason`, `created_at` FROM `credit_transactions` '
+    'WHERE `user` = ? ORDER BY `id` DESC LIMIT 10;',
+    [userId],
+  );
+  final entries = history.map(CreditEntry.fromRow).toList();
+  if (rows.isEmpty) return CreditsOverview(0, 0, null, entries);
+
+  const day = 24 * 3600;
+  final since = rows.first['since'] as int?;
+  final streak =
+      since != null && since < 2 * day ? rows.first['daily_streak'] as int : 0;
+  final nextDaily = since != null && since < day
+      ? DateTime.now().toUtc().add(Duration(seconds: day - since))
+      : null;
+
+  return CreditsOverview(
+      rows.first['credits'] as int, streak, nextDaily, entries);
+}
+
 Future<List<ShopBackground>> shopBackgrounds(
   MySqlConnection connection, {
   String? name,

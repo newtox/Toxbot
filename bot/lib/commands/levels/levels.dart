@@ -188,6 +188,87 @@ final daily = ChatCommand(
   },
 );
 
+final credits = ChatCommand(
+  'credits',
+  'Show your credits, your daily streak and what you earned and spent.',
+  localizedDescriptions: {
+    Locale.de:
+        'Zeigt deine Credits, deine Daily-Serie und was du verdient und ausgegeben hast.',
+    Locale.enUs:
+        'Show your credits, your daily streak and what you earned and spent.',
+    Locale.da:
+        'Vis dine credits, din daglige stime og hvad du har tjent og brugt.',
+    Locale.esEs:
+        'Muestra tus créditos, tu racha diaria y lo que ganaste y gastaste.',
+    Locale.fr:
+        'Affiche tes crédits, ta série quotidienne et ce que tu as gagné et dépensé.',
+    Locale.ru:
+        'Показать кредиты, серию ежедневных наград и историю начислений и трат.',
+    Locale.hi: 'अपने क्रेडिट, दैनिक स्ट्रीक और कमाई व ख़र्च देखें।',
+    Locale.zhCn: '查看你的积分、每日连续天数以及收支记录。',
+    Locale.ja: 'クレジット、デイリーの連続日数、獲得と使用の履歴を表示する。',
+    Locale.ko: '크레딧, 일일 연속 기록, 획득 및 사용 내역을 봅니다.',
+  },
+  (ChatContext context) async {
+    final user = context.user;
+    try {
+      final overview = await withConnection(
+        (connection) => economy.creditsOverview(connection, user.id.toString()),
+      );
+
+      final lines = <String>[];
+      for (final entry in overview.entries) {
+        final sign = entry.amount >= 0 ? '+' : '−';
+        final label = await getString(user, 'credits_reason_${entry.reason}');
+        final time = entry.createdAt == null
+            ? ''
+            : ' · <t:${entry.createdAt!.millisecondsSinceEpoch ~/ 1000}:R>';
+        lines.add(
+            '`$sign${formatNumber(entry.amount.abs())}` ${label.isEmpty ? entry.reason : label}$time');
+      }
+
+      final next = overview.nextDaily;
+      await context.respond(
+        MessageBuilder(
+          embeds: [
+            EmbedBuilder(
+              color: await getUserColorFromDatabase(user.id),
+              title: await getString(user, 'credits_title'),
+              description: await localized(user, 'credits_balance',
+                  {'&amount': formatCredits(overview.credits)}),
+              fields: [
+                EmbedFieldBuilder(
+                  name: await getString(user, 'credits_streak'),
+                  value: await localized(user, 'credits_streak_days',
+                      {'&streak': '${overview.streak}'}),
+                  isInline: true,
+                ),
+                EmbedFieldBuilder(
+                  name: await getString(user, 'credits_daily'),
+                  value: next == null
+                      ? await getString(user, 'credits_daily_ready')
+                      : '<t:${next.millisecondsSinceEpoch ~/ 1000}:R>',
+                  isInline: true,
+                ),
+                EmbedFieldBuilder(
+                  name: await getString(user, 'credits_history'),
+                  value: lines.isEmpty
+                      ? await getString(user, 'credits_history_empty')
+                      : lines.join('\n'),
+                  isInline: false,
+                ),
+              ],
+            ),
+          ],
+        ),
+        level: ResponseLevel.hint,
+      );
+    } catch (e) {
+      await replyCommandError(context, 'levels_error', 'credits', e);
+    }
+  },
+);
+
 final shop = ChatCommand(
   'shop',
   'Browse and buy profile backgrounds.',
