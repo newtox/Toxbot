@@ -24,14 +24,16 @@ Both share the same MySQL database. Whatever you change in the dashboard (welcom
 
 - **Roleplay, image and fun commands** like `/hug`, `/pat` or `/8ball`
 - **Generators**: `/generate password`, `/generate hex` (like `openssl rand -hex`) and `/generate color` with a preview
-- **Server setup**: welcome and goodbye messages, autorole, level-up messages
+- **Server setup** in Discord (`/announcements`, `/autorole`) and in the dashboard: welcome and goodbye messages, autorole, level-up messages and a server language for messages to the whole server
+- **Automatic setup** in the dashboard: creates the channels, roles and permissions for tickets, moderation, protection and verification in one go
+- **Data control**: server admins can reset all settings, the server owner can delete all data and remove Toxbot, and users can delete their own data
 - **Levels**: XP for messages and commands, with a global level and a separate level per server, plus `/leaderboard`
 - **Credits and shop**: `/daily`, credits for level-ups and Top.gg votes, profile backgrounds to buy with `/shop`
 - **Profile cards**: `/profile` shows level, rank, credits and the chosen background as an image
 - **Tags**: global custom commands with `/tag`, reportable and blockable per server
 - **Stream notifications** for Twitch and YouTube: a message with role ping when a streamer goes live or uploads a video
 - **Live role**: members who stream on Discord get a role while they are live
-- **Moderation**: `/mod warn`, `timeout`, `untimeout`, `kick`, `ban` (also temporary) and `unban`, numbered cases in a modlog channel, DMs to members, automatic actions after a number of warnings, and bans, kicks and timeouts done in Discord or by other bots are logged too
+- **Moderation**: `/clear`, `/mod warn`, `timeout`, `untimeout`, `kick`, `ban` (also temporary) and `unban`, numbered cases in a modlog channel, DMs to members, automatic actions after a number of warnings, and bans, kicks and timeouts done in Discord or by other bots are logged too
 - **Protection**: verification of new members with a captcha in the dashboard, a link filter against invites to other servers, scam links and blocked domains (or only allowed ones), anti-raid that raises the verification level and kicks new joins, and a minimum account age
 - **Tickets and unban appeals**: ticket types with their own button, text and team roles, private ticket channels, `/ticket close`, `add` and `remove`, transcripts saved on close and shown in the dashboard, and a dashboard page where banned members can ask to be unbanned
 - **Premium** through Discord subscriptions: double XP and daily reward, premium backgrounds, more tags and tags as embeds, plus a 24 hour XP boost to buy
@@ -102,7 +104,7 @@ Actions in the dashboard are written to the `mod_actions` table and carried out 
 
 ### Protection
 
-- Verification gives new members a role and a link to `https://<dashboard>/verify/<server>`. Set up the role in Discord so that it only sees one channel; the dashboard can post a message with a button there. After solving the captcha, the role is removed and the autorole is given instead.
+- Verification gives new members a role and a link to `https://<dashboard>/verify/<server>`. Set up the role in Discord so that it only sees one channel, or let the automatic setup create the role and the channel and hide everything else from it; the dashboard can post a message with a button there. After solving the captcha, the role is removed and the autorole is given instead.
 - The captcha is [Cloudflare Turnstile](https://dash.cloudflare.com/?to=/:account/turnstile). Create a widget for the dashboard domain and put its keys into `TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY`. Without them, the page only asks for the Discord login.
 - The bot sends the verification link by DM using `public_dashboard_url`, which `docker-compose.yml` sets to `APP_URL`.
 - Toxbot needs **Manage Roles** for verification, **Manage Messages** for the link filter, **Kick Members** for anti-raid and the minimum account age, and **Manage Server** to raise the verification level during a raid. Its role has to be above the verification role.
@@ -113,6 +115,8 @@ Actions in the dashboard are written to the `mod_actions` table and carried out 
 - In the server settings under Tickets, pick a category for the ticket channels, a log channel and the channel for the buttons, add ticket types and post the buttons.
 - Toxbot needs **Manage Channels** to create and delete ticket channels, **Manage Roles** for their permissions, **Read Message History** for the transcript and **Attach Files** to post it in the log channel.
 - When a ticket is closed, up to 2000 messages are saved and shown under Tickets in the dashboard; the log channel gets the transcript as a text file.
+- Texts in the ticket channel (welcome, close button, closing message) and the log use the server language.
+- A ticket channel deleted by hand closes its ticket, but without a transcript, because Discord deletes the messages with the channel. Close tickets with the button or `/ticket close` to keep them.
 - Banned members find the appeal form at `https://<dashboard>/appeal/<server>`. With appeals turned on, ban DMs contain this link. Accepting an appeal unbans the member through the bot.
 
 ### Stream notifications
@@ -121,7 +125,7 @@ Actions in the dashboard are written to the `mod_actions` table and carried out 
 - Set `STREAM_WEBHOOK_SECRET` to a random string with 10 to 100 characters, for example `openssl rand -hex 32`. It signs the Twitch and YouTube webhooks.
 - `YOUTUBE_API_KEY` is optional (Google Cloud → YouTube Data API v3). Without it, YouTube channels have to be added by channel ID or `/channel/UC…` link, and live streams cannot be told apart from videos.
 - Twitch and YouTube call `https://<dashboard>/webhooks/twitch` and `https://<dashboard>/webhooks/youtube`. This only works on the public HTTPS deployment, not locally.
-- The `scheduler` service in `docker-compose.yml` renews the YouTube subscriptions and posts scheduled YouTube streams when they start. It uses the dashboard image.
+- The `scheduler` service in `docker-compose.yml` uses the dashboard image. Every five minutes it checks with Twitch and YouTube whether followed streamers are live and catches up on missed webhooks, every two minutes it posts scheduled YouTube streams when they start, and every hour it renews the YouTube subscriptions and repairs the Twitch subscriptions.
 - The live role needs the **Presence Intent** under **Bot → Privileged Gateway Intents** in the Developer Portal.
 
 The dashboard listens on `127.0.0.1:8090` and is meant to sit behind a reverse proxy, for example Caddy:
