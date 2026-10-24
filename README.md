@@ -28,7 +28,7 @@ Both share the same MySQL database. Whatever you change in the dashboard (welcom
 - **Automatic setup** in the dashboard: creates the channels, roles and permissions for tickets, moderation, protection and verification in one go
 - **Data control**: server admins can reset all settings, the server owner can delete all data and remove Toxbot, and users can delete their own data
 - **Levels**: XP for messages and commands, with a global level and a separate level per server, plus `/leaderboard`
-- **Credits and shop**: `/daily`, credits for level-ups and Top.gg votes, profile backgrounds to buy with `/shop`
+- **Credits and shop**: `/daily`, `/credits` for the balance, streak and recent activity, credits for level-ups and Top.gg votes, profile backgrounds to buy with `/shop`
 - **Profile cards**: `/profile` shows level, rank, credits and the chosen background as an image
 - **Tags**: global custom commands with `/tag`, reportable and blockable per server
 - **Stream notifications** for Twitch and YouTube: a message with role ping when a streamer goes live or uploads a video

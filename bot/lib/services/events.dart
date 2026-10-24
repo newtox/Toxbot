@@ -106,6 +106,7 @@ CommandsPlugin setupCommandHandler(CommandsPlugin commands) {
 
   commands.addCommand(background);
   commands.addCommand(boost);
+  commands.addCommand(credits);
   commands.addCommand(daily);
   commands.addCommand(leaderboard);
   commands.addCommand(profile);
