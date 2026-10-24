@@ -64,6 +64,42 @@ class Announcer
         }
     }
 
+    public function syncTwitch(): void
+    {
+        $sources = StreamSource::query()->where('platform', StreamSource::TWITCH)->has('subscriptions')->get();
+        if ($sources->isEmpty()) {
+            return;
+        }
+
+        $streams = $this->twitch->streams($sources->pluck('external_id')->all());
+
+        foreach ($sources as $source) {
+            $stream = $streams[$source->external_id] ?? null;
+            if ($stream && $source->live_item !== $stream['id']) {
+                $this->twitchOnline($source->external_id, $stream['id'], $stream['started_at'] ?? null);
+            } elseif (! $stream && $source->live_item) {
+                $this->twitchOffline($source->external_id);
+            }
+        }
+    }
+
+    public function syncYoutube(): void
+    {
+        $sources = StreamSource::query()->where('platform', StreamSource::YOUTUBE)->whereNotNull('live_item')->get();
+        if ($sources->isEmpty() || ! $this->youtube->hasApiKey()) {
+            return;
+        }
+
+        $videos = $this->youtube->videos($sources->pluck('live_item')->all());
+
+        foreach ($sources as $source) {
+            $video = $videos[$source->live_item] ?? null;
+            if (! $video || $video['ended'] || $video['live'] !== 'live') {
+                $source->update(['live_item' => null, 'live_since' => null]);
+            }
+        }
+    }
+
     public function twitchOffline(string $userId): void
     {
         $source = StreamSource::query()->where('platform', StreamSource::TWITCH)->where('external_id', $userId)->first();
@@ -152,6 +188,10 @@ class Announcer
             'footer' => $kind === 'video' ? 'YouTube' : 'YouTube Live',
             'started' => now(),
         ];
+
+        if ($kind === 'live' && $source->live_item !== $videoId) {
+            $source->update(['live_item' => $videoId, 'live_since' => now()]);
+        }
 
         foreach ($source->subscriptions as $subscription) {
             if ($kind === 'video' && ! $subscription->notify_videos) {

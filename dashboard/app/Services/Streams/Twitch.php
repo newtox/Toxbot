@@ -27,6 +27,21 @@ class Twitch
         return $this->api()->get('/streams', ['user_id' => $userId])->throw()->json('data.0');
     }
 
+    public function streams(array $userIds): array
+    {
+        $streams = [];
+        foreach (array_chunk(array_values(array_unique($userIds)), 100) as $chunk) {
+            $query = implode('&', array_map(fn ($id) => 'user_id='.rawurlencode($id), $chunk));
+            foreach ($this->api()->get('/streams?'.$query.'&first=100')->throw()->json('data', []) as $stream) {
+                if (isset($stream['user_id'], $stream['id'])) {
+                    $streams[$stream['user_id']] = $stream;
+                }
+            }
+        }
+
+        return $streams;
+    }
+
     public function channel(string $userId): ?array
     {
         return $this->api()->get('/channels', ['broadcaster_id' => $userId])->throw()->json('data.0');
