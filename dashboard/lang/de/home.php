@@ -32,7 +32,7 @@ return [
     'f_tools_t' => 'Generatoren',
     'f_tools_d' => '/generate erzeugt Passwörter, zufällige Hex-Werte wie openssl rand und Zufallsfarben mit Vorschau.',
     'f_welcome_t' => 'Begrüßung & Autorole',
-    'f_welcome_d' => 'Willkommens- und Abschiedsnachrichten mit Live-Vorschau und eine Rolle für jedes neue Mitglied.',
+    'f_welcome_d' => 'Willkommens- und Abschiedsnachrichten mit Live-Vorschau und eine Rolle für jedes neue Mitglied. Oder lass Toxbot Tickets, Moderation und Schutz mit einem Klick einrichten.',
     'f_fun_t' => 'Roleplay & Spaß',
     'f_fun_d' => '/hug, /pat, /8ball und viele mehr, mit Anime-GIFs.',
     'f_lang_t' => '10 Sprachen',
