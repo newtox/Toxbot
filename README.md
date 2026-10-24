@@ -77,6 +77,12 @@ mkdir -p /docker_volumes/toxbot-dashboard/backgrounds
 chown 33:33 /docker_volumes/toxbot-dashboard/backgrounds
 ```
 
+### Discord application
+
+- Under **Installation**, keep only **Guild Install**. Toxbot's commands work on servers, so a user install is not needed.
+- Use the link provided by Discord with the scopes `bot` and `applications.commands` and the same permissions as the invite links in the dashboard and in `/info`: View Channels, Send Messages, Embed Links, Attach Files, Read Message History, Mention Everyone, Manage Messages, Manage Channels, Manage Roles, Manage Server, View Audit Log, Kick Members, Ban Members and Timeout Members (permission integer `1099780320438`).
+- Mention Everyone is only used so that ticket team roles and stream ping roles are pinged even when they are not mentionable; Toxbot never pings `@everyone` or `@here`.
+
 ### Premium and Top.gg
 
 - Create the SKUs in the Developer Portal under **Monetization**: a user subscription for Premium and a consumable for the XP boost. Put their IDs into `PREMIUM_USER_SKUS` and `XP_BOOST_SKU`.
