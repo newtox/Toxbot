@@ -24,14 +24,16 @@ Both share the same MySQL database. Whatever you change in the dashboard (welcom
 
 - **Roleplay, image and fun commands** like `/hug`, `/pat` or `/8ball`
 - **Generators**: `/generate password`, `/generate hex` (like `openssl rand -hex`) and `/generate color` with a preview
-- **Server setup**: welcome and goodbye messages, autorole, level-up messages
+- **Server setup** in Discord (`/announcements`, `/autorole`) and in the dashboard: welcome and goodbye messages, autorole, level-up messages and a server language for messages to the whole server
+- **Automatic setup** in the dashboard: creates the channels, roles and permissions for tickets, moderation, protection and verification in one go
+- **Data control**: server admins can reset all settings, the server owner can delete all data and remove Toxbot, and users can delete their own data
 - **Levels**: XP for messages and commands, with a global level and a separate level per server, plus `/leaderboard`
 - **Credits and shop**: `/daily`, credits for level-ups and Top.gg votes, profile backgrounds to buy with `/shop`
 - **Profile cards**: `/profile` shows level, rank, credits and the chosen background as an image
 - **Tags**: global custom commands with `/tag`, reportable and blockable per server
 - **Stream notifications** for Twitch and YouTube: a message with role ping when a streamer goes live or uploads a video
 - **Live role**: members who stream on Discord get a role while they are live
-- **Moderation**: `/mod warn`, `timeout`, `untimeout`, `kick`, `ban` (also temporary) and `unban`, numbered cases in a modlog channel, DMs to members, automatic actions after a number of warnings, and bans, kicks and timeouts done in Discord or by other bots are logged too
+- **Moderation**: `/clear`, `/mod warn`, `timeout`, `untimeout`, `kick`, `ban` (also temporary) and `unban`, numbered cases in a modlog channel, DMs to members, automatic actions after a number of warnings, and bans, kicks and timeouts done in Discord or by other bots are logged too
 - **Protection**: verification of new members with a captcha in the dashboard, a link filter against invites to other servers, scam links and blocked domains (or only allowed ones), anti-raid that raises the verification level and kicks new joins, and a minimum account age
 - **Tickets and unban appeals**: ticket types with their own button, text and team roles, private ticket channels, `/ticket close`, `add` and `remove`, transcripts saved on close and shown in the dashboard, and a dashboard page where banned members can ask to be unbanned
 - **Premium** through Discord subscriptions: double XP and daily reward, premium backgrounds, more tags and tags as embeds, plus a 24 hour XP boost to buy
