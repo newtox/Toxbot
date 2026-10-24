@@ -32,7 +32,7 @@ return [
     'f_tools_t' => '生成器',
     'f_tools_d' => '/generate 可生成密码、类似 openssl rand 的随机十六进制值，以及带预览的随机颜色。',
     'f_welcome_t' => '欢迎与自动身份组',
-    'f_welcome_d' => '带实时预览的欢迎和告别消息，并为每位新成员分配身份组。',
+    'f_welcome_d' => '带实时预览的欢迎和告别消息，并为每位新成员分配身份组。也可以让 Toxbot 一键设置工单、管理和防护。',
     'f_fun_t' => '角色扮演与娱乐',
     'f_fun_d' => '/hug、/pat、/8ball 等众多命令，配有动漫 GIF。',
     'f_lang_t' => '10 种语言',

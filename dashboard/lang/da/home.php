@@ -32,7 +32,7 @@ return [
     'f_tools_t' => 'Generatorer',
     'f_tools_d' => '/generate laver adgangskoder, tilfældige hex-værdier som openssl rand og tilfældige farver med forhåndsvisning.',
     'f_welcome_t' => 'Velkomst & autorolle',
-    'f_welcome_d' => 'Velkomst- og farvelbeskeder med live-forhåndsvisning og en rolle til hvert nyt medlem.',
+    'f_welcome_d' => 'Velkomst- og farvelbeskeder med live-forhåndsvisning og en rolle til hvert nyt medlem. Eller lad Toxbot sætte tickets, moderation og beskyttelse op med ét klik.',
     'f_fun_t' => 'Rollespil & sjov',
     'f_fun_d' => '/hug, /pat, /8ball og mange flere, med anime-GIF\'er.',
     'f_lang_t' => '10 sprog',

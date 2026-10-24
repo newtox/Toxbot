@@ -32,7 +32,7 @@ return [
     'f_tools_t' => 'Générateurs',
     'f_tools_d' => '/generate crée des mots de passe, des valeurs hex aléatoires comme openssl rand et des couleurs aléatoires avec aperçu.',
     'f_welcome_t' => 'Accueil & rôle auto',
-    'f_welcome_d' => 'Messages de bienvenue et d\'au revoir avec aperçu en direct, et un rôle pour chaque nouveau membre.',
+    'f_welcome_d' => 'Messages de bienvenue et d\'au revoir avec aperçu en direct, et un rôle pour chaque nouveau membre. Ou laisse Toxbot configurer tickets, modération et protection en un clic.',
     'f_fun_t' => 'Roleplay & fun',
     'f_fun_d' => '/hug, /pat, /8ball et bien d\'autres, avec des GIF d\'anime.',
     'f_lang_t' => '10 langues',
