@@ -147,6 +147,20 @@ The bot lives in `bot/lib`:
 - `services/`: the logic behind the commands and the event handlers, for example levels, moderation, protection, tickets, premium and the live role; `events.dart` registers the commands and handlers
 - `utils/`: shared helpers: `config.dart` for every setting from the environment, `database.dart` for the connection and translated texts, `reply.dart` for command replies, and the translations in `languages.yaml`
 
+The dashboard is a Laravel app with Livewire in `dashboard/`:
+
+- `routes/web.php`: every page and webhook URL; `routes/console.php`: the scheduled stream commands (`streams:sync` every five minutes, `streams:check-upcoming` every two minutes, `streams:maintain` hourly)
+- `app/Http/Controllers/`: plain pages and webhooks, for example `ServerController` (overview, members, modlog, tickets), `VerifyController`, `AppealController` and the `TwitchWebhookController`, `YouTubeWebhookController` and `TopggWebhookController`
+- `app/Livewire/`: the interactive parts. `GuildSettings` holds every settings section of a server; smaller components such as `StreamList`, `TicketTypes`, `WarnRules`, `AutoSetup`, `AppealList`, `ServerData` and `DeleteAccount` sit inside the pages
+- `app/Services/`: the logic behind them. `Discord` wraps every call to the Discord API, `GuildAccess` decides who may manage a server, `AutoSetup` and `SetupMessages` create channels and post the ticket and verify messages, `DataDeletion` resets and deletes data, and `Streams/` handles Twitch and YouTube (`Twitch`, `YouTube`, `SourceManager` for following and webhooks, `Announcer` for the messages and the live status)
+- `app/Models/`: one model per table, most of them shared with the bot; `database/migrations/` creates the tables
+- `app/Support/`: small helpers such as `BotLocale`, `DomainList` or `Timezone`
+- `resources/views/`: Blade templates, with the Livewire views in `livewire/` and the server pages in `servers/`
+- `lang/<locale>/`: one file per area (`guild`, `tickets`, `setup`, `data`, …) in all ten languages
+- `tests/Feature/`: one test file per area
+
+The bot and the dashboard share the MySQL database. The dashboard writes settings and queues moderation actions in `mod_actions`; the bot reads them and does everything that needs a live gateway connection.
+
 Every Dart file is ordered the same way: imports, then constants and top-level variables, then private functions and getters, then public functions and getters, then commands, with the exported command or `setup…Handler` function last. All of `bin/` and `lib/` is formatted with `dart format`. Subcommands of a group are private (`_warn`) and listed before the group (`mod`) that uses them.
 
 ## Contributing
