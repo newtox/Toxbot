@@ -4,6 +4,8 @@ import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:nyxx/nyxx.dart';
 
+const invitePermissions = 1099780320438;
+
 String numberWithCommas(num numb) {
   return numb.toString().replaceAllMapped(
       RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');

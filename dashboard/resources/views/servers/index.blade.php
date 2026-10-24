@@ -4,7 +4,7 @@
             <h1 class="text-2xl font-bold text-dc-header">{{ __('servers.title') }}</h1>
             <p class="mt-1 text-dc-muted">{{ __('servers.subtitle') }}</p>
         </div>
-        <a href="{{ route('servers.index', ['refresh' => 1]) }}" class="btn-secondary">{{ __('servers.reload') }}</a>
+        <a href="{{ route('servers.index', ['refresh' => 1]) }}" class="btn-secondary"><x-icon name="refresh" class="size-4" />{{ __('servers.reload') }}</a>
     </div>
 
     @if (empty($withBot) && empty($withoutBot))
