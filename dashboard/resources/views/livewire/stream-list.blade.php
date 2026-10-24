@@ -1,4 +1,4 @@
-<div class="space-y-4">
+<div wire:poll.60s class="space-y-4">
     <div class="flex flex-wrap items-center justify-between gap-2">
         <h3 class="label mb-0">{{ __('streams.streamers') }}</h3>
         <span class="text-sm text-dc-muted tabular-nums">{{ __('streams.count', ['count' => $subscriptions->count(), 'limit' => $limit]) }}</span>

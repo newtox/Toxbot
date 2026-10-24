@@ -7,6 +7,7 @@ use App\Models\StreamSubscription;
 use App\Services\Premium;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\RequestException;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use RuntimeException;
 use Throwable;
@@ -43,6 +44,7 @@ class SourceManager
         }
 
         $this->ensureHooks($source);
+        $this->markLive($source);
 
         return StreamSubscription::create(['guild' => $guildId, 'stream_source_id' => $source->id]);
     }
@@ -69,6 +71,21 @@ class SourceManager
             }
         } catch (Throwable $e) {
             report($e);
+        }
+    }
+
+    public function markLive(StreamSource $source): void
+    {
+        if ($source->platform !== StreamSource::TWITCH || $source->live_item) {
+            return;
+        }
+
+        $stream = rescue(fn () => $this->twitch->stream($source->external_id), report: false);
+        if (isset($stream['id'])) {
+            $source->update([
+                'live_item' => $stream['id'],
+                'live_since' => isset($stream['started_at']) ? Carbon::parse($stream['started_at']) : now(),
+            ]);
         }
     }
 

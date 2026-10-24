@@ -5,6 +5,7 @@ use App\Models\StreamSource;
 use App\Models\WebhookDelivery;
 use App\Services\Streams\Announcer;
 use App\Services\Streams\SourceManager;
+use App\Services\Streams\Twitch;
 use App\Services\Streams\YouTube;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
@@ -67,5 +68,13 @@ Artisan::command('streams:check-upcoming', function (YouTube $youtube, Announcer
     }
 })->purpose('Announce scheduled YouTube livestreams once they start');
 
+Artisan::command('streams:sync', function (Announcer $announcer, Twitch $twitch) {
+    if ($twitch->configured()) {
+        rescue(fn () => $announcer->syncTwitch());
+    }
+    rescue(fn () => $announcer->syncYoutube());
+})->purpose('Correct the live status of followed streamers in case a webhook was missed');
+
 Schedule::command('streams:maintain')->hourly()->withoutOverlapping();
+Schedule::command('streams:sync')->everyFiveMinutes()->withoutOverlapping();
 Schedule::command('streams:check-upcoming')->everyTwoMinutes()->withoutOverlapping();

@@ -13,6 +13,7 @@ use App\Models\StreamSource;
 use App\Models\StreamSubscription;
 use App\Services\GuildAccess;
 use App\Services\Premium;
+use App\Services\Streams\Announcer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
@@ -28,6 +29,10 @@ class StreamsTest extends TestCase
     private const SECRET = 'stream-secret-123';
 
     private array $discordPosts = [];
+
+    private ?array $liveStreams = null;
+
+    private array $youtubeVideos = [];
 
     protected function setUp(): void
     {
@@ -53,6 +58,8 @@ class StreamsTest extends TestCase
                     : Http::response(['data' => [['id' => '42', 'login' => 'newtox', 'display_name' => 'Newtox', 'profile_image_url' => 'https://cdn/x.png']]]),
                 str_contains($url, 'api.twitch.tv/helix/eventsub/subscriptions') && $request->method() === 'POST' => Http::response(['data' => [['id' => 'sub-'.$request['type']]]], 202),
                 str_contains($url, 'api.twitch.tv/helix/eventsub/subscriptions') && $request->method() === 'DELETE' => Http::response(null, 204),
+                str_contains($url, 'api.twitch.tv/helix/streams') && $this->liveStreams !== null => Http::response(['data' => $this->liveStreams]),
+                str_contains($url, 'googleapis.com/youtube/v3/videos') => Http::response(['items' => $this->youtubeVideos]),
                 str_contains($url, 'api.twitch.tv/helix/streams') => Http::response(['data' => [['title' => 'Valheim mit Freunden', 'game_name' => 'Valheim', 'thumbnail_url' => 'https://img/{width}x{height}.jpg']]]),
                 str_contains($url, 'api.twitch.tv/helix/videos') => Http::response(['data' => [['url' => 'https://www.twitch.tv/videos/1']]]),
                 str_contains($url, 'pubsubhubbub.appspot.com') => Http::response('', 202),
@@ -188,6 +195,61 @@ class StreamsTest extends TestCase
         $this->assertCount(1, $this->discordPosts);
         $this->assertSame('https://www.youtube.com/watch?v=abc', $this->discordPosts[0]['embeds'][0]['url']);
         $this->assertSame('<@&777> **Mein Kanal** uploaded a new video! https://www.youtube.com/watch?v=abc', $this->discordPosts[0]['content']);
+    }
+
+    public function test_sync_corrects_missed_twitch_events(): void
+    {
+        $this->guild();
+        $source = $this->twitchSource();
+        StreamSubscription::create(['guild' => self::GUILD, 'stream_source_id' => $source->id]);
+        $this->liveStreams = [['id' => 'stream-7', 'user_id' => '42', 'title' => 'Valheim mit Freunden', 'game_name' => 'Valheim', 'started_at' => now()->subMinutes(3)->toIso8601String()]];
+
+        $this->artisan('streams:sync')->assertSuccessful();
+        $this->artisan('streams:sync')->assertSuccessful();
+
+        $this->assertSame('stream-7', $source->fresh()->live_item);
+        $this->assertCount(1, $this->discordPosts);
+        Http::assertSent(fn (Request $r) => str_contains($r->url(), 'helix/streams?user_id=42'));
+
+        $this->liveStreams = [];
+        $this->artisan('streams:sync')->assertSuccessful();
+
+        $this->assertNull($source->fresh()->live_item);
+        $this->assertNotNull(StreamAnnouncement::first()->ended_at);
+    }
+
+    public function test_adding_a_live_streamer_marks_it_live_without_announcing(): void
+    {
+        $this->login();
+        $this->guild();
+        $this->liveStreams = [['id' => 'stream-9', 'user_id' => '42', 'started_at' => now()->subHour()->toIso8601String()]];
+
+        Livewire::test(StreamList::class, ['guildId' => self::GUILD])
+            ->set('platform', 'twitch')->set('input', 'newtox')->call('add')
+            ->assertSee('LIVE');
+
+        $this->assertSame('stream-9', StreamSource::first()->live_item);
+        $this->artisan('streams:sync')->assertSuccessful();
+        $this->assertCount(0, $this->discordPosts);
+    }
+
+    public function test_youtube_live_status_is_shown_until_the_stream_ends(): void
+    {
+        config(['toxbot.streams.youtube_api_key' => 'yt-key']);
+        $this->guild();
+        $source = StreamSource::create(['platform' => 'youtube', 'external_id' => 'UC1234567890123456789012', 'name' => 'Mein Kanal']);
+        StreamSubscription::create(['guild' => self::GUILD, 'stream_source_id' => $source->id]);
+
+        app(Announcer::class)->publishYoutube($source, 'live1', 'Live!', 'live', null);
+        $this->assertSame('live1', $source->fresh()->live_item);
+
+        $this->youtubeVideos = [['id' => 'live1', 'snippet' => ['liveBroadcastContent' => 'live', 'title' => 'Live!'], 'liveStreamingDetails' => ['actualStartTime' => now()->toIso8601String()]]];
+        $this->artisan('streams:sync')->assertSuccessful();
+        $this->assertSame('live1', $source->fresh()->live_item);
+
+        $this->youtubeVideos = [['id' => 'live1', 'snippet' => ['liveBroadcastContent' => 'none', 'title' => 'Live!'], 'liveStreamingDetails' => ['actualEndTime' => now()->toIso8601String()]]];
+        $this->artisan('streams:sync')->assertSuccessful();
+        $this->assertNull($source->fresh()->live_item);
     }
 
     private function login(): void
