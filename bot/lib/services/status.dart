@@ -14,8 +14,22 @@ String? _environment(String key) {
   return value == null || value.isEmpty ? null : value;
 }
 
+Future<int?> _latencyMs(NyxxGateway client) async {
+  final gateway = client.gateway.latency.inMilliseconds;
+  if (gateway > 0) return gateway;
+
+  try {
+    final stopwatch = Stopwatch()..start();
+    await client.users.fetchCurrentUser();
+    return stopwatch.elapsedMilliseconds;
+  } catch (_) {
+    return null;
+  }
+}
+
 Future<void> _writeStatus(NyxxGateway client) async {
   try {
+    final latency = await _latencyMs(client);
     await withConnection((connection) => connection.query(
           'INSERT INTO `bot_status` (`id`, `started_at`, `heartbeat_at`, `commit`, `build_date`, `dart_version`, `guilds`, `latency_ms`, `memory_bytes`, `user_id`) '
           'VALUES (1, ?, UTC_TIMESTAMP(), ?, ?, ?, ?, ?, ?, ?) '
@@ -27,7 +41,7 @@ Future<void> _writeStatus(NyxxGateway client) async {
             _environment('BUILD_DATE'),
             Platform.version.split(' ').first,
             currentGuildIds.length,
-            client.gateway.latency.inMilliseconds,
+            latency,
             ProcessInfo.currentRss,
             client.user.id.toString(),
           ],

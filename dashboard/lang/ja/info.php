@@ -45,7 +45,7 @@ return [
     'field_version' => 'バージョン',
     'field_built' => 'ビルド日時',
     'field_started' => '稼働開始',
-    'field_heartbeat' => '最終報告',
+    'field_heartbeat' => '最終チェックイン',
     'field_latency' => 'Ping',
     'field_servers' => 'サーバー',
     'field_memory' => 'メモリ',

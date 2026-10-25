@@ -45,7 +45,7 @@ return [
     'field_version' => 'Version',
     'field_built' => 'Gebaut',
     'field_started' => 'Läuft seit',
-    'field_heartbeat' => 'Letzte Meldung',
+    'field_heartbeat' => 'Letztes Lebenszeichen',
     'field_latency' => 'Ping',
     'field_servers' => 'Server',
     'field_memory' => 'Arbeitsspeicher',

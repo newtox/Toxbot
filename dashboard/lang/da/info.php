@@ -45,7 +45,7 @@ return [
     'field_version' => 'Version',
     'field_built' => 'Bygget',
     'field_started' => 'Kører siden',
-    'field_heartbeat' => 'Seneste melding',
+    'field_heartbeat' => 'Seneste livstegn',
     'field_latency' => 'Ping',
     'field_servers' => 'Servere',
     'field_memory' => 'Hukommelse',

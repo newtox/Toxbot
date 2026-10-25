@@ -45,7 +45,7 @@ return [
     'field_version' => '版本',
     'field_built' => '构建时间',
     'field_started' => '运行自',
-    'field_heartbeat' => '最后报告',
+    'field_heartbeat' => '最后一次签到',
     'field_latency' => '延迟',
     'field_servers' => '服务器',
     'field_memory' => '内存',

@@ -45,7 +45,7 @@ return [
     'field_version' => 'वर्ज़न',
     'field_built' => 'बिल्ड',
     'field_started' => 'चल रहा है',
-    'field_heartbeat' => 'अंतिम रिपोर्ट',
+    'field_heartbeat' => 'आख़िरी चेक-इन',
     'field_latency' => 'पिंग',
     'field_servers' => 'सर्वर',
     'field_memory' => 'मेमोरी',
