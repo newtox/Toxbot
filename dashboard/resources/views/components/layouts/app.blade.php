@@ -43,11 +43,13 @@
     @livewireStyles
     @stack('head')
 </head>
-<body class="min-h-dvh" x-data="{ nav: false }" x-on:keydown.escape.window="nav = false">
+<body class="min-h-dvh" x-data="{ nav: false }" x-on:keydown.escape.window="nav = false"
+      @auth x-bind:data-nav="nav ? 'open' : 'closed'" x-effect="document.documentElement.classList.toggle('overflow-hidden', nav)"
+      x-on:toxbot-nav.window="nav = $event.detail" x-on:resize.window="if (innerWidth >= 768) nav = false" @endauth>
     @auth
         <div class="md:flex">
             <div x-show="nav" x-transition.opacity x-on:click="nav = false" x-cloak
-                 class="fixed inset-0 z-30 bg-black/60 md:hidden"></div>
+                 class="fixed inset-0 z-30 touch-none bg-black/60 md:hidden"></div>
 
             <aside class="fixed inset-y-0 left-0 z-40 flex w-72 flex-col border-r border-white/[0.06] bg-dc-950 transition-transform duration-200 max-md:-translate-x-full md:sticky md:top-0 md:h-dvh md:w-64 md:shrink-0"
                    :class="nav && 'max-md:translate-x-0!'">
@@ -58,7 +60,7 @@
                     </button>
                 </div>
 
-                <nav class="flex-1 space-y-5 overflow-y-auto px-3 pb-4">
+                <nav class="flex-1 space-y-5 overflow-y-auto overscroll-contain px-3 pb-4">
                     @if ($guild)
                         <div x-data="{ open: false }" class="relative" x-on:click.outside="open = false">
                             <button type="button" x-on:click="open = !open"
