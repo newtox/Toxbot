@@ -27,7 +27,7 @@
             </ul>
             <div class="flex flex-wrap justify-end gap-2">
                 <button type="button" wire:click="dismiss" class="btn-ghost">{{ __('setup.again') }}</button>
-                <button type="button" x-on:click="window.location.reload()" class="btn-secondary"><x-icon name="refresh" class="size-4" />{{ __('setup.reload') }}</button>
+                <x-reload-button :label="__('setup.reload')" />
             </div>
         @else
             <div>

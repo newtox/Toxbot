@@ -7,10 +7,7 @@
                 <h1 class="truncate text-2xl font-bold text-dc-header">{{ __('menu.section_'.$section) }}</h1>
             </div>
         </div>
-        <button type="button" wire:click="refreshDiscordData" wire:loading.attr="disabled" class="btn-secondary max-sm:w-full">
-            <x-icon name="refresh" class="size-4" wire:loading.class="animate-spin" wire:target="refreshDiscordData" />
-            {{ __('guild.reload') }}
-        </button>
+        <x-reload-button action="refreshDiscordData" :label="__('guild.reload')" />
     </div>
 
     @if ($loadError)
