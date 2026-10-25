@@ -13,7 +13,7 @@ return [
 
     'repository' => env('TOXBOT_REPOSITORY', 'https://github.com/newtox/Toxbot'),
 
-    'contact_email' => env('TOXBOT_CONTACT_EMAIL'),
+    'contact_email' => env('TOXBOT_CONTACT_EMAIL') ?: 'justin.lys26@gmail.com',
 
     'support_invite' => env('TOXBOT_SUPPORT_INVITE'),
 

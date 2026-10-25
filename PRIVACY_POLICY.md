@@ -89,4 +89,4 @@ We may update this Privacy Policy from time to time. We will notify users of any
 
 ## Contact
 
-If you have questions about this Privacy Policy, please contact me at [contact@placeholder.de](mailto:contact@placeholder.de) or open an issue on this GitHub repository.
+If you have questions about this Privacy Policy, please contact me at [justin.lys26@gmail.com](mailto:justin.lys26@gmail.com) or open an issue on this GitHub repository.

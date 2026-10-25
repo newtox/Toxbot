@@ -102,4 +102,4 @@ These Terms are governed by the laws of the Federal Republic of Germany. If you 
 
 ## Contact
 
-For questions about these Terms, please contact me at [contact@placeholder.de](mailto:contact@placeholder.de) or open an issue on this GitHub repository.
+For questions about these Terms, please contact me at [justin.lys26@gmail.com](mailto:justin.lys26@gmail.com) or open an issue on this GitHub repository.

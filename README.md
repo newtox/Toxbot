@@ -84,4 +84,4 @@ This project is licensed under the [Creative Commons Attribution-NonCommercial-S
 
 ## Contact
 
-Found a bug or have a feature request? Open an issue on GitHub or write to [contact@placeholder.de](mailto:contact@placeholder.de).
+Found a bug or have a feature request? Open an issue on GitHub or write to [justin.lys26@gmail.com](mailto:justin.lys26@gmail.com).
