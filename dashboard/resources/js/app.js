@@ -142,3 +142,49 @@ function setupConfirmDialog() {
 }
 
 setupConfirmDialog();
+
+const swipeDistance = 60;
+
+const swipeMaxTime = 700;
+
+function scrollsSideways(element) {
+    for (let el = element; el && el !== document.body; el = el.parentElement) {
+        if (el.scrollWidth > el.clientWidth + 1 && /auto|scroll/.test(getComputedStyle(el).overflowX)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function setupSidebarSwipe() {
+    let start = null;
+
+    document.addEventListener('touchstart', (event) => {
+        start = null;
+        if (event.touches.length !== 1 || window.innerWidth >= 768 || !document.body.hasAttribute('data-nav')) return;
+        const target = event.target;
+        if (target.closest('input, textarea, select, [contenteditable], dialog') || scrollsSideways(target)) return;
+        const touch = event.touches[0];
+        start = { x: touch.clientX, y: touch.clientY, time: Date.now() };
+    }, { passive: true });
+
+    document.addEventListener('touchend', (event) => {
+        if (!start) return;
+        const touch = event.changedTouches[0];
+        const dx = touch.clientX - start.x;
+        const dy = touch.clientY - start.y;
+        const quick = Date.now() - start.time < swipeMaxTime;
+        const open = document.body.dataset.nav === 'open';
+        const fromLeft = start.x < window.innerWidth / 2;
+        start = null;
+
+        if (!quick || Math.abs(dx) < swipeDistance || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+        if (dx > 0 && !open && fromLeft) {
+            window.dispatchEvent(new CustomEvent('toxbot-nav', { detail: true }));
+        } else if (dx < 0 && open) {
+            window.dispatchEvent(new CustomEvent('toxbot-nav', { detail: false }));
+        }
+    }, { passive: true });
+}
+
+setupSidebarSwipe();
