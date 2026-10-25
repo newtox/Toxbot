@@ -7,4 +7,6 @@ return [
     'saving' => 'Enregistrement …',
     'saved' => 'Enregistré ! Toxbot utilise les nouveaux paramètres immédiatement.',
     'not_saved' => 'Non enregistré, vérifie les champs signalés.',
+    'confirm_title' => 'Tu es sûr ?',
+    'cancel' => 'Annuler',
 ];

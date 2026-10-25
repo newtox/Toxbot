@@ -241,6 +241,20 @@
         {{ __('common.saved') }}
     </div>
 
+    <dialog id="confirm-dialog" aria-labelledby="confirm-title" aria-describedby="confirm-message"
+            class="m-auto w-[calc(100%-2rem)] max-w-md rounded-xl border border-white/10 bg-dc-800 p-0 text-dc-text shadow-2xl backdrop:bg-black/60 backdrop:backdrop-blur-sm">
+        <form method="dialog" class="space-y-5 p-6">
+            <div class="space-y-2">
+                <h2 id="confirm-title" class="text-lg font-semibold text-dc-header">{{ __('common.confirm_title') }}</h2>
+                <p id="confirm-message" class="text-sm whitespace-pre-line text-dc-muted"></p>
+            </div>
+            <div class="flex flex-wrap justify-end gap-2">
+                <button value="cancel" class="btn-secondary max-sm:flex-1">{{ __('common.cancel') }}</button>
+                <button value="confirm" data-confirm-ok class="btn max-sm:flex-1"></button>
+            </div>
+        </form>
+    </dialog>
+
     <style>[x-cloak]{display:none!important}</style>
     @livewireScripts
 </body>

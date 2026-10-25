@@ -7,4 +7,6 @@ return [
     'saving' => 'Guardando …',
     'saved' => '¡Guardado! Toxbot usa los nuevos ajustes al instante.',
     'not_saved' => 'No se guardó, revisa los campos marcados.',
+    'confirm_title' => '¿Seguro?',
+    'cancel' => 'Cancelar',
 ];

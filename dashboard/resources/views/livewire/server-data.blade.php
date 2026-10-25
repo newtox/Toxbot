@@ -19,7 +19,7 @@
                 <h3 class="font-medium text-dc-header">{{ __('data.reset_title') }}</h3>
                 <p class="text-sm text-dc-muted">{{ __('data.reset_text') }}</p>
             </div>
-            <button type="button" wire:click="resetSettings" wire:confirm="{{ __('data.reset_confirm') }}" wire:loading.attr="disabled"
+            <button type="button" wire:click="resetSettings" data-confirm="{{ __('data.reset_confirm') }}" wire:loading.attr="disabled"
                     class="btn text-dc-red ring-1 ring-dc-red/40 hover:bg-dc-red hover:text-white max-sm:w-full">{{ __('data.reset_button') }}</button>
         </div>
 

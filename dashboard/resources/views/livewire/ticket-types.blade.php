@@ -15,7 +15,7 @@
                     </div>
                     <div class="ml-auto flex shrink-0 gap-2">
                         <button type="button" wire:click="edit({{ $type->id }})" class="btn-secondary px-3 py-1.5">{{ __('tags.edit') }}</button>
-                        <button type="button" wire:click="remove({{ $type->id }})" wire:confirm="{{ __('tickets.type_confirm_remove', ['name' => $type->name]) }}"
+                        <button type="button" wire:click="remove({{ $type->id }})" data-confirm="{{ __('tickets.type_confirm_remove', ['name' => $type->name]) }}"
                                 class="btn px-3 py-1.5 text-dc-red hover:bg-dc-red hover:text-white">{{ __('streams.remove') }}</button>
                     </div>
                 </li>

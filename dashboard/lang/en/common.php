@@ -7,4 +7,6 @@ return [
     'saving' => 'Saving …',
     'saved' => 'Saved! Toxbot uses the new settings right away.',
     'not_saved' => 'Not saved, please check the marked fields.',
+    'confirm_title' => 'Are you sure?',
+    'cancel' => 'Cancel',
 ];

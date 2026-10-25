@@ -50,7 +50,7 @@
                         </div>
                         <div class="ml-auto flex shrink-0 gap-2">
                             <button type="button" wire:click="edit({{ $subscription->id }})" class="btn-secondary px-3 py-1.5">{{ __('streams.settings') }}</button>
-                            <button type="button" wire:click="remove({{ $subscription->id }})" wire:confirm="{{ __('streams.confirm_remove', ['name' => $source->name]) }}"
+                            <button type="button" wire:click="remove({{ $subscription->id }})" data-confirm="{{ __('streams.confirm_remove', ['name' => $source->name]) }}"
                                     class="btn px-3 py-1.5 text-dc-red hover:bg-dc-red hover:text-white">{{ __('streams.remove') }}</button>
                         </div>
                     </div>
