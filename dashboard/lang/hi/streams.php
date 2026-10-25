@@ -33,7 +33,7 @@ return [
     'notify_videos' => 'नए वीडियो',
     'notify_live' => 'लाइवस्ट्रीम',
     'premium_title' => 'उन्नत सेटिंग्स',
-    'premium_locked' => 'ये सेटिंग्स Server Premium के साथ आती हैं। Toxbot Premium वाला कोई भी व्यक्ति इसे अपने प्रोफ़ाइल पेज पर इस सर्वर के लिए अनलॉक कर सकता है।',
+    'premium_locked' => 'ये सेटिंग्स Server Premium के साथ आती हैं। Toxbot Premium वाला कोई भी व्यक्ति इसे अपनी उपयोगकर्ता सेटिंग्स में Premium के तहत इस सर्वर के लिए अनलॉक कर सकता है।',
     'paused' => 'रुका हुआ',
     'paused_hint' => 'Server Premium के बिना केवल पहले :limit क्रिएटर की सूचना दी जाती है।',
     'own_message' => 'लाइवस्ट्रीम के लिए अपना संदेश',

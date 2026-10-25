@@ -8,7 +8,7 @@ return [
     'level' => 'Level',
     'rank' => 'Globaler Rang',
     'credits' => 'Credits',
-    'commands' => 'Commands',
+    'commands' => 'Befehle',
     'premium_active' => 'Premium ist aktiv: doppelte XP, doppelte tägliche Belohnung und Premium-Hintergründe.',
-    'earn_hint' => 'XP gibt es für Nachrichten und Commands, Credits für /daily, Votes und Level-ups.',
+    'earn_hint' => 'XP gibt es für Nachrichten und Befehle, Credits für /daily, Votes und Level-ups.',
 ];

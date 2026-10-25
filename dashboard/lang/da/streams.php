@@ -33,7 +33,7 @@ return [
     'notify_videos' => 'Nye videoer',
     'notify_live' => 'Livestreams',
     'premium_title' => 'Avancerede indstillinger',
-    'premium_locked' => 'Disse indstillinger følger med Server Premium. Alle med Toxbot Premium kan låse det op for denne server på deres profilside.',
+    'premium_locked' => 'Disse indstillinger følger med Server Premium. Alle med Toxbot Premium kan låse det op for denne server under Premium i deres brugerindstillinger.',
     'paused' => 'Sat på pause',
     'paused_hint' => 'Uden Server Premium meldes kun de første :limit skabere.',
     'own_message' => 'Egen besked ved livestreams',

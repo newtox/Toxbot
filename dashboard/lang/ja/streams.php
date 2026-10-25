@@ -33,7 +33,7 @@ return [
     'notify_videos' => '新しい動画',
     'notify_live' => 'ライブ配信',
     'premium_title' => '詳細設定',
-    'premium_locked' => 'これらの設定は Server Premium で使えます。Toxbot Premium を持っている人なら、プロフィールページでこのサーバーに有効化できます。',
+    'premium_locked' => 'これらの設定は Server Premium で使えます。Toxbot Premium を持っている人なら、ユーザー設定の「プレミアム」からこのサーバーで有効にできます。',
     'paused' => '一時停止中',
     'paused_hint' => 'Server Premium がない場合、通知されるのは最初の :limit 人のクリエイターだけです。',
     'own_message' => 'ライブ配信用の独自メッセージ',

@@ -33,7 +33,7 @@ return [
     'notify_videos' => '新视频',
     'notify_live' => '直播',
     'premium_title' => '高级设置',
-    'premium_locked' => '这些设置属于 Server Premium。任何拥有 Toxbot Premium 的人都可以在个人资料页为此服务器开启。',
+    'premium_locked' => '这些设置属于 Server Premium。任何拥有 Toxbot Premium 的人都可以在用户设置的“高级版”中为此服务器开启。',
     'paused' => '已暂停',
     'paused_hint' => '没有 Server Premium 时，只通知前 :limit 位创作者。',
     'own_message' => '直播的专属消息',

@@ -33,7 +33,7 @@ return [
     'notify_videos' => 'Новые видео',
     'notify_live' => 'Трансляции',
     'premium_title' => 'Расширенные настройки',
-    'premium_locked' => 'Эти настройки доступны с Server Premium. Любой с Toxbot Premium может включить его для этого сервера на странице профиля.',
+    'premium_locked' => 'Эти настройки доступны с Server Premium. Любой с Toxbot Premium может включить его для этого сервера в настройках пользователя в разделе «Премиум».',
     'paused' => 'На паузе',
     'paused_hint' => 'Без Server Premium оповещения приходят только для первых :limit авторов.',
     'own_message' => 'Своё сообщение о трансляциях',

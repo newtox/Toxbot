@@ -62,6 +62,6 @@ return [
     'step_hidden' => '{0} Kein weiterer Kanal musste für neue Mitglieder ausgeblendet werden.|{1} :count Kanal für neue Mitglieder ausgeblendet.|[2,*] :count Kanäle für neue Mitglieder ausgeblendet.',
     'step_hidden_failed' => '{1} :count Kanal konnte nicht geändert werden, prüf ihn von Hand.|[2,*] :count Kanäle konnten nicht geändert werden, prüf sie von Hand.',
     'step_verify_on' => 'Verifizierung ist an.',
-    'step_verify_message' => 'Verifizieren-Button in :channel gepostet.',
-    'step_verify_message_failed' => 'Der Verifizieren-Button konnte nicht gepostet werden.',
+    'step_verify_message' => 'Verifizierungs-Button in :channel gepostet.',
+    'step_verify_message_failed' => 'Der Verifizierungs-Button konnte nicht gepostet werden.',
 ];
