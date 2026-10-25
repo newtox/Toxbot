@@ -26,7 +26,7 @@ return [
     'content_max' => 'अधिकतम :max अक्षर।',
     'image_invalid' => 'छवि इनमें से किसी होस्ट का https लिंक होनी चाहिए: :hosts',
     'content_invite' => 'टैग में सर्वर आमंत्रण नहीं हो सकते।',
-    'content_mention' => 'टैग में @everyone या @here नहीं हो सकता।',
+    'content_mention' => 'टैग में मेंशन नहीं हो सकते: न @everyone, @here, &mention और न यूज़र या रोल के मेंशन।',
     'blacklisted' => 'आपको टैग बनाने की अनुमति नहीं है।',
     'limit' => 'आप :limit टैग की सीमा तक पहुँच गए हैं।',
 ];

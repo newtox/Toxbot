@@ -26,7 +26,7 @@ return [
     'content_max' => 'Como máximo :max caracteres.',
     'image_invalid' => 'La imagen debe ser un enlace https de uno de estos hosts: :hosts',
     'content_invite' => 'Los tags no pueden contener invitaciones a servidores.',
-    'content_mention' => 'Los tags no pueden contener @everyone ni @here.',
+    'content_mention' => 'Los tags no pueden contener menciones: ni @everyone, @here, &mention ni menciones de usuarios o roles.',
     'blacklisted' => 'No tienes permitido crear tags.',
     'limit' => 'Has alcanzado el límite de :limit tags.',
 ];

@@ -26,7 +26,7 @@ return [
     'content_max' => 'Højst :max tegn.',
     'image_invalid' => 'Billedet skal være et https-link fra en af disse værter: :hosts',
     'content_invite' => 'Tags må ikke indeholde serverinvitationer.',
-    'content_mention' => 'Tags må ikke indeholde @everyone eller @here.',
+    'content_mention' => 'Tags må ikke indeholde omtaler: ingen @everyone, @here, &mention eller omtaler af brugere og roller.',
     'blacklisted' => 'Du må ikke oprette tags.',
     'limit' => 'Du har nået grænsen på :limit tags.',
 ];
