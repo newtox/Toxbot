@@ -9,7 +9,7 @@ return [
     'log_channel' => 'Log-Kanal',
     'panel_channel' => 'Kanal für die Buttons',
     'limit' => 'Offene Tickets pro Mitglied',
-    'hint' => 'Ticket-Kanäle entstehen in der Kategorie und nur das Mitglied und die Team-Rollen der Ticket-Art sehen sie. Beim Schließen wird der Kanal gelöscht und der Verlauf gespeichert.',
+    'hint' => 'Ticket-Kanäle entstehen in der Kategorie, und nur das Mitglied und die Team-Rollen der Ticket-Art sehen sie. Beim Schließen wird der Kanal gelöscht und der Verlauf gespeichert.',
     'panel_post' => 'Buttons im Kanal posten',
     'panel_hint' => 'Postet eine Nachricht mit einem Button pro Ticket-Art. Speichert dabei auch die Einstellungen.',
     'panel_needs_category' => 'Wähle zuerst eine Kategorie für die Ticket-Kanäle.',
