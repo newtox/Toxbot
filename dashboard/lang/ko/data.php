@@ -19,7 +19,7 @@ return [
     'account_description' => 'Toxbot이 나에 대해 저장한 모든 것과 대시보드 로그인을 삭제합니다.',
     'account_deletes' => '삭제: 언어와 색상, 모든 서버의 레벨, 크레딧, 배경, 내 태그(모든 서버), 내 스타보드 게시물, 프리미엄 서버 슬롯, 차단 해제 신청, 대시보드 접근 권한.',
     'account_anonymized' => '익명 처리: 티켓 기록 속 내 메시지는 서버를 위해 남지만 이름, ID, 아바타는 사라집니다.',
-    'account_keeps' => '유지: 각 서버에 속한 관리 기록과 Discord 구매 기록. 구매는 환불되지 않습니다.',
+    'account_keeps' => '유지: 서버가 나에 대해 만든 관리 기록과 Discord 구매 기록. 구매는 환불되지 않습니다.',
     'account_button' => '내 데이터 삭제',
     'account_deleted' => '데이터를 삭제하고 로그아웃했습니다.',
     'section_text' => ':section 페이지의 모든 설정을 기본값으로 되돌립니다.',

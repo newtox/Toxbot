@@ -18,7 +18,7 @@ return [
     'permanent' => 'Permanent',
     'rule_exists' => 'There is already a level for this number of warnings.',
     'duration_invalid' => 'Invalid duration. Use for example 10m, 2h or 7d.',
-    'timeout_max' => 'A timeout needs a duration of at most 28 days.',
+    'timeout_max' => 'A timeout can last at most 28 days.',
     'rules_limit' => 'At most :max warning levels are possible.',
     'action_warn' => 'Warn',
     'action_timeout' => 'Timeout',
@@ -99,6 +99,6 @@ return [
     'mod_error_timeout_max' => 'A timeout can last at most 28 days.',
     'mod_error_not_banned' => 'This user is not banned.',
     'mod_error_permission' => 'You don\'t have the Discord permission for this action.',
-    'mod_error_unknown' => 'Something went wrong, please try again.',
+    'mod_error_unknown' => 'Something went wrong. Please try again.',
     'members_description_member' => 'All members of the server with roles, levels and their profile.',
 ];

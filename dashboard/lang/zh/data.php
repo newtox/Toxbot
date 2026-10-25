@@ -19,7 +19,7 @@ return [
     'account_description' => '删除 Toxbot 保存的有关你的全部内容以及你的控制面板登录。',
     'account_deletes' => '删除：你的语言和颜色、你在所有服务器的等级、积分、背景、你的标签（所有服务器）、你的星标墙帖子、你的高级版服务器名额、解封申请以及你的控制面板访问权限。',
     'account_anonymized' => '将匿名：你在工单历史中的消息会为服务器保留，但不含名称、ID 和头像。',
-    'account_keeps' => '将保留：各服务器的管理记录（属于这些服务器）以及 Discord 的购买记录。购买不会退款。',
+    'account_keeps' => '将保留：服务器针对你创建的管理记录，以及 Discord 的购买记录。购买不会退款。',
     'account_button' => '删除我的数据',
     'account_deleted' => '你的数据已删除，你已退出登录。',
     'section_text' => '将“:section”页面的所有设置恢复为默认值。',

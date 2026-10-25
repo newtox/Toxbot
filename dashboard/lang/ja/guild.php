@@ -51,5 +51,5 @@ return [
     'language_label' => '言語',
     'autorole_after_verify' => '認証がオンです: 新メンバーには参加時ではなく、認証が済んでから自動ロールが付与されます。',
     'levelup_dm_title' => 'DM でも通知',
-    'levelup_dm_description' => 'このサーバーで新しいレベルに達したとき、Toxbot からも DM が届きます。単独でも使えます。',
+    'levelup_dm_description' => 'このサーバーで新しいレベルに達したとき、Toxbot からも DM が届きます。チャンネルへのメッセージがなくても使えます。',
 ];

@@ -19,7 +19,7 @@ return [
     'account_description' => 'Delete everything Toxbot stored about you and your dashboard login.',
     'account_deletes' => 'Deleted: your language and color, your levels on every server, credits, backgrounds, your tags (on every server), your starboard posts, your premium server slots, unban appeals and your dashboard login.',
     'account_anonymized' => 'Anonymized: your messages in ticket transcripts stay for the servers, but without your name, ID and avatar.',
-    'account_keeps' => 'Kept: moderation cases on servers, which belong to those servers, and purchase records from Discord. Purchases are not refunded.',
+    'account_keeps' => 'Kept: moderation cases that servers created about you, and purchase records from Discord. Purchases are not refunded.',
     'account_button' => 'Delete my data',
     'account_deleted' => 'Your data was deleted and you were logged out.',
     'section_text' => 'Resets every setting on the :section page to its default.',

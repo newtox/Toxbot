@@ -19,7 +19,7 @@ return [
     'placeholder_role' => 'Mentions the chosen role',
     'streamers' => 'Creators',
     'count' => ':count of :limit',
-    'not_configured' => 'Twitch or YouTube credentials are still missing in the configuration, notifications only arrive after that.',
+    'not_configured' => 'Twitch or YouTube credentials are still missing in the configuration. Notifications only arrive once they are added.',
     'platform' => 'Platform',
     'twitch_placeholder' => 'Twitch name or link',
     'youtube_placeholder' => '@handle, channel ID or link',

@@ -16,7 +16,7 @@ return [
     'confirm_blacklist' => 'Delete the tag and ban the owner from tags?',
     'delete_and_blacklist' => 'Delete and ban owner',
     'backgrounds_title' => 'Backgrounds',
-    'backgrounds_description' => 'What is in the shop. Switched off backgrounds stay bought but are not shown.',
+    'backgrounds_description' => 'What is in the shop. Backgrounds that are switched off stay owned but are not shown.',
     'image' => 'Image',
     'image_hint' => 'JPG, PNG or WebP up to 4 MB, ideally 1000 × 600 pixels.',
     'name' => 'Name',

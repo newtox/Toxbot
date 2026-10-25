@@ -15,7 +15,7 @@ return [
     'delete_data' => 'Удалить свои данные',
     'contact_title' => 'Контакты',
     'new_issue' => 'Сообщить об ошибке или предложить идею',
-    'commands_description' => 'Все слэш-команды Toxbot с их параметрами.',
+    'commands_description' => 'Все слеш-команды Toxbot с их параметрами.',
     'commands_search' => 'Поиск команд …',
     'commands_count' => ':shown из :total команд',
     'commands_restricted' => 'Нужны права',

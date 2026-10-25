@@ -51,5 +51,5 @@ return [
     'language_label' => 'Idioma',
     'autorole_after_verify' => 'La verificación está activada: los miembros nuevos reciben el autorol solo después de verificarse, no al unirse.',
     'levelup_dm_title' => 'También por MD',
-    'levelup_dm_description' => 'Los miembros también reciben un mensaje privado de Toxbot al subir de nivel en este servidor. También funciona por sí solo.',
+    'levelup_dm_description' => 'Los miembros también reciben un mensaje privado de Toxbot al subir de nivel en este servidor. También funciona sin el mensaje en el canal.',
 ];

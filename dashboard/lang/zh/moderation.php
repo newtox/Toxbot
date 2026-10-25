@@ -18,7 +18,7 @@ return [
     'permanent' => '永久',
     'rule_exists' => '该警告次数已存在等级。',
     'duration_invalid' => '时长无效。请使用例如 10m、2h 或 7d。',
-    'timeout_max' => '禁言需要不超过 28 天的时长。',
+    'timeout_max' => '禁言最长为 28 天。',
     'rules_limit' => '最多可以设置 :max 个警告等级。',
     'action_warn' => '警告',
     'action_timeout' => '禁言',
