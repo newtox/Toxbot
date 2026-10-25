@@ -9,15 +9,15 @@ import 'package:toxbot/utils/reply.dart';
 
 final wave = ChatCommand('wave', 'Wave.', localizedDescriptions: {
   Locale.da: 'Vink.',
-  Locale.de: 'Winke.',
+  Locale.de: 'Winken.',
   Locale.enUs: 'Wave.',
-  Locale.esEs: 'Saludar.',
-  Locale.fr: 'Faire signe.',
-  Locale.ru: 'Махать рукой.',
-  Locale.hi: 'हाथ हिलाना.',
-  Locale.zhCn: '挥手.',
-  Locale.ja: '手を振る.',
-  Locale.ko: '손을 흔들다.'
+  Locale.esEs: 'Saludar con la mano.',
+  Locale.fr: 'Faire coucou.',
+  Locale.ru: 'Помахать рукой.',
+  Locale.hi: 'हाथ हिलाएँ।',
+  Locale.zhCn: '挥手。',
+  Locale.ja: '手を振ります。',
+  Locale.ko: '손을 흔듭니다.'
 }, (ChatContext context) async {
   try {
     final httpPackageUrl = Uri.https('waifu.pics', 'api/sfw/wave');

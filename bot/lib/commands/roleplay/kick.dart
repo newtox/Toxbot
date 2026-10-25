@@ -9,27 +9,27 @@ import 'package:toxbot/utils/reply.dart';
 
 final kick = ChatCommand('kick', 'Kick someone.', localizedDescriptions: {
   Locale.da: 'Spark nogen.',
-  Locale.de: 'Tritt jemanden.',
+  Locale.de: 'Jemanden treten.',
   Locale.enUs: 'Kick someone.',
   Locale.esEs: 'Patear a alguien.',
   Locale.fr: 'Donner un coup de pied à quelqu\'un.',
-  Locale.ru: 'Пнуть кого-то.',
-  Locale.hi: 'किसी को लात मारो।',
+  Locale.ru: 'Пнуть кого-нибудь.',
+  Locale.hi: 'किसी को लात मारें।',
   Locale.zhCn: '踢某人。',
-  Locale.ja: '誰かを蹴る。',
-  Locale.ko: '누군가를 발로 차다.'
+  Locale.ja: '誰かを蹴ります。',
+  Locale.ko: '누군가를 찹니다.'
 }, (ChatContext context,
     [@Description('The user you want to kick.', {
-      Locale.da: 'Den bruger, du vil sparke.',
-      Locale.de: 'Der Benutzer, den du treten willst.',
+      Locale.da: 'Brugeren, du vil sparke.',
+      Locale.de: 'Der Nutzer, den du treten möchtest.',
       Locale.enUs: 'The user you want to kick.',
-      Locale.esEs: 'El usuario que quieres patear.',
-      Locale.fr: 'L\'utilisateur que vous voulez frapper.',
-      Locale.ru: 'Пользователь, которого вы хотите пнуть.',
+      Locale.esEs: 'El usuario al que quieres patear.',
+      Locale.fr: 'L\'utilisateur à qui tu veux donner un coup de pied.',
+      Locale.ru: 'Пользователь, которого хочешь пнуть.',
       Locale.hi: 'वह उपयोगकर्ता जिसे आप लात मारना चाहते हैं।',
       Locale.zhCn: '你想踢的用户。',
       Locale.ja: '蹴りたいユーザー。',
-      Locale.ko: '발로 차고 싶은 사용자.'
+      Locale.ko: '찰 사용자.'
     })
     User? user]) async {
   try {

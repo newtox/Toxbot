@@ -9,27 +9,27 @@ import 'package:toxbot/utils/reply.dart';
 
 final poke = ChatCommand('poke', 'Poke someone.', localizedDescriptions: {
   Locale.da: 'Prik til nogen.',
-  Locale.de: 'Stupse jemanden an.',
+  Locale.de: 'Jemanden anstupsen.',
   Locale.enUs: 'Poke someone.',
-  Locale.esEs: 'Tocar a alguien.',
-  Locale.fr: 'Pousser quelqu\'un.',
-  Locale.ru: 'Тыкнуть в кого-то.',
-  Locale.hi: 'किसी को चुटकी काटो।',
+  Locale.esEs: 'Dar un toque a alguien.',
+  Locale.fr: 'Taquiner quelqu\'un du doigt.',
+  Locale.ru: 'Ткнуть кого-нибудь.',
+  Locale.hi: 'किसी को कोंचें।',
   Locale.zhCn: '戳某人。',
-  Locale.ja: '誰かをつつく。',
-  Locale.ko: '누군가를 찌르다.'
+  Locale.ja: '誰かをつつきます。',
+  Locale.ko: '누군가를 콕 찌릅니다.'
 }, (ChatContext context,
     [@Description('The user you want to poke.', {
-      Locale.da: 'Den bruger, du vil prikke til.',
-      Locale.de: 'Der Benutzer, den du anstupsen willst.',
+      Locale.da: 'Brugeren, du vil prikke til.',
+      Locale.de: 'Der Nutzer, den du anstupsen möchtest.',
       Locale.enUs: 'The user you want to poke.',
-      Locale.esEs: 'El usuario que quieres tocar.',
-      Locale.fr: 'L\'utilisateur que vous voulez pousser.',
-      Locale.ru: 'Пользователь, в которого вы хотите тыкнуть.',
-      Locale.hi: 'वह उपयोगकर्ता जिसे आप चुटकी काटना चाहते हैं।',
+      Locale.esEs: 'El usuario al que quieres dar un toque.',
+      Locale.fr: 'L\'utilisateur que tu veux taquiner du doigt.',
+      Locale.ru: 'Пользователь, которого хочешь ткнуть.',
+      Locale.hi: 'वह उपयोगकर्ता जिसे आप कोंचना चाहते हैं।',
       Locale.zhCn: '你想戳的用户。',
       Locale.ja: 'つつきたいユーザー。',
-      Locale.ko: '찌르고 싶은 사용자.'
+      Locale.ko: '콕 찌를 사용자.'
     })
     User? user]) async {
   try {

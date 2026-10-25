@@ -8,18 +8,18 @@ import 'package:toxbot/utils/database.dart';
 import 'package:toxbot/utils/functions.dart';
 import 'package:toxbot/utils/utils.dart';
 
-final info = ChatCommand('info', 'Get generic information about the bot.',
+final info = ChatCommand('info', 'Show information about Toxbot.',
     localizedDescriptions: {
-      Locale.da: 'Få generel information om botten.',
-      Locale.de: 'Infos über den Bot holen.',
-      Locale.enUs: 'Get generic information about the bot.',
-      Locale.esEs: 'Obtener información general sobre el bot.',
-      Locale.fr: 'Obtenir des informations générales sur le bot.',
-      Locale.ru: 'Получить общую информацию о боте.',
-      Locale.hi: 'बॉट के बारे में सामान्य जानकारी प्राप्त करें।',
-      Locale.zhCn: '获取关于机器人的一般信息。',
-      Locale.ja: 'ボットに関する一般的な情報を取得する。',
-      Locale.ko: '봇에 대한 일반 정보 얻기.'
+      Locale.da: 'Vis oplysninger om Toxbot.',
+      Locale.de: 'Infos über Toxbot anzeigen.',
+      Locale.enUs: 'Show information about Toxbot.',
+      Locale.esEs: 'Mostrar información sobre Toxbot.',
+      Locale.fr: 'Afficher des informations sur Toxbot.',
+      Locale.ru: 'Показать информацию о Toxbot.',
+      Locale.hi: 'Toxbot के बारे में जानकारी दिखाएँ।',
+      Locale.zhCn: '显示 Toxbot 的信息。',
+      Locale.ja: 'Toxbot の情報を表示します。',
+      Locale.ko: 'Toxbot 정보를 표시합니다.'
     }, (ChatContext context) async {
   String getCurrentMemoryString() {
     final current = (ProcessInfo.currentRss / 1024 / 1024).toStringAsFixed(2);

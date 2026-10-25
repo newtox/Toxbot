@@ -4,55 +4,50 @@ import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:toxbot/utils/database.dart';
 import 'package:toxbot/utils/reply.dart';
 
-final autorole = ChatGroup('autorole', 'Set an autorole for your server.',
+final autorole = ChatGroup('autorole', 'Manage the role new members get.',
     localizedDescriptions: {
-      Locale.da: 'Sæt en automatisk rolle for din server.',
-      Locale.de: 'Stelle eine Autorolle für deinen Server ein.',
-      Locale.enUs: 'Set an autorole for your server.',
-      Locale.esEs: 'Establece un autorol para tu servidor.',
-      Locale.fr: 'Définir un rôle automatique pour votre serveur.',
-      Locale.ru: 'Установите автороль для вашего сервера.',
-      Locale.hi: 'अपने सर्वर के लिए ऑटोरोल सेट करें।',
-      Locale.zhCn: '为您的服务器设置自动角色。',
-      Locale.ja: 'サーバーのオートロールを設定する。',
-      Locale.ko: '서버에 대한 자동 역할 설정하기.'
+      Locale.da: 'Administrer rollen, som nye medlemmer får.',
+      Locale.de: 'Die Rolle für neue Mitglieder verwalten.',
+      Locale.enUs: 'Manage the role new members get.',
+      Locale.esEs: 'Gestionar el rol que reciben los nuevos miembros.',
+      Locale.fr: 'Gérer le rôle donné aux nouveaux membres.',
+      Locale.ru: 'Управлять ролью для новых участников.',
+      Locale.hi: 'नए सदस्यों को मिलने वाला रोल प्रबंधित करें।',
+      Locale.zhCn: '管理新成员获得的身份组。',
+      Locale.ja: '新しいメンバーに付与するロールを管理します。',
+      Locale.ko: '새 멤버에게 줄 역할을 관리합니다.'
     },
     checks: [
       GuildCheck.all(),
     ],
     children: [
-      ChatCommand('set', 'Set an autorole for your server.',
+      ChatCommand('set', 'Set the role new members get.',
           localizedDescriptions: {
-            Locale.da: 'Sæt en automatisk rolle for din server.',
-            Locale.de: 'Stelle eine Autorolle für deinen Server ein.',
-            Locale.enUs: 'Set an autorole for your server.',
-            Locale.esEs: 'Establece un autorol para tu servidor.',
-            Locale.fr: 'Définir un rôle automatique pour votre serveur.',
-            Locale.ru: 'Установите автороль для вашего сервера.',
-            Locale.hi: 'अपने सर्वर के लिए ऑटोरोल सेट करें।',
-            Locale.zhCn: '为您的服务器设置自动角色。',
-            Locale.ja: 'サーバーのオートロールを設定する。',
-            Locale.ko: '서버에 대한 자동 역할 설정하기.'
+            Locale.da: 'Indstil rollen, som nye medlemmer får.',
+            Locale.de: 'Die Rolle für neue Mitglieder festlegen.',
+            Locale.enUs: 'Set the role new members get.',
+            Locale.esEs: 'Establecer el rol que reciben los nuevos miembros.',
+            Locale.fr: 'Définir le rôle donné aux nouveaux membres.',
+            Locale.ru: 'Задать роль для новых участников.',
+            Locale.hi: 'नए सदस्यों को मिलने वाला रोल सेट करें।',
+            Locale.zhCn: '设置新成员获得的身份组。',
+            Locale.ja: '新しいメンバーに付与するロールを設定します。',
+            Locale.ko: '새 멤버에게 줄 역할을 설정합니다.'
           },
           checks: [
             PermissionsCheck(Permissions.manageGuild, allowsOverrides: false)
           ], (ChatContext context,
-              @Description('The role you want to set as autorole.', {
-                Locale.da:
-                    'Den rolle, du ønsker at sætte som automatisk rolle.',
-                Locale.de:
-                    'Die Rolle, die du als Autorolle festlegen möchtest.',
-                Locale.enUs: 'The role you want to set as autorole.',
-                Locale.esEs: 'El rol que deseas establecer como autorol.',
-                Locale.fr:
-                    'Le rôle que vous souhaitez définir comme rôle automatique.',
-                Locale.ru:
-                    'Роль, которую вы хотите установить в качестве автороли.',
-                Locale.hi:
-                    'वह भूमिका जिसे आप ऑटोरोल के रूप में सेट करना चाहते हैं।',
-                Locale.zhCn: '你想设置为自动分配的角色。',
-                Locale.ja: 'オートロールとして設定したいロール。',
-                Locale.ko: '자동 역할로 설정하고자 하는 역할.'
+              @Description('The role new members get.', {
+                Locale.da: 'Rollen, som nye medlemmer får.',
+                Locale.de: 'Die Rolle, die neue Mitglieder bekommen.',
+                Locale.enUs: 'The role new members get.',
+                Locale.esEs: 'El rol que reciben los nuevos miembros.',
+                Locale.fr: 'Le rôle donné aux nouveaux membres.',
+                Locale.ru: 'Роль, которую получают новые участники.',
+                Locale.hi: 'वह रोल जो नए सदस्यों को मिलता है।',
+                Locale.zhCn: '新成员获得的身份组。',
+                Locale.ja: '新しいメンバーに付与するロール。',
+                Locale.ko: '새 멤버가 받을 역할.'
               })
               Role? role) async {
         final connection = await getMySqlConnection();
@@ -95,19 +90,18 @@ final autorole = ChatGroup('autorole', 'Set an autorole for your server.',
           return;
         }
       }),
-      ChatCommand('show', 'Displays the current autorole.',
-          localizedDescriptions: {
-            Locale.da: 'Viser den nuværende automatisk rolle.',
-            Locale.de: 'Zeigt die aktuelle Autorolle an.',
-            Locale.enUs: 'Displays the current autorole.',
-            Locale.esEs: 'Muestra el autorol actual.',
-            Locale.fr: 'Affiche le rôle automatique actuel.',
-            Locale.ru: 'Показывает текущую автороль.',
-            Locale.hi: 'वर्तमान ऑटोरोल प्रदर्शित करता है।',
-            Locale.zhCn: '显示当前的自动角色。',
-            Locale.ja: '現在の自動ロールを表示します。',
-            Locale.ko: '현재 자동 역할을 표시합니다.'
-          }, (ChatContext context) async {
+      ChatCommand('show', 'Show the current autorole.', localizedDescriptions: {
+        Locale.da: 'Vis den nuværende autorolle.',
+        Locale.de: 'Die aktuelle Autorole anzeigen.',
+        Locale.enUs: 'Show the current autorole.',
+        Locale.esEs: 'Mostrar el autorol actual.',
+        Locale.fr: 'Afficher le rôle automatique actuel.',
+        Locale.ru: 'Показать текущую автороль.',
+        Locale.hi: 'मौजूदा ऑटोरोल दिखाएँ।',
+        Locale.zhCn: '显示当前的自动身份组。',
+        Locale.ja: '現在の自動ロールを表示します。',
+        Locale.ko: '현재 자동 역할을 표시합니다.'
+      }, (ChatContext context) async {
         final connection = await getMySqlConnection();
 
         var results = await connection.query(
@@ -130,27 +124,18 @@ final autorole = ChatGroup('autorole', 'Set an autorole for your server.',
           }
         }
       }),
-      ChatCommand(
-          'reset', 'Use this option if you want to reset the current autorole.',
-          localizedDescriptions: {
-            Locale.da:
-                'Brug denne mulighed, hvis du ønsker at nulstille den nuværende automatisk rolle.',
-            Locale.de:
-                'Verwende diese Option, wenn du die aktuelle Autorolle zurücksetzen möchtest.',
-            Locale.enUs:
-                'Use this option if you want to reset the current autorole.',
-            Locale.esEs:
-                'Usa esta opción si quieres restablecer el autorol actual.',
-            Locale.fr:
-                'Utilisez cette option si vous souhaitez réinitialiser l\'autorole actuelle.',
-            Locale.ru:
-                'Используйте эту опцию, если хотите сбросить текущую автороль.',
-            Locale.hi:
-                'यदि आप वर्तमान ऑटोरोल को रीसेट करना चाहते हैं तो इस विकल्प का उपयोग करें।',
-            Locale.zhCn: '如果您想重置当前的自动角色，请使用此选项。',
-            Locale.ja: 'このオプションを使用して、現在の自動ロールをリセットします。',
-            Locale.ko: '현재 자동 역할을 초기화하려면 이 옵션을 사용하세요.'
-          }, (ChatContext context) async {
+      ChatCommand('reset', 'Remove the autorole.', localizedDescriptions: {
+        Locale.da: 'Fjern autorollen.',
+        Locale.de: 'Die Autorole entfernen.',
+        Locale.enUs: 'Remove the autorole.',
+        Locale.esEs: 'Quitar el autorol.',
+        Locale.fr: 'Retirer le rôle automatique.',
+        Locale.ru: 'Убрать автороль.',
+        Locale.hi: 'ऑटोरोल हटाएँ।',
+        Locale.zhCn: '移除自动身份组。',
+        Locale.ja: '自動ロールを解除します。',
+        Locale.ko: '자동 역할을 해제합니다.'
+      }, (ChatContext context) async {
         final connection = await getMySqlConnection();
 
         var results = await connection.query(

@@ -21,31 +21,32 @@ const languageCodeConverter = SimpleConverter.fixed(
   stringify: stringifyOption,
 );
 
-final language = ChatCommand('language', 'Set your preferred language.',
+final language = ChatCommand(
+    'language', 'Set the language Toxbot uses with you.',
     localizedDescriptions: {
-      Locale.da: 'Sæt dit foretrukne sprog.',
-      Locale.de: 'Setze deine bevorzugte Sprache.',
-      Locale.enUs: 'Set your preferred language.',
-      Locale.esEs: 'Establezca su idioma preferido.',
-      Locale.fr: 'Définissez votre langue préférée.',
-      Locale.ru: 'Установите предпочтительный язык.',
-      Locale.hi: 'अपनी पसंदीदा भाषा सेट करें।',
-      Locale.zhCn: '设置您偏好的语言。',
-      Locale.ja: '好みの言語を設定してください。',
-      Locale.ko: '선호하는 언어를 설정하세요.'
+      Locale.da: 'Indstil det sprog, Toxbot bruger med dig.',
+      Locale.de: 'Die Sprache festlegen, in der Toxbot mit dir spricht.',
+      Locale.enUs: 'Set the language Toxbot uses with you.',
+      Locale.esEs: 'Establecer el idioma que Toxbot usa contigo.',
+      Locale.fr: 'Définir la langue que Toxbot utilise avec toi.',
+      Locale.ru: 'Задать язык, на котором Toxbot общается с тобой.',
+      Locale.hi: 'वह भाषा सेट करें जिसमें Toxbot आपसे बात करे।',
+      Locale.zhCn: '设置 Toxbot 与你交流时使用的语言。',
+      Locale.ja: 'Toxbot があなたに使う言語を設定します。',
+      Locale.ko: 'Toxbot이 사용할 언어를 설정합니다.'
     }, (ChatContext context,
         [@UseConverter(languageCodeConverter)
-        @Description('The language you want to use.', {
-          Locale.da: 'Det sprog, du ønsker at bruge.',
-          Locale.de: 'Die Sprache, die du verwenden möchtest.',
-          Locale.enUs: 'The language you want to use.',
-          Locale.esEs: 'El idioma que desea usar.',
-          Locale.fr: 'La langue que vous souhaitez utiliser.',
-          Locale.ru: 'Язык, который вы хотите использовать.',
-          Locale.hi: 'आप जिस भाषा का उपयोग करना चाहते हैं।',
-          Locale.zhCn: '您想要使用的语言。',
-          Locale.ja: '使用したい言語。',
-          Locale.ko: '사용하고자 하는 언어입니다.'
+        @Description('The language you want.', {
+          Locale.da: 'Det sprog, du vil have.',
+          Locale.de: 'Die Sprache, die du möchtest.',
+          Locale.enUs: 'The language you want.',
+          Locale.esEs: 'El idioma que quieres.',
+          Locale.fr: 'La langue que tu veux.',
+          Locale.ru: 'Язык, который тебе нужен.',
+          Locale.hi: 'वह भाषा जो आप चाहते हैं।',
+          Locale.zhCn: '你想使用的语言。',
+          Locale.ja: '使いたい言語。',
+          Locale.ko: '사용할 언어.'
         })
         String? selectedLanguage]) async {
   selectedLanguage ??= await context.getSelection<String>(

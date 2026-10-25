@@ -11,91 +11,90 @@ const announcementTypeConverter = SimpleConverter.fixed(
   stringify: stringifyOption,
 );
 
-final announcements = ChatGroup('announcements', 'Manage server announcements.',
+final announcements = ChatGroup(
+    'announcements', 'Manage the welcome and goodbye messages.',
     localizedDescriptions: {
-      Locale.da: 'Administrer servermeddelelser.',
-      Locale.de: 'Server-Ankündigungen verwalten.',
-      Locale.enUs: 'Manage server announcements.',
-      Locale.esEs: 'Gestionar anuncios del servidor.',
-      Locale.fr: 'Gérer les annonces du serveur.',
-      Locale.ru: 'Управление объявлениями сервера.',
-      Locale.hi: 'सर्वर घोषणाओं का प्रबंधन करें।',
-      Locale.zhCn: '管理服务器公告。',
-      Locale.ja: 'サーバーのお知らせを管理する。',
-      Locale.ko: '서버 공지사항 관리.'
+      Locale.da: 'Administrer velkomst- og farvelbeskeder.',
+      Locale.de: 'Willkommens- und Abschiedsnachrichten verwalten.',
+      Locale.enUs: 'Manage the welcome and goodbye messages.',
+      Locale.esEs: 'Gestionar los mensajes de bienvenida y despedida.',
+      Locale.fr: 'Gérer les messages de bienvenue et d\'au revoir.',
+      Locale.ru: 'Управлять приветствиями и прощаниями.',
+      Locale.hi: 'स्वागत और विदाई संदेश प्रबंधित करें।',
+      Locale.zhCn: '管理欢迎和告别消息。',
+      Locale.ja: '歓迎メッセージとお別れメッセージを管理します。',
+      Locale.ko: '환영 및 작별 메시지를 관리합니다.'
     },
     checks: [
       GuildCheck.all(),
     ],
     children: [
-      ChatCommand(
-          'set', 'Set up or update the announcement channel and message.',
+      ChatCommand('set', 'Set the channel and message for joins or leaves.',
           localizedDescriptions: {
-            Locale.da: 'Opsæt eller opdater meddelelseskanal og besked.',
+            Locale.da:
+                'Indstil kanal og besked for nye eller forladte medlemmer.',
             Locale.de:
-                'Ankündigungskanal und Nachricht einrichten oder aktualisieren.',
-            Locale.enUs:
-                'Set up or update the announcement channel and message.',
+                'Kanal und Nachricht für Beitritte oder Abgänge festlegen.',
+            Locale.enUs: 'Set the channel and message for joins or leaves.',
             Locale.esEs:
-                'Configurar o actualizar el canal de anuncios y el mensaje.',
+                'Establecer el canal y el mensaje para llegadas o salidas.',
             Locale.fr:
-                'Configurer ou mettre à jour le canal d\'annonce et le message.',
-            Locale.ru:
-                'Настройка или обновление канала для объявлений и сообщения.',
-            Locale.hi: 'घोषणा चैनल और संदेश सेट अप करें या अपडेट करें।',
-            Locale.zhCn: '设置或更新公告频道和消息。',
-            Locale.ja: 'アナウンスチャンネルとメッセージを設定または更新する。',
-            Locale.ko: '공지 채널 및 메시지를 설정하거나 업데이트합니다.'
+                'Définir le salon et le message pour les arrivées ou les départs.',
+            Locale.ru: 'Задать канал и сообщение для входа или выхода.',
+            Locale.hi: 'जुड़ने या जाने के लिए चैनल और संदेश सेट करें।',
+            Locale.zhCn: '设置加入或离开时的频道和消息。',
+            Locale.ja: '参加時または退出時のチャンネルとメッセージを設定します。',
+            Locale.ko: '입장 또는 퇴장 시 채널과 메시지를 설정합니다.'
           },
           checks: [
             PermissionsCheck(Permissions.manageChannels, allowsOverrides: false)
           ], (ChatContext context,
-              @Description(
-                  'Whether this setting is for members joining or leaving.', {
-                Locale.da:
-                    'Om denne indstilling gælder for medlemmer, der tiltræder eller forlader.',
+              @Description('Whether it is about members joining or leaving.', {
+                Locale.da: 'Om det gælder medlemmer, der kommer eller går.',
                 Locale.de:
-                    'Ob diese Einstellung für Mitglieder gilt, die beitreten oder verlassen.',
-                Locale.enUs:
-                    'Whether this setting is for members joining or leaving.',
-                Locale.esEs:
-                    'Si esta configuración es para miembros que se unen o se van.',
+                    'Ob es um Mitglieder geht, die beitreten oder gehen.',
+                Locale.enUs: 'Whether it is about members joining or leaving.',
+                Locale.esEs: 'Si se trata de miembros que llegan o se van.',
                 Locale.fr:
-                    'Si ce paramètre concerne les membres qui rejoignent ou qui quittent.',
-                Locale.ru:
-                    'Является ли эта настройка для членов, присоединяющихся или покидающих.',
-                Locale.hi:
-                    'यह सेटिंग सदस्यों के जुड़ने या छोड़ने के लिए है या नहीं।',
-                Locale.zhCn: '这个设置是否适用于加入或离开的成员。',
-                Locale.ja: 'この設定がメンバー加入または離脱に関係するかどうか。',
-                Locale.ko: '이 설정이 회원 가입 또는 탈퇴에 해당하는지 여부.'
+                    'S\'il s\'agit des membres qui arrivent ou qui partent.',
+                Locale.ru: 'Для входящих или уходящих участников.',
+                Locale.hi: 'जुड़ने वाले या जाने वाले सदस्यों के लिए।',
+                Locale.zhCn: '针对加入还是离开的成员。',
+                Locale.ja: '参加するメンバーか退出するメンバーか。',
+                Locale.ko: '입장하는 멤버인지 퇴장하는 멤버인지.'
               })
               @UseConverter(announcementTypeConverter)
               String type,
-              @Description('The channel where announcements will be sent.', {
-                Locale.da: 'Kanal, hvor meddelelser vil blive sendt.',
-                Locale.de: 'Der Kanal, in dem Ankündigungen gesendet werden.',
-                Locale.enUs: 'The channel where announcements will be sent.',
-                Locale.esEs: 'El canal donde se enviarán los anuncios.',
-                Locale.fr: 'Le canal où les annonces seront envoyées.',
-                Locale.ru: 'Канал, куда будут отправляться объявления.',
-                Locale.hi: 'वह चैनल जहाँ घोषणाएँ भेजी जाएँगी।',
-                Locale.zhCn: '发送公告的频道。',
-                Locale.ja: 'お知らせが送られるチャンネル。',
-                Locale.ko: '공지가 전송될 채널.'
+              @Description('The channel the message is sent to.', {
+                Locale.da: 'Kanalen, beskeden sendes til.',
+                Locale.de: 'Der Kanal, in den die Nachricht geschickt wird.',
+                Locale.enUs: 'The channel the message is sent to.',
+                Locale.esEs: 'El canal al que se envía el mensaje.',
+                Locale.fr: 'Le salon où le message est envoyé.',
+                Locale.ru: 'Канал, куда отправляется сообщение.',
+                Locale.hi: 'वह चैनल जिसमें संदेश भेजा जाता है।',
+                Locale.zhCn: '发送消息的频道。',
+                Locale.ja: 'メッセージを送るチャンネル。',
+                Locale.ko: '메시지를 보낼 채널.'
               })
               GuildTextChannel channel,
-              @Description('Announce msg. &user, &server, &mention repl.', {
-                Locale.da: 'Medd til annonc. &user, &server, &mention erst.',
-                Locale.de: 'Nachricht f. Ankünd. &user, &server, &mention.',
-                Locale.enUs: 'Announce msg. &user, &server, &mention repl.',
-                Locale.esEs: 'Msg anuncio. &user, &server, &mention cambiados.',
-                Locale.fr: 'Msg annonce. &user, &server, &mention remplacés.',
-                Locale.ru: 'Объявление. &user, &server, &mention заменены.',
-                Locale.hi: 'घोषणा संदेश. &user, &server, &mention बदले.',
-                Locale.zhCn: '公告消息。&user, &server, &mention 替换。',
-                Locale.ja: '発表メッセージ。&user, &server, &mention置換。',
-                Locale.ko: '공지 메시지. &user, &server, &mention 대체.'
+              @Description(
+                  'The message. &user, &server and &mention are replaced.', {
+                Locale.da: 'Beskeden. &user, &server og &mention erstattes.',
+                Locale.de:
+                    'Die Nachricht. &user, &server und &mention werden ersetzt.',
+                Locale.enUs:
+                    'The message. &user, &server and &mention are replaced.',
+                Locale.esEs:
+                    'El mensaje. Se reemplazan &user, &server y &mention.',
+                Locale.fr:
+                    'Le message. &user, &server et &mention sont remplacés.',
+                Locale.ru: 'Сообщение. &user, &server и &mention заменяются.',
+                Locale.hi:
+                    'संदेश। &user, &server और &mention बदल दिए जाते हैं।',
+                Locale.zhCn: '消息内容。&user、&server 和 &mention 会被替换。',
+                Locale.ja: 'メッセージ。&user、&server、&mention は置き換えられます。',
+                Locale.ko: '메시지. &user, &server, &mention은 바뀝니다.'
               })
               String message) async {
         final connection = await getMySqlConnection();
@@ -121,19 +120,21 @@ final announcements = ChatGroup('announcements', 'Manage server announcements.',
           await connection.close();
         }
       }),
-      ChatCommand('show', 'Displays the current announcement settings.',
+      ChatCommand('show', 'Show the current welcome and goodbye settings.',
           localizedDescriptions: {
-            Locale.da: 'Vis de nuværende indstillinger for meddelelser.',
+            Locale.da: 'Vis de nuværende indstillinger for velkomst og farvel.',
             Locale.de:
-                'Zeigt die aktuellen Einstellungen für Ankündigungen an.',
-            Locale.enUs: 'Displays the current announcement settings.',
-            Locale.esEs: 'Mostrar la configuración actual de anuncios.',
-            Locale.fr: 'Afficher les paramètres actuels des annonces.',
-            Locale.ru: 'Показать текущие настройки объявлений.',
-            Locale.hi: 'वर्तमान घोषणा सेटिंग्स दिखाएं।',
-            Locale.zhCn: '显示当前的公告设置。',
-            Locale.ja: '現在の告知設定を表示する。',
-            Locale.ko: '현재 공지 설정 표시.'
+                'Die aktuellen Einstellungen für Willkommen und Abschied anzeigen.',
+            Locale.enUs: 'Show the current welcome and goodbye settings.',
+            Locale.esEs:
+                'Mostrar los ajustes actuales de bienvenida y despedida.',
+            Locale.fr:
+                'Afficher les paramètres actuels de bienvenue et d\'au revoir.',
+            Locale.ru: 'Показать текущие настройки приветствия и прощания.',
+            Locale.hi: 'मौजूदा स्वागत और विदाई सेटिंग दिखाएँ।',
+            Locale.zhCn: '显示当前的欢迎和告别设置。',
+            Locale.ja: '現在の歓迎とお別れの設定を表示します。',
+            Locale.ko: '현재 환영 및 작별 설정을 표시합니다.'
           }, (ChatContext context) async {
         final connection = await getMySqlConnection();
 
@@ -196,41 +197,35 @@ final announcements = ChatGroup('announcements', 'Manage server announcements.',
           }
         }
       }),
-      ChatCommand('reset', 'Reset the announcement settings.',
+      ChatCommand('reset', 'Reset the welcome or goodbye message.',
           localizedDescriptions: {
-            Locale.da: 'Nulstil indstillingerne for meddelelser.',
-            Locale.de: 'Setze die Ankündigungseinstellungen zurück.',
-            Locale.enUs: 'Reset the announcement settings.',
-            Locale.esEs: 'Restablecer la configuración de anuncios.',
-            Locale.fr: 'Réinitialiser les paramètres des annonces.',
-            Locale.ru: 'Сбросить настройки объявлений.',
-            Locale.hi: 'घोषणा सेटिंग्स रीसेट करें।',
-            Locale.zhCn: '重置公告设置。',
-            Locale.ja: '告知設定をリセットする。',
-            Locale.ko: '공지 설정 초기화.'
+            Locale.da: 'Nulstil velkomst- eller farvelbeskeden.',
+            Locale.de: 'Die Willkommens- oder Abschiedsnachricht zurücksetzen.',
+            Locale.enUs: 'Reset the welcome or goodbye message.',
+            Locale.esEs: 'Restablecer el mensaje de bienvenida o despedida.',
+            Locale.fr: 'Réinitialiser le message de bienvenue ou d\'au revoir.',
+            Locale.ru: 'Сбросить приветствие или прощание.',
+            Locale.hi: 'स्वागत या विदाई संदेश रीसेट करें।',
+            Locale.zhCn: '重置欢迎或告别消息。',
+            Locale.ja: '歓迎メッセージまたはお別れメッセージをリセットします。',
+            Locale.ko: '환영 또는 작별 메시지를 초기화합니다.'
           },
           checks: [
             PermissionsCheck(Permissions.manageChannels, allowsOverrides: false)
           ], (ChatContext context,
-              @Description(
-                  'Whether this setting is for members joining or leaving.', {
-                Locale.da:
-                    'Om denne indstilling gælder for medlemmer, der tiltræder eller forlader.',
+              @Description('Whether it is about members joining or leaving.', {
+                Locale.da: 'Om det gælder medlemmer, der kommer eller går.',
                 Locale.de:
-                    'Ob diese Einstellung für Mitglieder gilt, die beitreten oder verlassen.',
-                Locale.enUs:
-                    'Whether this setting is for members joining or leaving.',
-                Locale.esEs:
-                    'Si esta configuración es para miembros que se unen o se van.',
+                    'Ob es um Mitglieder geht, die beitreten oder gehen.',
+                Locale.enUs: 'Whether it is about members joining or leaving.',
+                Locale.esEs: 'Si se trata de miembros que llegan o se van.',
                 Locale.fr:
-                    'Si ce paramètre concerne les membres qui rejoignent ou qui quittent.',
-                Locale.ru:
-                    'Является ли эта настройка для членов, присоединяющихся или покидающих.',
-                Locale.hi:
-                    'यह सेटिंग सदस्यों के जुड़ने या छोड़ने के लिए है या नहीं।',
-                Locale.zhCn: '这个设置是否适用于加入或离开的成员。',
-                Locale.ja: 'この設定がメンバー加入または離脱に関係するかどうか。',
-                Locale.ko: '이 설정이 회원 가입 또는 탈퇴에 해당하는지 여부.'
+                    'S\'il s\'agit des membres qui arrivent ou qui partent.',
+                Locale.ru: 'Для входящих или уходящих участников.',
+                Locale.hi: 'जुड़ने वाले या जाने वाले सदस्यों के लिए।',
+                Locale.zhCn: '针对加入还是离开的成员。',
+                Locale.ja: '参加するメンバーか退出するメンバーか。',
+                Locale.ko: '입장하는 멤버인지 퇴장하는 멤버인지.'
               })
               @UseConverter(announcementTypeConverter)
               String type) async {

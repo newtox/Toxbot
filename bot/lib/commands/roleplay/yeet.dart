@@ -8,28 +8,28 @@ import 'package:toxbot/utils/functions.dart';
 import 'package:toxbot/utils/reply.dart';
 
 final yeet = ChatCommand('yeet', 'Yeet someone.', localizedDescriptions: {
-  Locale.da: 'Kast nogen.',
-  Locale.de: 'Schleudere jemanden.',
+  Locale.da: 'Kast nogen væk.',
+  Locale.de: 'Jemanden wegschleudern.',
   Locale.enUs: 'Yeet someone.',
-  Locale.esEs: 'Lanzar a alguien.',
+  Locale.esEs: 'Lanzar a alguien por los aires.',
   Locale.fr: 'Balancer quelqu\'un.',
-  Locale.ru: 'Швырнуть кого-то.',
-  Locale.hi: 'किसी को फेंको।',
-  Locale.zhCn: '扔掉某人。',
-  Locale.ja: '誰かを投げ飛ばす。',
-  Locale.ko: '누군가를 던지다.'
+  Locale.ru: 'Швырнуть кого-нибудь.',
+  Locale.hi: 'किसी को दूर उछालें।',
+  Locale.zhCn: '把某人扔飞。',
+  Locale.ja: '誰かを投げ飛ばします。',
+  Locale.ko: '누군가를 던져 버립니다.'
 }, (ChatContext context,
     [@Description('The user you want to yeet.', {
-      Locale.da: 'Den bruger, du vil kaste.',
-      Locale.de: 'Der Benutzer, den du wegschleudern willst.',
+      Locale.da: 'Brugeren, du vil kaste væk.',
+      Locale.de: 'Der Nutzer, den du wegschleudern möchtest.',
       Locale.enUs: 'The user you want to yeet.',
-      Locale.esEs: 'El usuario que quieres lanzar.',
-      Locale.fr: 'L\'utilisateur que vous voulez balancer.',
-      Locale.ru: 'Пользователь, которого вы хотите швырнуть.',
-      Locale.hi: 'वह उपयोगकर्ता जिसे आप फेंकना चाहते हैं।',
-      Locale.zhCn: '你想扔掉的用户。',
+      Locale.esEs: 'El usuario al que quieres lanzar por los aires.',
+      Locale.fr: 'L\'utilisateur que tu veux balancer.',
+      Locale.ru: 'Пользователь, которого хочешь швырнуть.',
+      Locale.hi: 'वह उपयोगकर्ता जिसे आप दूर उछालना चाहते हैं।',
+      Locale.zhCn: '你想扔飞的用户。',
       Locale.ja: '投げ飛ばしたいユーザー。',
-      Locale.ko: '던지고 싶은 사용자.'
+      Locale.ko: '던져 버릴 사용자.'
     })
     User? user]) async {
   try {

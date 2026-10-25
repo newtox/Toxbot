@@ -7,17 +7,17 @@ import 'package:toxbot/utils/database.dart';
 import 'package:toxbot/utils/functions.dart';
 import 'package:toxbot/utils/reply.dart';
 
-final smug = ChatCommand('smug', 'Be smug.', localizedDescriptions: {
-  Locale.da: 'Vær selvtilfreds.',
-  Locale.de: 'Selbstgefällig sein.',
-  Locale.enUs: 'Be smug.',
-  Locale.esEs: 'Ser presumido.',
-  Locale.fr: 'Être suffisant.',
-  Locale.ru: 'Быть самодовольным.',
-  Locale.hi: 'घमंडी बनो।',
-  Locale.zhCn: '得意.',
-  Locale.ja: '得意げにする.',
-  Locale.ko: '잘난 체하다.'
+final smug = ChatCommand('smug', 'Look smug.', localizedDescriptions: {
+  Locale.da: 'Se selvtilfreds ud.',
+  Locale.de: 'Selbstgefällig gucken.',
+  Locale.enUs: 'Look smug.',
+  Locale.esEs: 'Poner cara de suficiencia.',
+  Locale.fr: 'Prendre un air suffisant.',
+  Locale.ru: 'Самодовольно ухмыльнуться.',
+  Locale.hi: 'घमंडी अंदाज़ में मुस्कुराएँ।',
+  Locale.zhCn: '得意一笑。',
+  Locale.ja: 'ドヤ顔をします。',
+  Locale.ko: '의기양양한 표정을 짓습니다.'
 }, (ChatContext context) async {
   try {
     final httpPackageUrl = Uri.https('waifu.pics', 'api/sfw/smug');

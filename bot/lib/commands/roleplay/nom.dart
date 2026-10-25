@@ -8,28 +8,28 @@ import 'package:toxbot/utils/functions.dart';
 import 'package:toxbot/utils/reply.dart';
 
 final nom = ChatCommand('nom', 'Nom someone.', localizedDescriptions: {
-  Locale.da: 'Spis nogen.',
-  Locale.de: 'Knabbere jemanden an.',
+  Locale.da: 'Gnask på nogen.',
+  Locale.de: 'Jemanden anknabbern.',
   Locale.enUs: 'Nom someone.',
   Locale.esEs: 'Mordisquear a alguien.',
   Locale.fr: 'Grignoter quelqu\'un.',
-  Locale.ru: 'Кусать кого-то.',
-  Locale.hi: 'किसी को खाओ।',
-  Locale.zhCn: '啃咬某人。',
-  Locale.ja: '誰かを食べる。',
-  Locale.ko: '누군가를 먹다.'
+  Locale.ru: 'Покусать кого-нибудь.',
+  Locale.hi: 'किसी को कुतरें।',
+  Locale.zhCn: '啃某人。',
+  Locale.ja: '誰かをかじります。',
+  Locale.ko: '누군가를 냠냠합니다.'
 }, (ChatContext context,
     [@Description('The user you want to nom.', {
-      Locale.da: 'Den bruger, du vil spise.',
-      Locale.de: 'Der Benutzer, den du anknabbern willst.',
+      Locale.da: 'Brugeren, du vil gnaske på.',
+      Locale.de: 'Der Nutzer, den du anknabbern möchtest.',
       Locale.enUs: 'The user you want to nom.',
-      Locale.esEs: 'El usuario que quieres mordisquear.',
-      Locale.fr: 'L\'utilisateur que vous voulez grignoter.',
-      Locale.ru: 'Пользователь, которого вы хотите укусить.',
-      Locale.hi: 'वह उपयोगकर्ता जिसे आप खाना चाहते हैं।',
-      Locale.zhCn: '你想啃咬的用户。',
-      Locale.ja: '食べたいユーザー。',
-      Locale.ko: '먹고 싶은 사용자.'
+      Locale.esEs: 'El usuario al que quieres mordisquear.',
+      Locale.fr: 'L\'utilisateur que tu veux grignoter.',
+      Locale.ru: 'Пользователь, которого хочешь покусать.',
+      Locale.hi: 'वह उपयोगकर्ता जिसे आप कुतरना चाहते हैं।',
+      Locale.zhCn: '你想啃的用户。',
+      Locale.ja: 'かじりたいユーザー。',
+      Locale.ko: '냠냠할 사용자.'
     })
     User? user]) async {
   try {

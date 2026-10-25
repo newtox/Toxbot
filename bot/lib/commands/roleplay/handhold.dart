@@ -9,28 +9,28 @@ import 'package:toxbot/utils/reply.dart';
 
 final handhold =
     ChatCommand('handhold', 'Hold someone\'s hand.', localizedDescriptions: {
-  Locale.da: 'Hold i hånd med nogen.',
-  Locale.de: 'Halte jemandes Hand.',
+  Locale.da: 'Hold nogen i hånden.',
+  Locale.de: 'Mit jemandem Händchen halten.',
   Locale.enUs: 'Hold someone\'s hand.',
   Locale.esEs: 'Tomar la mano de alguien.',
   Locale.fr: 'Tenir la main de quelqu\'un.',
-  Locale.ru: 'Держать кого-то за руку.',
-  Locale.hi: 'किसी का हाथ पकड़ो।',
+  Locale.ru: 'Взять кого-нибудь за руку.',
+  Locale.hi: 'किसी का हाथ पकड़ें।',
   Locale.zhCn: '牵某人的手。',
-  Locale.ja: '誰かと手をつなぐ。',
-  Locale.ko: '누군가의 손을 잡다.'
+  Locale.ja: '誰かと手をつなぎます。',
+  Locale.ko: '누군가의 손을 잡습니다.'
 }, (ChatContext context,
         [@Description('The user whose hand you want to hold.', {
-          Locale.da: 'Den bruger, hvis hånd du vil holde.',
-          Locale.de: 'Der Benutzer, dessen Hand du halten willst.',
+          Locale.da: 'Brugeren, du vil holde i hånden.',
+          Locale.de: 'Der Nutzer, mit dem du Händchen halten möchtest.',
           Locale.enUs: 'The user whose hand you want to hold.',
-          Locale.esEs: 'El usuario cuya mano quieres tomar.',
-          Locale.fr: 'L\'utilisateur dont vous voulez tenir la main.',
-          Locale.ru: 'Пользователь, чью руку вы хотите держать.',
+          Locale.esEs: 'El usuario al que quieres tomar de la mano.',
+          Locale.fr: 'L\'utilisateur dont tu veux tenir la main.',
+          Locale.ru: 'Пользователь, которого хочешь взять за руку.',
           Locale.hi: 'वह उपयोगकर्ता जिसका हाथ आप पकड़ना चाहते हैं।',
           Locale.zhCn: '你想牵手的用户。',
           Locale.ja: '手をつなぎたいユーザー。',
-          Locale.ko: '손을 잡고 싶은 사용자.'
+          Locale.ko: '손을 잡을 사용자.'
         })
         User? user]) async {
   try {

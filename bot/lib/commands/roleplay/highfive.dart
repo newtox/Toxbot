@@ -9,28 +9,28 @@ import 'package:toxbot/utils/reply.dart';
 
 final highfive =
     ChatCommand('highfive', 'High five someone.', localizedDescriptions: {
-  Locale.da: 'Giv high five til nogen.',
-  Locale.de: 'Gib jemanden ein High Five.',
+  Locale.da: 'Giv nogen en high five.',
+  Locale.de: 'Jemandem ein High Five geben.',
   Locale.enUs: 'High five someone.',
   Locale.esEs: 'Chocar los cinco con alguien.',
-  Locale.fr: 'Faire un high five à quelqu\'un.',
-  Locale.ru: 'Дать пять кому-то.',
-  Locale.hi: 'किसी को हाई फाइव करो।',
-  Locale.zhCn: '与某人击掌。',
-  Locale.ja: '誰かとハイタッチする。',
-  Locale.ko: '누군가와 하이파이브하다.'
+  Locale.fr: 'Taper dans la main de quelqu\'un.',
+  Locale.ru: 'Дать кому-нибудь пять.',
+  Locale.hi: 'किसी को हाई फ़ाइव दें।',
+  Locale.zhCn: '和某人击掌。',
+  Locale.ja: '誰かとハイタッチします。',
+  Locale.ko: '누군가와 하이파이브합니다.'
 }, (ChatContext context,
         [@Description('The user you want to high five.', {
-          Locale.da: 'Den bruger, du vil give high five til.',
-          Locale.de: 'Der Benutzer, dem du ein High Five geben willst.',
+          Locale.da: 'Brugeren, du vil give en high five.',
+          Locale.de: 'Der Nutzer, dem du ein High Five geben möchtest.',
           Locale.enUs: 'The user you want to high five.',
-          Locale.esEs: 'El usuario con quien quieres chocar los cinco.',
-          Locale.fr: 'L\'utilisateur à qui vous voulez faire un high five.',
-          Locale.ru: 'Пользователь, которому вы хотите дать пять.',
-          Locale.hi: 'वह उपयोगकर्ता जिसे आप हाई फाइव करना चाहते हैं।',
+          Locale.esEs: 'El usuario con el que quieres chocar los cinco.',
+          Locale.fr: 'L\'utilisateur avec qui tu veux taper dans la main.',
+          Locale.ru: 'Пользователь, которому хочешь дать пять.',
+          Locale.hi: 'वह उपयोगकर्ता जिसे आप हाई फ़ाइव देना चाहते हैं।',
           Locale.zhCn: '你想击掌的用户。',
           Locale.ja: 'ハイタッチしたいユーザー。',
-          Locale.ko: '하이파이브하고 싶은 사용자.'
+          Locale.ko: '하이파이브할 사용자.'
         })
         User? user]) async {
   try {

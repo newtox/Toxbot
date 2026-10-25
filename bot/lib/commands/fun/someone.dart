@@ -4,17 +4,17 @@ import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 
 final someone =
-    ChatCommand('someone', 'Mention a random user.', localizedDescriptions: {
-  Locale.da: 'Nævn en tilfældig bruger.',
-  Locale.de: 'Einen zufälligen Benutzer erwähnen.',
-  Locale.enUs: 'Mention a random user.',
-  Locale.esEs: 'Mencionar a un usuario aleatorio.',
-  Locale.fr: 'Mentionner un utilisateur au hasard.',
-  Locale.ru: 'Упомянуть случайного пользователя.',
-  Locale.hi: 'किसी यादृच्छिक उपयोगकर्ता का उल्लेख करें',
-  Locale.zhCn: '提及一个随机用户。',
-  Locale.ja: 'ランダムなユーザーをメンションする。',
-  Locale.ko: '무작위 사용자 언급.'
+    ChatCommand('someone', 'Mention a random member.', localizedDescriptions: {
+  Locale.da: 'Nævn et tilfældigt medlem.',
+  Locale.de: 'Ein zufälliges Mitglied erwähnen.',
+  Locale.enUs: 'Mention a random member.',
+  Locale.esEs: 'Mencionar a un miembro al azar.',
+  Locale.fr: 'Mentionner un membre au hasard.',
+  Locale.ru: 'Упомянуть случайного участника.',
+  Locale.hi: 'किसी रैंडम सदस्य को मेंशन करें।',
+  Locale.zhCn: '随机提及一名成员。',
+  Locale.ja: 'ランダムなメンバーをメンションします。',
+  Locale.ko: '무작위 멤버를 멘션합니다.'
 }, checks: [
   GuildCheck.all()
 ], (ChatContext context) async {
