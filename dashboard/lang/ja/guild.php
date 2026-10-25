@@ -8,7 +8,7 @@ return [
     'welcome_description' => '誰かがサーバーに参加すると、Toxbot がこのメッセージを送信します。',
     'welcome_example' => '&mention さん、**&server** へようこそ！ルールを確認してね。',
     'bye_title' => 'お別れメッセージ',
-    'bye_description' => '誰かがサーバーを抜けると、Toxbot がこのメッセージを送信します。',
+    'bye_description' => '誰かがサーバーを抜けると、Toxbot がこのメッセージを送信します。キックや BAN の場合は送信しません。',
     'bye_example' => '&user さんが **&server** を抜けました。またね！',
     'enable' => ':name を有効にする',
     'channel' => 'チャンネル',

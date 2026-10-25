@@ -8,7 +8,7 @@ return [
     'welcome_description' => 'Toxbot envoie ce message dès que quelqu\'un rejoint le serveur.',
     'welcome_example' => 'Salut &mention, bienvenue sur **&server** ! Jette un œil aux règles.',
     'bye_title' => 'Message d\'au revoir',
-    'bye_description' => 'Toxbot envoie ce message quand quelqu\'un quitte le serveur.',
+    'bye_description' => 'Toxbot envoie ce message quand quelqu\'un quitte le serveur. Pas en cas d\'expulsion ou de bannissement.',
     'bye_example' => '&user a quitté **&server**. Prends soin de toi !',
     'enable' => 'Activer :name',
     'channel' => 'Salon',

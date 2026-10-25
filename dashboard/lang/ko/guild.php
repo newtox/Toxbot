@@ -8,7 +8,7 @@ return [
     'welcome_description' => '누군가 서버에 들어오면 Toxbot이 이 메시지를 보냅니다.',
     'welcome_example' => '&mention 님, **&server**에 오신 것을 환영해요! 규칙을 확인해 주세요.',
     'bye_title' => '작별 메시지',
-    'bye_description' => '누군가 서버를 나가면 Toxbot이 이 메시지를 보냅니다.',
+    'bye_description' => '누군가 서버를 나가면 Toxbot이 이 메시지를 보냅니다. 추방이나 차단일 때는 보내지 않습니다.',
     'bye_example' => '&user 님이 **&server**을(를) 떠났어요. 잘 지내요!',
     'enable' => ':name 켜기',
     'channel' => '채널',
