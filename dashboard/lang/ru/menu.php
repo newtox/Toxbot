@@ -32,4 +32,9 @@ return [
     'section_raid' => 'Анти-рейд',
     'section_tickets' => 'Тикеты',
     'section_starboard' => 'Доска звёзд',
+    'account' => 'Настройки пользователя',
+    'preferences' => 'Язык и цвет',
+    'premium' => 'Премиум',
+    'info' => 'Инфо',
+    'section_data' => 'Данные',
 ];

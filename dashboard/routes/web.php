@@ -3,6 +3,7 @@
 use App\Http\Controllers\AppealController;
 use App\Http\Controllers\DiscordAuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InfoController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ServerController;
 use App\Http\Controllers\VerifyController;
@@ -62,14 +63,24 @@ Route::middleware('auth')->group(function () {
     Route::get('/servers/{guild}/appeals', [ServerController::class, 'appeals'])
         ->whereNumber('guild')
         ->name('servers.appeals');
+    Route::get('/servers/{guild}/data', [ServerController::class, 'data'])
+        ->whereNumber('guild')
+        ->name('servers.data');
     Route::get('/servers/{guild}/{section}', [ServerController::class, 'settings'])
         ->whereNumber('guild')
         ->whereIn('section', [...GuildSettings::SECTIONS, ...array_keys(GuildSettings::LEGACY_SECTIONS)])
         ->name('servers.settings');
 
-    Route::view('/profile', 'profile')->name('profile');
+    Route::view('/profile', 'profile.show')->name('profile');
+    Route::view('/profile/settings', 'profile.settings')->name('profile.settings');
+    Route::view('/profile/premium', 'profile.premium')->name('profile.premium');
+    Route::view('/profile/data', 'profile.data')->name('profile.data');
     Route::view('/shop', 'shop')->name('shop');
     Route::view('/tags', 'tags')->name('tags');
+
+    Route::get('/info', [InfoController::class, 'general'])->name('info');
+    Route::get('/info/commands', [InfoController::class, 'commands'])->name('info.commands');
+    Route::get('/info/system', [InfoController::class, 'system'])->name('info.system');
 
     Route::view('/admin', 'admin')->middleware(EnsureBotOwner::class)->name('admin');
 });

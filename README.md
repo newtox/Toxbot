@@ -70,7 +70,9 @@ On every push to `main`, the GitHub Action in `.github/workflows/docker.yml` bui
 - `ghcr.io/newtox/toxbot`
 - `ghcr.io/newtox/toxbot-dashboard`
 
-The server runs both from `docker-compose.yml`, deployed as a Portainer stack. Secrets are not part of the images; they are set as stack environment variables. See `stack.env.example` for the full list.
+The server runs both from `docker-compose.yml`, deployed as a Portainer stack. Secrets are not part of the images; they are set as stack environment variables. See `stack.env.example` for the full list. `CONTACT_EMAIL` and `SUPPORT_INVITE` are optional and show up on the dashboard's info page.
+
+Both images get the commit and build time as `GIT_COMMIT` and `BUILD_DATE`. The bot writes its status (commit, uptime, ping, servers, memory) to the `bot_status` table once a minute, and the dashboard shows it together with its own version under Info → System.
 
 Backgrounds uploaded in the dashboard are stored in `/docker_volumes/toxbot-dashboard/backgrounds` on the host. Create the folder once and give it to the container user:
 
@@ -90,7 +92,7 @@ chown 33:33 /docker_volumes/toxbot-dashboard/backgrounds
 - Create the SKUs in the Developer Portal under **Monetization**: a user subscription for Premium and a consumable for the XP boost. Put their IDs into `PREMIUM_USER_SKUS` and `XP_BOOST_SKU`.
 - `PREMIUM_USERS` gives Premium to the listed user IDs without a subscription, for example for testing.
 - For vote rewards, add `https://<dashboard>/webhooks/topgg` as webhook on Top.gg and put the generated secret into `TOPGG_WEBHOOK_SECRET`.
-- Server Premium comes with the user subscription: subscribers pick one server on their profile page in the dashboard. Discord only allows one published subscription per app, so a separate server subscription is optional; if you ever sell one, put its SKU ID into `PREMIUM_GUILD_SKUS`. `PREMIUM_GUILDS` gives Server Premium to the listed server IDs without a subscription.
+- Server Premium comes with the user subscription: subscribers pick one server on the Premium page of their user settings in the dashboard. Discord only allows one published subscription per app, so a separate server subscription is optional; if you ever sell one, put its SKU ID into `PREMIUM_GUILD_SKUS`. `PREMIUM_GUILDS` gives Server Premium to the listed server IDs without a subscription.
 
 ### Automatic setup
 
@@ -100,10 +102,10 @@ Messages for the whole server (ticket and verify buttons, ticket logs, raid alar
 
 ### Resetting and deleting data
 
-- The server overview has a **Reset or delete** card. Anyone who can manage the server can reset all settings: modules are turned off, ticket types, warning rules, followed creators and blocked tags are removed, and the ticket and verify messages are deleted. Levels, cases, tickets and appeals stay.
+- Every server has a **Data** page under General. Anyone who can manage the server can reset all settings: modules are turned off, ticket types, warning rules, followed creators and blocked tags are removed, and the ticket and verify messages are deleted. Levels, cases, tickets and appeals stay.
 - Every settings page can also be reset on its own with the button at the bottom of the page.
 - Only the server owner can delete all data of the server (settings, levels, cases, tickets with transcripts, appeals, verifications, starboard posts and its Server Premium slot). Toxbot then leaves the server.
-- Users can delete their own data on their profile page. Their starboard posts are removed, their ticket messages are kept without name, ID and avatar; moderation cases and purchase records stay.
+- Users can delete their own data on the Data page of their user settings. Their starboard posts are removed, their ticket messages are kept without name, ID and avatar; moderation cases and purchase records stay.
 
 ### Blacklist
 
@@ -168,17 +170,17 @@ The bot lives in `bot/lib`:
 
 - `commands/`: one file per command or command group. These files only hold option descriptions, converters and the command definitions; every function they use lives in `services/` or `utils/`
 - `models/`: data classes such as `Tag`, `ModCase` or the economy results
-- `services/`: the logic behind the commands and the event handlers, for example levels, moderation, protection, tickets, premium and the live role; `events.dart` registers the commands and handlers
+- `services/`: the logic behind the commands and the event handlers, for example levels, moderation, protection, tickets, premium, the live role, the starboard and the status heartbeat; `events.dart` registers the commands and handlers
 - `utils/`: shared helpers: `config.dart` for every setting from the environment, `database.dart` for the connection and translated texts, `reply.dart` for command replies, and the translations in `languages.yaml`
 
 The dashboard is a Laravel app with Livewire in `dashboard/`:
 
 - `routes/web.php`: every page and webhook URL; `routes/console.php`: the scheduled stream commands (`streams:sync` every five minutes, `streams:check-upcoming` every two minutes, `streams:maintain` hourly)
-- `app/Http/Controllers/`: plain pages and webhooks, for example `ServerController` (overview, members, modlog, tickets), `VerifyController`, `AppealController` and the `TwitchWebhookController`, `YouTubeWebhookController` and `TopggWebhookController`
+- `app/Http/Controllers/`: plain pages and webhooks, for example `ServerController` (overview, members, modlog, tickets, data), `InfoController` (info, commands, system), `VerifyController`, `AppealController` and the `TwitchWebhookController`, `YouTubeWebhookController` and `TopggWebhookController`
 - `app/Livewire/`: the interactive parts. `GuildSettings` holds every settings section of a server; smaller components such as `StreamList`, `TicketTypes`, `WarnRules`, `AutoSetup`, `AppealList`, `ServerData` and `DeleteAccount` sit inside the pages
 - `app/Services/`: the logic behind them. `Discord` wraps every call to the Discord API, `GuildAccess` decides who may manage a server, `AutoSetup` and `SetupMessages` create channels and post the ticket and verify messages, `DataDeletion` resets and deletes data, and `Streams/` handles Twitch and YouTube (`Twitch`, `YouTube`, `SourceManager` for following and webhooks, `Announcer` for the messages and the live status)
 - `app/Models/`: one model per table, most of them shared with the bot; `database/migrations/` creates the tables
-- `app/Support/`: small helpers such as `BotLocale`, `DomainList` or `Timezone`
+- `app/Support/`: small helpers such as `BotLocale`, `DomainList` or `Timezone`, plus `Navigation`, which builds the sidebar for servers, user settings and info, and `CommandCatalog` for the command list
 - `resources/views/`: Blade templates, with the Livewire views in `livewire/` and the server pages in `servers/`
 - `lang/<locale>/`: one file per area (`guild`, `tickets`, `setup`, `data`, …) in all ten languages
 - `tests/Feature/`: one test file per area

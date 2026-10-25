@@ -16,4 +16,6 @@ return [
     'premium_server_locked' => '원하는 서버 하나의 Server Premium이 Toxbot Premium에 포함되어 있습니다.',
     'premium_server_invalid' => 'Toxbot이 있고 직접 관리하는 서버를 선택하세요.',
     'premium_server_unknown' => '더 이상 사용할 수 없는 서버',
+    'premium_active' => '활성',
+    'premium_inactive' => '비활성',
 ];

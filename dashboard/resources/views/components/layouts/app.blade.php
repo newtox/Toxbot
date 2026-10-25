@@ -89,55 +89,11 @@
                             </div>
                         </div>
 
-                        @if (! ($guild['manage'] ?? true))
-                        <div class="space-y-1.5">
-                            <p class="nav-heading">{{ __('menu.server') }}</p>
-                            <a href="{{ route('servers.members', $guild['id']) }}"
-                               @class(['nav-item', 'nav-item-active' => request()->routeIs('servers.members', 'servers.member')])>
-                                <x-icon name="users" />{{ __('moderation.members_title') }}
-                            </a>
-                            <a href="{{ route('servers.settings', [$guild['id'], \App\Livewire\GuildSettings::STARBOARD]) }}"
-                               @class(['nav-item', 'nav-item-active' => request()->routeIs('servers.settings')])>
-                                <x-icon name="star" />{{ __('menu.section_starboard') }}
-                            </a>
-                        </div>
-                        @else
-                        <div class="space-y-1.5">
-                            <p class="nav-heading">{{ __('menu.server') }}</p>
-                            <a href="{{ route('servers.show', $guild['id']) }}"
-                               @class(['nav-item', 'nav-item-active' => request()->routeIs('servers.show')])>
-                                <x-icon name="servers" />{{ __('menu.overview') }}
-                            </a>
-                            <a href="{{ route('servers.members', $guild['id']) }}"
-                               @class(['nav-item', 'nav-item-active' => request()->routeIs('servers.members', 'servers.member')])>
-                                <x-icon name="users" />{{ __('moderation.members_title') }}
-                            </a>
-                            <a href="{{ route('servers.modlog', $guild['id']) }}"
-                               @class(['nav-item', 'nav-item-active' => request()->routeIs('servers.modlog')])>
-                                <x-icon name="list" />{{ __('moderation.modlog_title') }}
-                            </a>
-                            <a href="{{ route('servers.tickets', $guild['id']) }}"
-                               @class(['nav-item', 'nav-item-active' => request()->routeIs('servers.tickets', 'servers.ticket')])>
-                                <x-icon name="history" />{{ __('tickets.history_title') }}
-                            </a>
-                            <a href="{{ route('servers.appeals', $guild['id']) }}"
-                               @class(['nav-item', 'nav-item-active' => request()->routeIs('servers.appeals')])>
-                                <x-icon name="gavel" />{{ __('tickets.appeals_list_title') }}
-                            </a>
-                        </div>
-
-                        @foreach (\App\Livewire\GuildSettings::GROUPS as $group => $sections)
-                            <div class="space-y-1.5">
-                                <p class="nav-heading">{{ __('menu.group_'.$group) }}</p>
-                                @foreach ($sections as $section => $icon)
-                                    <a href="{{ route('servers.settings', [$guild['id'], $section]) }}"
-                                       @class(['nav-item', 'nav-item-active' => request()->routeIs('servers.settings') && request()->route('section') === $section])>
-                                        <x-icon :name="$icon" />{{ __('menu.section_'.$section) }}
-                                    </a>
-                                @endforeach
-                            </div>
-                        @endforeach
-                        @endif
+                        @include('components.layouts.partials.nav-groups', ['groups' => \App\Support\Navigation::forGuild($guild)])
+                    @elseif (request()->routeIs(...\App\Support\Navigation::USER_ROUTES))
+                        @include('components.layouts.partials.nav-groups', ['groups' => \App\Support\Navigation::forUser()])
+                    @elseif (request()->routeIs(...\App\Support\Navigation::INFO_ROUTES))
+                        @include('components.layouts.partials.nav-groups', ['groups' => \App\Support\Navigation::forInfo()])
                     @else
                         @php
                             $sidebarGuilds = rescue(
@@ -168,17 +124,8 @@
                     <div x-data="{ open: false }" class="relative" x-on:click.outside="open = false" x-on:keydown.escape.stop="open = false">
                         <div x-show="open" x-transition.origin.bottom x-cloak
                              class="absolute inset-x-0 bottom-full z-10 mb-2 space-y-0.5 rounded-lg bg-dc-900 p-1.5 shadow-2xl ring-1 ring-black/40">
-                            @foreach ([
-                                ['route' => 'servers.index', 'active' => 'servers.index', 'icon' => 'servers', 'label' => __('menu.servers')],
-                                ['route' => 'profile', 'active' => 'profile', 'icon' => 'profile', 'label' => __('menu.profile')],
-                                ['route' => 'shop', 'active' => 'shop', 'icon' => 'shop', 'label' => __('menu.shop')],
-                                ['route' => 'tags', 'active' => 'tags', 'icon' => 'tag', 'label' => __('menu.tags')],
-                                ...(\App\Http\Middleware\EnsureBotOwner::check(auth()->id())
-                                    ? [['route' => 'admin', 'active' => 'admin', 'icon' => 'shield', 'label' => __('menu.admin')]]
-                                    : []),
-                            ] as $item)
-                                <a href="{{ route($item['route']) }}"
-                                   @class(['nav-item', 'nav-item-active' => request()->routeIs($item['active'])])>
+                            @foreach (\App\Support\Navigation::userMenu() as $item)
+                                <a href="{{ $item['url'] }}" @class(['nav-item', 'nav-item-active' => $item['active']])>
                                     <x-icon :name="$item['icon']" />{{ $item['label'] }}
                                 </a>
                             @endforeach

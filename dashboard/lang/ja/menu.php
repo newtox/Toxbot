@@ -32,4 +32,9 @@ return [
     'section_raid' => 'アンチレイド',
     'section_tickets' => 'チケット',
     'section_starboard' => 'スターボード',
+    'account' => 'ユーザー設定',
+    'preferences' => '言語と色',
+    'premium' => 'プレミアム',
+    'info' => '情報',
+    'section_data' => 'データ',
 ];

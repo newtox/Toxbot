@@ -151,6 +151,16 @@ class Discord
         $this->asBot()->patch("/channels/{$channelId}/messages/{$messageId}", $payload)->throw();
     }
 
+    public function applicationCommands(): array
+    {
+        $appId = config('services.discord.client_id');
+
+        return Cache::remember('discord:application:commands', 3600, fn () => $this->asBot()
+            ->get("/applications/{$appId}/commands", ['with_localizations' => 'true'])
+            ->throw()
+            ->json());
+    }
+
     public function refreshAttachmentUrls(array $urls): array
     {
         if ($urls === []) {

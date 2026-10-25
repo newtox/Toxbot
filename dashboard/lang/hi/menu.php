@@ -32,4 +32,9 @@ return [
     'section_raid' => 'एंटी-रेड',
     'section_tickets' => 'टिकट',
     'section_starboard' => 'स्टारबोर्ड',
+    'account' => 'उपयोगकर्ता सेटिंग्स',
+    'preferences' => 'भाषा और रंग',
+    'premium' => 'प्रीमियम',
+    'info' => 'जानकारी',
+    'section_data' => 'डेटा',
 ];

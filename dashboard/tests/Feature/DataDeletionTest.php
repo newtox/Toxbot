@@ -167,7 +167,8 @@ class DataDeletionTest extends TestCase
         $this->serverData()->assertSee(__('data.owner_only'))->set('confirmName', 'Toxic Lounge')->call('deleteServer')->assertForbidden();
         $this->assertNotNull(Guild::find(self::GUILD));
 
-        $this->get('/servers/'.self::GUILD)->assertOk()->assertSee(__('data.server_title'));
+        $this->get('/servers/'.self::GUILD.'/data')->assertOk()->assertSee(__('data.delete_title'));
+        $this->get('/servers/'.self::GUILD)->assertOk()->assertDontSee(__('data.delete_title'));
     }
 
     public function test_user_deletes_their_data(): void
@@ -214,6 +215,7 @@ class DataDeletionTest extends TestCase
     {
         $this->login();
 
-        $this->get('/profile')->assertOk()->assertSee(__('data.account_title'));
+        $this->get('/profile/data')->assertOk()->assertSee(__('data.account_title'));
+        $this->get('/profile')->assertOk()->assertDontSee(__('data.account_title'));
     }
 }
