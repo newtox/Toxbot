@@ -51,17 +51,17 @@ The bot lives in `bot/lib`:
 
 - `commands/`: one file per command or command group. These files only hold option descriptions, converters and the command definitions; every function they use lives in `services/` or `utils/`
 - `models/`: data classes such as `Tag`, `ModCase` or the economy results
-- `services/`: the logic behind the commands and the event handlers, for example levels, moderation, protection, tickets, premium and the live role; `events.dart` registers the commands and handlers
+- `services/`: the logic behind the commands and the event handlers, for example levels, moderation, protection, tickets, premium, the live role, the starboard and the status heartbeat; `events.dart` registers the commands and handlers
 - `utils/`: shared helpers: `config.dart` for every setting from the environment, `database.dart` for the connection and translated texts, `reply.dart` for command replies, and the translations in `languages.yaml`
 
 The dashboard is a Laravel app with Livewire in `dashboard/`:
 
 - `routes/web.php`: every page and webhook URL; `routes/console.php`: the scheduled stream commands (`streams:sync` every five minutes, `streams:check-upcoming` every two minutes, `streams:maintain` hourly)
-- `app/Http/Controllers/`: plain pages and webhooks, for example `ServerController` (overview, members, modlog, tickets), `VerifyController`, `AppealController` and the `TwitchWebhookController`, `YouTubeWebhookController` and `TopggWebhookController`
+- `app/Http/Controllers/`: plain pages and webhooks, for example `ServerController` (overview, members, modlog, tickets, data), `InfoController` (info, commands, system), `VerifyController`, `AppealController` and the `TwitchWebhookController`, `YouTubeWebhookController` and `TopggWebhookController`
 - `app/Livewire/`: the interactive parts. `GuildSettings` holds every settings section of a server; smaller components such as `StreamList`, `TicketTypes`, `WarnRules`, `AutoSetup`, `AppealList`, `ServerData` and `DeleteAccount` sit inside the pages
 - `app/Services/`: the logic behind them. `Discord` wraps every call to the Discord API, `GuildAccess` decides who may manage a server, `AutoSetup` and `SetupMessages` create channels and post the ticket and verify messages, `DataDeletion` resets and deletes data, and `Streams/` handles Twitch and YouTube (`Twitch`, `YouTube`, `SourceManager` for following and webhooks, `Announcer` for the messages and the live status)
 - `app/Models/`: one model per table, most of them shared with the bot; `database/migrations/` creates the tables
-- `app/Support/`: small helpers such as `BotLocale`, `DomainList` or `Timezone`
+- `app/Support/`: small helpers such as `BotLocale`, `DomainList` or `Timezone`, plus `Navigation`, which builds the sidebar for servers, user settings and info, and `CommandCatalog` for the command list
 - `resources/views/`: Blade templates, with the Livewire views in `livewire/` and the server pages in `servers/`
 - `lang/<locale>/`: one file per area (`guild`, `tickets`, `setup`, `data`, …) in all ten languages
 - `tests/Feature/`: one test file per area

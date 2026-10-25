@@ -11,6 +11,16 @@ return [
 
     'premium_guild_skus' => array_values(array_filter(array_map('trim', explode(',', (string) env('TOXBOT_PREMIUM_GUILD_SKUS', ''))))),
 
+    'repository' => env('TOXBOT_REPOSITORY', 'https://github.com/newtox/Toxbot'),
+
+    'contact_email' => env('TOXBOT_CONTACT_EMAIL'),
+
+    'support_invite' => env('TOXBOT_SUPPORT_INVITE'),
+
+    'commit' => env('GIT_COMMIT'),
+
+    'build_date' => env('BUILD_DATE'),
+
     'currency' => env('TOXBOT_CURRENCY', 'Credits'),
 
     'tags' => [

@@ -32,4 +32,9 @@ return [
     'section_raid' => 'Anti-Raid',
     'section_tickets' => 'Tickets',
     'section_starboard' => 'Starboard',
+    'account' => 'Benutzereinstellungen',
+    'preferences' => 'Sprache & Farbe',
+    'premium' => 'Premium',
+    'info' => 'Info',
+    'section_data' => 'Daten',
 ];

@@ -212,6 +212,13 @@ class ServerController extends Controller
         return view('servers.appeals', ['guild' => $found, 'guilds' => $guilds]);
     }
 
+    public function data(Request $request, string $guild): View
+    {
+        [$found, $guilds] = $this->resolve($request, $guild);
+
+        return view('servers.data', ['guild' => $found, 'guilds' => $guilds]);
+    }
+
     public function members(Request $request, string $guild): View
     {
         [$found, $guilds] = $this->resolve($request, $guild, manage: false);

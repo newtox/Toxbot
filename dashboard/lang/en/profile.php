@@ -16,4 +16,6 @@ return [
     'premium_server_locked' => 'Server Premium for one server of your choice is included in Toxbot Premium.',
     'premium_server_invalid' => 'Please pick a server you manage that has Toxbot.',
     'premium_server_unknown' => 'Server no longer available',
+    'premium_active' => 'Active',
+    'premium_inactive' => 'Not active',
 ];

@@ -55,7 +55,7 @@ class ProfileSettings extends Component
 
         if ($languageChanged) {
             session()->flash('saved', true);
-            $this->redirectRoute('profile');
+            $this->redirectRoute('profile.settings');
 
             return;
         }

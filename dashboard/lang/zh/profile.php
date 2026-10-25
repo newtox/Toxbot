@@ -16,4 +16,6 @@ return [
     'premium_server_locked' => 'Toxbot Premium 包含一个自选服务器的 Server Premium。',
     'premium_server_invalid' => '请选择一个你管理且有 Toxbot 的服务器。',
     'premium_server_unknown' => '服务器已不可用',
+    'premium_active' => '已开通',
+    'premium_inactive' => '未开通',
 ];

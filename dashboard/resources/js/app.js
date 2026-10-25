@@ -90,7 +90,27 @@ function setAccent(hex) {
     style.setProperty('--color-accent-fg', fg);
 }
 
-window.toxbot = { renderDiscordMessage, insertAtCursor, discordTimestamp, setAccent };
+const navGroupKey = 'toxbot:nav-groups';
+
+function storedNavGroups() {
+    try {
+        return JSON.parse(localStorage.getItem(navGroupKey) ?? '{}') ?? {};
+    } catch {
+        return {};
+    }
+}
+
+function navGroupOpen(key, active) {
+    return active || storedNavGroups()[key] === true;
+}
+
+function rememberNavGroup(key, open) {
+    try {
+        localStorage.setItem(navGroupKey, JSON.stringify({ ...storedNavGroups(), [key]: open }));
+    } catch {}
+}
+
+window.toxbot = { renderDiscordMessage, insertAtCursor, discordTimestamp, setAccent, navGroupOpen, rememberNavGroup };
 
 function rememberTimezone() {
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;

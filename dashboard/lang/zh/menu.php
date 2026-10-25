@@ -32,4 +32,9 @@ return [
     'section_raid' => '防突袭',
     'section_tickets' => '工单',
     'section_starboard' => '星标墙',
+    'account' => '用户设置',
+    'preferences' => '语言和颜色',
+    'premium' => '高级版',
+    'info' => '信息',
+    'section_data' => '数据',
 ];

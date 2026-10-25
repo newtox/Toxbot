@@ -33,7 +33,7 @@ class GuildSettings extends Component
 
     public const GROUPS = [
         'general' => ['welcome' => 'welcome', 'goodbye' => 'bye', 'autorole' => 'autorole', 'language' => 'globe'],
-        'community' => ['levels' => 'level', 'streams' => 'stream', 'liverole' => 'live', 'tags' => 'tag', 'starboard' => 'star'],
+        'community' => ['levels' => 'level', 'streams' => 'stream', 'liverole' => 'live', 'tags' => 'tag'],
         'safety' => ['moderation' => 'shield', 'verification' => 'lock', 'links' => 'link', 'raid' => 'alert', 'tickets' => 'ticket'],
     ];
 

@@ -1,16 +1,14 @@
 <?php
 
 return [
-    'server_title' => 'Restablecer o eliminar',
     'server_description' => 'Desactiva todos los ajustes o elimina todo lo que Toxbot guardó sobre este servidor.',
-    'show' => 'Mostrar opciones',
     'reset_title' => 'Restablecer ajustes',
     'reset_text' => 'Desactiva todos los módulos y elimina los tipos de ticket, las reglas de advertencias, los creadores seguidos y los tags bloqueados. Se borran los mensajes de tickets y de verificación. Se conservan los niveles, los casos de moderación, el historial de tickets y las solicitudes.',
     'reset_confirm' => '¿Restablecer todos los ajustes de este servidor? No se puede deshacer.',
     'reset_button' => 'Restablecer ajustes',
     'reset_done' => 'Se restablecieron todos los ajustes del servidor.',
     'delete_title' => 'Eliminar todos los datos y quitar a Toxbot',
-    'delete_text' => 'Elimina los ajustes y además todos los niveles, casos de moderación, tickets con su historial, solicitudes de desbaneo y verificaciones de este servidor. Se libera una plaza premium en este servidor. Después Toxbot abandona el servidor. No se puede deshacer.',
+    'delete_text' => 'Borra los ajustes y además todos los niveles, casos de moderación, tickets con su historial, solicitudes de desbaneo, verificaciones y publicaciones del starboard de este servidor. Se libera un hueco premium en este servidor. Después Toxbot abandona el servidor. No se puede deshacer.',
     'confirm_label' => 'Escribe :name para confirmar',
     'confirm_mismatch' => 'El nombre no coincide.',
     'delete_button' => 'Eliminar todo y quitar a Toxbot',
@@ -19,7 +17,7 @@ return [
     'owner_only' => 'Solo el propietario del servidor puede eliminar todos los datos.',
     'account_title' => 'Eliminar mis datos',
     'account_description' => 'Elimina todo lo que Toxbot guardó sobre ti y tu acceso al panel.',
-    'account_deletes' => 'Se elimina: tu idioma y color, tus niveles en todos los servidores, créditos, fondos, tus tags (en todos los servidores), tus plazas de servidor premium, solicitudes de desbaneo y tu acceso al panel.',
+    'account_deletes' => 'Se borran: tu idioma y color, tus niveles en todos los servidores, créditos, fondos, tus tags (en todos los servidores), tus publicaciones del starboard, tus huecos de servidor premium, solicitudes de desbaneo y tu acceso al panel.',
     'account_anonymized' => 'Se anonimiza: tus mensajes en el historial de tickets se conservan para los servidores, pero sin nombre, ID ni avatar.',
     'account_keeps' => 'Se conserva: los casos de moderación en servidores, que pertenecen a esos servidores, y los comprobantes de compra de Discord. Las compras no se reembolsan.',
     'account_button' => 'Eliminar mis datos',
