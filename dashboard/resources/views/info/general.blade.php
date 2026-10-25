@@ -20,7 +20,6 @@
             <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
                 <a href="{{ $repository }}" target="_blank" rel="noopener" class="{{ $link }}"><x-icon name="github" class="size-4" />{{ __('info.repository') }}</a>
                 <a href="{{ $repository }}/issues" target="_blank" rel="noopener" class="{{ $link }}"><x-icon name="alert" class="size-4" />{{ __('info.issues') }}</a>
-                <a href="{{ $repository }}#readme" target="_blank" rel="noopener" class="{{ $link }}"><x-icon name="servers" class="size-4" />{{ __('info.self_host') }}</a>
                 <a href="{{ route('info.commands') }}" class="{{ $link }}"><x-icon name="terminal" class="size-4" />{{ __('info.commands_title') }}</a>
                 <a href="{{ $topggUrl }}" target="_blank" rel="noopener" class="{{ $link }}"><x-icon name="heart" class="size-4" />Top.gg</a>
                 @if ($supportInvite)

@@ -10,7 +10,6 @@ return [
     'about_title' => 'About Toxbot',
     'repository' => 'GitHub repository',
     'issues' => 'Known bugs & requests',
-    'self_host' => 'Self-host',
     'support_server' => 'Support server',
     'privacy_title' => 'Privacy',
     'delete_data' => 'Delete your data',

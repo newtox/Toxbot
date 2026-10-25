@@ -79,7 +79,8 @@ class InfoTest extends TestCase
             ->assertSee('mailto:hallo@toxbot.test', false)
             ->assertSee(route('profile.data'))
             ->assertSee(route('info.system'))
-            ->assertDontSee(__('info.support_server'));
+            ->assertDontSee(__('info.support_server'))
+            ->assertDontSee('#readme');
     }
 
     public function test_commands_are_listed_from_discord(): void
@@ -137,6 +138,11 @@ class InfoTest extends TestCase
             ->assertSee(__('data.reset_title'))
             ->assertSee(route('servers.settings', [self::MANAGED, 'starboard']))
             ->assertSee(route('servers.data', self::MANAGED));
+
+        $this->get('/servers/'.self::MANAGED.'/welcome')->assertOk()->assertSee(__('guild.reload'));
+        foreach (['language', 'tags', 'raid'] as $section) {
+            $this->get('/servers/'.self::MANAGED.'/'.$section)->assertOk()->assertDontSee(__('guild.reload'));
+        }
 
         $this->get('/servers/'.self::JOINED.'/data')->assertForbidden();
         $this->get('/servers/'.self::JOINED.'/members')->assertDontSee(route('servers.data', self::JOINED));
