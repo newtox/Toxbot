@@ -26,7 +26,7 @@ return [
     'content_max' => ':max文字まで。',
     'image_invalid' => '画像は次のいずれかのホストのhttpsリンクである必要があります: :hosts',
     'content_invite' => 'タグにサーバー招待を含めることはできません。',
-    'content_mention' => 'タグに @everyone や @here を含めることはできません。',
+    'content_mention' => 'タグにメンションは使えません: @everyone、@here、&mention、ユーザーやロールのメンションは不可です。',
     'blacklisted' => 'タグを作成する権限がありません。',
     'limit' => 'タグの上限（:limit個）に達しました。',
 ];

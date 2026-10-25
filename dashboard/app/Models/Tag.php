@@ -13,7 +13,7 @@ class Tag extends Model
 
     public const INVITE_REGEX = '~(discord\.gg|discord(app)?\.com/invite|dsc\.gg)/[A-Za-z0-9-]+~i';
 
-    public const MASS_MENTION_REGEX = '/@(everyone|here)/';
+    public const MASS_MENTION_REGEX = '/@(everyone|here)|<@[!&]?\d+>|&mention/';
 
     protected $fillable = ['name', 'owner', 'content', 'embed', 'embed_color', 'embed_image', 'uses'];
 

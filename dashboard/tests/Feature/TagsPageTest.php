@@ -44,6 +44,12 @@ class TagsPageTest extends TestCase
             ->call('save')->assertHasErrors('content');
         Livewire::test(MyTags::class)->call('create')->set('name', 'ping')->set('content', 'hey @everyone')
             ->call('save')->assertHasErrors('content');
+        foreach (['hi &mention', 'hi <@123456789012345678>', 'hi <@&123456789012345678>', 'hi <@!123456789012345678>'] as $content) {
+            Livewire::test(MyTags::class)->call('create')->set('name', 'ping')->set('content', $content)
+                ->call('save')->assertHasErrors('content');
+        }
+        Livewire::test(MyTags::class)->call('create')->set('name', 'hello')->set('content', 'Hi &user auf &server in <#123456789012345678>')
+            ->call('save')->assertHasNoErrors();
         Livewire::test(MyTags::class)->call('create')->set('name', 'bad name!')->set('content', 'x')
             ->call('save')->assertHasErrors('name');
     }

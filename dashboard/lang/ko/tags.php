@@ -26,7 +26,7 @@ return [
     'content_max' => '최대 :max자.',
     'image_invalid' => '이미지는 다음 호스트 중 하나의 https 링크여야 합니다: :hosts',
     'content_invite' => '태그에 서버 초대 링크를 포함할 수 없습니다.',
-    'content_mention' => '태그에 @everyone 또는 @here를 포함할 수 없습니다.',
+    'content_mention' => '태그에는 멘션을 넣을 수 없습니다: @everyone, @here, &mention, 사용자나 역할 멘션 모두 불가합니다.',
     'blacklisted' => '태그를 만들 수 없습니다.',
     'limit' => '태그 한도(:limit개)에 도달했습니다.',
 ];

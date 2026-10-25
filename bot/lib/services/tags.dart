@@ -11,7 +11,7 @@ final _invitePattern = RegExp(
   caseSensitive: false,
 );
 
-final _massMentionPattern = RegExp(r'@(everyone|here)');
+final _massMentionPattern = RegExp(r'@(everyone|here)|<@[!&]?\d+>|&mention');
 
 Future<Iterable<CommandOptionChoiceBuilder<String>>> _autocomplete(
   AutocompleteContext context, {
@@ -85,7 +85,7 @@ bool isTagOwnerOrBotOwner(Tag tag, User user) =>
 
 Future<String> fillTagPlaceholders(String content, ChatContext context) async {
   var result = content
-      .replaceAll('&mention', '<@${context.user.id}>')
+      .replaceAll('&mention', context.user.globalName ?? context.user.username)
       .replaceAll('&user', context.user.globalName ?? context.user.username);
 
   if (context.guild != null &&

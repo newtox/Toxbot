@@ -26,7 +26,7 @@ return [
     'content_max' => '最多 :max 个字符。',
     'image_invalid' => '图片必须是以下主机之一的 https 链接：:hosts',
     'content_invite' => '标签不能包含服务器邀请。',
-    'content_mention' => '标签不能包含 @everyone 或 @here。',
+    'content_mention' => '标签不能包含提及：不能有 @everyone、@here、&mention，也不能提及用户或身份组。',
     'blacklisted' => '你不允许创建标签。',
     'limit' => '你已达到 :limit 个标签的上限。',
 ];

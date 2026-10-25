@@ -38,7 +38,7 @@
                 <textarea id="tag-content" x-ref="content" wire:model="content" rows="6" class="input resize-y font-mono text-sm leading-relaxed"></textarea>
                 @error('content') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
                 <div class="mt-3 flex flex-wrap gap-2">
-                    @foreach (['&mention', '&user', '&server', '&membercount'] as $token)
+                    @foreach (['&user', '&server', '&membercount'] as $token)
                         <button type="button" x-on:click="toxbot.insertAtCursor($refs.content, '{{ $token }}')"
                                 class="rounded-full bg-dc-600 px-3 py-1 font-mono text-xs text-dc-text transition hover:bg-accent hover:text-on-accent">{{ $token }}</button>
                     @endforeach
