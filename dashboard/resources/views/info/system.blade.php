@@ -5,6 +5,7 @@
         $botCommit = $status?->commit;
         $dashCommit = $dashboard['commit'];
         $number = fn ($value) => $value === null ? '–' : number_format((int) $value, 0, '', ' ');
+        $megabytes = fn (int $bytes) => number_format($bytes / 1048576, 2, '.', '');
     @endphp
     <div class="space-y-6">
         @include('info.header', ['title' => __('info.system_title'), 'description' => __('info.system_description')])
@@ -20,16 +21,16 @@
                     <span @class(['size-2 rounded-full', 'bg-accent-fg' => $online, 'bg-dc-red' => ! $online])></span>
                     {{ $online ? __('info.online') : __('info.offline') }}
                 </span>
+                @if (! $online && $status?->heartbeat_at)
+                    <span class="w-full text-right text-xs text-dc-faint">{{ __('info.last_seen', ['time' => $status->heartbeat_at->diffForHumans()]) }}</span>
+                @endif
             </div>
             <dl class="divide-y divide-white/5 text-sm">
                 @foreach ([
-                    'version' => $botCommit ? ['text' => $short($botCommit), 'url' => $repository.'/commit/'.$botCommit] : null,
-                    'built' => $botBuilt ? \App\Support\Timezone::format($botBuilt).' ('.$botBuilt->diffForHumans().')' : null,
-                    'started' => $status?->started_at ? \App\Support\Timezone::format($status->started_at).' ('.$status->started_at->diffForHumans(syntax: \Carbon\CarbonInterface::DIFF_ABSOLUTE).')' : null,
-                    'heartbeat' => $status?->heartbeat_at ? $status->heartbeat_at->diffForHumans() : null,
-                    'latency' => $status?->latency_ms ? $status->latency_ms.' ms' : null,
-                    'servers' => $status ? $number($status->guilds) : null,
-                    'memory' => $status?->memory_bytes ? number_format($status->memory_bytes / 1048576, 1).' MiB' : null,
+                    'version' => $botCommit ? ['text' => $short($botCommit), 'url' => $repository.'/commit/'.$botCommit, 'built' => $botBuilt] : null,
+                    'uptime' => $online && $status?->started_at ? $status->started_at->diffForHumans(syntax: \Carbon\CarbonInterface::DIFF_ABSOLUTE, parts: 2) : null,
+                    'latency' => $online && $status?->latency_ms ? $status->latency_ms.' ms' : null,
+                    'memory' => $online && $status?->memory_bytes ? $megabytes($status->memory_bytes).($status->memory_peak_bytes ? ' / '.$megabytes($status->memory_peak_bytes) : '').' MB' : null,
                     'dart' => $status?->dart_version,
                     'bot_id' => $status?->user_id,
                 ] as $key => $value)
@@ -38,6 +39,9 @@
                         <dd class="min-w-0 break-words text-dc-header">
                             @if (is_array($value))
                                 <a href="{{ $value['url'] }}" target="_blank" rel="noopener" class="font-mono text-dc-link hover:underline">{{ $value['text'] }}</a>
+                                @if ($value['built'])
+                                    <span class="text-dc-muted">· {{ __('info.built_ago', ['time' => $value['built']->diffForHumans()]) }}</span>
+                                @endif
                             @else
                                 <span @class(['font-mono' => $key === 'bot_id'])>{{ $value ?? '–' }}</span>
                             @endif
@@ -54,8 +58,7 @@
             <h2 class="mb-4 text-lg font-semibold text-dc-header">{{ __('info.dashboard_title') }}</h2>
             <dl class="divide-y divide-white/5 text-sm">
                 @foreach ([
-                    'version' => $dashCommit ? ['text' => $short($dashCommit), 'url' => $repository.'/commit/'.$dashCommit] : null,
-                    'built' => $dashboard['built'] ? \App\Support\Timezone::format($dashboard['built']).' ('.$dashboard['built']->diffForHumans().')' : null,
+                    'version' => $dashCommit ? ['text' => $short($dashCommit), 'url' => $repository.'/commit/'.$dashCommit, 'built' => $dashboard['built']] : null,
                     'php' => $dashboard['php'],
                     'laravel' => $dashboard['laravel'],
                     'os' => $dashboard['os'],
@@ -65,6 +68,9 @@
                         <dd class="min-w-0 break-words text-dc-header">
                             @if (is_array($value))
                                 <a href="{{ $value['url'] }}" target="_blank" rel="noopener" class="font-mono text-dc-link hover:underline">{{ $value['text'] }}</a>
+                                @if ($value['built'])
+                                    <span class="text-dc-muted">· {{ __('info.built_ago', ['time' => $value['built']->diffForHumans()]) }}</span>
+                                @endif
                             @else
                                 {{ $value ?? '–' }}
                             @endif

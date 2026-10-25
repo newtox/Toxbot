@@ -31,10 +31,10 @@ Future<void> _writeStatus(NyxxGateway client) async {
   try {
     final latency = await _latencyMs(client);
     await withConnection((connection) => connection.query(
-          'INSERT INTO `bot_status` (`id`, `started_at`, `heartbeat_at`, `commit`, `build_date`, `dart_version`, `guilds`, `latency_ms`, `memory_bytes`, `user_id`) '
-          'VALUES (1, ?, UTC_TIMESTAMP(), ?, ?, ?, ?, ?, ?, ?) '
+          'INSERT INTO `bot_status` (`id`, `started_at`, `heartbeat_at`, `commit`, `build_date`, `dart_version`, `guilds`, `latency_ms`, `memory_bytes`, `memory_peak_bytes`, `user_id`) '
+          'VALUES (1, ?, UTC_TIMESTAMP(), ?, ?, ?, ?, ?, ?, ?, ?) '
           'ON DUPLICATE KEY UPDATE `started_at` = VALUES(`started_at`), `heartbeat_at` = VALUES(`heartbeat_at`), `commit` = VALUES(`commit`), `build_date` = VALUES(`build_date`), '
-          '`dart_version` = VALUES(`dart_version`), `guilds` = VALUES(`guilds`), `latency_ms` = VALUES(`latency_ms`), `memory_bytes` = VALUES(`memory_bytes`), `user_id` = VALUES(`user_id`);',
+          '`dart_version` = VALUES(`dart_version`), `guilds` = VALUES(`guilds`), `latency_ms` = VALUES(`latency_ms`), `memory_bytes` = VALUES(`memory_bytes`), `memory_peak_bytes` = VALUES(`memory_peak_bytes`), `user_id` = VALUES(`user_id`);',
           [
             botStartTime.toUtc(),
             _environment('GIT_COMMIT'),
@@ -43,6 +43,7 @@ Future<void> _writeStatus(NyxxGateway client) async {
             currentGuildIds.length,
             latency,
             ProcessInfo.currentRss,
+            ProcessInfo.maxRss,
             client.user.id.toString(),
           ],
         ));

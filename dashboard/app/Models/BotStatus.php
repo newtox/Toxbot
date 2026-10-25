@@ -24,6 +24,7 @@ class BotStatus extends Model
             'guilds' => 'integer',
             'latency_ms' => 'integer',
             'memory_bytes' => 'integer',
+            'memory_peak_bytes' => 'integer',
         ];
     }
 
