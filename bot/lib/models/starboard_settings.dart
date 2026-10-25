@@ -1,17 +1,14 @@
 import 'package:nyxx/nyxx.dart';
+import 'package:toxbot/models/starboard_emoji.dart';
 
 class StarboardSettings {
   final Snowflake channelId;
-  final String emoji;
-  final String emojiName;
-  final Snowflake? emojiId;
+  final List<StarboardEmoji> emojis;
   final int threshold;
 
   const StarboardSettings({
     required this.channelId,
-    required this.emoji,
-    required this.emojiName,
-    required this.emojiId,
+    required this.emojis,
     required this.threshold,
   });
 }

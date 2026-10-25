@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:nyxx/nyxx.dart';
+import 'package:toxbot/models/starboard_emoji.dart';
 import 'package:toxbot/models/starboard_settings.dart';
 import 'package:toxbot/utils/database.dart';
 import 'package:toxbot/utils/reply.dart';
@@ -23,6 +24,26 @@ final Map<Snowflake, Timer> _pending = {};
 
 final Map<Snowflake, Future<void>> _running = {};
 
+List<StarboardEmoji> _parseEmojis(String? stored) {
+  final codes = (stored ?? '')
+      .split(RegExp(r'\s+'))
+      .where((code) => code.isNotEmpty)
+      .toSet()
+      .toList();
+  if (codes.isEmpty) codes.add(_defaultEmoji);
+
+  return [
+    for (final code in codes)
+      if (_customEmoji.firstMatch(code) case final custom?)
+        StarboardEmoji(
+            code: code,
+            name: custom.group(2)!,
+            id: Snowflake.parse(custom.group(3)!))
+      else
+        StarboardEmoji(code: code, name: code, id: null),
+  ];
+}
+
 Future<StarboardSettings?> _settings(Snowflake guildId) async {
   final cached = _settingsCache[guildId];
   if (cached != null &&
@@ -38,13 +59,10 @@ Future<StarboardSettings?> _settings(Snowflake guildId) async {
     final channel = textOrNull(rows.first['starboard_channel']);
     if (channel == null || channel.isEmpty) return null;
 
-    final emoji = textOrNull(rows.first['starboard_emoji']) ?? _defaultEmoji;
-    final custom = _customEmoji.firstMatch(emoji);
+    final emojis = _parseEmojis(textOrNull(rows.first['starboard_emoji']));
     return StarboardSettings(
       channelId: Snowflake.parse(channel),
-      emoji: emoji.isEmpty ? _defaultEmoji : emoji,
-      emojiName: custom?.group(2) ?? (emoji.isEmpty ? _defaultEmoji : emoji),
-      emojiId: custom == null ? null : Snowflake.parse(custom.group(3)!),
+      emojis: emojis,
       threshold: (rows.first['starboard_threshold'] as int?) ?? 3,
     );
   });
@@ -55,10 +73,13 @@ Future<StarboardSettings?> _settings(Snowflake guildId) async {
 
 String _plain(String name) => name.replaceAll('️', '');
 
-bool _matches(PartialEmoji emoji, StarboardSettings settings) {
-  if (settings.emojiId != null) return emoji.id == settings.emojiId;
-  return emoji is TextEmoji && _plain(emoji.name) == _plain(settings.emojiName);
+bool _matchesEmoji(PartialEmoji emoji, StarboardEmoji wanted) {
+  if (wanted.id != null) return emoji.id == wanted.id;
+  return emoji is TextEmoji && _plain(emoji.name) == _plain(wanted.name);
 }
+
+bool _matches(PartialEmoji emoji, StarboardSettings settings) =>
+    settings.emojis.any((wanted) => _matchesEmoji(emoji, wanted));
 
 String _authorName(MessageAuthor author) =>
     author is User ? (author.globalName ?? author.username) : author.username;
@@ -97,18 +118,27 @@ String _jumpUrl(Snowflake guildId, Snowflake channelId, Snowflake messageId) =>
     'https://discord.com/channels/$guildId/$channelId/$messageId';
 
 Future<int> _countStars(Message message, StarboardSettings settings) async {
-  final reaction = message.reactions
-      .where((reaction) => _matches(reaction.emoji, settings))
-      .firstOrNull;
-  if (reaction == null || reaction.count == 0) return 0;
+  final voters = <Snowflake>{};
+  var unseen = 0;
 
-  final builder =
-      ReactionBuilder(name: settings.emojiName, id: settings.emojiId);
-  final users = await message.fetchReactions(builder, limit: 100);
-  final ignored =
-      users.where((user) => user.isBot || user.id == message.author.id).length;
-  final counted = users.length - ignored;
-  return reaction.count > users.length ? reaction.count - ignored : counted;
+  for (final wanted in settings.emojis) {
+    final reaction = message.reactions
+        .where((reaction) => _matchesEmoji(reaction.emoji, wanted))
+        .firstOrNull;
+    if (reaction == null || reaction.count == 0) continue;
+
+    final emoji = reaction.emoji;
+    final builder = emoji is Emoji && emoji.name != null
+        ? ReactionBuilder.fromEmoji(emoji)
+        : ReactionBuilder(name: wanted.name, id: wanted.id);
+    final users = await message.fetchReactions(builder, limit: 100);
+    voters.addAll(users
+        .where((user) => !user.isBot && user.id != message.author.id)
+        .map((user) => user.id));
+    if (reaction.count > users.length) unseen += reaction.count - users.length;
+  }
+
+  return voters.length + unseen;
 }
 
 Future<(Snowflake, Snowflake)?> _existingPost(Snowflake messageId) async {
@@ -149,7 +179,8 @@ Future<MessageBuilder> _postMessage(Snowflake guildId, Message message,
   final image = _imageUrl(message);
   final url = _jumpUrl(guildId, message.channelId, message.id);
   return MessageBuilder(
-    content: '${settings.emoji} **$stars** · <#${message.channelId}>',
+    content:
+        '${settings.emojis.first.code} **$stars** · <#${message.channelId}>',
     allowedMentions: noMentions,
     embeds: [
       EmbedBuilder(

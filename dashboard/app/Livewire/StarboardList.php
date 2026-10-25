@@ -76,7 +76,7 @@ class StarboardList extends Component
             'total' => $total,
             'pages' => $pages,
             'channels' => $channels,
-            'emoji' => $row?->starboard_emoji ?: Guild::DEFAULT_STARBOARD_EMOJI,
+            'emoji' => ($row ?? new Guild)->starboardEmojis()[0],
         ]);
     }
 

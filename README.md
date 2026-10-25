@@ -127,7 +127,7 @@ Actions in the dashboard are written to the `mod_actions` table and carried out 
 
 ### Starboard and members
 
-- On the Starboard page, pick a channel, an emoji (any Unicode emoji or one of the server's own) and how many reactions a message needs. Reactions from the author and from bots don't count. When the count drops below the threshold again or the message is deleted, the post is removed from the starboard. Messages from NSFW channels only go to an NSFW starboard channel.
+- On the Starboard page, pick a channel, the emojis that count (⭐ by default, up to ten, any Unicode emoji or the server's own) and how many reactions a message needs. Every person counts once per message, whichever of the emojis they use; reactions from the author and from bots don't count. The first emoji is shown on the post. When the count drops below the threshold again or the message is deleted, the post is removed from the starboard. Messages from NSFW channels only go to an NSFW starboard channel.
 - Toxbot needs **View Channel**, **Send Messages**, **Embed Links** and **Read Message History** in the starboard channel and in the channels it watches.
 - Members without "Manage Server" see the servers with Toxbot they are on. They get the member list and profiles with roles, levels and join date, plus the starboard; cases, timeouts and moderation actions stay hidden from them.
 

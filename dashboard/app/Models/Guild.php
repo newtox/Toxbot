@@ -42,6 +42,8 @@ class Guild extends Model
 
     public const DEFAULT_STARBOARD_EMOJI = '⭐';
 
+    public const MAX_STARBOARD_EMOJIS = 10;
+
     public const STREAM_PLACEHOLDERS = [
         '&channel' => 'streams.placeholder_channel',
         '&title' => 'streams.placeholder_title',
@@ -100,6 +102,20 @@ class Guild extends Model
             'unban_enabled' => 'boolean',
             'starboard_threshold' => 'integer',
         ];
+    }
+
+    public static function serializeStarboardEmojis(array $emojis): ?string
+    {
+        $emojis = array_values(array_unique(array_filter(array_map('trim', $emojis))));
+
+        return $emojis === [] || $emojis === [self::DEFAULT_STARBOARD_EMOJI] ? null : implode(' ', $emojis);
+    }
+
+    public function starboardEmojis(): array
+    {
+        $emojis = array_values(array_filter(preg_split('/\s+/', trim((string) $this->starboard_emoji))));
+
+        return $emojis === [] ? [self::DEFAULT_STARBOARD_EMOJI] : $emojis;
     }
 
     public static function forDiscordId(string $id): self
