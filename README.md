@@ -24,7 +24,7 @@ Both share the same MySQL database. Whatever you change in the dashboard (welcom
 
 - **Roleplay, image and fun commands** like `/hug`, `/pat` or `/8ball`
 - **Generators**: `/generate password`, `/generate hex` (like `openssl rand -hex`) and `/generate color` with a preview
-- **Server setup** in Discord (`/announcements`, `/autorole`) and in the dashboard: welcome and goodbye messages, autorole, level-up messages and a server language for messages to the whole server
+- **Server setup** in Discord (`/announcements`, `/autorole`) and in the dashboard: welcome and goodbye messages, autorole, level-up messages in a channel and as a DM, and a server language for messages to the whole server; every setting has its own page in the dashboard
 - **Automatic setup** in the dashboard: creates the channels, roles and permissions for tickets, moderation, protection and verification in one go
 - **Data control**: server admins can reset all settings, the server owner can delete all data and remove Toxbot, and users can delete their own data
 - **Levels**: XP for messages and commands, with a global level and a separate level per server, plus `/leaderboard`
@@ -37,7 +37,7 @@ Both share the same MySQL database. Whatever you change in the dashboard (welcom
 - **Protection**: verification of new members with a captcha in the dashboard, a link filter against invites to other servers, scam links and blocked domains (or only allowed ones), anti-raid that raises the verification level and kicks new joins, and a minimum account age
 - **Tickets and unban appeals**: ticket types with their own button, text and team roles, private ticket channels, `/ticket close`, `add` and `remove`, transcripts saved on close and shown in the dashboard, and a dashboard page where banned members can ask to be unbanned
 - **Premium** through Discord subscriptions: double XP and daily reward, premium backgrounds, more tags and tags as embeds, plus a 24 hour XP boost to buy
-- **Server Premium** for one server of the subscriber's choice, included in Premium: more streamers, a custom message and ping role per streamer, game and title filters, and editing or deleting the notification when the stream ends
+- **Server Premium** for one server of the subscriber's choice, included in Premium: more streamers, a custom message and ping role per streamer, game and title filters, and a separate choice per streamer for what happens to the notification when the stream ends
 
 ## Running locally
 
@@ -92,15 +92,20 @@ chown 33:33 /docker_volumes/toxbot-dashboard/backgrounds
 
 ### Automatic setup
 
-The server overview and the Moderation, Protection and Tickets settings have an automatic setup. Pick the team roles and the areas, and Toxbot creates what is missing: a private `#mod-log`, a `Tickets` category with `#tickets` and a private `#ticket-log`, a `Support` ticket type and the ticket buttons, the link filter and anti-raid, and for verification an `Unverified` role with a `#verify` channel that hides every other channel from that role. Channels and roles that are already set or have the same name are reused. It needs **Manage Channels** and **Manage Roles**.
+The server overview and the Moderation, Verification, Link filter, Anti-raid and Tickets pages have an automatic setup. Pick the team roles and the areas, and Toxbot creates what is missing: a private `#mod-log`, a `Tickets` category with `#tickets` and a private `#ticket-log`, a `Support` ticket type and the ticket buttons, the link filter and anti-raid, and for verification an `Unverified` role with a `#verify` channel that hides every other channel from that role. Channels and roles that are already set or have the same name are reused. It needs **Manage Channels** and **Manage Roles**.
 
-Messages for the whole server (ticket and verify buttons, ticket logs, raid alarms, automatic reasons) use the server language from Welcome & roles. It is taken from the dashboard language of whoever first saves a setting and can be changed there.
+Messages for the whole server (ticket and verify buttons, ticket logs, raid alarms, automatic reasons) use the server language from the Language page. It is taken from the dashboard language of whoever first saves a setting and can be changed there.
 
 ### Resetting and deleting data
 
 - The server overview has a **Reset or delete** card. Anyone who can manage the server can reset all settings: modules are turned off, ticket types, warning rules, followed creators and blocked tags are removed, and the ticket and verify messages are deleted. Levels, cases, tickets and appeals stay.
+- Every settings page can also be reset on its own with the button at the bottom of the page.
 - Only the server owner can delete all data of the server (settings, levels, cases, tickets with transcripts, appeals, verifications and its Server Premium slot). Toxbot then leaves the server.
 - Users can delete their own data on their profile page. Their ticket messages are kept without name, ID and avatar; moderation cases and purchase records stay.
+
+### Blacklist
+
+The bot owner (`OWNER_ID` / `TOXBOT_OWNER_ID`) manages the blacklist on the dashboard's administration page. Blocked users get an error for every command, earn no XP, cannot open tickets and cannot log in to the dashboard. Toxbot leaves blocked servers right away and whenever it is invited again. The bot reloads the list once a minute.
 
 ### Moderation
 
@@ -132,6 +137,7 @@ Actions in the dashboard are written to the `mod_actions` table and carried out 
 - `YOUTUBE_API_KEY` is optional (Google Cloud → YouTube Data API v3). Without it, YouTube channels have to be added by channel ID or `/channel/UC…` link, and live streams cannot be told apart from videos.
 - Twitch and YouTube call `https://<dashboard>/webhooks/twitch` and `https://<dashboard>/webhooks/youtube`. This only works on the public HTTPS deployment, not locally.
 - The `scheduler` service in `docker-compose.yml` uses the dashboard image. Every five minutes it checks with Twitch and YouTube whether followed streamers are live and catches up on missed webhooks, every two minutes it posts scheduled YouTube streams when they start, and every hour it renews the YouTube subscriptions and repairs the Twitch subscriptions.
+- What happens to a Twitch notification when the stream ends (keep it, add the duration and VOD link, or delete it) is set for the whole server on the Streams page. With Server Premium, each streamer can have its own choice.
 - The live role needs the **Presence Intent** under **Bot → Privileged Gateway Intents** in the Developer Portal.
 
 The dashboard listens on `127.0.0.1:8090` and is meant to sit behind a reverse proxy, for example Caddy:

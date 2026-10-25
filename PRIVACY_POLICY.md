@@ -1,6 +1,6 @@
 # Privacy Policy for Toxbot Discord Bot
 
-Last Updated: 24.10.2026
+Last Updated: 25.10.2026
 
 ## Introduction
 
@@ -37,7 +37,7 @@ To draw your profile card, the dashboard loads your current avatar from Discord 
 
 We use the collected information to:
 - Provide the bot's and dashboard's features, such as settings, levels, leaderboards, the shop, tags and Premium
-- Prevent abuse, for example by removing reported tags and blocking users who misuse the tag system
+- Prevent abuse, for example by removing reported tags and blocking users or servers that misuse Toxbot. For a block we store the user or server ID, a short reason and the date.
 - Improve and develop new features
 - Respond to user requests and support needs
 

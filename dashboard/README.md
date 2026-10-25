@@ -5,15 +5,15 @@ Web dashboard for [Toxbot](../README.md), built with Laravel, Livewire and Tailw
 - **Discord login** via OAuth2 (scopes `identify guilds`)
 - **Server list** with every server where you are owner, administrator or have "Manage Server". Servers without Toxbot get an invite button.
 - **Landing page** with features, Premium and invite link, plus live numbers for servers, members with XP and tags
-- **Server overview** with member count, streamers, Server Premium status and every module at a glance; the settings are split into pages for welcome and roles, levels, streams, tags, moderation, protection and tickets
+- **Server overview** with member count, streamers, Server Premium status and every module at a glance; every setting has its own page, grouped into General (welcome, goodbye, autorole, language), Community (levels, streams, live role, tags) and Moderation & safety (moderation, verification, link filter, anti-raid, tickets), and each page can be reset on its own
 - **Welcome and goodbye messages** with channel picker, placeholders (`&mention`, `&user`, `&server`) and a live preview that looks like Discord
 - **Autorole**, limited to roles below Toxbot's highest role, same rule as `/autorole`
 - **Server language** for everything posted to the whole server, such as ticket and verify buttons, ticket logs and raid alarms
-- **Level-up messages** and **tags** per server: turn them on or off, pick the channel, unblock blocked tags
+- **Level-up messages** and **tags** per server: turn them on or off, pick the channel, send level-ups as a DM as well, unblock blocked tags
 - **Profile** with the profile card, level, rank and credits, plus language and embed color, same settings as `/language` and `/color`. The embed color is also the dashboard's accent color.
 - **Shop** to buy and switch profile backgrounds, with a live preview of the card. The shop starts empty; backgrounds are uploaded on the administration page, and cards without one get a gradient in the user's embed color.
 - **Tags**: create, edit and delete your own tags
-- **Administration** for the bot owner: handle reported tags and manage the backgrounds in the shop
+- **Administration** for the bot owner: handle reported tags, manage the backgrounds in the shop and block users or servers
 - **Profile cards** rendered as PNG under `/card/{user}.png`, used by `/profile` in Discord
 - **Top.gg webhook** under `/webhooks/topgg` that pays credits for votes
 - **Stream notifications**: add Twitch and YouTube channels per server, pick the channel, ping role and message. Twitch uses EventSub webhooks (`/webhooks/twitch`), YouTube uses WebSub (`/webhooks/youtube`). Servers with Server Premium get more streamers, a message and ping role per streamer, filters and an action for when the stream ends.
