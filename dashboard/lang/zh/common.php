@@ -7,4 +7,6 @@ return [
     'saving' => '保存中…',
     'saved' => '已保存！Toxbot 会立即使用新设置。',
     'not_saved' => '未保存，请检查标记的字段。',
+    'confirm_title' => '确定吗？',
+    'cancel' => '取消',
 ];

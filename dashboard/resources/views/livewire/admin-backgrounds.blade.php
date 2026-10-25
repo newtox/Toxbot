@@ -51,7 +51,7 @@
                     <span class="self-center text-xs text-dc-faint">{{ __('admin.owners', ['count' => $owners[$id] ?? 0]) }}</span>
                     <div class="flex justify-end gap-2">
                         <button type="button" wire:click="saveRow({{ $id }})" class="btn-secondary px-3 py-1.5 whitespace-nowrap">{{ __('admin.save') }}</button>
-                        <button type="button" wire:click="delete({{ $id }})" wire:confirm="{{ __('admin.confirm_delete_background', ['name' => $row['name']]) }}"
+                        <button type="button" wire:click="delete({{ $id }})" data-confirm="{{ __('admin.confirm_delete_background', ['name' => $row['name']]) }}"
                                 class="btn px-3 py-1.5 text-dc-red hover:bg-dc-red hover:text-white">{{ __('admin.delete') }}</button>
                     </div>
                     @error("rows.$id.*") <p class="text-sm text-dc-red sm:col-span-4">{{ $message }}</p> @enderror

@@ -78,7 +78,7 @@
                             <button type="button" wire:click="equip({{ $bg['id'] }})" wire:loading.attr="disabled" class="btn-secondary px-3 py-1.5">{{ __('shop.use') }}</button>
                         @else
                             <button type="button" wire:click="buy({{ $bg['id'] }})" wire:loading.attr="disabled"
-                                    wire:confirm="{{ __('shop.confirm', ['name' => $bg['name'], 'price' => number_format($bg['price'], 0, '', ' ').' '.$currency]) }}"
+                                    data-confirm="{{ __('shop.confirm', ['name' => $bg['name'], 'price' => number_format($bg['price'], 0, '', ' ').' '.$currency]) }}" data-confirm-tone="primary"
                                     @disabled($bg['price'] > $credits)
                                     class="btn-primary px-3 py-1.5">{{ __('shop.buy') }}</button>
                         @endif

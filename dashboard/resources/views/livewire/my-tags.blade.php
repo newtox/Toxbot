@@ -97,7 +97,7 @@
                         <div class="text-sm text-dc-faint tabular-nums">{{ __('tags.uses', ['count' => number_format($tag->uses, 0, '', ' ')]) }}</div>
                         <div class="ml-auto flex shrink-0 gap-2">
                             <button type="button" wire:click="edit({{ $tag->id }})" class="btn-secondary px-3 py-1.5">{{ __('tags.edit') }}</button>
-                            <button type="button" wire:click="delete({{ $tag->id }})" wire:confirm="{{ __('tags.confirm_delete', ['name' => $tag->name]) }}"
+                            <button type="button" wire:click="delete({{ $tag->id }})" data-confirm="{{ __('tags.confirm_delete', ['name' => $tag->name]) }}"
                                     class="btn px-3 py-1.5 text-dc-red hover:bg-dc-red hover:text-white">{{ __('tags.delete') }}</button>
                         </div>
                     </li>

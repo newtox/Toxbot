@@ -68,7 +68,7 @@
 
             <div class="flex flex-wrap items-center justify-end gap-3">
                 <p class="mr-auto text-sm text-dc-faint">{{ __('setup.existing_hint') }}</p>
-                <button type="button" wire:click="run" wire:confirm="{{ __('setup.confirm') }}" wire:loading.attr="disabled" class="btn-primary max-sm:w-full">
+                <button type="button" wire:click="run" data-confirm="{{ __('setup.confirm') }}" data-confirm-tone="primary" wire:loading.attr="disabled" class="btn-primary max-sm:w-full">
                     <span wire:loading.remove wire:target="run">{{ __('setup.run') }}</span>
                     <span wire:loading wire:target="run">{{ __('setup.running') }}</span>
                 </button>

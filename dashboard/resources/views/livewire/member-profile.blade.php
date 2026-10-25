@@ -72,7 +72,7 @@
                             <div class="mt-2 flex flex-wrap items-center gap-2 text-xs text-dc-muted">
                                 <span>{{ __('moderation.by', ['name' => $case->moderator_name ?? '–']) }} · {{ __('moderation.source_'.$case->source) }}</span>
                                 @if ($case->type === 'warn' && $case->active)
-                                    <button type="button" wire:click="revokeWarning({{ $case->id }})" wire:confirm="{{ __('moderation.revoke_confirm') }}"
+                                    <button type="button" wire:click="revokeWarning({{ $case->id }})" data-confirm="{{ __('moderation.revoke_confirm') }}"
                                             class="ml-auto rounded-md px-2 py-1 text-dc-muted hover:bg-dc-600 hover:text-dc-header">{{ __('moderation.revoke') }}</button>
                                 @endif
                             </div>
@@ -149,7 +149,7 @@
 
                     <button type="submit" wire:loading.attr="disabled" @disabled($action && ! $action->finished())
                             @class(['w-full', 'btn-primary' => ! in_array($actionType, ['kick', 'ban'], true), 'btn bg-dc-red text-white hover:brightness-110' => in_array($actionType, ['kick', 'ban'], true)])
-                            @if (in_array($actionType, ['kick', 'ban'], true)) wire:confirm="{{ __('moderation.confirm_'.$actionType, ['name' => $member['name']]) }}" @endif>
+                            @if (in_array($actionType, ['kick', 'ban'], true)) data-confirm="{{ __('moderation.confirm_'.$actionType, ['name' => $member['name']]) }}" @endif>
                         {{ __('moderation.action_'.$actionType) }}
                     </button>
                 </form>

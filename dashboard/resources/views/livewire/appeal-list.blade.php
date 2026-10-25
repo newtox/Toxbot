@@ -52,8 +52,8 @@
                     <textarea wire:model="responses.{{ $appeal->id }}" rows="2" maxlength="1000" placeholder="{{ __('tickets.appeal_response_hint') }}" class="input resize-y text-sm" aria-label="{{ __('tickets.appeal_response') }}"></textarea>
                     @error('responses.'.$appeal->id) <p class="text-sm text-dc-red">{{ $message }}</p> @enderror
                     <div class="flex flex-wrap justify-end gap-2">
-                        <button type="button" wire:click="reject({{ $appeal->id }})" wire:confirm="{{ __('tickets.appeal_confirm_reject') }}" class="btn px-3 py-1.5 text-dc-red hover:bg-dc-red hover:text-white">{{ __('tickets.appeal_reject') }}</button>
-                        <button type="button" wire:click="accept({{ $appeal->id }})" wire:confirm="{{ __('tickets.appeal_confirm_accept') }}" class="btn-primary px-3 py-1.5">{{ __('tickets.appeal_accept') }}</button>
+                        <button type="button" wire:click="reject({{ $appeal->id }})" data-confirm="{{ __('tickets.appeal_confirm_reject') }}" class="btn px-3 py-1.5 text-dc-red hover:bg-dc-red hover:text-white">{{ __('tickets.appeal_reject') }}</button>
+                        <button type="button" wire:click="accept({{ $appeal->id }})" data-confirm="{{ __('tickets.appeal_confirm_accept') }}" data-confirm-tone="primary" class="btn-primary px-3 py-1.5">{{ __('tickets.appeal_accept') }}</button>
                     </div>
                 </div>
             @else

@@ -7,4 +7,6 @@ return [
     'saving' => '저장 중…',
     'saved' => '저장했어요! Toxbot이 새 설정을 바로 사용합니다.',
     'not_saved' => '저장되지 않았어요. 표시된 항목을 확인해 주세요.',
+    'confirm_title' => '정말 진행할까요?',
+    'cancel' => '취소',
 ];

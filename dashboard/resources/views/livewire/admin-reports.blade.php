@@ -27,9 +27,9 @@
                     @unless ($report->resolved)
                         <div class="mt-3 flex flex-wrap gap-2">
                             <button type="button" wire:click="dismiss({{ $report->id }})" class="btn-secondary px-3 py-1.5">{{ __('admin.dismiss') }}</button>
-                            <button type="button" wire:click="deleteTag({{ $report->id }})" wire:confirm="{{ __('admin.confirm_delete') }}"
+                            <button type="button" wire:click="deleteTag({{ $report->id }})" data-confirm="{{ __('admin.confirm_delete') }}"
                                     class="btn px-3 py-1.5 text-dc-red hover:bg-dc-red hover:text-white">{{ __('admin.delete_tag') }}</button>
-                            <button type="button" wire:click="deleteTag({{ $report->id }}, true)" wire:confirm="{{ __('admin.confirm_blacklist') }}"
+                            <button type="button" wire:click="deleteTag({{ $report->id }}, true)" data-confirm="{{ __('admin.confirm_blacklist') }}"
                                     class="btn bg-dc-red px-3 py-1.5 text-white hover:brightness-110">{{ __('admin.delete_and_blacklist') }}</button>
                         </div>
                     @endunless

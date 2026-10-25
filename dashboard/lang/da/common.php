@@ -7,4 +7,6 @@ return [
     'saving' => 'Gemmer …',
     'saved' => 'Gemt! Toxbot bruger de nye indstillinger med det samme.',
     'not_saved' => 'Ikke gemt, tjek de markerede felter.',
+    'confirm_title' => 'Er du sikker?',
+    'cancel' => 'Annuller',
 ];

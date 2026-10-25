@@ -7,4 +7,6 @@ return [
     'saving' => 'Speichert …',
     'saved' => 'Gespeichert! Toxbot nutzt die neuen Einstellungen ab sofort.',
     'not_saved' => 'Nicht gespeichert, bitte die markierten Felder prüfen.',
+    'confirm_title' => 'Bist du sicher?',
+    'cancel' => 'Abbrechen',
 ];

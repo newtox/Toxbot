@@ -102,3 +102,43 @@ function rememberTimezone() {
 }
 
 rememberTimezone();
+
+const confirmTones = {
+    danger: 'btn bg-dc-red text-white hover:brightness-110',
+    primary: 'btn-primary',
+};
+
+function setupConfirmDialog() {
+    let approved = null;
+
+    document.addEventListener('click', (event) => {
+        const trigger = event.target.closest('[data-confirm]');
+        if (!trigger || trigger.disabled) return;
+        if (approved === trigger) {
+            approved = null;
+            return;
+        }
+
+        const dialog = document.getElementById('confirm-dialog');
+        if (!dialog) return;
+
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        const ok = dialog.querySelector('[data-confirm-ok]');
+        dialog.querySelector('#confirm-message').textContent = trigger.dataset.confirm;
+        ok.className = confirmTones[trigger.dataset.confirmTone ?? 'danger'] + ' max-sm:flex-1';
+        ok.textContent = trigger.dataset.confirmButton ?? (trigger.innerText.trim() || 'OK');
+
+        dialog.onclose = () => {
+            if (dialog.returnValue !== 'confirm') return;
+            approved = trigger;
+            trigger.click();
+        };
+        dialog.returnValue = '';
+        dialog.showModal();
+        ok.focus();
+    }, true);
+}
+
+setupConfirmDialog();
