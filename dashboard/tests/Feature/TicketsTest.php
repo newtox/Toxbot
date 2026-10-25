@@ -8,6 +8,7 @@ use App\Livewire\TicketTypes;
 use App\Models\DashboardUser;
 use App\Models\Guild;
 use App\Models\ModAction;
+use App\Models\ModCase;
 use App\Models\Ticket;
 use App\Models\TicketMessage;
 use App\Models\TicketType;
@@ -33,6 +34,8 @@ class TicketsTest extends TestCase
 
     private bool $banned = true;
 
+    private string $banReason = 'Spam';
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -50,7 +53,7 @@ class TicketsTest extends TestCase
                 $isBot && str_contains($url, '/users/@me/guilds') => Http::response([['id' => self::GUILD]]),
                 $isBot && str_ends_with($url, '/users/@me/channels') => Http::response(['id' => '800']),
                 $isBot && str_ends_with($url, '/users/@me') => Http::response(['id' => self::BOT, 'username' => 'Toxbot', 'avatar' => null]),
-                str_contains($url, '/bans/') => $this->banned ? Http::response(['reason' => 'Spam']) : Http::response([], 404),
+                str_contains($url, '/bans/') => $this->banned ? Http::response(['reason' => $this->banReason]) : Http::response([], 404),
                 str_contains($url, '/messages/') => Http::response(['id' => '700']),
                 str_contains($url, '/messages') => Http::response(['id' => '700']),
                 str_contains($url, '/channels') => Http::response([
@@ -296,6 +299,19 @@ class TicketsTest extends TestCase
 
         $this->banned = false;
         $this->get('/appeal/'.self::GUILD)->assertSee(__('tickets.appeal_not_banned', ['server' => 'Toxic Lounge']));
+    }
+
+    public function test_appeal_page_shows_the_ban_reason_without_the_moderator(): void
+    {
+        $this->login();
+        Guild::create(['id' => self::GUILD, 'unban_enabled' => true]);
+        $this->banReason = 'newtox: Testban';
+
+        $this->get('/appeal/'.self::GUILD)->assertSee('Testban')->assertDontSee('newtox: Testban');
+
+        $case = new ModCase;
+        $case->forceFill(['guild' => self::GUILD, 'number' => 1, 'type' => 'ban', 'user_id' => self::USER, 'moderator_id' => '1', 'reason' => 'Werbung im Chat', 'active' => true])->save();
+        $this->get('/appeal/'.self::GUILD)->assertSee('Werbung im Chat')->assertDontSee('Testban');
     }
 
     public function test_accepting_an_appeal_queues_an_unban_and_sends_a_dm(): void
