@@ -50,4 +50,6 @@ return [
     'language_description' => 'Toxbot écrit dans cette langue les messages pour tout le serveur : boutons de ticket et de vérification, journaux de tickets, alertes de raid, raisons automatiques et les salons et rôles de la configuration automatique.',
     'language_label' => 'Langue',
     'autorole_after_verify' => 'La vérification est activée : les nouveaux membres reçoivent le rôle auto seulement après s’être vérifiés, pas à leur arrivée.',
+    'levelup_dm_title' => 'Aussi en MP',
+    'levelup_dm_description' => 'Les membres reçoivent aussi un message privé de Toxbot quand ils atteignent un nouveau niveau sur ce serveur. Fonctionne aussi seul.',
 ];

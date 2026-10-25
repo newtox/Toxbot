@@ -9,6 +9,7 @@ import 'package:toxbot/services/economy.dart' as economy;
 import 'package:toxbot/services/premium.dart';
 import 'package:toxbot/utils/config.dart';
 import 'package:toxbot/utils/database.dart';
+import 'package:toxbot/utils/reply.dart';
 
 export 'package:toxbot/services/economy.dart' show levelFromXp, LevelProgress;
 
@@ -22,31 +23,45 @@ Future<void> _announceLevelUp(
   Snowflake? channelId,
   int level,
 ) async {
-  final (enabled, configured) = await economy.levelUpSettings(
+  final (enabled, configured, dm) = await economy.levelUpSettings(
     connection,
     guildId.toString(),
   );
-  if (!enabled) return;
 
   final target =
       configured != null ? Snowflake(int.parse(configured)) : channelId;
-  if (target == null) return;
+  if (enabled && target != null) {
+    try {
+      final channel = await client.channels[target].get();
+      if (channel is TextChannel) {
+        final text = (await getString(user, 'level_up'))
+            .replaceAll('&mention', '<@${user.id}>')
+            .replaceAll('&level', formatNumber(level));
+        await channel.sendMessage(
+          MessageBuilder(
+            content: text,
+            allowedMentions: AllowedMentions(users: [user.id]),
+          ),
+        );
+      }
+    } catch (e) {
+      print('Error announcing level-up: $e');
+    }
+  }
 
-  try {
-    final channel = await client.channels[target].get();
-    if (channel is! TextChannel) return;
-
-    final text = (await getString(user, 'level_up'))
-        .replaceAll('&mention', '<@${user.id}>')
-        .replaceAll('&level', formatNumber(level));
-    await channel.sendMessage(
-      MessageBuilder(
-        content: text,
-        allowedMentions: AllowedMentions(users: [user.id]),
-      ),
-    );
-  } catch (e) {
-    print('Error announcing level-up: $e');
+  if (dm) {
+    try {
+      final guild = await client.guilds.get(guildId);
+      final text = (await getString(user, 'level_up_dm'))
+          .replaceAll('&server', guild.name)
+          .replaceAll('&level', formatNumber(level));
+      final channel = await client.users.createDm(user.id);
+      await channel.sendMessage(
+        MessageBuilder(content: text, allowedMentions: noMentions),
+      );
+    } catch (e) {
+      print('Error sending the level-up DM: $e');
+    }
   }
 }
 

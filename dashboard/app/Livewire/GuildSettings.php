@@ -67,6 +67,8 @@ class GuildSettings extends Component
 
     public ?string $levelupChannel = null;
 
+    public bool $levelupDm = false;
+
     public ?string $streamChannel = null;
 
     public ?string $streamRole = null;
@@ -172,6 +174,7 @@ class GuildSettings extends Component
         $this->tagsEnabled = (bool) $row->tags_enabled;
         $this->levelupEnabled = (bool) $row->levelup_enabled;
         $this->levelupChannel = $row->levelup_channel;
+        $this->levelupDm = (bool) $row->levelup_dm;
 
         $this->streamChannel = $row->stream;
         $this->streamRole = $row->notify;
@@ -357,6 +360,7 @@ class GuildSettings extends Component
             'levels' => [
                 'levelup_enabled' => $this->levelupEnabled,
                 'levelup_channel' => $this->levelupChannel ?: null,
+                'levelup_dm' => $this->levelupDm,
             ],
             'streams' => [
                 'stream' => $this->streamChannel ?: null,

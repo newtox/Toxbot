@@ -50,4 +50,6 @@ return [
     'language_description' => 'Toxbot 会用这种语言发送面向整个服务器的消息：工单和验证按钮、工单日志、突袭警报、自动原因，以及自动设置创建的频道和身份组。',
     'language_label' => '语言',
     'autorole_after_verify' => '验证已开启：新成员会在完成验证后，而不是加入时获得自动身份组。',
+    'levelup_dm_title' => '同时私信通知',
+    'levelup_dm_description' => '成员在此服务器升级时，还会收到 Toxbot 的私信。也可以单独使用。',
 ];
