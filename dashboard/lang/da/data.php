@@ -32,4 +32,5 @@ return [
     'section_extra_moderation' => 'Advarselsregler slettes.',
     'section_extra_tickets' => 'Ticket-typer og knapbeskeden slettes.',
     'section_extra_verification' => 'Verificeringsbeskeden slettes.',
+    'section_extra_starboard' => 'Eksisterende opslag på starboardet bevares.',
 ];

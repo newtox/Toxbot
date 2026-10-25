@@ -10,6 +10,7 @@ use App\Models\MemberLevel;
 use App\Models\ModAction;
 use App\Models\ModCase;
 use App\Models\PremiumServer;
+use App\Models\StarboardPost;
 use App\Models\StreamSubscription;
 use App\Models\Tag;
 use App\Models\TagGuildBlock;
@@ -40,6 +41,7 @@ class DataDeletion
         'links' => ['link_invites', 'link_scam', 'link_allowlist_enabled', 'link_allowlist', 'link_blocklist', 'link_action', 'link_exempt_roles'],
         'raid' => ['raid_enabled', 'raid_joins', 'raid_seconds', 'raid_minutes', 'raid_kick', 'raid_level', 'raid_until', 'min_account_age'],
         'tickets' => ['ticket_category', 'ticket_log_channel', 'ticket_limit', 'ticket_panel_channel', 'ticket_panel_message_id'],
+        'starboard' => ['starboard_channel', 'starboard_emoji', 'starboard_threshold'],
     ];
 
     public function __construct(private Discord $discord) {}
@@ -107,6 +109,7 @@ class DataDeletion
             ModAction::query()->where('guild', $guildId)->delete();
             Verification::query()->where('guild', $guildId)->delete();
             MemberLevel::query()->where('guild', $guildId)->delete();
+            StarboardPost::query()->where('guild', $guildId)->delete();
             PremiumServer::query()->where('guild_id', $guildId)->delete();
         });
 
@@ -116,6 +119,9 @@ class DataDeletion
     public function deleteUser(DashboardUser $user): void
     {
         $userId = (string) $user->id;
+
+        StarboardPost::query()->where('author_id', $userId)->whereNotNull('starboard_message_id')->get()
+            ->each(fn (StarboardPost $post) => rescue(fn () => $this->discord->deleteMessage($post->starboard_channel_id, $post->starboard_message_id), report: false));
 
         DB::transaction(function () use ($userId, $user) {
             BotUser::query()->whereKey($userId)->delete();
@@ -130,6 +136,7 @@ class DataDeletion
             PremiumServer::query()->where('user_id', $userId)->delete();
             Verification::query()->where('user_id', $userId)->delete();
             UnbanAppeal::query()->where('user_id', $userId)->delete();
+            StarboardPost::query()->where('author_id', $userId)->delete();
             TicketMessage::query()->where('author_id', $userId)->update([
                 'author_id' => '0',
                 'author_name' => self::DELETED_USER,

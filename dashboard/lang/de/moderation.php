@@ -100,4 +100,5 @@ return [
     'mod_error_not_banned' => 'Dieser Nutzer ist nicht gebannt.',
     'mod_error_permission' => 'Dir fehlt in Discord die Berechtigung für diese Aktion.',
     'mod_error_unknown' => 'Etwas ist schiefgelaufen, bitte versuche es nochmal.',
+    'members_description_member' => 'Alle Mitglieder des Servers mit Rollen, Level und ihrem Profil.',
 ];

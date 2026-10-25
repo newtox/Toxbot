@@ -266,6 +266,63 @@
 
     @endif
 
+    @if ($section === 'starboard')
+    <section id="starboard" class="card space-y-6">
+        <div>
+            <h2 class="text-lg font-semibold text-dc-header">{{ __('starboard.settings_title') }}</h2>
+            <p class="text-sm text-dc-muted">{{ __('starboard.settings_description') }}</p>
+        </div>
+
+        <div>
+            <label class="label" for="starboard-channel">{{ __('guild.channel') }}</label>
+            <select id="starboard-channel" wire:model="starboardChannel" class="input max-w-md">
+                <option value="">{{ __('starboard.off') }}</option>
+                @foreach ($channelGroups as $group)
+                    @if ($group['name'])
+                        <optgroup label="{{ $group['name'] }}">
+                    @endif
+                    @foreach ($group['channels'] as $c)
+                        <option value="{{ $c['id'] }}"># {{ $c['name'] }}</option>
+                    @endforeach
+                    @if ($group['name'])
+                        </optgroup>
+                    @endif
+                @endforeach
+            </select>
+            @error('starboardChannel') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+        </div>
+
+        <div>
+            <span class="label">{{ __('starboard.emoji') }}</span>
+            <div class="flex flex-wrap gap-1.5">
+                @foreach (array_merge(array_map(fn ($e) => ['code' => $e, 'name' => $e], \App\Livewire\GuildSettings::STARBOARD_EMOJIS), $serverEmojis) as $choice)
+                    <button type="button" wire:key="star-emoji-{{ $choice['code'] }}" x-on:click="$wire.starboardEmoji = @js($choice['code'])"
+                            title="{{ $choice['name'] }}" aria-label="{{ $choice['name'] }}"
+                            class="grid size-10 place-items-center rounded-lg bg-dc-900 text-xl ring-1 ring-white/5 transition hover:bg-dc-700"
+                            x-bind:class="$wire.starboardEmoji === @js($choice['code']) && 'ring-2 ring-accent! bg-accent/15'">
+                        <x-emoji :code="$choice['code']" />
+                    </button>
+                @endforeach
+            </div>
+            <label class="mt-3 block text-sm text-dc-muted" for="starboard-emoji">{{ __('starboard.emoji_custom') }}</label>
+            <input id="starboard-emoji" type="text" wire:model="starboardEmoji" maxlength="80" class="input mt-1 max-w-xs">
+            @error('starboardEmoji') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+        </div>
+
+        <div>
+            <label class="label" for="starboard-threshold">{{ __('starboard.threshold') }}</label>
+            <input id="starboard-threshold" type="number" min="1" max="50" wire:model="starboardThreshold" class="input max-w-32">
+            @error('starboardThreshold') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+            <p class="mt-2 text-sm text-dc-faint">{{ __('starboard.threshold_hint') }}</p>
+        </div>
+    </section>
+
+    <section class="card space-y-4">
+        <h2 class="text-lg font-semibold text-dc-header">{{ __('starboard.posts_title') }}</h2>
+        <livewire:starboard-list :guild-id="$guildId" :key="'starboard-list'" />
+    </section>
+    @endif
+
     @if ($section === 'moderation')
     <livewire:auto-setup :guild-id="$guildId" :guild-name="$guildName" :areas="['moderation']" :compact="true" :key="'auto-setup-moderation'" />
 

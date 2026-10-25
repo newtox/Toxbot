@@ -33,11 +33,14 @@ class Guild extends Model
         'min_account_age',
         'ticket_category', 'ticket_log_channel', 'ticket_limit', 'ticket_panel_channel', 'ticket_panel_message_id',
         'unban_enabled', 'language', 'stream_end_action', 'levelup_dm',
+        'starboard_channel', 'starboard_emoji', 'starboard_threshold',
     ];
 
     public const LINK_ACTIONS = ['delete', 'warn', 'timeout'];
 
     public const END_ACTIONS = ['keep', 'edit', 'delete'];
+
+    public const DEFAULT_STARBOARD_EMOJI = '⭐';
 
     public const STREAM_PLACEHOLDERS = [
         '&channel' => 'streams.placeholder_channel',
@@ -71,6 +74,7 @@ class Guild extends Model
         'min_account_age' => 0,
         'ticket_limit' => 1,
         'unban_enabled' => false,
+        'starboard_threshold' => 3,
     ];
 
     protected function casts(): array
@@ -94,6 +98,7 @@ class Guild extends Model
             'min_account_age' => 'integer',
             'ticket_limit' => 'integer',
             'unban_enabled' => 'boolean',
+            'starboard_threshold' => 'integer',
         ];
     }
 

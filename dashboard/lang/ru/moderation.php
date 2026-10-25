@@ -100,4 +100,5 @@ return [
     'mod_error_not_banned' => 'Этот пользователь не забанен.',
     'mod_error_permission' => 'У тебя нет нужного права в Discord для этого действия.',
     'mod_error_unknown' => 'Что-то пошло не так, попробуй ещё раз.',
+    'members_description_member' => 'Все участники сервера с ролями, уровнем и профилем.',
 ];

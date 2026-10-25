@@ -32,4 +32,5 @@ return [
     'section_extra_moderation' => '警告ルールは削除されます。',
     'section_extra_tickets' => 'チケットの種類とボタンのメッセージは削除されます。',
     'section_extra_verification' => '認証メッセージは削除されます。',
+    'section_extra_starboard' => 'スターボードの既存の投稿は残ります。',
 ];

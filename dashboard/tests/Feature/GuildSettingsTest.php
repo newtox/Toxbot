@@ -67,14 +67,15 @@ class GuildSettingsTest extends TestCase
         return $user;
     }
 
-    public function test_server_list_only_shows_manageable_servers(): void
+    public function test_server_list_shows_managed_and_member_servers(): void
     {
         $this->login();
 
         $this->get('/servers')
             ->assertOk()
             ->assertSee('Toxic Lounge')
-            ->assertDontSee('Fremd');
+            ->assertSee('Fremd')
+            ->assertSee(__('servers.member'));
     }
 
     public function test_overview_and_section_pages(): void
@@ -95,11 +96,19 @@ class GuildSettingsTest extends TestCase
         $this->get('/servers/'.self::OTHER_GUILD.'/welcome')->assertForbidden();
     }
 
-    public function test_cannot_open_server_without_permission(): void
+    public function test_members_without_permission_only_get_members_and_starboard(): void
     {
         $this->login();
 
-        $this->get('/servers/'.self::OTHER_GUILD)->assertForbidden();
+        $this->get('/servers/'.self::OTHER_GUILD)->assertRedirect(route('servers.members', self::OTHER_GUILD));
+        $this->get('/servers/'.self::OTHER_GUILD.'/welcome')->assertForbidden();
+        $this->get('/servers/'.self::OTHER_GUILD.'/modlog')->assertForbidden();
+        $this->get('/servers/'.self::OTHER_GUILD.'/ticket-history')->assertForbidden();
+        $this->get('/servers/'.self::OTHER_GUILD.'/members')->assertOk()->assertSee(__('moderation.members_description_member'));
+        $this->get('/servers/'.self::OTHER_GUILD.'/starboard')->assertOk()
+            ->assertSee(__('starboard.not_set_up'))
+            ->assertDontSee(__('starboard.threshold'));
+        $this->get('/servers/333333333333333333')->assertForbidden();
     }
 
     public function test_saves_welcome_message_and_autorole(): void

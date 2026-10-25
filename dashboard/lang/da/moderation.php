@@ -100,4 +100,5 @@ return [
     'mod_error_not_banned' => 'Denne bruger er ikke bannet.',
     'mod_error_permission' => 'Du har ikke Discord-tilladelsen til denne handling.',
     'mod_error_unknown' => 'Noget gik galt, prøv igen.',
+    'members_description_member' => 'Alle medlemmer på serveren med roller, level og deres profil.',
 ];

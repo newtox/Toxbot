@@ -4,13 +4,13 @@
         ['icon' => 'coin', 'key' => 'credits'],
         ['icon' => 'card', 'key' => 'profile'],
         ['icon' => 'tag', 'key' => 'tags'],
+        ['icon' => 'star', 'key' => 'starboard'],
         ['icon' => 'stream', 'key' => 'streams'],
         ['icon' => 'shield', 'key' => 'mod'],
         ['icon' => 'lock', 'key' => 'protect'],
         ['icon' => 'ticket', 'key' => 'tickets'],
         ['icon' => 'welcome', 'key' => 'welcome'],
         ['icon' => 'heart', 'key' => 'fun'],
-        ['icon' => 'sparkles', 'key' => 'tools'],
         ['icon' => 'globe', 'key' => 'lang'],
     ];
     $statItems = array_filter([

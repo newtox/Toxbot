@@ -31,6 +31,8 @@ Both share the same MySQL database. Whatever you change in the dashboard (welcom
 - **Credits and shop**: `/daily`, `/credits` for the balance, streak and recent activity, credits for level-ups and Top.gg votes, profile backgrounds to buy with `/shop`
 - **Profile cards**: `/profile` shows level, rank, credits and the chosen background as an image
 - **Tags**: global custom commands with `/tag`, reportable and blockable per server
+- **Starboard**: messages with enough reactions of a chosen emoji are reposted to a starboard channel, and every member can browse them in the dashboard
+- **Dashboard for members**: members without "Manage Server" can open the member list with profiles and the starboard of their servers
 - **Stream notifications** for Twitch and YouTube: a message with role ping when a streamer goes live or uploads a video
 - **Live role**: members who stream on Discord get a role while they are live
 - **Moderation**: `/clear`, `/mod warn`, `timeout`, `untimeout`, `kick`, `ban` (also temporary) and `unban`, numbered cases in a modlog channel, DMs to members, automatic actions after a number of warnings, and bans, kicks and timeouts done in Discord or by other bots are logged too
@@ -100,8 +102,8 @@ Messages for the whole server (ticket and verify buttons, ticket logs, raid alar
 
 - The server overview has a **Reset or delete** card. Anyone who can manage the server can reset all settings: modules are turned off, ticket types, warning rules, followed creators and blocked tags are removed, and the ticket and verify messages are deleted. Levels, cases, tickets and appeals stay.
 - Every settings page can also be reset on its own with the button at the bottom of the page.
-- Only the server owner can delete all data of the server (settings, levels, cases, tickets with transcripts, appeals, verifications and its Server Premium slot). Toxbot then leaves the server.
-- Users can delete their own data on their profile page. Their ticket messages are kept without name, ID and avatar; moderation cases and purchase records stay.
+- Only the server owner can delete all data of the server (settings, levels, cases, tickets with transcripts, appeals, verifications, starboard posts and its Server Premium slot). Toxbot then leaves the server.
+- Users can delete their own data on their profile page. Their starboard posts are removed, their ticket messages are kept without name, ID and avatar; moderation cases and purchase records stay.
 
 ### Blacklist
 
@@ -120,6 +122,12 @@ Actions in the dashboard are written to the `mod_actions` table and carried out 
 - The bot sends the verification link by DM using `public_dashboard_url`, which `docker-compose.yml` sets to `APP_URL`.
 - Toxbot needs **Manage Roles** for verification, **Manage Messages** for the link filter, **Kick Members** for anti-raid and the minimum account age, and **Manage Server** to raise the verification level during a raid. Its role has to be above the verification role.
 - Scam links are checked against [DSP Scam Links](https://github.com/Discord-AntiScam/scam-links) and [discord-phishing-links](https://github.com/nikolaischunk/discord-phishing-links), reloaded every six hours. The dashboard can check a single domain against them. Roles can be excluded from the link filter.
+
+### Starboard and members
+
+- On the Starboard page, pick a channel, an emoji (any Unicode emoji or one of the server's own) and how many reactions a message needs. Reactions from the author and from bots don't count. When the count drops below the threshold again or the message is deleted, the post is removed from the starboard. Messages from NSFW channels only go to an NSFW starboard channel.
+- Toxbot needs **View Channel**, **Send Messages**, **Embed Links** and **Read Message History** in the starboard channel and in the channels it watches.
+- Members without "Manage Server" see the servers with Toxbot they are on. They get the member list and profiles with roles, levels and join date, plus the starboard; cases, timeouts and moderation actions stay hidden from them.
 
 ### Tickets
 

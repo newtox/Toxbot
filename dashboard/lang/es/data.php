@@ -32,4 +32,5 @@ return [
     'section_extra_moderation' => 'Se eliminan las reglas de advertencias.',
     'section_extra_tickets' => 'Se eliminan los tipos de ticket y el mensaje de botones.',
     'section_extra_verification' => 'Se elimina el mensaje de verificación.',
+    'section_extra_starboard' => 'Las publicaciones del starboard se conservan.',
 ];

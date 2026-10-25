@@ -31,4 +31,5 @@ return [
     'section_links' => 'Фильтр ссылок',
     'section_raid' => 'Анти-рейд',
     'section_tickets' => 'Тикеты',
+    'section_starboard' => 'Доска звёзд',
 ];

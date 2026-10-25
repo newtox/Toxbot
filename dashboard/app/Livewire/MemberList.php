@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\ModCase;
 use App\Services\Discord;
+use App\Services\GuildAccess;
 use App\Support\DiscordMember;
 use Illuminate\Http\Client\RequestException;
 use Livewire\Attributes\Locked;
@@ -14,8 +15,15 @@ class MemberList extends Component
 {
     public const PER_PAGE = 50;
 
+    public const FILTERS = ['all', 'cases', 'timeout', 'bots'];
+
+    public const MEMBER_FILTERS = ['all', 'bots'];
+
     #[Locked]
     public string $guildId;
+
+    #[Locked]
+    public bool $moderator = false;
 
     #[Url(as: 'q', except: '')]
     public string $search = '';
@@ -29,6 +37,7 @@ class MemberList extends Component
     public function mount(string $guildId): void
     {
         $this->guildId = $guildId;
+        $this->moderator = app(GuildAccess::class)->find(auth()->user(), $guildId) !== null;
     }
 
     public function updatedSearch(): void
@@ -82,15 +91,25 @@ class MemberList extends Component
             $error = __('moderation.members_error');
         }
 
+        if (! in_array($this->filter, $this->moderator ? self::FILTERS : self::MEMBER_FILTERS, true)) {
+            $this->filter = 'all';
+        }
+
         $members = collect($raw)
             ->filter(fn ($m) => isset($m['user']))
             ->map(fn ($m) => DiscordMember::summary($m, $roles, $this->guildId));
 
-        $caseCounts = ModCase::query()->forGuild($this->guildId)
-            ->whereIn('user_id', $members->pluck('id'))
-            ->selectRaw('user_id, count(*) as total')
-            ->groupBy('user_id')
-            ->pluck('total', 'user_id');
+        $caseCounts = $this->moderator
+            ? ModCase::query()->forGuild($this->guildId)
+                ->whereIn('user_id', $members->pluck('id'))
+                ->selectRaw('user_id, count(*) as total')
+                ->groupBy('user_id')
+                ->pluck('total', 'user_id')
+            : collect();
+
+        if (! $this->moderator) {
+            $members = $members->map(fn ($m) => array_merge($m, ['timeout_until' => null]));
+        }
 
         $members = $members
             ->map(fn ($m) => $m + ['cases' => (int) ($caseCounts[$m['id']] ?? 0)])
@@ -112,6 +131,7 @@ class MemberList extends Component
             'pages' => $pages,
             'error' => $error,
             'truncated' => $truncated,
+            'filters' => $this->moderator ? self::FILTERS : self::MEMBER_FILTERS,
         ]);
     }
 }

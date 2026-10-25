@@ -32,4 +32,5 @@ return [
     'section_extra_moderation' => 'चेतावनी नियम हटा दिए जाते हैं।',
     'section_extra_tickets' => 'टिकट प्रकार और बटन वाला संदेश हटा दिए जाते हैं।',
     'section_extra_verification' => 'वेरिफ़िकेशन संदेश हटा दिया जाता है।',
+    'section_extra_starboard' => 'स्टारबोर्ड की मौजूदा पोस्ट बनी रहती हैं।',
 ];

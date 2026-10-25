@@ -32,4 +32,5 @@ return [
     'section_extra_moderation' => 'Les règles d’avertissement sont supprimées.',
     'section_extra_tickets' => 'Les types de ticket et le message à boutons sont supprimés.',
     'section_extra_verification' => 'Le message de vérification est supprimé.',
+    'section_extra_starboard' => 'Les posts existants du starboard sont conservés.',
 ];
