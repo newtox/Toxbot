@@ -111,11 +111,11 @@ class InfoTest extends TestCase
 
         $this->get('/info/system')->assertOk()->assertSee(__('info.no_status'))->assertSee('abcdef1')->assertSee(PHP_VERSION);
 
-        BotStatus::create(['id' => 1, 'started_at' => now()->subDay(), 'heartbeat_at' => now(), 'commit' => '1234567abcdef', 'dart_version' => '3.9.0', 'guilds' => 42, 'latency_ms' => 87, 'memory_bytes' => 120 * 1024 * 1024, 'user_id' => '999']);
-        $this->get('/info/system')->assertOk()->assertSee(__('info.online'))->assertSee('87 ms')->assertSee('github.com/newtox/Toxbot/commit/1234567abcdef');
+        BotStatus::create(['id' => 1, 'started_at' => now()->subDay(), 'heartbeat_at' => now(), 'commit' => '1234567abcdef', 'dart_version' => '3.9.0', 'guilds' => 42, 'latency_ms' => 87, 'memory_bytes' => 120 * 1024 * 1024, 'memory_peak_bytes' => 200 * 1024 * 1024, 'user_id' => '999']);
+        $this->get('/info/system')->assertOk()->assertSee(__('info.online'))->assertSee('87 ms')->assertSee('120.00 / 200.00 MB')->assertSee('github.com/newtox/Toxbot/commit/1234567abcdef');
 
         BotStatus::query()->update(['heartbeat_at' => now()->subMinutes(10)]);
-        $this->get('/info/system')->assertOk()->assertSee(__('info.offline'));
+        $this->get('/info/system')->assertOk()->assertSee(__('info.offline'))->assertDontSee('87 ms');
     }
 
     public function test_user_area_has_its_own_pages(): void
