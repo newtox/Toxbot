@@ -254,6 +254,7 @@ da_dk:
   ticket_log_reason: "Grund"
   ticket_no_reason: "Ingen grund angivet"
   mod_field_appeal: "Anmod om unban"
+  starboard_jump: "Gå til besked"
 
 de_de:
   global_error: "Ein Fehler ist aufgetreten!"
@@ -511,6 +512,7 @@ de_de:
   ticket_log_reason: "Grund"
   ticket_no_reason: "Kein Grund angegeben"
   mod_field_appeal: "Entbannung beantragen"
+  starboard_jump: "Zur Nachricht"
 
 en_us:
   global_error: "An error has occurred!"
@@ -768,6 +770,7 @@ en_us:
   ticket_log_reason: "Reason"
   ticket_no_reason: "No reason given"
   mod_field_appeal: "Request an unban"
+  starboard_jump: "Jump to message"
 
 es_es:
   global_error: "¡Ha ocurrido un error!"
@@ -1025,6 +1028,7 @@ es_es:
   ticket_log_reason: "Motivo"
   ticket_no_reason: "Sin motivo"
   mod_field_appeal: "Solicitar desbaneo"
+  starboard_jump: "Ir al mensaje"
 
 fr_fr:
   global_error: "Une erreur s'est produite !"
@@ -1282,6 +1286,7 @@ fr_fr:
   ticket_log_reason: "Raison"
   ticket_no_reason: "Aucune raison"
   mod_field_appeal: "Demander un débannissement"
+  starboard_jump: "Aller au message"
 
 hi_hi:
   global_error: "एक त्रुटि हुई है!"
@@ -1539,6 +1544,7 @@ hi_hi:
   ticket_log_reason: "कारण"
   ticket_no_reason: "कोई कारण नहीं दिया गया"
   mod_field_appeal: "अनबैन का अनुरोध करें"
+  starboard_jump: "संदेश पर जाएँ"
 
 ja_jp:
   global_error: "エラーが発生しました！"
@@ -1796,6 +1802,7 @@ ja_jp:
   ticket_log_reason: "理由"
   ticket_no_reason: "理由なし"
   mod_field_appeal: "BAN 解除を申請"
+  starboard_jump: "メッセージへ移動"
 
 ko_ko:
   global_error: "오류가 발생했습니다!"
@@ -2053,6 +2060,7 @@ ko_ko:
   ticket_log_reason: "사유"
   ticket_no_reason: "사유 없음"
   mod_field_appeal: "차단 해제 신청"
+  starboard_jump: "메시지로 이동"
 
 ru_ru:
   global_error: "Произошла ошибка!"
@@ -2310,6 +2318,7 @@ ru_ru:
   ticket_log_reason: "Причина"
   ticket_no_reason: "Причина не указана"
   mod_field_appeal: "Подать заявку на разбан"
+  starboard_jump: "К сообщению"
 
 zh_cn:
   global_error: "发生错误！"
@@ -2567,3 +2576,4 @@ zh_cn:
   ticket_log_reason: "原因"
   ticket_no_reason: "未填写原因"
   mod_field_appeal: "申请解封"
+  starboard_jump: "跳转到消息"
