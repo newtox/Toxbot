@@ -127,18 +127,19 @@ Future<void> countCommand(MySqlConnection connection, String userId) async {
   );
 }
 
-Future<(bool, String?)> levelUpSettings(
+Future<(bool, String?, bool)> levelUpSettings(
   MySqlConnection connection,
   String guildId,
 ) async {
   final rows = await connection.query(
-    'SELECT `levelup_enabled`, `levelup_channel` FROM `guilds` WHERE `id` = ? LIMIT 1;',
+    'SELECT `levelup_enabled`, `levelup_channel`, `levelup_dm` FROM `guilds` WHERE `id` = ? LIMIT 1;',
     [guildId],
   );
-  if (rows.isEmpty) return (false, null);
+  if (rows.isEmpty) return (false, null, false);
   return (
     rows.first['levelup_enabled'] == 1,
     rows.first['levelup_channel'] as String?,
+    rows.first['levelup_dm'] == 1,
   );
 }
 

@@ -112,6 +112,14 @@
             </select>
             @error('levelupChannel') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
         </div>
+
+        <label class="mt-6 flex cursor-pointer items-start gap-3 rounded-lg bg-dc-900 p-3">
+            <input type="checkbox" wire:model="levelupDm" class="mt-1 size-4 shrink-0 accent-[var(--color-accent)]">
+            <span>
+                <span class="block font-medium text-dc-header">{{ __('guild.levelup_dm_title') }}</span>
+                <span class="block text-sm text-dc-muted">{{ __('guild.levelup_dm_description') }}</span>
+            </span>
+        </label>
     </section>
 
     @endif

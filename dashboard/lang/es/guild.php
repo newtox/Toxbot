@@ -50,4 +50,6 @@ return [
     'language_description' => 'Toxbot escribe en este idioma los mensajes para todo el servidor: botones de tickets y verificación, registros de tickets, alarmas de raid, motivos automáticos y los canales y roles de la configuración automática.',
     'language_label' => 'Idioma',
     'autorole_after_verify' => 'La verificación está activada: los miembros nuevos reciben el autorol solo después de verificarse, no al unirse.',
+    'levelup_dm_title' => 'También por MD',
+    'levelup_dm_description' => 'Los miembros también reciben un mensaje privado de Toxbot al subir de nivel en este servidor. También funciona por sí solo.',
 ];
