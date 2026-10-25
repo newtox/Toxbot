@@ -38,7 +38,7 @@ class StreamList extends Component
 
     public string $filterTitle = '';
 
-    public string $endAction = 'keep';
+    public string $endAction = 'default';
 
     public bool $notifyVideos = true;
 

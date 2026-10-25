@@ -50,7 +50,7 @@ return [
     'premium_server_1' => 'Up to 50 creators instead of 5',
     'premium_server_2' => 'Own message and ping role per creator',
     'premium_server_3' => 'Game and title filters',
-    'premium_server_4' => 'Edit or delete the notification when the stream ends',
+    'premium_server_4' => 'Choose per creator what happens to the notification when the stream ends',
     'premium_hint' => 'Premium is bought directly in Discord, in Toxbot\'s profile or the app directory.',
     'cta_title' => 'Ready to try it?',
     'cta_text' => 'Invite Toxbot and set everything up in a few minutes.',

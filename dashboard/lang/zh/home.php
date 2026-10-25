@@ -50,7 +50,7 @@ return [
     'premium_server_1' => '最多 50 位创作者，而不是 5 位',
     'premium_server_2' => '每位创作者专属的消息和提及身份组',
     'premium_server_3' => '游戏和标题过滤',
-    'premium_server_4' => '直播结束时编辑或删除通知',
+    'premium_server_4' => '为每位创作者单独选择直播结束后如何处理通知',
     'premium_hint' => '高级版可直接在 Discord 中，通过 Toxbot 的资料页或应用目录购买。',
     'cta_title' => '准备好试试了吗？',
     'cta_text' => '邀请 Toxbot，几分钟内完成全部设置。',

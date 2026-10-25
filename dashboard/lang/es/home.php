@@ -50,7 +50,7 @@ return [
     'premium_server_1' => 'Hasta 50 creadores en lugar de 5',
     'premium_server_2' => 'Mensaje y rol de mención propios por creador',
     'premium_server_3' => 'Filtros de juego y título',
-    'premium_server_4' => 'Editar o borrar el aviso cuando termina el directo',
+    'premium_server_4' => 'Elegir por creador qué pasa con el aviso cuando termina el directo',
     'premium_hint' => 'Premium se compra directamente en Discord, en el perfil de Toxbot o en el directorio de apps.',
     'cta_title' => '¿Listo para probarlo?',
     'cta_text' => 'Invita a Toxbot y configúralo todo en pocos minutos.',

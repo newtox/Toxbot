@@ -50,7 +50,7 @@ return [
     'premium_server_1' => 'Jusqu\'à 50 créateurs au lieu de 5',
     'premium_server_2' => 'Message et rôle à mentionner par créateur',
     'premium_server_3' => 'Filtres par jeu et par titre',
-    'premium_server_4' => 'Modifier ou supprimer la notification à la fin du stream',
+    'premium_server_4' => 'Choisir par créateur ce que devient la notification à la fin du stream',
     'premium_hint' => 'Premium s\'achète directement dans Discord, sur le profil de Toxbot ou dans l\'annuaire des applications.',
     'cta_title' => 'Prêt à essayer ?',
     'cta_text' => 'Invite Toxbot et configure tout en quelques minutes.',
