@@ -24,6 +24,9 @@ jobs:
 
       - uses: docker/setup-buildx-action@v3
 
+      - id: build
+        run: echo "date=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
+
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -38,5 +41,8 @@ jobs:
             ghcr.io/newtox/${{ matrix.image }}:latest
             ghcr.io/newtox/${{ matrix.image }}:${{ github.sha }}
           labels: org.opencontainers.image.source=https://github.com/newtox/Toxbot
+          build-args: |
+            GIT_COMMIT=${{ github.sha }}
+            BUILD_DATE=${{ steps.build.outputs.date }}
           cache-from: type=gha,scope=${{ matrix.image }}
           cache-to: type=gha,mode=max,scope=${{ matrix.image }}
