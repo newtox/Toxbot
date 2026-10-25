@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Guild;
+use App\Models\ModCase;
 use App\Models\UnbanAppeal;
 use App\Services\Discord;
 use Illuminate\Http\Client\RequestException;
@@ -88,7 +89,20 @@ class AppealController extends Controller
             return [...$state, 'status' => 'rejected', 'appeal' => $latest, 'retryAt' => $latest->handled_at->addDays(self::RETRY_DAYS)];
         }
 
-        return [...$state, 'status' => 'form', 'banReason' => $ban['reason'] ?? null];
+        return [...$state, 'status' => 'form', 'banReason' => $this->banReason($guild, $userId, $ban['reason'] ?? null)];
+    }
+
+    private function banReason(string $guild, string $userId, ?string $discordReason): ?string
+    {
+        $caseReason = ModCase::query()->forGuild($guild)
+            ->where('user_id', $userId)
+            ->where('type', 'ban')
+            ->latest('id')
+            ->value('reason');
+
+        $reason = trim((string) ($caseReason ?? preg_replace('/^[a-z0-9_.]{2,32}: /', '', (string) $discordReason)));
+
+        return $reason === '' || $reason === '-' ? null : $reason;
     }
 
     private function notifyTeam(Guild $settings, UnbanAppeal $appeal): void
