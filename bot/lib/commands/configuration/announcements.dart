@@ -108,8 +108,10 @@ final announcements = ChatGroup(
               'UPDATE `guilds` SET `$channelColumn` = ?, `$messageColumn` = ? WHERE `id` = ? LIMIT 1;',
               [channel.id.toString(), message, context.guild?.id.toString()]);
 
-          await replySuccess(context, 'announcements_set',
-              replace: {'&type': type});
+          await replySuccess(context, 'announcements_set', replace: {
+            '&type': await getString(
+                context.user, 'announcements_${type.toLowerCase()}')
+          });
           return;
         } catch (e) {
           print('Error while setting announcements: $e');
@@ -240,8 +242,10 @@ final announcements = ChatGroup(
               'UPDATE `guilds` SET `$channelColumn` = ?, `$messageColumn` = ? WHERE `id` = ? LIMIT 1;',
               [null, null, context.guild?.id.toString()]);
 
-          await replySuccess(context, 'announcements_reset',
-              replace: {'&type': type});
+          await replySuccess(context, 'announcements_reset', replace: {
+            '&type': await getString(
+                context.user, 'announcements_${type.toLowerCase()}')
+          });
         } catch (e) {
           print('Error while resetting announcements: $e');
           await replyError(context, 'announcements_error',

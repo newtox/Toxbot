@@ -8,7 +8,7 @@ import 'package:toxbot/utils/functions.dart';
 final eightball = ChatCommand('8ball', 'Ask the magic 8ball a question.',
     localizedDescriptions: {
       Locale.da: 'Stil den magiske 8ball et spørgsmål.',
-      Locale.de: 'Der magischen 8ball eine Frage stellen.',
+      Locale.de: 'Dem magischen 8ball eine Frage stellen.',
       Locale.enUs: 'Ask the magic 8ball a question.',
       Locale.esEs: 'Hacerle una pregunta a la bola 8 mágica.',
       Locale.fr: 'Poser une question à la boule magique 8.',
@@ -20,7 +20,7 @@ final eightball = ChatCommand('8ball', 'Ask the magic 8ball a question.',
     }, (ChatContext context,
         @Description('Your question for the 8ball.', {
           Locale.da: 'Dit spørgsmål til 8ball.',
-          Locale.de: 'Deine Frage an die 8ball.',
+          Locale.de: 'Deine Frage an den 8ball.',
           Locale.enUs: 'Your question for the 8ball.',
           Locale.esEs: 'Tu pregunta para la bola 8.',
           Locale.fr: 'Ta question pour la boule 8.',
