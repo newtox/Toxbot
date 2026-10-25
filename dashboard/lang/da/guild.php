@@ -8,7 +8,7 @@ return [
     'welcome_description' => 'Toxbot sender denne besked, så snart nogen joiner serveren.',
     'welcome_example' => 'Hej &mention, velkommen til **&server**! Tjek reglerne.',
     'bye_title' => 'Farvelbesked',
-    'bye_description' => 'Toxbot sender denne besked, når nogen forlader serveren.',
+    'bye_description' => 'Toxbot sender denne besked, når nogen forlader serveren. Ikke ved kick og ban.',
     'bye_example' => '&user har forladt **&server**. Pas på dig selv!',
     'enable' => 'Aktivér :name',
     'channel' => 'Kanal',

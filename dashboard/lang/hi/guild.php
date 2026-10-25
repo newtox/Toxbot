@@ -8,7 +8,7 @@ return [
     'welcome_description' => 'जैसे ही कोई सर्वर से जुड़ता है, Toxbot यह संदेश भेजता है।',
     'welcome_example' => 'नमस्ते &mention, **&server** में आपका स्वागत है! नियम ज़रूर देखें।',
     'bye_title' => 'विदाई संदेश',
-    'bye_description' => 'जब कोई सर्वर छोड़ता है, Toxbot यह संदेश भेजता है।',
+    'bye_description' => 'जब कोई सर्वर छोड़ता है, Toxbot यह संदेश भेजता है। किक और बैन पर नहीं।',
     'bye_example' => '&user ने **&server** छोड़ दिया। अपना ख़याल रखना!',
     'enable' => ':name चालू करें',
     'channel' => 'चैनल',

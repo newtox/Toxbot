@@ -8,7 +8,7 @@ return [
     'welcome_description' => 'Toxbot publica este mensaje en cuanto alguien se une al servidor.',
     'welcome_example' => '¡Hola &mention, bienvenido a **&server**! Echa un vistazo a las reglas.',
     'bye_title' => 'Mensaje de despedida',
-    'bye_description' => 'Toxbot publica este mensaje cuando alguien abandona el servidor.',
+    'bye_description' => 'Toxbot publica este mensaje cuando alguien abandona el servidor. No en expulsiones ni baneos.',
     'bye_example' => '&user ha dejado **&server**. ¡Cuídate!',
     'enable' => 'Activar :name',
     'channel' => 'Canal',

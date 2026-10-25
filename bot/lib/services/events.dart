@@ -62,6 +62,10 @@ const _leaveColor = '#ed4245';
 
 const _commandColor = '#7289da';
 
+const _removalCheckDelay = Duration(seconds: 3);
+
+const _removalWindow = Duration(seconds: 30);
+
 final Set<Snowflake> currentGuildIds = {};
 
 late DateTime botStartTime;
@@ -92,6 +96,26 @@ String _userLabel(User? user) {
   return name == null || name == user.username
       ? user.username
       : '${user.username} ($name)';
+}
+
+Future<bool> _removedByModerator(Guild guild, Snowflake userId) async {
+  await Future.delayed(_removalCheckDelay);
+
+  try {
+    await guild.manager.fetchBan(guild.id, userId);
+    return true;
+  } catch (_) {}
+
+  try {
+    final kicks =
+        await guild.auditLogs.list(type: AuditLogEvent.memberKick, limit: 10);
+    final since = DateTime.now().subtract(_removalWindow);
+    return kicks.any((entry) =>
+        entry.targetId == userId && entry.id.timestamp.isAfter(since));
+  } catch (e) {
+    print('Checking the audit log for a kick failed: $e');
+    return false;
+  }
 }
 
 CommandsPlugin setupCommandHandler(CommandsPlugin commands) {
@@ -285,6 +309,8 @@ void setupGuildMemberRemoveHandler(NyxxGateway client) async {
             final byeChannel = await client.channels[byeChannelId].get();
 
             if (byeChannel is TextChannel) {
+              if (await _removedByModerator(fullGuild, event.user.id)) return;
+
               String byeMessage = (guildSettings['bye_msg'] as Blob?)
                       ?.toString()
                       .replaceAll('&user', _userLabel(event.user))

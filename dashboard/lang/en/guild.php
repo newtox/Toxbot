@@ -8,7 +8,7 @@ return [
     'welcome_description' => 'Toxbot posts this message as soon as someone joins the server.',
     'welcome_example' => 'Hey &mention, welcome to **&server**! Check out the rules.',
     'bye_title' => 'Goodbye message',
-    'bye_description' => 'Toxbot posts this message when someone leaves the server.',
+    'bye_description' => 'Toxbot posts this message when someone leaves the server. Not for kicks and bans.',
     'bye_example' => '&user left **&server**. Take care!',
     'enable' => 'Enable :name',
     'channel' => 'Channel',

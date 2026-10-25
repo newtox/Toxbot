@@ -8,7 +8,7 @@ return [
     'welcome_description' => '有人加入服务器时，Toxbot 会发送这条消息。',
     'welcome_example' => '嗨 &mention，欢迎来到 **&server**！记得看看规则。',
     'bye_title' => '告别消息',
-    'bye_description' => '有人离开服务器时，Toxbot 会发送这条消息。',
+    'bye_description' => '有人离开服务器时，Toxbot 会发送这条消息。被踢出或封禁时不会发送。',
     'bye_example' => '&user 离开了 **&server**。保重！',
     'enable' => '启用 :name',
     'channel' => '频道',
