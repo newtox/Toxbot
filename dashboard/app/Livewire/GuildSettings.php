@@ -23,11 +23,17 @@ class GuildSettings extends Component
 
     private const CATEGORY_TYPE = 4;
 
-    public const SECTIONS = ['welcome', 'goodbye', 'autorole', 'language', 'levels', 'streams', 'liverole', 'tags', 'moderation', 'verification', 'links', 'raid', 'tickets'];
+    public const STARBOARD = 'starboard';
+
+    public const SECTIONS = ['welcome', 'goodbye', 'autorole', 'language', 'levels', 'streams', 'liverole', 'tags', 'starboard', 'moderation', 'verification', 'links', 'raid', 'tickets'];
+
+    public const STARBOARD_EMOJIS = ['⭐', '🌟', '🔥', '💀', '😂', '❤️'];
+
+    private const EMOJI_PATTERN = '/^(<a?:\w{2,32}:\d{15,22}>|[^\s<>:A-Za-z]{1,16})$/u';
 
     public const GROUPS = [
         'general' => ['welcome' => 'welcome', 'goodbye' => 'bye', 'autorole' => 'autorole', 'language' => 'globe'],
-        'community' => ['levels' => 'level', 'streams' => 'stream', 'liverole' => 'live', 'tags' => 'tag'],
+        'community' => ['levels' => 'level', 'streams' => 'stream', 'liverole' => 'live', 'tags' => 'tag', 'starboard' => 'star'],
         'safety' => ['moderation' => 'shield', 'verification' => 'lock', 'links' => 'link', 'raid' => 'alert', 'tickets' => 'ticket'],
     ];
 
@@ -82,6 +88,12 @@ class GuildSettings extends Component
     public ?string $liveRole = null;
 
     public ?string $liveRoleRequired = null;
+
+    public ?string $starboardChannel = null;
+
+    public string $starboardEmoji = Guild::DEFAULT_STARBOARD_EMOJI;
+
+    public int $starboardThreshold = 3;
 
     public ?string $modlogChannel = null;
 
@@ -183,6 +195,9 @@ class GuildSettings extends Component
         $this->streamEndAction = $row->stream_end_action ?: 'keep';
         $this->liveRole = $row->live_role;
         $this->liveRoleRequired = $row->live_role_required;
+        $this->starboardChannel = $row->starboard_channel;
+        $this->starboardEmoji = $row->starboard_emoji ?: Guild::DEFAULT_STARBOARD_EMOJI;
+        $this->starboardThreshold = (int) $row->starboard_threshold;
         $this->modlogChannel = $row->modlog_channel;
         $this->modDm = $row->exists ? (bool) $row->mod_dm : true;
 
@@ -285,6 +300,11 @@ class GuildSettings extends Component
                 'liveRoleRequired' => ['nullable', Rule::in($mentionableRoleIds)],
             ],
             'tags' => [],
+            'starboard' => [
+                'starboardChannel' => ['nullable', Rule::in($channelIds)],
+                'starboardEmoji' => ['required', 'string', 'max:80', 'regex:'.self::EMOJI_PATTERN],
+                'starboardThreshold' => ['required', 'integer', 'min:1', 'max:50'],
+            ],
             'moderation' => [
                 'modlogChannel' => ['nullable', Rule::in($channelIds)],
             ],
@@ -324,6 +344,9 @@ class GuildSettings extends Component
                 'levelupChannel.in' => __('guild.channel_invalid'),
                 'streamChannel.in' => __('guild.channel_invalid'),
                 'modlogChannel.in' => __('guild.channel_invalid'),
+                'starboardChannel.in' => __('guild.channel_invalid'),
+                'starboardEmoji.*' => __('starboard.emoji_invalid'),
+                'starboardThreshold.*' => __('protection.number_range', ['min' => 1, 'max' => 50]),
                 'streamRole.in' => __('guild.role_invalid'),
                 'liveRole.in' => __('guild.role_invalid'),
                 'liveRoleRequired.in' => __('guild.role_invalid'),
@@ -375,6 +398,11 @@ class GuildSettings extends Component
             ],
             'tags' => [
                 'tags_enabled' => $this->tagsEnabled,
+            ],
+            'starboard' => [
+                'starboard_channel' => $this->starboardChannel ?: null,
+                'starboard_emoji' => trim($this->starboardEmoji) === Guild::DEFAULT_STARBOARD_EMOJI ? null : trim($this->starboardEmoji),
+                'starboard_threshold' => $this->starboardThreshold,
             ],
             'moderation' => [
                 'modlog_channel' => $this->modlogChannel ?: null,
@@ -563,6 +591,18 @@ class GuildSettings extends Component
             'categories' => $categories,
             'roles' => $roles,
             'loadError' => $loadError,
+            'serverEmojis' => $this->section === self::STARBOARD && $loadError === null
+                ? rescue(fn () => collect($discord->guildEmojis($this->guildId))
+                    ->filter(fn ($e) => ($e['available'] ?? true) && isset($e['id']))
+                    ->take(40)
+                    ->map(fn ($e) => [
+                        'code' => (($e['animated'] ?? false) ? '<a:' : '<:').$e['name'].':'.$e['id'].'>',
+                        'name' => $e['name'],
+                        'url' => 'https://cdn.discordapp.com/emojis/'.$e['id'].'.'.(($e['animated'] ?? false) ? 'gif' : 'webp').'?size=48',
+                    ])
+                    ->values()
+                    ->all(), [], report: false)
+                : [],
             'previewContext' => [
                 'username' => $user->username,
                 'displayName' => $user->display_name,
@@ -583,7 +623,7 @@ class GuildSettings extends Component
 
     private function forgetDeletedChannels(array $existingIds): void
     {
-        foreach (['welcomeChannel', 'byeChannel', 'levelupChannel', 'streamChannel', 'modlogChannel', 'verifyChannel', 'ticketCategory', 'ticketLogChannel', 'ticketPanelChannel'] as $property) {
+        foreach (['welcomeChannel', 'byeChannel', 'levelupChannel', 'streamChannel', 'starboardChannel', 'modlogChannel', 'verifyChannel', 'ticketCategory', 'ticketLogChannel', 'ticketPanelChannel'] as $property) {
             if ($this->{$property} && ! in_array($this->{$property}, $existingIds, true)) {
                 $this->{$property} = null;
             }

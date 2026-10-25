@@ -1,0 +1,21 @@
+<?php
+
+return [
+    'settings_title' => 'Starboard',
+    'settings_description' => 'Los mensajes populares se publican automáticamente en un canal propio cuando suficientes miembros reaccionan con el emoji.',
+    'off' => 'Desactivado (sin starboard)',
+    'emoji' => 'Emoji',
+    'emoji_custom' => 'O escribe tu propio emoji (emoji Unicode o <:name:id>)',
+    'emoji_invalid' => 'Eso no es un emoji válido.',
+    'threshold' => 'Reacciones necesarias',
+    'threshold_hint' => 'Las reacciones del autor y de los bots no cuentan. Si el número vuelve a bajar, la publicación se quita del starboard.',
+    'posts_title' => 'Publicaciones del starboard',
+    'count' => '{0} Aún no hay publicaciones|{1} :count publicación|[2,*] :count publicaciones',
+    'sort' => 'Orden',
+    'sort_newest' => 'Más recientes',
+    'sort_top' => 'Más reacciones',
+    'jump' => 'Ir al mensaje',
+    'empty' => 'Aún no hay nada. Reaccionad a los buenos mensajes y aparecerán aquí.',
+    'member_description' => 'Aquí aparecen los mensajes con al menos :count reacciones :emoji.',
+    'not_set_up' => 'El starboard aún no está configurado en este servidor.',
+];

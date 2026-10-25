@@ -32,4 +32,5 @@ return [
     'section_extra_moderation' => '警告规则会被删除。',
     'section_extra_tickets' => '工单类型和按钮消息会被删除。',
     'section_extra_verification' => '验证消息会被删除。',
+    'section_extra_starboard' => '星标墙上已有的帖子会保留。',
 ];

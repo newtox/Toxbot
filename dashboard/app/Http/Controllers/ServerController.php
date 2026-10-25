@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Livewire\GuildSettings;
 use App\Models\Guild;
 use App\Models\ModCase;
+use App\Models\StarboardPost;
 use App\Models\StreamSubscription;
 use App\Models\TagGuildBlock;
 use App\Models\Ticket;
@@ -14,6 +15,7 @@ use App\Services\Premium;
 use App\Services\Streams\SourceManager;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\View\View;
 
 class ServerController extends Controller
@@ -25,18 +27,21 @@ class ServerController extends Controller
 
     public function index(Request $request): View
     {
-        $guilds = $this->access->manageableGuilds($request->user(), fresh: $request->boolean('refresh'));
+        $guilds = $this->access->guilds($request->user(), fresh: $request->boolean('refresh'));
 
         return view('servers.index', [
             'withBot' => array_values(array_filter($guilds, fn ($g) => $g['has_bot'])),
-            'withoutBot' => array_values(array_filter($guilds, fn ($g) => ! $g['has_bot'])),
+            'withoutBot' => array_values(array_filter($guilds, fn ($g) => $g['manage'] && ! $g['has_bot'])),
             'discord' => $this->discord,
         ]);
     }
 
-    public function show(Request $request, string $guild, Premium $premium, SourceManager $streams): View
+    public function show(Request $request, string $guild, Premium $premium, SourceManager $streams): View|RedirectResponse
     {
-        [$found, $guilds] = $this->resolve($request, $guild);
+        [$found, $guilds] = $this->resolve($request, $guild, manage: false);
+        if (! $found['manage']) {
+            return redirect()->route('servers.members', $guild);
+        }
 
         $row = Guild::forDiscordId($guild);
         $info = rescue(fn () => $this->discord->guildInfo($guild), [], report: false);
@@ -101,6 +106,14 @@ class ServerController extends Controller
                     'extra' => trans_choice('overview.blocked_tags', TagGuildBlock::query()->where('guild', $guild)->count()),
                 ],
                 [
+                    'section' => 'starboard',
+                    'icon' => 'star',
+                    'title' => __('starboard.settings_title'),
+                    'description' => __('starboard.settings_description'),
+                    'active' => $row->starboard_channel !== null,
+                    'extra' => trans_choice('starboard.count', StarboardPost::query()->forGuild($guild)->count()),
+                ],
+                [
                     'section' => 'moderation',
                     'icon' => 'shield',
                     'title' => __('moderation.settings_title'),
@@ -147,7 +160,19 @@ class ServerController extends Controller
             return redirect()->route('servers.settings', [$guild, GuildSettings::LEGACY_SECTIONS[$section]]);
         }
 
-        [$found, $guilds] = $this->resolve($request, $guild);
+        $public = $section === GuildSettings::STARBOARD;
+        [$found, $guilds] = $this->resolve($request, $guild, manage: ! $public);
+
+        if (! $found['manage']) {
+            $settings = Guild::query()->find($guild);
+
+            return view('servers.starboard', [
+                'guild' => $found,
+                'guilds' => $guilds,
+                'threshold' => $settings?->starboard_channel ? $settings->starboard_threshold : null,
+                'emoji' => Blade::render('<x-emoji :code="$code" />', ['code' => $settings?->starboard_emoji ?: Guild::DEFAULT_STARBOARD_EMOJI]),
+            ]);
+        }
 
         return view('servers.settings', ['guild' => $found, 'guilds' => $guilds, 'section' => $section]);
     }
@@ -189,14 +214,14 @@ class ServerController extends Controller
 
     public function members(Request $request, string $guild): View
     {
-        [$found, $guilds] = $this->resolve($request, $guild);
+        [$found, $guilds] = $this->resolve($request, $guild, manage: false);
 
         return view('servers.members', ['guild' => $found, 'guilds' => $guilds]);
     }
 
     public function member(Request $request, string $guild, string $user): View
     {
-        [$found, $guilds] = $this->resolve($request, $guild);
+        [$found, $guilds] = $this->resolve($request, $guild, manage: false);
 
         return view('servers.member', ['guild' => $found, 'guilds' => $guilds, 'userId' => $user]);
     }
@@ -208,16 +233,13 @@ class ServerController extends Controller
         return view('servers.modlog', ['guild' => $found, 'guilds' => $guilds]);
     }
 
-    private function resolve(Request $request, string $guild): array
+    private function resolve(Request $request, string $guild, bool $manage = true): array
     {
-        $guilds = array_values(array_filter(
-            $this->access->manageableGuilds($request->user()),
-            fn ($g) => $g['has_bot'],
-        ));
+        $guilds = $this->access->dashboardGuilds($request->user());
 
         $found = collect($guilds)->firstWhere('id', $guild);
 
-        abort_if($found === null, 403, __('servers.forbidden'));
+        abort_if($found === null || ($manage && ! $found['manage']), 403, __('servers.forbidden'));
 
         return [$found, $guilds];
     }

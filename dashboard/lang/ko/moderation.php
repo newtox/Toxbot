@@ -100,4 +100,5 @@ return [
     'mod_error_not_banned' => '이 사용자는 차단되지 않았습니다.',
     'mod_error_permission' => '이 작업에 필요한 Discord 권한이 없습니다.',
     'mod_error_unknown' => '문제가 발생했습니다. 다시 시도해 주세요.',
+    'members_description_member' => '서버의 모든 멤버와 역할, 레벨, 프로필.',
 ];

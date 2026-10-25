@@ -100,4 +100,5 @@ return [
     'mod_error_not_banned' => 'このユーザーは BAN されていません。',
     'mod_error_permission' => 'この操作に必要な Discord の権限がありません。',
     'mod_error_unknown' => '問題が発生しました。もう一度お試しください。',
+    'members_description_member' => 'サーバーの全メンバーとロール、レベル、プロフィール。',
 ];

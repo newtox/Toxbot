@@ -32,4 +32,5 @@ return [
     'section_extra_moderation' => 'Warning rules are deleted.',
     'section_extra_tickets' => 'Ticket types and the button message are deleted.',
     'section_extra_verification' => 'The verify message is deleted.',
+    'section_extra_starboard' => 'Existing starboard posts are kept.',
 ];

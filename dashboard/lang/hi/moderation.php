@@ -100,4 +100,5 @@ return [
     'mod_error_not_banned' => 'यह यूज़र बैन नहीं है।',
     'mod_error_permission' => 'इस कार्रवाई के लिए आपके पास Discord अनुमति नहीं है।',
     'mod_error_unknown' => 'कुछ गलत हो गया, कृपया फिर से कोशिश करें।',
+    'members_description_member' => 'सर्वर के सभी सदस्य, उनके रोल, लेवल और प्रोफ़ाइल के साथ।',
 ];

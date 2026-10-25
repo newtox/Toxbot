@@ -100,4 +100,5 @@ return [
     'mod_error_not_banned' => '该用户未被封禁。',
     'mod_error_permission' => '你没有执行此操作所需的 Discord 权限。',
     'mod_error_unknown' => '出了点问题，请重试。',
+    'members_description_member' => '服务器的所有成员，以及他们的身份组、等级和资料。',
 ];

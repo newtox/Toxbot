@@ -24,6 +24,9 @@ class MemberProfile extends Component
     #[Locked]
     public string $userId;
 
+    #[Locked]
+    public bool $moderator = false;
+
     public string $actionType = 'warn';
 
     public string $reason = '';
@@ -39,6 +42,7 @@ class MemberProfile extends Component
     {
         $this->guildId = $guildId;
         $this->userId = $userId;
+        $this->moderator = app(GuildAccess::class)->find(auth()->user(), $guildId) !== null;
     }
 
     public function submit(): void
@@ -131,7 +135,11 @@ class MemberProfile extends Component
             $roles = [];
         }
 
-        abort_if($user === null, 404);
+        abort_if($user === null || (! $this->moderator && $member === null), 404);
+
+        if (! $this->moderator) {
+            $ban = null;
+        }
 
         $summary = $member
             ? DiscordMember::summary($member, $roles, $this->guildId)
@@ -154,6 +162,10 @@ class MemberProfile extends Component
             $ban !== null => ['unban'],
             default => ['ban'],
         };
+        if (! $this->moderator) {
+            $summary['timeout_until'] = null;
+        }
+
         if (! in_array($this->actionType, $types, true)) {
             $this->actionType = $types[0];
         }
@@ -171,7 +183,9 @@ class MemberProfile extends Component
             'serverRank' => $serverXp > 0
                 ? MemberLevel::query()->where('guild', $this->guildId)->where('xp', '>', $serverXp)->count() + 1
                 : null,
-            'cases' => ModCase::query()->forGuild($this->guildId)->where('user_id', $this->userId)->orderByDesc('number')->get(),
+            'cases' => $this->moderator
+                ? ModCase::query()->forGuild($this->guildId)->where('user_id', $this->userId)->orderByDesc('number')->get()
+                : collect(),
             'action' => $action,
             'types' => $types,
         ]);

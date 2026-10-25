@@ -32,4 +32,5 @@ return [
     'section_extra_moderation' => '경고 규칙이 삭제됩니다.',
     'section_extra_tickets' => '티켓 유형과 버튼 메시지가 삭제됩니다.',
     'section_extra_verification' => '인증 메시지가 삭제됩니다.',
+    'section_extra_starboard' => '스타보드의 기존 게시물은 유지됩니다.',
 ];

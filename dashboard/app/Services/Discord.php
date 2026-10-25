@@ -151,6 +151,17 @@ class Discord
         $this->asBot()->patch("/channels/{$channelId}/messages/{$messageId}", $payload)->throw();
     }
 
+    public function refreshAttachmentUrls(array $urls): array
+    {
+        if ($urls === []) {
+            return [];
+        }
+
+        return collect($this->asBot()->post('/attachments/refresh-urls', ['attachment_urls' => array_values($urls)])->throw()->json('refreshed_urls', []))
+            ->mapWithKeys(fn (array $entry) => [$entry['original'] => $entry['refreshed']])
+            ->all();
+    }
+
     public function deleteMessage(string $channelId, string $messageId): void
     {
         $response = $this->asBot()->delete("/channels/{$channelId}/messages/{$messageId}");
@@ -167,6 +178,11 @@ class Discord
     public function guildRoles(string $guildId): array
     {
         return Cache::remember("discord:guild:{$guildId}:roles", 30, fn () => $this->asBot()->get("/guilds/{$guildId}/roles")->throw()->json());
+    }
+
+    public function guildEmojis(string $guildId): array
+    {
+        return Cache::remember("discord:guild:{$guildId}:emojis", 30, fn () => $this->asBot()->get("/guilds/{$guildId}/emojis")->throw()->json());
     }
 
     public function botMember(string $guildId): array
@@ -275,7 +291,7 @@ class Discord
 
     public function forgetGuildCache(string $guildId): void
     {
-        foreach (['channels', 'roles', 'bot-member', 'info', 'members'] as $key) {
+        foreach (['channels', 'roles', 'emojis', 'bot-member', 'info', 'members'] as $key) {
             Cache::forget("discord:guild:{$guildId}:{$key}");
         }
     }

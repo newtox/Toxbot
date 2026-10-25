@@ -31,4 +31,5 @@ return [
     'section_links' => '链接过滤',
     'section_raid' => '防突袭',
     'section_tickets' => '工单',
+    'section_starboard' => '星标墙',
 ];

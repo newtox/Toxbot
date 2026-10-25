@@ -89,6 +89,19 @@
                             </div>
                         </div>
 
+                        @if (! ($guild['manage'] ?? true))
+                        <div class="space-y-1.5">
+                            <p class="nav-heading">{{ __('menu.server') }}</p>
+                            <a href="{{ route('servers.members', $guild['id']) }}"
+                               @class(['nav-item', 'nav-item-active' => request()->routeIs('servers.members', 'servers.member')])>
+                                <x-icon name="users" />{{ __('moderation.members_title') }}
+                            </a>
+                            <a href="{{ route('servers.settings', [$guild['id'], \App\Livewire\GuildSettings::STARBOARD]) }}"
+                               @class(['nav-item', 'nav-item-active' => request()->routeIs('servers.settings')])>
+                                <x-icon name="star" />{{ __('menu.section_starboard') }}
+                            </a>
+                        </div>
+                        @else
                         <div class="space-y-1.5">
                             <p class="nav-heading">{{ __('menu.server') }}</p>
                             <a href="{{ route('servers.show', $guild['id']) }}"
@@ -124,13 +137,11 @@
                                 @endforeach
                             </div>
                         @endforeach
+                        @endif
                     @else
                         @php
                             $sidebarGuilds = rescue(
-                                fn () => array_values(array_filter(
-                                    app(\App\Services\GuildAccess::class)->manageableGuilds(auth()->user()),
-                                    fn ($g) => $g['has_bot'],
-                                )),
+                                fn () => app(\App\Services\GuildAccess::class)->dashboardGuilds(auth()->user()),
                                 [],
                                 report: false,
                             );

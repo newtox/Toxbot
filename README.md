@@ -31,6 +31,8 @@ Both share the same MySQL database. Whatever you change in the dashboard (welcom
 - **Credits and shop**: `/daily`, `/credits` for the balance, streak and recent activity, credits for level-ups and Top.gg votes, profile backgrounds to buy with `/shop`
 - **Profile cards**: `/profile` shows level, rank, credits and the chosen background as an image
 - **Tags**: global custom commands with `/tag`, reportable and blockable per server
+- **Starboard**: messages with enough reactions of a chosen emoji are reposted to a starboard channel, and every member can browse them in the dashboard
+- **Dashboard for members**: members without "Manage Server" can open the member list with profiles and the starboard of their servers
 - **Stream notifications** for Twitch and YouTube: a message with role ping when a streamer goes live or uploads a video
 - **Live role**: members who stream on Discord get a role while they are live
 - **Moderation**: `/clear`, `/mod warn`, `timeout`, `untimeout`, `kick`, `ban` (also temporary) and `unban`, numbered cases in a modlog channel, DMs to members, automatic actions after a number of warnings, and bans, kicks and timeouts done in Discord or by other bots are logged too

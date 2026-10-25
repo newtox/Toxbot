@@ -6,7 +6,7 @@
                    class="input pl-9" aria-label="{{ __('moderation.search_placeholder') }}">
         </div>
         <select wire:model.live="filter" class="input w-auto" aria-label="{{ __('moderation.filter') }}">
-            @foreach (['all', 'cases', 'timeout', 'bots'] as $option)
+            @foreach ($filters as $option)
                 <option value="{{ $option }}">{{ __('moderation.filter_'.$option) }}</option>
             @endforeach
         </select>

@@ -14,7 +14,7 @@ class GuildAccess
         private readonly DiscordTokens $tokens,
     ) {}
 
-    public function manageableGuilds(DashboardUser $user, bool $fresh = false): array
+    public function guilds(DashboardUser $user, bool $fresh = false): array
     {
         $cacheKey = "discord:user:{$user->id}:guilds";
 
@@ -40,7 +40,7 @@ class GuildAccess
         $blocked = array_flip(BlacklistEntry::blockedGuildIds());
 
         return collect($guilds)
-            ->filter(fn (array $g) => self::canManageByPermissions($g) && ! isset($blocked[$g['id']]))
+            ->reject(fn (array $g) => isset($blocked[$g['id']]))
             ->map(fn (array $g) => [
                 'id' => $g['id'],
                 'name' => $g['name'],
@@ -49,22 +49,38 @@ class GuildAccess
                     ? "https://cdn.discordapp.com/icons/{$g['id']}/{$g['icon']}.png?size=128"
                     : null,
                 'owner' => (bool) ($g['owner'] ?? false),
+                'manage' => self::canManageByPermissions($g),
                 'has_bot' => isset($botGuilds[$g['id']]),
             ])
+            ->sortBy([['manage', 'desc'], fn ($a, $b) => strcasecmp($a['name'], $b['name'])])
+            ->values()
+            ->all();
+    }
+
+    public function manageableGuilds(DashboardUser $user, bool $fresh = false): array
+    {
+        return collect($this->guilds($user, $fresh))
+            ->where('manage', true)
             ->sortBy([['has_bot', 'desc'], fn ($a, $b) => strcasecmp($a['name'], $b['name'])])
             ->values()
             ->all();
     }
 
+    public function dashboardGuilds(DashboardUser $user, bool $fresh = false): array
+    {
+        return collect($this->guilds($user, $fresh))->where('has_bot', true)->values()->all();
+    }
+
     public function find(DashboardUser $user, string $guildId): ?array
     {
-        foreach ($this->manageableGuilds($user) as $guild) {
-            if ($guild['id'] === $guildId && $guild['has_bot']) {
-                return $guild;
-            }
-        }
+        $guild = $this->findMember($user, $guildId);
 
-        return null;
+        return $guild !== null && $guild['manage'] ? $guild : null;
+    }
+
+    public function findMember(DashboardUser $user, string $guildId): ?array
+    {
+        return collect($this->dashboardGuilds($user))->firstWhere('id', $guildId);
     }
 
     public static function canManageByPermissions(array $guild): bool

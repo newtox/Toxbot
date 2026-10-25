@@ -100,4 +100,5 @@ return [
     'mod_error_not_banned' => 'Cet utilisateur n\'est pas banni.',
     'mod_error_permission' => 'Tu n\'as pas la permission Discord pour cette action.',
     'mod_error_unknown' => 'Une erreur est survenue, réessaie.',
+    'members_description_member' => 'Tous les membres du serveur avec leurs rôles, niveau et profil.',
 ];

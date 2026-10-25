@@ -31,4 +31,5 @@ return [
     'section_links' => 'Filtro de enlaces',
     'section_raid' => 'Anti-raid',
     'section_tickets' => 'Tickets',
+    'section_starboard' => 'Starboard',
 ];
