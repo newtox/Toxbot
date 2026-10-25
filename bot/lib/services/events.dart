@@ -86,6 +86,14 @@ Future<void> _sendLog(NyxxGateway client, String color, String text) async {
   ));
 }
 
+String _userLabel(User? user) {
+  if (user == null) return '';
+  final name = user.globalName;
+  return name == null || name == user.username
+      ? user.username
+      : '${user.username} ($name)';
+}
+
 CommandsPlugin setupCommandHandler(CommandsPlugin commands) {
   commands.check(blacklistCheck);
 
@@ -226,8 +234,7 @@ void setupGuildMemberAddHandler(NyxxGateway client) async {
           if (welcomeChannel is TextChannel) {
             String welcomeMessage = (guildSettings['welcome_msg'] as Blob?)
                     ?.toString()
-                    .replaceAll('&user',
-                        '${event.member.user?.username} (${event.member.user?.globalName})')
+                    .replaceAll('&user', _userLabel(event.member.user))
                     .replaceAll('&server', fullGuild.name)
                     .replaceAll('&mention', "<@${event.member.id}>") ??
                 'Default message if welcome_msg is null';
@@ -280,11 +287,9 @@ void setupGuildMemberRemoveHandler(NyxxGateway client) async {
             if (byeChannel is TextChannel) {
               String byeMessage = (guildSettings['bye_msg'] as Blob?)
                       ?.toString()
-                      .replaceAll('&user',
-                          '${event.removedMember?.user?.username} (${event.removedMember?.user?.globalName})')
+                      .replaceAll('&user', _userLabel(event.user))
                       .replaceAll('&server', fullGuild.name)
-                      .replaceAll(
-                          '&mention', "<@${event.removedMember?.id}>") ??
+                      .replaceAll('&mention', '<@${event.user.id}>') ??
                   'Default message if bye_msg is null';
 
               try {
