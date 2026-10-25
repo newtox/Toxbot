@@ -45,7 +45,7 @@ return [
     'field_version' => '버전',
     'field_built' => '빌드',
     'field_started' => '실행 시작',
-    'field_heartbeat' => '마지막 보고',
+    'field_heartbeat' => '마지막 확인',
     'field_latency' => '핑',
     'field_servers' => '서버',
     'field_memory' => '메모리',

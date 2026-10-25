@@ -45,7 +45,7 @@ return [
     'field_version' => 'Версия',
     'field_built' => 'Сборка',
     'field_started' => 'Работает с',
-    'field_heartbeat' => 'Последний сигнал',
+    'field_heartbeat' => 'Последний отклик',
     'field_latency' => 'Пинг',
     'field_servers' => 'Серверы',
     'field_memory' => 'Память',

@@ -27,7 +27,7 @@
                     'built' => $botBuilt ? \App\Support\Timezone::format($botBuilt).' ('.$botBuilt->diffForHumans().')' : null,
                     'started' => $status?->started_at ? \App\Support\Timezone::format($status->started_at).' ('.$status->started_at->diffForHumans(syntax: \Carbon\CarbonInterface::DIFF_ABSOLUTE).')' : null,
                     'heartbeat' => $status?->heartbeat_at ? $status->heartbeat_at->diffForHumans() : null,
-                    'latency' => $status?->latency_ms !== null && $status ? $status->latency_ms.' ms' : null,
+                    'latency' => $status?->latency_ms ? $status->latency_ms.' ms' : null,
                     'servers' => $status ? $number($status->guilds) : null,
                     'memory' => $status?->memory_bytes ? number_format($status->memory_bytes / 1048576, 1).' MiB' : null,
                     'dart' => $status?->dart_version,
