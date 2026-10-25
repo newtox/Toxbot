@@ -43,10 +43,6 @@ final _create = ChatCommand(
     try {
       name = name.toLowerCase().trim();
 
-      if (await isBlacklisted(user.id)) {
-        await replyError(context, 'tag_blacklisted');
-        return;
-      }
       if (!tagNamePattern.hasMatch(name)) {
         await replyError(context, 'tag_name_invalid');
         return;

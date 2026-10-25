@@ -9,4 +9,5 @@ return [
     'invalid' => 'Inicio de sesión no válido, inténtalo de nuevo.',
     'rejected' => 'Discord rechazó el inicio de sesión. Inténtalo de nuevo.',
     'expired' => 'Tu sesión de Discord ha caducado. Vuelve a iniciar sesión.',
+    'blacklisted' => 'Tu cuenta está bloqueada en Toxbot.',
 ];

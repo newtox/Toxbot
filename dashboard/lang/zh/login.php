@@ -9,4 +9,5 @@ return [
     'invalid' => '登录无效，请重试。',
     'rejected' => 'Discord 拒绝了登录，请重试。',
     'expired' => '你的 Discord 会话已过期，请重新登录。',
+    'blacklisted' => '你的账号已被 Toxbot 封禁。',
 ];

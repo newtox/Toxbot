@@ -1,5 +1,6 @@
 da_dk:
   global_error: "Der er opstået en fejl!"
+  blacklisted: "Du er blevet udelukket fra Toxbot."
   announcements_set: "&type Meddelelse er blevet indstillet."
   announcements_none: "Der er ingen meddelelse indstillet."
   announcements_reset: "&type Meddelelse er blevet nulstillet."
@@ -255,6 +256,7 @@ da_dk:
 
 de_de:
   global_error: "Ein Fehler ist aufgetreten!"
+  blacklisted: "Du wurdest von Toxbot ausgeschlossen."
   announcements_set: "&type Ankündigung wurde festgelegt."
   announcements_none: "Es wurde keine Ankündigung festgelegt."
   announcements_reset: "&type Ankündigung wurde zurückgesetzt."
@@ -510,6 +512,7 @@ de_de:
 
 en_us:
   global_error: "An error has occurred!"
+  blacklisted: "You have been blocked from using Toxbot."
   announcements_set: "&type Announcement has been set."
   announcements_none: "There is no announcement set."
   announcements_reset: "&type Announcement has been reset."
@@ -765,6 +768,7 @@ en_us:
 
 es_es:
   global_error: "¡Ha ocurrido un error!"
+  blacklisted: "Se te ha bloqueado el uso de Toxbot."
   announcements_set: "Se ha establecido el anuncio &type."
   announcements_none: "No hay ningún anuncio establecido."
   announcements_reset: "Se ha restablecido el anuncio &type."
@@ -1020,6 +1024,7 @@ es_es:
 
 fr_fr:
   global_error: "Une erreur s'est produite !"
+  blacklisted: "Tu as été exclu de Toxbot."
   announcements_set: "L'annonce &type a été définie."
   announcements_none: "Aucune annonce n'est définie."
   announcements_reset: "L'annonce &type a été réinitialisée."
@@ -1275,6 +1280,7 @@ fr_fr:
 
 hi_hi:
   global_error: "एक त्रुटि हुई है!"
+  blacklisted: "आपको Toxbot इस्तेमाल करने से रोक दिया गया है।"
   announcements_set: "&type घोषणा सेट कर दी गई है।"
   announcements_none: "कोई घोषणा सेट नहीं है।"
   announcements_reset: "&type घोषणा रीसेट कर दी गई है।"
@@ -1530,6 +1536,7 @@ hi_hi:
 
 ja_jp:
   global_error: "エラーが発生しました！"
+  blacklisted: "あなたは Toxbot の利用を禁止されています。"
   announcements_set: "&type アナウンスが設定されました。"
   announcements_none: "アナウンスは設定されていません。"
   announcements_reset: "&type アナウンスがリセットされました。"
@@ -1785,6 +1792,7 @@ ja_jp:
 
 ko_ko:
   global_error: "오류가 발생했습니다!"
+  blacklisted: "Toxbot 사용이 차단되었습니다."
   announcements_set: "&type 공지가 설정되었습니다."
   announcements_none: "설정된 공지가 없습니다."
   announcements_reset: "&type 공지가 초기화되었습니다."
@@ -2040,6 +2048,7 @@ ko_ko:
 
 ru_ru:
   global_error: "Произошла ошибка!"
+  blacklisted: "Тебе запрещено пользоваться Toxbot."
   announcements_set: "&type Объявление установлено."
   announcements_none: "Объявление не установлено."
   announcements_reset: "&type Объявление сброшено."
@@ -2295,6 +2304,7 @@ ru_ru:
 
 zh_cn:
   global_error: "发生错误！"
+  blacklisted: "你已被禁止使用 Toxbot。"
   announcements_set: "&type 公告已设置。"
   announcements_none: "没有设置公告。"
   announcements_reset: "&type 公告已重置。"

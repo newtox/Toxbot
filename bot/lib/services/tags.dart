@@ -55,15 +55,6 @@ Future<int> countTags(Snowflake owner) => withConnection((connection) async {
       return results.first['count'] as int;
     });
 
-Future<bool> isBlacklisted(Snowflake user) =>
-    withConnection((connection) async {
-      final results = await connection.query(
-        'SELECT 1 FROM `blacklist` WHERE `user` = ? LIMIT 1;',
-        [user.toString()],
-      );
-      return results.isNotEmpty;
-    });
-
 Future<bool> isTagAllowedInGuild(Tag tag, Snowflake? guild) async {
   if (guild == null) return true;
   return withConnection((connection) async {

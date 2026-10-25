@@ -9,4 +9,5 @@ return [
     'invalid' => 'Connexion invalide, réessaie.',
     'rejected' => 'Discord a refusé la connexion. Réessaie.',
     'expired' => 'Ta session Discord a expiré. Reconnecte-toi.',
+    'blacklisted' => 'Ton compte est bloqué sur Toxbot.',
 ];

@@ -45,6 +45,7 @@ import 'package:toxbot/commands/roleplay/wink.dart';
 import 'package:toxbot/commands/roleplay/yeet.dart';
 import 'package:toxbot/commands/tags/tag.dart';
 import 'package:toxbot/commands/tickets/ticket.dart';
+import 'package:toxbot/services/blacklist.dart';
 import 'package:toxbot/services/levels.dart';
 import 'package:toxbot/services/premium.dart';
 import 'package:toxbot/services/protection.dart';
@@ -86,6 +87,8 @@ Future<void> _sendLog(NyxxGateway client, String color, String text) async {
 }
 
 CommandsPlugin setupCommandHandler(CommandsPlugin commands) {
+  commands.check(blacklistCheck);
+
   commands.addCommand(announcements);
   commands.addCommand(autorole);
   commands.addCommand(color);
@@ -170,6 +173,7 @@ void setupGuildCreateHandler(NyxxGateway client) async {
       if (event is! GuildCreateEvent) return;
 
       final guild = event.guild;
+      if (await leaveIfBlacklisted(client, guild.id)) return;
       _knownGuilds[guild.id] = (guild.name, event.memberCount);
       await checkForDatabase(guild);
 
@@ -334,6 +338,10 @@ void setupErrorHandler(CommandsPlugin commands) async {
       }
     } else if (error is CheckFailedException) {
       if (error.context case CommandContext context) {
+        if (error.failed.name == blacklistCheckName) {
+          await replyError(context, 'blacklisted');
+          return;
+        }
         await replyException(context, error);
         return;
       }

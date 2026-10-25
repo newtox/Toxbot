@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:mysql1/mysql1.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:toxbot/models/ticket.dart';
+import 'package:toxbot/services/blacklist.dart';
 import 'package:toxbot/utils/config.dart';
 import 'package:toxbot/utils/database.dart';
 import 'package:toxbot/utils/reply.dart';
@@ -267,6 +268,11 @@ Future<void> _open(NyxxGateway client, MessageComponentInteraction interaction,
     await interaction.updateOriginalResponse(MessageUpdateBuilder(
         content: await localized(user, key, replace),
         allowedMentions: noMentions));
+  }
+
+  if (await isUserBlacklisted(user.id)) {
+    await reply('blacklisted');
+    return;
   }
 
   final key = '$guildId:${user.id}';

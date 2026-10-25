@@ -9,4 +9,5 @@ return [
     'invalid' => 'Ungültige Anmeldung, bitte nochmal versuchen.',
     'rejected' => 'Discord hat die Anmeldung abgelehnt. Bitte nochmal versuchen.',
     'expired' => 'Deine Discord-Sitzung ist abgelaufen. Bitte melde dich neu an.',
+    'blacklisted' => 'Dein Account ist für Toxbot gesperrt.',
 ];

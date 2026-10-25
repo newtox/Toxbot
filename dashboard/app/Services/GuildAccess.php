@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\BlacklistEntry;
 use App\Models\DashboardUser;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Cache;
@@ -36,9 +37,10 @@ class GuildAccess
         });
 
         $botGuilds = $this->discord->botGuildIds();
+        $blocked = array_flip(BlacklistEntry::blockedGuildIds());
 
         return collect($guilds)
-            ->filter(fn (array $g) => self::canManageByPermissions($g))
+            ->filter(fn (array $g) => self::canManageByPermissions($g) && ! isset($blocked[$g['id']]))
             ->map(fn (array $g) => [
                 'id' => $g['id'],
                 'name' => $g['name'],

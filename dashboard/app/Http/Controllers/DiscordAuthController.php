@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BlacklistEntry;
 use App\Models\DashboardUser;
 use App\Services\Discord;
 use App\Services\DiscordTokens;
@@ -46,6 +47,10 @@ class DiscordAuthController extends Controller
             report($e);
 
             return redirect()->route('home')->with('status', __('login.rejected'));
+        }
+
+        if (BlacklistEntry::userBlocked($discordUser['id'])) {
+            return redirect()->route('home')->with('status', __('login.blacklisted'));
         }
 
         $user = DashboardUser::updateOrCreate(

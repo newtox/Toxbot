@@ -6,5 +6,6 @@
         </div>
         <livewire:admin-reports />
         <livewire:admin-backgrounds />
+        <livewire:admin-blacklist />
     </div>
 </x-layouts.app>
