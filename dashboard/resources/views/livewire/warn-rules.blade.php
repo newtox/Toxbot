@@ -20,7 +20,7 @@
         </ul>
     @endif
 
-    <form wire:submit="add" class="grid gap-3 sm:grid-cols-[auto_1fr_1fr_auto] sm:items-end">
+    <form novalidate wire:submit="add" class="grid gap-3 sm:grid-cols-[auto_1fr_1fr_auto] sm:items-end">
         <div>
             <label class="label" for="rule-warns">{{ __('moderation.rule_warns') }}</label>
             <input id="rule-warns" type="number" min="1" max="50" wire:model="warns" class="input w-24">

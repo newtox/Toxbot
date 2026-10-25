@@ -6,7 +6,7 @@
     <p class="mb-5 text-sm text-dc-muted">{{ __('profile.premium_server_description') }}</p>
 
     @if ($premium)
-        <form wire:submit="save" class="flex flex-wrap items-center gap-2">
+        <form novalidate wire:submit="save" class="flex flex-wrap items-center gap-2">
             <select wire:model="guildId" class="input max-w-sm" aria-label="{{ __('profile.premium_server_title') }}">
                 <option value="">{{ __('profile.premium_server_none') }}</option>
                 @foreach ($guilds as $guild)

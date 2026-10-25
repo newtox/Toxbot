@@ -8,7 +8,7 @@
         <p class="rounded-lg border-l-4 border-accent bg-dc-900 px-4 py-3 text-sm" role="status">{{ $notice }}</p>
     @endif
 
-    <form wire:submit="add" class="grid gap-3 rounded-lg bg-dc-900 p-4 sm:grid-cols-[9rem_1fr]">
+    <form novalidate wire:submit="add" class="grid gap-3 rounded-lg bg-dc-900 p-4 sm:grid-cols-[9rem_1fr]">
         <div>
             <label class="label" for="blacklist-type">{{ __('admin.blacklist_type') }}</label>
             <select id="blacklist-type" wire:model="type" class="input">

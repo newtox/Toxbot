@@ -87,4 +87,5 @@ return [
     'appeal_disabled' => 'यह सर्वर अनबैन अनुरोध स्वीकार नहीं करता।',
     'appeal_new_title' => 'नया अनबैन अनुरोध',
     'appeal_user' => 'सदस्य',
+    'appeal_min_length' => 'कम से कम :min अक्षर',
 ];

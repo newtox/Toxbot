@@ -87,4 +87,5 @@ return [
     'appeal_disabled' => 'Denne server modtager ikke unban-anmodninger.',
     'appeal_new_title' => 'Ny unban-anmodning',
     'appeal_user' => 'Medlem',
+    'appeal_min_length' => 'mindst :min tegn',
 ];

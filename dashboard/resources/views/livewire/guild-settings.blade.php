@@ -475,7 +475,7 @@
                     <a href="{{ $source['page'] }}" target="_blank" rel="noopener" class="text-dc-link hover:underline">{{ $name }}</a>@if (! $loop->last), @endif
                 @endforeach
             </p>
-            <form wire:submit="checkScamDomain" class="mt-3 flex flex-wrap gap-2">
+            <form novalidate wire:submit="checkScamDomain" class="mt-3 flex flex-wrap gap-2">
                 <input type="text" wire:model="scamCheck" maxlength="200" placeholder="free-nitro.example" class="input min-w-48 flex-1 font-mono text-sm" aria-label="{{ __('protection.scam_check_label') }}">
                 <button type="submit" class="btn-secondary" wire:loading.attr="disabled" wire:target="checkScamDomain">{{ __('protection.scam_check_button') }}</button>
             </form>

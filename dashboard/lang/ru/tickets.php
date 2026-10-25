@@ -87,4 +87,5 @@ return [
     'appeal_disabled' => 'Этот сервер не принимает заявки на разбан.',
     'appeal_new_title' => 'Новая заявка на разбан',
     'appeal_user' => 'Участник',
+    'appeal_min_length' => 'не меньше :min символов',
 ];

@@ -87,4 +87,5 @@ return [
     'appeal_disabled' => 'このサーバーは BAN 解除申請を受け付けていません。',
     'appeal_new_title' => '新しい BAN 解除申請',
     'appeal_user' => 'メンバー',
+    'appeal_min_length' => ':min 文字以上',
 ];
