@@ -49,4 +49,5 @@ return [
     'language_title' => '서버 언어',
     'language_description' => 'Toxbot은 서버 전체에 보내는 메시지를 이 언어로 씁니다: 티켓 및 인증 버튼, 티켓 로그, 레이드 경보, 자동 사유, 자동 설정의 채널과 역할.',
     'language_label' => '언어',
+    'autorole_after_verify' => '인증이 켜져 있습니다: 새 멤버는 참가할 때가 아니라 인증을 마친 뒤에 자동 역할을 받습니다.',
 ];

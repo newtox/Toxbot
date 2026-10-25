@@ -103,7 +103,7 @@
                             </a>
                             <a href="{{ route('servers.tickets', $guild['id']) }}"
                                @class(['nav-item', 'nav-item-active' => request()->routeIs('servers.tickets', 'servers.ticket')])>
-                                <x-icon name="ticket" />{{ __('tickets.history_title') }}
+                                <x-icon name="history" />{{ __('tickets.history_title') }}
                             </a>
                             <a href="{{ route('servers.appeals', $guild['id']) }}"
                                @class(['nav-item', 'nav-item-active' => request()->routeIs('servers.appeals')])>
@@ -111,23 +111,17 @@
                             </a>
                         </div>
 
-                        <div class="space-y-1.5">
-                            <p class="nav-heading">{{ __('menu.server_settings') }}</p>
-                            @foreach ([
-                                'general' => 'welcome',
-                                'levels' => 'level',
-                                'streams' => 'stream',
-                                'tags' => 'tag',
-                                'moderation' => 'shield',
-                                'protection' => 'lock',
-                                'tickets' => 'ticket',
-                            ] as $section => $icon)
-                                <a href="{{ route('servers.settings', [$guild['id'], $section]) }}"
-                                   @class(['nav-item', 'nav-item-active' => request()->routeIs('servers.settings') && request()->route('section') === $section])>
-                                    <x-icon :name="$icon" />{{ __('menu.section_'.$section) }}
-                                </a>
-                            @endforeach
-                        </div>
+                        @foreach (\App\Livewire\GuildSettings::GROUPS as $group => $sections)
+                            <div class="space-y-1.5">
+                                <p class="nav-heading">{{ __('menu.group_'.$group) }}</p>
+                                @foreach ($sections as $section => $icon)
+                                    <a href="{{ route('servers.settings', [$guild['id'], $section]) }}"
+                                       @class(['nav-item', 'nav-item-active' => request()->routeIs('servers.settings') && request()->route('section') === $section])>
+                                        <x-icon :name="$icon" />{{ __('menu.section_'.$section) }}
+                                    </a>
+                                @endforeach
+                            </div>
+                        @endforeach
                     @else
                         @php
                             $sidebarGuilds = rescue(

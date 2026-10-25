@@ -57,4 +57,9 @@ return [
     'live_message' => 'Сообщение о трансляциях',
     'video_message' => 'Сообщение о новых видео на YouTube',
     'youtube_no_key' => 'Без ключа YouTube API трансляции объявляются как видео, и работают только ID каналов.',
+    'end_default' => 'Как в настройках сервера',
+    'end_server_hint' => 'Действует для Twitch-стримов всех авторов. С Server Premium можно выбрать другое для каждого автора.',
+    'ended_title' => 'Стрим завершён',
+    'ended_duration' => 'Стрим длился **:duration**',
+    'ended_vod' => 'Смотреть запись',
 ];

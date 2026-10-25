@@ -24,4 +24,12 @@ return [
     'account_keeps' => 'Kept: moderation cases on servers, which belong to those servers, and purchase records from Discord. Purchases are not refunded.',
     'account_button' => 'Delete my data',
     'account_deleted' => 'Your data was deleted and you were logged out.',
+    'section_text' => 'Resets every setting on the :section page to its default.',
+    'section_confirm' => 'Reset all settings on the :section page? This cannot be undone.',
+    'section_button' => 'Reset this page',
+    'section_extra_streams' => 'All followed creators are removed.',
+    'section_extra_tags' => 'Blocked tags are unblocked.',
+    'section_extra_moderation' => 'Warning rules are deleted.',
+    'section_extra_tickets' => 'Ticket types and the button message are deleted.',
+    'section_extra_verification' => 'The verify message is deleted.',
 ];

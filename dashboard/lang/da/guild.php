@@ -49,4 +49,5 @@ return [
     'language_title' => 'Serverens sprog',
     'language_description' => 'Toxbot skriver beskeder til hele serveren på dette sprog: ticket- og verificeringsknapper, ticket-logs, raid-alarmer, automatiske begrundelser og kanalerne og rollerne fra den automatiske opsætning.',
     'language_label' => 'Sprog',
+    'autorole_after_verify' => 'Verificering er slået til: nye medlemmer får først autorollen, når de har verificeret sig, ikke når de joiner.',
 ];

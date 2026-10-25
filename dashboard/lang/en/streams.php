@@ -57,4 +57,9 @@ return [
     'live_message' => 'Message for livestreams',
     'video_message' => 'Message for new YouTube videos',
     'youtube_no_key' => 'Without a YouTube API key, livestreams are announced like videos and only channel IDs work.',
+    'end_default' => 'Like the server setting',
+    'end_server_hint' => 'Applies to Twitch streams of every creator. With Server Premium you can choose something else per creator.',
+    'ended_title' => 'Stream ended',
+    'ended_duration' => 'Streamed for **:duration**',
+    'ended_vod' => 'Watch the VOD',
 ];

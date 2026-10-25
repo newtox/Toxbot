@@ -114,9 +114,13 @@ class TicketsTest extends TestCase
             ->set('ticketLogChannel', '12')
             ->set('ticketPanelChannel', '11')
             ->set('ticketLimit', 2)
-            ->set('unbanEnabled', true)
             ->call('save')
             ->assertHasNoErrors();
+
+        Livewire::test(AppealList::class, ['guildId' => self::GUILD])
+            ->assertDontSee(route('appeals.show', self::GUILD))
+            ->call('toggleEnabled')
+            ->assertSee(route('appeals.show', self::GUILD));
 
         $row = Guild::find(self::GUILD);
         $this->assertSame('10', $row->ticket_category);
@@ -219,7 +223,7 @@ class TicketsTest extends TestCase
 
         Livewire::test(GuildSettings::class, [
             'guild' => ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon_url' => null],
-            'section' => 'general',
+            'section' => 'language',
         ])->assertSet('language', 'de_de')->set('language', 'fr_fr')->call('save')->assertHasNoErrors();
         $this->assertSame('fr_fr', Guild::find(self::GUILD)->language);
 

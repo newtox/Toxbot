@@ -70,4 +70,7 @@ return [
     'scam_check_clean' => ':domain ne figure pas sur la liste des arnaques.',
     'scam_check_unavailable' => 'Les listes d\'arnaques ne peuvent pas être chargées pour le moment.',
     'scam_check_invalid' => 'Saisis un domaine comme example.com.',
+    'verify_autorole' => 'Après la vérification, les membres reçoivent le rôle auto @:role.',
+    'verify_no_autorole' => 'Aucun rôle auto n’est défini. Après la vérification, seul le rôle de vérification est retiré.',
+    'verify_autorole_link' => 'Changer le rôle auto',
 ];

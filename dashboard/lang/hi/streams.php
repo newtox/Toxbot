@@ -57,4 +57,9 @@ return [
     'live_message' => 'लाइवस्ट्रीम के लिए संदेश',
     'video_message' => 'नए YouTube वीडियो के लिए संदेश',
     'youtube_no_key' => 'YouTube API key के बिना लाइवस्ट्रीम को वीडियो की तरह सूचित किया जाता है और केवल चैनल ID काम करती हैं।',
+    'end_default' => 'सर्वर सेटिंग जैसा',
+    'end_server_hint' => 'सभी क्रिएटर की Twitch स्ट्रीम पर लागू होता है। Server Premium के साथ हर क्रिएटर के लिए अलग चुन सकते हैं।',
+    'ended_title' => 'स्ट्रीम ख़त्म',
+    'ended_duration' => '**:duration** तक स्ट्रीम किया',
+    'ended_vod' => 'VOD देखें',
 ];

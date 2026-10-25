@@ -24,4 +24,12 @@ return [
     'account_keeps' => 'Conservé : les cas de modération sur les serveurs, qui appartiennent à ces serveurs, et les justificatifs d\'achat de Discord. Les achats ne sont pas remboursés.',
     'account_button' => 'Supprimer mes données',
     'account_deleted' => 'Tes données ont été supprimées et tu as été déconnecté.',
+    'section_text' => 'Remet tous les paramètres de la page :section à leur valeur par défaut.',
+    'section_confirm' => 'Réinitialiser tous les paramètres de la page :section ? C’est irréversible.',
+    'section_button' => 'Réinitialiser cette page',
+    'section_extra_streams' => 'Tous les créateurs suivis sont retirés.',
+    'section_extra_tags' => 'Les tags bloqués sont débloqués.',
+    'section_extra_moderation' => 'Les règles d’avertissement sont supprimées.',
+    'section_extra_tickets' => 'Les types de ticket et le message à boutons sont supprimés.',
+    'section_extra_verification' => 'Le message de vérification est supprimé.',
 ];

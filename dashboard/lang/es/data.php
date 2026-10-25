@@ -24,4 +24,12 @@ return [
     'account_keeps' => 'Se conserva: los casos de moderación en servidores, que pertenecen a esos servidores, y los comprobantes de compra de Discord. Las compras no se reembolsan.',
     'account_button' => 'Eliminar mis datos',
     'account_deleted' => 'Tus datos se eliminaron y se cerró tu sesión.',
+    'section_text' => 'Restablece todos los ajustes de la página :section a su valor por defecto.',
+    'section_confirm' => '¿Restablecer todos los ajustes de la página :section? No se puede deshacer.',
+    'section_button' => 'Restablecer esta página',
+    'section_extra_streams' => 'Se eliminan todos los creadores seguidos.',
+    'section_extra_tags' => 'Se desbloquean los tags bloqueados.',
+    'section_extra_moderation' => 'Se eliminan las reglas de advertencias.',
+    'section_extra_tickets' => 'Se eliminan los tipos de ticket y el mensaje de botones.',
+    'section_extra_verification' => 'Se elimina el mensaje de verificación.',
 ];

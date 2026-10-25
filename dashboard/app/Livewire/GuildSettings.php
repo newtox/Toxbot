@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Guild;
 use App\Models\TagGuildBlock;
+use App\Services\DataDeletion;
 use App\Services\Discord;
 use App\Services\GuildAccess;
 use App\Services\ScamList;
@@ -22,10 +23,18 @@ class GuildSettings extends Component
 
     private const CATEGORY_TYPE = 4;
 
-    public const SECTIONS = ['general', 'levels', 'streams', 'tags', 'moderation', 'protection', 'tickets'];
+    public const SECTIONS = ['welcome', 'goodbye', 'autorole', 'language', 'levels', 'streams', 'liverole', 'tags', 'moderation', 'verification', 'links', 'raid', 'tickets'];
+
+    public const GROUPS = [
+        'general' => ['welcome' => 'welcome', 'goodbye' => 'bye', 'autorole' => 'autorole', 'language' => 'globe'],
+        'community' => ['levels' => 'level', 'streams' => 'stream', 'liverole' => 'live', 'tags' => 'tag'],
+        'safety' => ['moderation' => 'shield', 'verification' => 'lock', 'links' => 'link', 'raid' => 'alert', 'tickets' => 'ticket'],
+    ];
+
+    public const LEGACY_SECTIONS = ['general' => 'welcome', 'protection' => 'verification'];
 
     #[Locked]
-    public string $section = 'general';
+    public string $section = 'welcome';
 
     #[Locked]
     public string $guildId;
@@ -65,6 +74,8 @@ class GuildSettings extends Component
     public string $streamMsg = '';
 
     public string $streamVideoMsg = '';
+
+    public string $streamEndAction = 'keep';
 
     public ?string $liveRole = null;
 
@@ -128,16 +139,14 @@ class GuildSettings extends Component
 
     public ?string $ticketPanelChannel = null;
 
-    public bool $unbanEnabled = false;
-
     #[Locked]
     public bool $ticketPanelPosted = false;
 
     public ?string $ticketNotice = null;
 
-    public function mount(array $guild, string $section = 'general'): void
+    public function mount(array $guild, string $section = 'welcome'): void
     {
-        $this->section = in_array($section, self::SECTIONS, true) ? $section : 'general';
+        $this->section = in_array($section, self::SECTIONS, true) ? $section : 'welcome';
         $this->guildId = $guild['id'];
         $this->guildName = $guild['name'];
         $this->guildIcon = $guild['icon_url'];
@@ -168,6 +177,7 @@ class GuildSettings extends Component
         $this->streamRole = $row->notify;
         $this->streamMsg = (string) $row->stream_msg;
         $this->streamVideoMsg = (string) $row->stream_video_msg;
+        $this->streamEndAction = $row->stream_end_action ?: 'keep';
         $this->liveRole = $row->live_role;
         $this->liveRoleRequired = $row->live_role_required;
         $this->modlogChannel = $row->modlog_channel;
@@ -198,7 +208,6 @@ class GuildSettings extends Component
         $this->ticketLimit = (int) $row->ticket_limit;
         $this->ticketPanelChannel = $row->ticket_panel_channel;
         $this->ticketPanelPosted = $row->ticket_panel_message_id !== null;
-        $this->unbanEnabled = (bool) $row->unban_enabled;
 
         $this->resetValidation();
     }
@@ -244,12 +253,18 @@ class GuildSettings extends Component
             : ['nullable'];
 
         $rules = [
-            'general' => [
+            'welcome' => [
                 'welcomeChannel' => $channelRules($this->welcomeEnabled),
                 'welcomeMsg' => $messageRules($this->welcomeEnabled),
+            ],
+            'goodbye' => [
                 'byeChannel' => $channelRules($this->byeEnabled),
                 'byeMsg' => $messageRules($this->byeEnabled),
+            ],
+            'autorole' => [
                 'autorole' => ['nullable', Rule::in($roleIds)],
+            ],
+            'language' => [
                 'language' => ['required', Rule::in(array_column(config('app.locales'), 'bot'))],
             ],
             'levels' => [
@@ -260,6 +275,9 @@ class GuildSettings extends Component
                 'streamRole' => ['nullable', Rule::in($mentionableRoleIds)],
                 'streamMsg' => ['nullable', 'string', "max:{$max}"],
                 'streamVideoMsg' => ['nullable', 'string', "max:{$max}"],
+                'streamEndAction' => ['required', Rule::in(Guild::END_ACTIONS)],
+            ],
+            'liverole' => [
                 'liveRole' => ['nullable', Rule::in($roleIds)],
                 'liveRoleRequired' => ['nullable', Rule::in($mentionableRoleIds)],
             ],
@@ -267,14 +285,18 @@ class GuildSettings extends Component
             'moderation' => [
                 'modlogChannel' => ['nullable', Rule::in($channelIds)],
             ],
-            'protection' => [
+            'verification' => [
                 'verifyRole' => $this->verifyEnabled ? ['required', Rule::in($roleIds)] : ['nullable'],
                 'verifyChannel' => ['nullable', Rule::in($channelIds)],
+            ],
+            'links' => [
                 'linkAllowlist' => ['nullable', 'string', 'max:4000', $this->domainRule()],
                 'linkBlocklist' => ['nullable', 'string', 'max:4000', $this->domainRule()],
                 'linkAction' => ['required', Rule::in(Guild::LINK_ACTIONS)],
                 'linkExemptRoles' => ['array', 'max:25'],
                 'linkExemptRoles.*' => [Rule::in($mentionableRoleIds)],
+            ],
+            'raid' => [
                 'raidJoins' => ['required', 'integer', 'min:3', 'max:100'],
                 'raidSeconds' => ['required', 'integer', 'min:5', 'max:300'],
                 'raidMinutes' => ['required', 'integer', 'min:1', 'max:1440'],
@@ -318,12 +340,18 @@ class GuildSettings extends Component
         }
 
         $fields = match ($this->section) {
-            'general' => [
+            'welcome' => [
                 'welcome_channel' => $this->welcomeEnabled ? $this->welcomeChannel : null,
                 'welcome_msg' => $this->welcomeMsg !== '' ? $this->welcomeMsg : null,
+            ],
+            'goodbye' => [
                 'bye_channel' => $this->byeEnabled ? $this->byeChannel : null,
                 'bye_msg' => $this->byeMsg !== '' ? $this->byeMsg : null,
+            ],
+            'autorole' => [
                 'autorole' => $this->autorole ?: null,
+            ],
+            'language' => [
                 'language' => $this->language,
             ],
             'levels' => [
@@ -335,6 +363,9 @@ class GuildSettings extends Component
                 'notify' => $this->streamRole ?: null,
                 'stream_msg' => $this->streamMsg !== '' ? $this->streamMsg : null,
                 'stream_video_msg' => $this->streamVideoMsg !== '' ? $this->streamVideoMsg : null,
+                'stream_end_action' => $this->streamEndAction,
+            ],
+            'liverole' => [
                 'live_role' => $this->liveRole ?: null,
                 'live_role_required' => $this->liveRole ? ($this->liveRoleRequired ?: null) : null,
             ],
@@ -345,10 +376,12 @@ class GuildSettings extends Component
                 'modlog_channel' => $this->modlogChannel ?: null,
                 'mod_dm' => $this->modDm,
             ],
-            'protection' => [
+            'verification' => [
                 'verify_enabled' => $this->verifyEnabled,
                 'verify_role' => $this->verifyRole ?: null,
                 'verify_channel' => $this->verifyChannel ?: null,
+            ],
+            'links' => [
                 'link_invites' => $this->linkInvites,
                 'link_scam' => $this->linkScam,
                 'link_allowlist_enabled' => $this->linkAllowlistEnabled,
@@ -356,6 +389,8 @@ class GuildSettings extends Component
                 'link_blocklist' => DomainList::serialize($this->linkBlocklist),
                 'link_action' => $this->linkAction,
                 'link_exempt_roles' => $this->linkExemptRoles === [] ? null : implode(',', array_unique($this->linkExemptRoles)),
+            ],
+            'raid' => [
                 'raid_enabled' => $this->raidEnabled,
                 'raid_joins' => $this->raidJoins,
                 'raid_seconds' => $this->raidSeconds,
@@ -369,7 +404,6 @@ class GuildSettings extends Component
                 'ticket_log_channel' => $this->ticketLogChannel ?: null,
                 'ticket_limit' => $this->ticketLimit,
                 'ticket_panel_channel' => $this->ticketPanelChannel ?: null,
-                'unban_enabled' => $this->unbanEnabled,
             ],
         };
 
@@ -378,6 +412,16 @@ class GuildSettings extends Component
         $row->save();
 
         $this->loadFromDatabase();
+        $this->dispatch('saved');
+    }
+
+    public function resetSection(DataDeletion $deletion): void
+    {
+        abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
+
+        $deletion->resetSection($this->guildId, $this->section);
+        $this->loadFromDatabase();
+        $this->dispatch('auto-setup-done');
         $this->dispatch('saved');
     }
 

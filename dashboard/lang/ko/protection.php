@@ -70,4 +70,7 @@ return [
     'scam_check_clean' => ':domain은(는) 사기 목록에 없습니다.',
     'scam_check_unavailable' => '지금은 사기 목록을 불러올 수 없습니다.',
     'scam_check_invalid' => 'example.com 같은 도메인을 입력하세요.',
+    'verify_autorole' => '인증하면 멤버에게 자동 역할 @:role이(가) 부여됩니다.',
+    'verify_no_autorole' => '자동 역할이 설정되지 않았습니다. 인증하면 인증 역할만 제거됩니다.',
+    'verify_autorole_link' => '자동 역할 변경',
 ];

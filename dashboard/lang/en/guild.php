@@ -49,4 +49,5 @@ return [
     'language_title' => 'Server language',
     'language_description' => 'Toxbot writes messages for the whole server in this language: ticket and verify buttons, ticket logs, raid alarms, automatic reasons and the channels and roles of the automatic setup.',
     'language_label' => 'Language',
+    'autorole_after_verify' => 'Verification is on: new members get the autorole only after they have verified, not when they join.',
 ];

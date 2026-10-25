@@ -24,4 +24,12 @@ return [
     'account_keeps' => 'Beholdes: moderationssager på servere, som tilhører de servere, og købsbeviser fra Discord. Køb refunderes ikke.',
     'account_button' => 'Slet mine data',
     'account_deleted' => 'Dine data blev slettet, og du blev logget ud.',
+    'section_text' => 'Nulstiller alle indstillinger på siden :section til standard.',
+    'section_confirm' => 'Nulstil alle indstillinger på siden :section? Det kan ikke fortrydes.',
+    'section_button' => 'Nulstil denne side',
+    'section_extra_streams' => 'Alle fulgte creators fjernes.',
+    'section_extra_tags' => 'Blokerede tags frigives.',
+    'section_extra_moderation' => 'Advarselsregler slettes.',
+    'section_extra_tickets' => 'Ticket-typer og knapbeskeden slettes.',
+    'section_extra_verification' => 'Verificeringsbeskeden slettes.',
 ];

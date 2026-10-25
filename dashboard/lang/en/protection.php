@@ -70,4 +70,7 @@ return [
     'scam_check_clean' => ':domain is not on the scam list.',
     'scam_check_unavailable' => 'The scam lists cannot be loaded right now.',
     'scam_check_invalid' => 'Enter a domain such as example.com.',
+    'verify_autorole' => 'After verifying, members get the autorole @:role.',
+    'verify_no_autorole' => 'No autorole is set. After verifying, only the verification role is removed.',
+    'verify_autorole_link' => 'Change autorole',
 ];

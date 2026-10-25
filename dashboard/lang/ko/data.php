@@ -24,4 +24,12 @@ return [
     'account_keeps' => '유지: 각 서버에 속한 관리 기록과 Discord 구매 기록. 구매는 환불되지 않습니다.',
     'account_button' => '내 데이터 삭제',
     'account_deleted' => '데이터를 삭제하고 로그아웃했습니다.',
+    'section_text' => ':section 페이지의 모든 설정을 기본값으로 되돌립니다.',
+    'section_confirm' => ':section 페이지의 모든 설정을 초기화할까요? 되돌릴 수 없습니다.',
+    'section_button' => '이 페이지 초기화',
+    'section_extra_streams' => '팔로우한 크리에이터가 모두 제거됩니다.',
+    'section_extra_tags' => '차단한 태그가 해제됩니다.',
+    'section_extra_moderation' => '경고 규칙이 삭제됩니다.',
+    'section_extra_tickets' => '티켓 유형과 버튼 메시지가 삭제됩니다.',
+    'section_extra_verification' => '인증 메시지가 삭제됩니다.',
 ];

@@ -70,4 +70,7 @@ return [
     'scam_check_clean' => ':domain は詐欺リストに載っていません。',
     'scam_check_unavailable' => '現在、詐欺リストを読み込めません。',
     'scam_check_invalid' => 'example.com のようなドメインを入力してください。',
+    'verify_autorole' => '認証後、メンバーには自動ロール @:role が付与されます。',
+    'verify_no_autorole' => '自動ロールが設定されていません。認証後は認証用ロールが外れるだけです。',
+    'verify_autorole_link' => '自動ロールを変更',
 ];

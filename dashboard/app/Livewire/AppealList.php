@@ -28,6 +28,16 @@ class AppealList extends Component
         $this->guildId = $guildId;
     }
 
+    public function toggleEnabled(): void
+    {
+        abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
+
+        $row = Guild::forDiscordId($this->guildId);
+        $row->unban_enabled = ! $row->unban_enabled;
+        $row->rememberLanguage();
+        $row->save();
+    }
+
     public function accept(int $id): void
     {
         $this->handle($id, 'accepted');

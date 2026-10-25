@@ -70,4 +70,7 @@ return [
     'scam_check_clean' => ':domain 不在诈骗列表中。',
     'scam_check_unavailable' => '暂时无法加载诈骗列表。',
     'scam_check_invalid' => '请输入域名，例如 example.com。',
+    'verify_autorole' => '验证后，成员会获得自动身份组 @:role。',
+    'verify_no_autorole' => '未设置自动身份组。验证后只会移除验证身份组。',
+    'verify_autorole_link' => '更改自动身份组',
 ];

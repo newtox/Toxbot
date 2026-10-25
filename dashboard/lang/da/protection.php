@@ -70,4 +70,7 @@ return [
     'scam_check_clean' => ':domain er ikke på svindellisten.',
     'scam_check_unavailable' => 'Svindellisterne kan ikke indlæses lige nu.',
     'scam_check_invalid' => 'Indtast et domæne som example.com.',
+    'verify_autorole' => 'Efter verificering får medlemmer autorollen @:role.',
+    'verify_no_autorole' => 'Der er ingen autorolle. Efter verificering fjernes kun verificeringsrollen.',
+    'verify_autorole_link' => 'Skift autorolle',
 ];

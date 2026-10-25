@@ -64,7 +64,7 @@ Route::middleware('auth')->group(function () {
         ->name('servers.appeals');
     Route::get('/servers/{guild}/{section}', [ServerController::class, 'settings'])
         ->whereNumber('guild')
-        ->whereIn('section', GuildSettings::SECTIONS)
+        ->whereIn('section', [...GuildSettings::SECTIONS, ...array_keys(GuildSettings::LEGACY_SECTIONS)])
         ->name('servers.settings');
 
     Route::view('/profile', 'profile')->name('profile');

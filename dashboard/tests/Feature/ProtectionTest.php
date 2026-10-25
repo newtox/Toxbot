@@ -78,11 +78,11 @@ class ProtectionTest extends TestCase
         return $user;
     }
 
-    private function settings()
+    private function settings(string $section = 'links')
     {
         return Livewire::test(GuildSettings::class, [
             'guild' => ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon_url' => null],
-            'section' => 'protection',
+            'section' => $section,
         ]);
     }
 
@@ -90,11 +90,9 @@ class ProtectionTest extends TestCase
     {
         $this->login();
 
-        $this->get('/servers/'.self::GUILD.'/protection')
-            ->assertOk()
-            ->assertSee(__('protection.verify_title'))
-            ->assertSee(__('protection.links_title'))
-            ->assertSee(__('protection.raid_title'));
+        $this->get('/servers/'.self::GUILD.'/verification')->assertOk()->assertSee(__('protection.verify_title'))->assertSee(__('protection.verify_no_autorole'));
+        $this->get('/servers/'.self::GUILD.'/links')->assertOk()->assertSee(__('protection.links_title'));
+        $this->get('/servers/'.self::GUILD.'/raid')->assertOk()->assertSee(__('protection.raid_title'));
 
         $this->get('/servers/'.self::GUILD)
             ->assertOk()
@@ -105,16 +103,24 @@ class ProtectionTest extends TestCase
     {
         $this->login();
 
-        $this->settings()
+        $this->settings('verification')
             ->set('verifyEnabled', true)
             ->set('verifyRole', '30')
             ->set('verifyChannel', '11')
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $this->settings('links')
             ->set('linkInvites', true)
             ->set('linkScam', true)
             ->set('linkBlocklist', "https://www.Example.com/path\n*.evil.ru, example.com")
             ->set('linkAllowlistEnabled', true)
             ->set('linkAllowlist', 'youtube.com twitch.tv')
             ->set('linkAction', 'timeout')
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $this->settings('raid')
             ->set('raidEnabled', true)
             ->set('raidJoins', 8)
             ->set('raidSeconds', 15)
@@ -175,15 +181,9 @@ class ProtectionTest extends TestCase
     {
         $this->login();
 
-        $this->settings()
-            ->set('verifyEnabled', true)
-            ->set('verifyRole', null)
-            ->set('linkBlocklist', 'not_a_domain')
-            ->set('linkAction', 'ban')
-            ->set('raidJoins', 1)
-            ->set('minAccountAge', 999)
-            ->call('save')
-            ->assertHasErrors(['verifyRole', 'linkBlocklist', 'linkAction', 'raidJoins', 'minAccountAge']);
+        $this->settings('verification')->set('verifyEnabled', true)->set('verifyRole', null)->call('save')->assertHasErrors(['verifyRole']);
+        $this->settings('links')->set('linkBlocklist', 'not_a_domain')->set('linkAction', 'ban')->call('save')->assertHasErrors(['linkBlocklist', 'linkAction']);
+        $this->settings('raid')->set('raidJoins', 1)->set('minAccountAge', 999)->call('save')->assertHasErrors(['raidJoins', 'minAccountAge']);
 
         $this->assertNull(Guild::find(self::GUILD));
     }

@@ -1,7 +1,25 @@
 <div class="space-y-4">
-    @unless ($enabled)
-        <p class="rounded-lg border-l-4 border-dc-yellow bg-dc-800 px-4 py-3 text-sm">{{ __('tickets.appeals_off') }}</p>
-    @endunless
+    <section class="card">
+        <div class="flex items-start gap-4">
+            <div class="flex-1">
+                <h2 class="text-lg font-semibold text-dc-header">{{ __('tickets.appeals_title') }}</h2>
+                <p class="text-sm text-dc-muted">{{ __('tickets.appeals_description') }}</p>
+            </div>
+            <label class="relative mt-1 inline-flex shrink-0 cursor-pointer items-center">
+                <input type="checkbox" wire:click="toggleEnabled" @checked($enabled) class="peer sr-only">
+                <span class="h-6 w-10 rounded-full bg-dc-400 transition-colors peer-checked:bg-accent peer-focus-visible:ring-2 peer-focus-visible:ring-accent-fg peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-dc-800"></span>
+                <span class="absolute top-0.5 left-0.5 size-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-4"></span>
+                <span class="sr-only">{{ __('guild.enable', ['name' => __('tickets.appeals_title')]) }}</span>
+            </label>
+        </div>
+        @if ($enabled)
+            <div class="mt-4 space-y-2 text-sm">
+                <p class="text-dc-muted">{{ __('tickets.appeals_link') }}</p>
+                <p class="rounded-md bg-dc-900 px-3 py-2 font-mono text-xs break-all text-dc-header">{{ route('appeals.show', $guildId) }}</p>
+                <p class="text-dc-faint">{{ __('tickets.appeals_hint') }}</p>
+            </div>
+        @endif
+    </section>
 
     <div class="flex flex-wrap gap-2">
         @foreach (['pending' => __('tickets.filter_pending'), 'all' => __('tickets.filter_all')] as $value => $label)

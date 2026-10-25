@@ -70,4 +70,7 @@ return [
     'scam_check_clean' => ':domain no está en la lista de estafas.',
     'scam_check_unavailable' => 'Ahora mismo no se pueden cargar las listas de estafas.',
     'scam_check_invalid' => 'Introduce un dominio como example.com.',
+    'verify_autorole' => 'Tras verificarse, los miembros reciben el autorol @:role.',
+    'verify_no_autorole' => 'No hay autorol. Tras verificarse solo se quita el rol de verificación.',
+    'verify_autorole_link' => 'Cambiar autorol',
 ];
