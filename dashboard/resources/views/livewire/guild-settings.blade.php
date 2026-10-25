@@ -17,21 +17,25 @@
         <div class="rounded-lg border-l-4 border-dc-red bg-dc-800 px-4 py-3 text-sm">{{ $loadError }}</div>
     @endif
 
-    @if ($section === 'general')
+    @if ($section === 'welcome')
     @include('livewire.partials.announcement', [
         'type' => 'welcome',
         'title' => __('guild.welcome_title'),
         'description' => __('guild.welcome_description'),
         'example' => __('guild.welcome_example'),
     ])
+    @endif
 
+    @if ($section === 'goodbye')
     @include('livewire.partials.announcement', [
         'type' => 'bye',
         'title' => __('guild.bye_title'),
         'description' => __('guild.bye_description'),
         'example' => __('guild.bye_example'),
     ])
+    @endif
 
+    @if ($section === 'autorole')
     <section id="autorole" class="card scroll-mt-20">
         <h2 class="text-lg font-semibold text-dc-header">{{ __('guild.autorole_title') }}</h2>
         <p class="mb-5 text-sm text-dc-muted">{{ __('guild.autorole_description') }}</p>
@@ -52,8 +56,14 @@
                 {{ __('guild.autorole_hint') }}
             </p>
         @endif
-    </section>
 
+        @if ($verifyEnabled)
+            <p class="mt-3 rounded-lg border-l-4 border-accent bg-dc-900 px-3 py-2 text-sm">{{ __('guild.autorole_after_verify') }}</p>
+        @endif
+    </section>
+    @endif
+
+    @if ($section === 'language')
     <section id="language" class="card scroll-mt-20">
         <h2 class="text-lg font-semibold text-dc-header">{{ __('guild.language_title') }}</h2>
         <p class="mb-5 text-sm text-dc-muted">{{ __('guild.language_description') }}</p>
@@ -144,6 +154,17 @@
             </div>
         </div>
 
+        <div>
+            <label class="label" for="stream-end">{{ __('streams.end_action') }}</label>
+            <select id="stream-end" wire:model="streamEndAction" class="input max-w-md">
+                <option value="keep">{{ __('streams.end_keep') }}</option>
+                <option value="edit">{{ __('streams.end_edit') }}</option>
+                <option value="delete">{{ __('streams.end_delete') }}</option>
+            </select>
+            @error('streamEndAction') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+            <p class="mt-2 text-sm text-dc-faint">{{ __('streams.end_server_hint') }}</p>
+        </div>
+
         <div x-data="{ target: 'streamMsg' }" class="space-y-4">
             <div class="grid gap-4 sm:grid-cols-2">
                 <div>
@@ -169,7 +190,9 @@
 
         <livewire:stream-list :guild-id="$guildId" />
     </section>
+    @endif
 
+    @if ($section === 'liverole')
     <section id="live-role" class="card scroll-mt-20">
         <h2 class="text-lg font-semibold text-dc-header">{{ __('streams.live_role_title') }}</h2>
         <p class="mb-5 text-sm text-dc-muted">{{ __('streams.live_role_description') }}</p>
@@ -286,8 +309,8 @@
     </section>
     @endif
 
-    @if ($section === 'protection')
-    <livewire:auto-setup :guild-id="$guildId" :guild-name="$guildName" :areas="['protection', 'verification']" :compact="true" :key="'auto-setup-protection'" />
+    @if (in_array($section, ['verification', 'links', 'raid'], true))
+    <livewire:auto-setup :guild-id="$guildId" :guild-name="$guildName" :areas="$section === 'verification' ? ['verification'] : ['protection']" :compact="true" :key="'auto-setup-'.$section" />
 
     @if ($protectionNotice)
         <p class="rounded-lg border-l-4 border-accent bg-dc-800 px-4 py-3 text-sm" role="status">{{ $protectionNotice }}</p>
@@ -300,6 +323,9 @@
         </div>
     @endif
 
+    @endif
+
+    @if ($section === 'verification')
     <section id="verification" class="card scroll-mt-20">
         <div class="flex items-start gap-4">
             <div class="flex-1">
@@ -348,6 +374,11 @@
                 </div>
             </div>
             <p class="text-sm text-dc-faint">{{ __('protection.verify_hint') }}</p>
+            @php($autoroleName = collect($roles)->firstWhere('id', $autorole)['name'] ?? null)
+            <p class="rounded-lg border-l-4 border-accent bg-dc-900 px-3 py-2 text-sm">
+                {{ $autoroleName ? __('protection.verify_autorole', ['role' => $autoroleName]) : __('protection.verify_no_autorole') }}
+                <a href="{{ route('servers.settings', [$guildId, 'autorole']) }}" class="text-dc-link hover:underline">{{ __('protection.verify_autorole_link') }}</a>
+            </p>
             <div class="flex flex-wrap items-center gap-3">
                 <button type="button" wire:click="postVerifyMessage" wire:loading.attr="disabled" class="btn-secondary">
                     {{ $verifyMessagePosted ? __('protection.post_update') : __('protection.post_message') }}
@@ -360,6 +391,9 @@
         </div>
     </section>
 
+    @endif
+
+    @if ($section === 'links')
     <section id="links" class="card scroll-mt-20 space-y-5">
         <div>
             <h2 class="text-lg font-semibold text-dc-header">{{ __('protection.links_title') }}</h2>
@@ -443,6 +477,9 @@
         </div>
     </section>
 
+    @endif
+
+    @if ($section === 'raid')
     <section id="antiraid" class="card scroll-mt-20">
         <div class="flex items-start gap-4">
             <div class="flex-1">
@@ -588,27 +625,13 @@
         </div>
         <livewire:ticket-types :guild-id="$guildId" :roles="$roles" />
     </section>
-
-    <section id="appeals" class="card scroll-mt-20">
-        <div class="flex items-start gap-4">
-            <div class="flex-1">
-                <h2 class="text-lg font-semibold text-dc-header">{{ __('tickets.appeals_title') }}</h2>
-                <p class="text-sm text-dc-muted">{{ __('tickets.appeals_description') }}</p>
-            </div>
-            <label class="relative mt-1 inline-flex shrink-0 cursor-pointer items-center">
-                <input type="checkbox" wire:model="unbanEnabled" class="peer sr-only">
-                <span class="h-6 w-10 rounded-full bg-dc-400 transition-colors peer-checked:bg-accent peer-focus-visible:ring-2 peer-focus-visible:ring-accent-fg peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-dc-800"></span>
-                <span class="absolute top-0.5 left-0.5 size-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-4"></span>
-                <span class="sr-only">{{ __('guild.enable', ['name' => __('tickets.appeals_title')]) }}</span>
-            </label>
-        </div>
-        <div x-show="$wire.unbanEnabled" x-collapse.duration.200ms class="mt-4 space-y-2 text-sm">
-            <p class="text-dc-muted">{{ __('tickets.appeals_link') }}</p>
-            <p class="rounded-md bg-dc-900 px-3 py-2 font-mono text-xs break-all text-dc-header">{{ route('appeals.show', $guildId) }}</p>
-            <p class="text-dc-faint">{{ __('tickets.appeals_hint') }}</p>
-        </div>
-    </section>
     @endif
+
+    <div class="flex flex-wrap items-center gap-3 border-t border-white/[0.06] pt-5">
+        <p class="min-w-0 flex-1 basis-64 text-sm text-dc-faint">{{ __('data.section_text', ['section' => __('menu.section_'.$section)]) }}@if (__('data.section_extra_'.$section) !== 'data.section_extra_'.$section) {{ __('data.section_extra_'.$section) }}@endif</p>
+        <button type="button" wire:click="resetSection" wire:confirm="{{ __('data.section_confirm', ['section' => __('menu.section_'.$section)]) }}"
+                class="btn text-dc-red ring-1 ring-dc-red/40 hover:bg-dc-red hover:text-white max-sm:w-full">{{ __('data.section_button') }}</button>
+    </div>
 
     <x-unsaved-bar />
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Livewire\GuildSettings;
 use App\Models\Guild;
 use App\Models\ModCase;
 use App\Models\StreamSubscription;
@@ -11,6 +12,7 @@ use App\Services\Discord;
 use App\Services\GuildAccess;
 use App\Services\Premium;
 use App\Services\Streams\SourceManager;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -49,21 +51,21 @@ class ServerController extends Controller
             'streamLimit' => $streams->limit($guild),
             'modules' => [
                 [
-                    'section' => 'general',
+                    'section' => 'welcome',
                     'icon' => 'welcome',
                     'title' => __('guild.welcome_title'),
                     'description' => __('guild.welcome_description'),
                     'active' => $row->welcome_channel !== null && $row->welcome_msg !== null,
                 ],
                 [
-                    'section' => 'general',
+                    'section' => 'goodbye',
                     'icon' => 'bye',
                     'title' => __('guild.bye_title'),
                     'description' => __('guild.bye_description'),
                     'active' => $row->bye_channel !== null && $row->bye_msg !== null,
                 ],
                 [
-                    'section' => 'general',
+                    'section' => 'autorole',
                     'icon' => 'autorole',
                     'title' => __('guild.autorole_title'),
                     'description' => __('guild.autorole_description'),
@@ -84,7 +86,7 @@ class ServerController extends Controller
                     'active' => $row->stream !== null,
                 ],
                 [
-                    'section' => 'streams',
+                    'section' => 'liverole',
                     'icon' => 'live',
                     'title' => __('streams.live_role_title'),
                     'description' => __('streams.live_role_description'),
@@ -115,21 +117,21 @@ class ServerController extends Controller
                     'extra' => trans_choice('tickets.open_count', Ticket::query()->forGuild($guild)->where('status', 'open')->count()),
                 ],
                 [
-                    'section' => 'protection',
+                    'section' => 'verification',
                     'icon' => 'lock',
                     'title' => __('protection.verify_title'),
                     'description' => __('protection.verify_description'),
                     'active' => (bool) $row->verify_enabled,
                 ],
                 [
-                    'section' => 'protection',
+                    'section' => 'links',
                     'icon' => 'link',
                     'title' => __('protection.links_title'),
                     'description' => __('protection.links_description'),
                     'active' => $row->link_invites || $row->link_scam || $row->link_allowlist_enabled || $row->link_blocklist !== null,
                 ],
                 [
-                    'section' => 'protection',
+                    'section' => 'raid',
                     'icon' => 'alert',
                     'title' => __('protection.raid_title'),
                     'description' => __('protection.raid_description'),
@@ -139,8 +141,12 @@ class ServerController extends Controller
         ]);
     }
 
-    public function settings(Request $request, string $guild, string $section): View
+    public function settings(Request $request, string $guild, string $section): View|RedirectResponse
     {
+        if (isset(GuildSettings::LEGACY_SECTIONS[$section])) {
+            return redirect()->route('servers.settings', [$guild, GuildSettings::LEGACY_SECTIONS[$section]]);
+        }
+
         [$found, $guilds] = $this->resolve($request, $guild);
 
         return view('servers.settings', ['guild' => $found, 'guilds' => $guilds, 'section' => $section]);

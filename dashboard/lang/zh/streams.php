@@ -57,4 +57,9 @@ return [
     'live_message' => '直播消息',
     'video_message' => 'YouTube 新视频消息',
     'youtube_no_key' => '没有 YouTube API 密钥时，直播会按视频通知，并且只能使用频道 ID。',
+    'end_default' => '与服务器设置相同',
+    'end_server_hint' => '适用于所有创作者的 Twitch 直播。有 Server Premium 时可以为每位创作者单独选择。',
+    'ended_title' => '直播已结束',
+    'ended_duration' => '直播时长 **:duration**',
+    'ended_vod' => '观看回放',
 ];

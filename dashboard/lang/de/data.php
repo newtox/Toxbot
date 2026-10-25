@@ -24,4 +24,12 @@ return [
     'account_keeps' => 'Behalten: Modfälle auf Servern, die zu diesen Servern gehören, und Kaufbelege von Discord. Käufe werden nicht erstattet.',
     'account_button' => 'Meine Daten löschen',
     'account_deleted' => 'Deine Daten wurden gelöscht und du wurdest abgemeldet.',
+    'section_text' => 'Setzt alle Einstellungen auf der Seite :section auf den Standard zurück.',
+    'section_confirm' => 'Alle Einstellungen auf der Seite :section zurücksetzen? Das lässt sich nicht rückgängig machen.',
+    'section_button' => 'Diese Seite zurücksetzen',
+    'section_extra_streams' => 'Alle gefolgten Creator werden entfernt.',
+    'section_extra_tags' => 'Gesperrte Tags werden freigegeben.',
+    'section_extra_moderation' => 'Verwarnungsregeln werden gelöscht.',
+    'section_extra_tickets' => 'Ticket-Arten und die Button-Nachricht werden gelöscht.',
+    'section_extra_verification' => 'Die Verifizierungsnachricht wird gelöscht.',
 ];

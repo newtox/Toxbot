@@ -57,4 +57,9 @@ return [
     'live_message' => 'ライブ配信のメッセージ',
     'video_message' => 'YouTube の新しい動画のメッセージ',
     'youtube_no_key' => 'YouTube API キーがない場合、ライブ配信は動画として通知され、チャンネル ID しか使えません。',
+    'end_default' => 'サーバーの設定に従う',
+    'end_server_hint' => 'すべてのクリエイターの Twitch 配信に適用されます。Server Premium ならクリエイターごとに変更できます。',
+    'ended_title' => '配信終了',
+    'ended_duration' => '配信時間 **:duration**',
+    'ended_vod' => 'アーカイブを見る',
 ];

@@ -57,4 +57,9 @@ return [
     'live_message' => 'Nachricht bei Livestreams',
     'video_message' => 'Nachricht bei neuen YouTube-Videos',
     'youtube_no_key' => 'Ohne YouTube-API-Key werden Livestreams wie Videos gemeldet und nur Kanal-IDs funktionieren.',
+    'end_default' => 'Wie die Server-Einstellung',
+    'end_server_hint' => 'Gilt für Twitch-Streams aller Creator. Mit Server Premium kannst du pro Creator etwas anderes wählen.',
+    'ended_title' => 'Stream beendet',
+    'ended_duration' => 'Gestreamt für **:duration**',
+    'ended_vod' => 'VOD ansehen',
 ];

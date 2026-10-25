@@ -49,4 +49,5 @@ return [
     'language_title' => 'Sprache des Servers',
     'language_description' => 'In dieser Sprache schreibt Toxbot Nachrichten für den ganzen Server: Ticket- und Verifizieren-Buttons, Ticket-Logs, Raid-Alarme, automatische Begründungen und die Kanäle und Rollen der automatischen Einrichtung.',
     'language_label' => 'Sprache',
+    'autorole_after_verify' => 'Die Verifizierung ist an: Neue Mitglieder bekommen die Autorole erst, wenn sie sich verifiziert haben, nicht schon beim Beitreten.',
 ];

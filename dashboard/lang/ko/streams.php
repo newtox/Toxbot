@@ -57,4 +57,9 @@ return [
     'live_message' => '라이브 방송 메시지',
     'video_message' => '새 YouTube 영상 메시지',
     'youtube_no_key' => 'YouTube API 키가 없으면 라이브 방송도 영상처럼 알림이 가고 채널 ID만 사용할 수 있습니다.',
+    'end_default' => '서버 설정과 같게',
+    'end_server_hint' => '모든 크리에이터의 Twitch 방송에 적용됩니다. Server Premium이 있으면 크리에이터마다 다르게 고를 수 있습니다.',
+    'ended_title' => '방송 종료',
+    'ended_duration' => '**:duration** 동안 방송함',
+    'ended_vod' => '다시보기 보기',
 ];

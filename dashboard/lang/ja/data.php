@@ -24,4 +24,12 @@ return [
     'account_keeps' => '残るもの: 各サーバーに属するモデレーションの記録と、Discord の購入記録。購入は返金されません。',
     'account_button' => '自分のデータを削除',
     'account_deleted' => 'データを削除し、ログアウトしました。',
+    'section_text' => ':section ページの設定をすべて初期値に戻します。',
+    'section_confirm' => ':section ページの設定をすべてリセットしますか？元に戻せません。',
+    'section_button' => 'このページをリセット',
+    'section_extra_streams' => 'フォロー中のクリエイターはすべて削除されます。',
+    'section_extra_tags' => 'ブロックしたタグは解除されます。',
+    'section_extra_moderation' => '警告ルールは削除されます。',
+    'section_extra_tickets' => 'チケットの種類とボタンのメッセージは削除されます。',
+    'section_extra_verification' => '認証メッセージは削除されます。',
 ];

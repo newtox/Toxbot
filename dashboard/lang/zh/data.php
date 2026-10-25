@@ -24,4 +24,12 @@ return [
     'account_keeps' => '将保留：各服务器的管理记录（属于这些服务器）以及 Discord 的购买记录。购买不会退款。',
     'account_button' => '删除我的数据',
     'account_deleted' => '你的数据已删除，你已退出登录。',
+    'section_text' => '将“:section”页面的所有设置恢复为默认值。',
+    'section_confirm' => '要重置“:section”页面的所有设置吗？此操作无法撤销。',
+    'section_button' => '重置此页面',
+    'section_extra_streams' => '所有关注的创作者都会被移除。',
+    'section_extra_tags' => '已屏蔽的标签会被解除屏蔽。',
+    'section_extra_moderation' => '警告规则会被删除。',
+    'section_extra_tickets' => '工单类型和按钮消息会被删除。',
+    'section_extra_verification' => '验证消息会被删除。',
 ];

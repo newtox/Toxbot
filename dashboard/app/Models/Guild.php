@@ -32,10 +32,12 @@ class Guild extends Model
         'raid_enabled', 'raid_joins', 'raid_seconds', 'raid_minutes', 'raid_kick', 'raid_level', 'raid_until',
         'min_account_age',
         'ticket_category', 'ticket_log_channel', 'ticket_limit', 'ticket_panel_channel', 'ticket_panel_message_id',
-        'unban_enabled', 'language',
+        'unban_enabled', 'language', 'stream_end_action', 'levelup_dm',
     ];
 
     public const LINK_ACTIONS = ['delete', 'warn', 'timeout'];
+
+    public const END_ACTIONS = ['keep', 'edit', 'delete'];
 
     public const STREAM_PLACEHOLDERS = [
         '&channel' => 'streams.placeholder_channel',
@@ -52,6 +54,8 @@ class Guild extends Model
     protected $attributes = [
         'tags_enabled' => true,
         'levelup_enabled' => false,
+        'levelup_dm' => false,
+        'stream_end_action' => 'keep',
         'mod_dm' => true,
         'verify_enabled' => false,
         'link_invites' => false,
@@ -74,6 +78,7 @@ class Guild extends Model
         return [
             'tags_enabled' => 'boolean',
             'levelup_enabled' => 'boolean',
+            'levelup_dm' => 'boolean',
             'mod_dm' => 'boolean',
             'verify_enabled' => 'boolean',
             'link_invites' => 'boolean',

@@ -70,4 +70,7 @@ return [
     'scam_check_clean' => ':domain स्कैम सूची में नहीं है।',
     'scam_check_unavailable' => 'स्कैम सूचियाँ अभी लोड नहीं हो सकतीं।',
     'scam_check_invalid' => 'example.com जैसा डोमेन दर्ज करें।',
+    'verify_autorole' => 'वेरिफ़ाई करने के बाद सदस्यों को ऑटो-रोल @:role मिलता है।',
+    'verify_no_autorole' => 'कोई ऑटो-रोल सेट नहीं है। वेरिफ़ाई करने के बाद सिर्फ़ वेरिफ़िकेशन रोल हटता है।',
+    'verify_autorole_link' => 'ऑटो-रोल बदलें',
 ];

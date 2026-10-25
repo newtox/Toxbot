@@ -26,6 +26,22 @@ class DataDeletion
 {
     public const DELETED_USER = 'Deleted user';
 
+    public const SECTION_COLUMNS = [
+        'welcome' => ['welcome_channel', 'welcome_msg'],
+        'goodbye' => ['bye_channel', 'bye_msg'],
+        'autorole' => ['autorole'],
+        'language' => ['language'],
+        'levels' => ['levelup_enabled', 'levelup_channel', 'levelup_dm'],
+        'streams' => ['stream', 'notify', 'stream_msg', 'stream_video_msg', 'stream_end_action'],
+        'liverole' => ['live_role', 'live_role_required'],
+        'tags' => ['tags_enabled'],
+        'moderation' => ['modlog_channel', 'mod_dm'],
+        'verification' => ['verify_enabled', 'verify_role', 'verify_channel', 'verify_message_id'],
+        'links' => ['link_invites', 'link_scam', 'link_allowlist_enabled', 'link_allowlist', 'link_blocklist', 'link_action', 'link_exempt_roles'],
+        'raid' => ['raid_enabled', 'raid_joins', 'raid_seconds', 'raid_minutes', 'raid_kick', 'raid_level', 'raid_until', 'min_account_age'],
+        'tickets' => ['ticket_category', 'ticket_log_channel', 'ticket_limit', 'ticket_panel_channel', 'ticket_panel_message_id'],
+    ];
+
     public function __construct(private Discord $discord) {}
 
     public function resetGuild(string $guildId): void
@@ -48,6 +64,35 @@ class DataDeletion
         });
 
         $this->discord->forgetGuildCache($guildId);
+    }
+
+    public function resetSection(string $guildId, string $section): void
+    {
+        $row = Guild::query()->find($guildId);
+        if ($row) {
+            $message = match ($section) {
+                'verification' => [$row->verify_channel, $row->verify_message_id],
+                'tickets' => [$row->ticket_panel_channel, $row->ticket_panel_message_id],
+                default => [null, null],
+            };
+            if ($message[0] && $message[1]) {
+                rescue(fn () => $this->discord->deleteMessage($message[0], $message[1]), report: false);
+            }
+
+            $defaults = (new Guild)->getAttributes();
+            foreach (self::SECTION_COLUMNS[$section] as $column) {
+                $row->{$column} = $defaults[$column] ?? null;
+            }
+            $row->save();
+        }
+
+        match ($section) {
+            'streams' => StreamSubscription::query()->where('guild', $guildId)->get()->each->delete(),
+            'tags' => TagGuildBlock::query()->where('guild', $guildId)->delete(),
+            'moderation' => WarnRule::query()->where('guild', $guildId)->delete(),
+            'tickets' => TicketType::query()->where('guild', $guildId)->delete(),
+            default => null,
+        };
     }
 
     public function deleteGuild(string $guildId): void

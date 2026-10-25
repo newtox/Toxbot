@@ -57,4 +57,9 @@ return [
     'live_message' => 'Mensaje para directos',
     'video_message' => 'Mensaje para nuevos vídeos de YouTube',
     'youtube_no_key' => 'Sin clave de la API de YouTube, los directos se anuncian como vídeos y solo funcionan los ID de canal.',
+    'end_default' => 'Como el ajuste del servidor',
+    'end_server_hint' => 'Se aplica a los streams de Twitch de todos los creadores. Con Server Premium puedes elegir otra cosa por creador.',
+    'ended_title' => 'Stream terminado',
+    'ended_duration' => 'Transmitió durante **:duration**',
+    'ended_vod' => 'Ver el VOD',
 ];

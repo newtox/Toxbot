@@ -87,9 +87,12 @@ class GuildSettingsTest extends TestCase
             ->assertSee(route('servers.settings', [self::GUILD, 'streams']))
             ->assertSee(__('guild.levelup_title'));
 
-        $this->get('/servers/'.self::GUILD.'/streams')->assertOk()->assertSee(__('streams.live_role_title'));
+        $this->get('/servers/'.self::GUILD.'/liverole')->assertOk()->assertSee(__('streams.live_role_hint'));
+        $this->get('/servers/'.self::GUILD.'/streams')->assertOk()->assertDontSee(__('streams.live_role_hint'));
+        $this->get('/servers/'.self::GUILD.'/general')->assertRedirect(route('servers.settings', [self::GUILD, 'welcome']));
+        $this->get('/servers/'.self::GUILD.'/protection')->assertRedirect(route('servers.settings', [self::GUILD, 'verification']));
         $this->get('/servers/'.self::GUILD.'/nope')->assertNotFound();
-        $this->get('/servers/'.self::OTHER_GUILD.'/general')->assertForbidden();
+        $this->get('/servers/'.self::OTHER_GUILD.'/welcome')->assertForbidden();
     }
 
     public function test_cannot_open_server_without_permission(): void
@@ -107,10 +110,14 @@ class GuildSettingsTest extends TestCase
             ->set('welcomeEnabled', true)
             ->set('welcomeChannel', '11')
             ->set('welcomeMsg', 'Hey &mention, willkommen auf &server!')
-            ->set('autorole', '20')
             ->call('save')
             ->assertHasNoErrors()
             ->assertDispatched('saved');
+
+        Livewire::test(GuildSettings::class, ['guild' => ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon_url' => null], 'section' => 'autorole'])
+            ->set('autorole', '20')
+            ->call('save')
+            ->assertHasNoErrors();
 
         $row = Guild::find(self::GUILD);
         $this->assertSame('11', $row->welcome_channel);
@@ -127,9 +134,13 @@ class GuildSettingsTest extends TestCase
             ->set('welcomeEnabled', true)
             ->set('welcomeChannel', '12')
             ->set('welcomeMsg', 'Hallo')
+            ->call('save')
+            ->assertHasErrors(['welcomeChannel']);
+
+        Livewire::test(GuildSettings::class, ['guild' => ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon_url' => null], 'section' => 'autorole'])
             ->set('autorole', '22')
             ->call('save')
-            ->assertHasErrors(['welcomeChannel', 'autorole']);
+            ->assertHasErrors(['autorole']);
 
         $this->assertNull(Guild::find(self::GUILD));
     }
@@ -206,6 +217,10 @@ class GuildSettingsTest extends TestCase
             ->set('streamRole', '22')
             ->set('streamMsg', '&role &streamer ist live!')
             ->set('streamVideoMsg', 'Neues Video: &title &link')
+            ->call('save')
+            ->assertHasNoErrors();
+
+        Livewire::test(GuildSettings::class, ['guild' => ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon_url' => null], 'section' => 'liverole'])
             ->set('liveRole', '20')
             ->set('liveRoleRequired', '22')
             ->call('save')
@@ -219,7 +234,7 @@ class GuildSettingsTest extends TestCase
         $this->assertSame('20', $row->live_role);
         $this->assertSame('22', $row->live_role_required);
 
-        Livewire::test(GuildSettings::class, ['guild' => ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon_url' => null], 'section' => 'streams'])
+        Livewire::test(GuildSettings::class, ['guild' => ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon_url' => null], 'section' => 'liverole'])
             ->set('liveRole', '22')
             ->call('save')
             ->assertHasErrors('liveRole');

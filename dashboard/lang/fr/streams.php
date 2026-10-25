@@ -57,4 +57,9 @@ return [
     'live_message' => 'Message pour les lives',
     'video_message' => 'Message pour les nouvelles vidéos YouTube',
     'youtube_no_key' => 'Sans clé API YouTube, les lives sont annoncés comme des vidéos et seuls les ID de chaîne fonctionnent.',
+    'end_default' => 'Comme le paramètre du serveur',
+    'end_server_hint' => 'S’applique aux streams Twitch de tous les créateurs. Avec Server Premium, tu peux choisir autre chose par créateur.',
+    'ended_title' => 'Stream terminé',
+    'ended_duration' => 'A streamé pendant **:duration**',
+    'ended_vod' => 'Voir la VOD',
 ];
