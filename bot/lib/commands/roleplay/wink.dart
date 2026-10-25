@@ -9,15 +9,15 @@ import 'package:toxbot/utils/reply.dart';
 
 final wink = ChatCommand('wink', 'Wink.', localizedDescriptions: {
   Locale.da: 'Blink.',
-  Locale.de: 'Zwinkere.',
+  Locale.de: 'Zwinkern.',
   Locale.enUs: 'Wink.',
-  Locale.esEs: 'Guiñar.',
+  Locale.esEs: 'Guiñar un ojo.',
   Locale.fr: 'Faire un clin d\'œil.',
-  Locale.ru: 'Подмигивать.',
-  Locale.hi: 'आँख मारना.',
-  Locale.zhCn: '眨眼.',
-  Locale.ja: 'ウインクする.',
-  Locale.ko: '윙크하다.'
+  Locale.ru: 'Подмигнуть.',
+  Locale.hi: 'आँख मारें।',
+  Locale.zhCn: '眨眼。',
+  Locale.ja: 'ウインクします。',
+  Locale.ko: '윙크합니다.'
 }, (ChatContext context) async {
   try {
     final httpPackageUrl = Uri.https('waifu.pics', 'api/sfw/wink');

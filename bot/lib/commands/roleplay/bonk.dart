@@ -9,27 +9,27 @@ import 'package:toxbot/utils/reply.dart';
 
 final bonk = ChatCommand('bonk', 'Bonk someone.', localizedDescriptions: {
   Locale.da: 'Bonk nogen.',
-  Locale.de: 'Bonke jemanden.',
+  Locale.de: 'Jemanden bonken.',
   Locale.enUs: 'Bonk someone.',
-  Locale.esEs: 'Golpear a alguien.',
-  Locale.fr: 'Frapper quelqu\'un.',
-  Locale.ru: 'Стукнуть кого-то.',
-  Locale.hi: 'किसी को बोंक करो।',
-  Locale.zhCn: '敲打某人。',
-  Locale.ja: '誰かを叩く。',
-  Locale.ko: '누군가를 때리다.'
+  Locale.esEs: 'Darle un bonk a alguien.',
+  Locale.fr: 'Bonker quelqu\'un.',
+  Locale.ru: 'Бонкнуть кого-нибудь.',
+  Locale.hi: 'किसी को बोंक करें।',
+  Locale.zhCn: '敲某人的头。',
+  Locale.ja: '誰かをボンクします。',
+  Locale.ko: '누군가를 봉크합니다.'
 }, (ChatContext context,
     [@Description('The user you want to bonk.', {
-      Locale.da: 'Den bruger, du vil bonke.',
-      Locale.de: 'Der Benutzer, den du bonken willst.',
+      Locale.da: 'Brugeren, du vil bonke.',
+      Locale.de: 'Der Nutzer, den du bonken möchtest.',
       Locale.enUs: 'The user you want to bonk.',
-      Locale.esEs: 'El usuario que quieres golpear.',
-      Locale.fr: 'L\'utilisateur que vous voulez frapper.',
-      Locale.ru: 'Пользователь, которого вы хотите стукнуть.',
+      Locale.esEs: 'El usuario al que quieres dar un bonk.',
+      Locale.fr: 'L\'utilisateur que tu veux bonker.',
+      Locale.ru: 'Пользователь, которого хочешь бонкнуть.',
       Locale.hi: 'वह उपयोगकर्ता जिसे आप बोंक करना चाहते हैं।',
-      Locale.zhCn: '你想敲打的用户。',
-      Locale.ja: '叩きたいユーザー。',
-      Locale.ko: '때리고 싶은 사용자.'
+      Locale.zhCn: '你想敲头的用户。',
+      Locale.ja: 'ボンクしたいユーザー。',
+      Locale.ko: '봉크할 사용자.'
     })
     User? user]) async {
   try {

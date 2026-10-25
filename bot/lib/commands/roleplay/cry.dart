@@ -8,16 +8,16 @@ import 'package:toxbot/utils/functions.dart';
 import 'package:toxbot/utils/reply.dart';
 
 final cry = ChatCommand('cry', 'Cry.', localizedDescriptions: {
-  Locale.da: 'Græde.',
-  Locale.de: 'Weine.',
+  Locale.da: 'Græd.',
+  Locale.de: 'Weinen.',
   Locale.enUs: 'Cry.',
   Locale.esEs: 'Llorar.',
   Locale.fr: 'Pleurer.',
   Locale.ru: 'Плакать.',
-  Locale.hi: 'रोना.',
-  Locale.zhCn: '哭泣.',
-  Locale.ja: '泣く.',
-  Locale.ko: '울다.'
+  Locale.hi: 'रोएँ।',
+  Locale.zhCn: '哭泣。',
+  Locale.ja: '泣きます。',
+  Locale.ko: '웁니다.'
 }, (ChatContext context) async {
   try {
     final httpPackageUrl = Uri.https('waifu.pics', 'api/sfw/cry');

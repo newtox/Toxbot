@@ -8,16 +8,16 @@ import 'package:toxbot/utils/functions.dart';
 import 'package:toxbot/utils/reply.dart';
 
 final blush = ChatCommand('blush', 'Blush.', localizedDescriptions: {
-  Locale.da: 'Rødme.',
-  Locale.de: 'Erröte.',
+  Locale.da: 'Rødm.',
+  Locale.de: 'Erröten.',
   Locale.enUs: 'Blush.',
   Locale.esEs: 'Sonrojarse.',
   Locale.fr: 'Rougir.',
-  Locale.ru: 'Краснеть.',
-  Locale.hi: 'शर्माना.',
-  Locale.zhCn: '脸红.',
-  Locale.ja: '赤面する.',
-  Locale.ko: '얼굴이 빨개지다.'
+  Locale.ru: 'Покраснеть.',
+  Locale.hi: 'शरमाएँ।',
+  Locale.zhCn: '脸红。',
+  Locale.ja: '赤面します。',
+  Locale.ko: '얼굴을 붉힙니다.'
 }, (ChatContext context) async {
   try {
     final httpPackageUrl = Uri.https('waifu.pics', 'api/sfw/blush');

@@ -8,16 +8,16 @@ import 'package:toxbot/utils/functions.dart';
 import 'package:toxbot/utils/reply.dart';
 
 final cringe = ChatCommand('cringe', 'Cringe.', localizedDescriptions: {
-  Locale.da: 'Krympe.',
-  Locale.de: 'Zucke zusammen.',
+  Locale.da: 'Krum tæer.',
+  Locale.de: 'Fremdschämen.',
   Locale.enUs: 'Cringe.',
-  Locale.esEs: 'Estremecerse.',
-  Locale.fr: 'Frémir.',
-  Locale.ru: 'Съёживаться.',
-  Locale.hi: 'सिहरना.',
-  Locale.zhCn: '畏缩.',
-  Locale.ja: '身震いする.',
-  Locale.ko: '움츠리다.'
+  Locale.esEs: 'Sentir vergüenza ajena.',
+  Locale.fr: 'Avoir un malaise.',
+  Locale.ru: 'Испытать кринж.',
+  Locale.hi: 'क्रिंज महसूस करें।',
+  Locale.zhCn: '尴尬。',
+  Locale.ja: 'ドン引きします。',
+  Locale.ko: '오글거려합니다.'
 }, (ChatContext context) async {
   try {
     final httpPackageUrl = Uri.https('waifu.pics', 'api/sfw/cringe');

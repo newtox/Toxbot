@@ -8,16 +8,16 @@ import 'package:toxbot/utils/functions.dart';
 import 'package:toxbot/utils/reply.dart';
 
 final dance = ChatCommand('dance', 'Dance.', localizedDescriptions: {
-  Locale.da: 'Danse.',
-  Locale.de: 'Tanze.',
+  Locale.da: 'Dans.',
+  Locale.de: 'Tanzen.',
   Locale.enUs: 'Dance.',
   Locale.esEs: 'Bailar.',
   Locale.fr: 'Danser.',
   Locale.ru: 'Танцевать.',
-  Locale.hi: 'नृत्य.',
-  Locale.zhCn: '跳舞.',
-  Locale.ja: '踊る.',
-  Locale.ko: '춤추다.'
+  Locale.hi: 'नाचें।',
+  Locale.zhCn: '跳舞。',
+  Locale.ja: '踊ります。',
+  Locale.ko: '춤을 춥니다.'
 }, (ChatContext context) async {
   try {
     final httpPackageUrl = Uri.https('waifu.pics', 'api/sfw/dance');

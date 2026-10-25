@@ -6,17 +6,17 @@ import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:toxbot/utils/reply.dart';
 
 final neko =
-    ChatCommand('neko', 'Displays a neko image.', localizedDescriptions: {
-  Locale.da: 'Viser et neko-billede.',
-  Locale.de: 'Zeigt ein Neko-Bild an.',
-  Locale.enUs: 'Displays a neko image.',
-  Locale.esEs: 'Muestra una imagen de neko.',
-  Locale.fr: 'Affiche une image de neko.',
-  Locale.ru: 'Отображает изображение неко.',
-  Locale.hi: 'एक नेको छवि प्रदर्शित करता है।',
-  Locale.zhCn: '显示一个猫娘图片。',
+    ChatCommand('neko', 'Show a neko picture.', localizedDescriptions: {
+  Locale.da: 'Vis et neko-billede.',
+  Locale.de: 'Ein Neko-Bild anzeigen.',
+  Locale.enUs: 'Show a neko picture.',
+  Locale.esEs: 'Mostrar una imagen de neko.',
+  Locale.fr: 'Afficher une image de neko.',
+  Locale.ru: 'Показать картинку неко.',
+  Locale.hi: 'एक neko तस्वीर दिखाएँ।',
+  Locale.zhCn: '显示一张猫娘图片。',
   Locale.ja: 'ネコの画像を表示します。',
-  Locale.ko: '네코 이미지를 표시합니다.'
+  Locale.ko: 'neko 이미지를 표시합니다.'
 }, (ChatContext context) async {
   try {
     final httpPackageUrl = Uri.https('waifu.pics', 'api/sfw/neko');

@@ -9,27 +9,27 @@ import 'package:toxbot/utils/reply.dart';
 
 final lick = ChatCommand('lick', 'Lick someone.', localizedDescriptions: {
   Locale.da: 'Slik nogen.',
-  Locale.de: 'Lecke jemanden ab.',
+  Locale.de: 'Jemanden ablecken.',
   Locale.enUs: 'Lick someone.',
   Locale.esEs: 'Lamer a alguien.',
   Locale.fr: 'Lécher quelqu\'un.',
-  Locale.ru: 'Лизнуть кого-то.',
-  Locale.hi: 'किसी को चाटो।',
+  Locale.ru: 'Лизнуть кого-нибудь.',
+  Locale.hi: 'किसी को चाटें।',
   Locale.zhCn: '舔某人。',
-  Locale.ja: '誰かを舐める。',
-  Locale.ko: '누군가를 핥다.'
+  Locale.ja: '誰かをなめます。',
+  Locale.ko: '누군가를 핥습니다.'
 }, (ChatContext context,
     [@Description('The user you want to lick.', {
-      Locale.da: 'Den bruger, du vil slikke.',
-      Locale.de: 'Der Benutzer, den du ablecken willst.',
+      Locale.da: 'Brugeren, du vil slikke.',
+      Locale.de: 'Der Nutzer, den du ablecken möchtest.',
       Locale.enUs: 'The user you want to lick.',
-      Locale.esEs: 'El usuario que quieres lamer.',
-      Locale.fr: 'L\'utilisateur que vous voulez lécher.',
-      Locale.ru: 'Пользователь, которого вы хотите лизнуть.',
+      Locale.esEs: 'El usuario al que quieres lamer.',
+      Locale.fr: 'L\'utilisateur que tu veux lécher.',
+      Locale.ru: 'Пользователь, которого хочешь лизнуть.',
       Locale.hi: 'वह उपयोगकर्ता जिसे आप चाटना चाहते हैं।',
       Locale.zhCn: '你想舔的用户。',
-      Locale.ja: '舐めたいユーザー。',
-      Locale.ko: '핥고 싶은 사용자.'
+      Locale.ja: 'なめたいユーザー。',
+      Locale.ko: '핥을 사용자.'
     })
     User? user]) async {
   try {

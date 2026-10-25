@@ -8,28 +8,28 @@ import 'package:toxbot/utils/functions.dart';
 import 'package:toxbot/utils/reply.dart';
 
 final bully = ChatCommand('bully', 'Bully someone.', localizedDescriptions: {
-  Locale.da: 'Drille nogen.',
-  Locale.de: 'Mobbe jemanden.',
+  Locale.da: 'Drill nogen.',
+  Locale.de: 'Jemanden ärgern.',
   Locale.enUs: 'Bully someone.',
-  Locale.esEs: 'Intimidar a alguien.',
-  Locale.fr: 'Intimider quelqu\'un.',
-  Locale.ru: 'Издеваться над кем-то.',
-  Locale.hi: 'किसी को तंग करो।',
+  Locale.esEs: 'Molestar a alguien.',
+  Locale.fr: 'Embêter quelqu\'un.',
+  Locale.ru: 'Задирать кого-нибудь.',
+  Locale.hi: 'किसी को परेशान करें।',
   Locale.zhCn: '欺负某人。',
-  Locale.ja: '誰かをいじめる。',
-  Locale.ko: '누군가를 괴롭히다.'
+  Locale.ja: '誰かをからかいます。',
+  Locale.ko: '누군가를 괴롭힙니다.'
 }, (ChatContext context,
     [@Description('The user you want to bully.', {
-      Locale.da: 'Den bruger, du vil drille.',
-      Locale.de: 'Der Benutzer, den du mobben willst.',
+      Locale.da: 'Brugeren, du vil drille.',
+      Locale.de: 'Der Nutzer, den du ärgern möchtest.',
       Locale.enUs: 'The user you want to bully.',
-      Locale.esEs: 'El usuario que quieres intimidar.',
-      Locale.fr: 'L\'utilisateur que vous voulez intimider.',
-      Locale.ru: 'Пользователь, над которым вы хотите издеваться.',
-      Locale.hi: 'वह उपयोगकर्ता जिसे आप तंग करना चाहते हैं।',
+      Locale.esEs: 'El usuario al que quieres molestar.',
+      Locale.fr: 'L\'utilisateur que tu veux embêter.',
+      Locale.ru: 'Пользователь, которого хочешь задирать.',
+      Locale.hi: 'वह उपयोगकर्ता जिसे आप परेशान करना चाहते हैं।',
       Locale.zhCn: '你想欺负的用户。',
-      Locale.ja: 'いじめたいユーザー。',
-      Locale.ko: '괴롭히고 싶은 사용자.'
+      Locale.ja: 'からかいたいユーザー。',
+      Locale.ko: '괴롭힐 사용자.'
     })
     User? user]) async {
   try {

@@ -14,11 +14,11 @@ final _password = ChatCommand(
     Locale.de: 'Ein sicheres Passwort erzeugen.',
     Locale.enUs: 'Generate a secure password.',
     Locale.esEs: 'Generar una contraseña segura.',
-    Locale.fr: 'Générer un mot de passe sécurisé.',
+    Locale.fr: 'Générer un mot de passe sûr.',
     Locale.ru: 'Сгенерировать надёжный пароль.',
     Locale.hi: 'एक सुरक्षित पासवर्ड बनाएँ।',
     Locale.zhCn: '生成一个安全的密码。',
-    Locale.ja: '安全なパスワードを生成する。',
+    Locale.ja: '安全なパスワードを生成します。',
     Locale.ko: '안전한 비밀번호를 생성합니다.',
   },
   (
@@ -32,22 +32,22 @@ final _password = ChatCommand(
       Locale.ru: 'Длина пароля (8-128, по умолчанию 20).',
       Locale.hi: 'पासवर्ड की लंबाई (8-128, डिफ़ॉल्ट 20)।',
       Locale.zhCn: '密码长度（8-128，默认 20）。',
-      Locale.ja: 'パスワードの長さ（8〜128、既定は 20）。',
+      Locale.ja: 'パスワードの長さ（8-128、既定 20）。',
       Locale.ko: '비밀번호 길이 (8-128, 기본값 20).',
     })
     @UseConverter(IntConverter(min: 8, max: 128))
     int? length,
-    @Description('Include symbols such as ! # % (default yes).', {
-      Locale.da: 'Medtag symboler som ! # % (standard ja).',
-      Locale.de: 'Sonderzeichen wie ! # % verwenden (Standard ja).',
-      Locale.enUs: 'Include symbols such as ! # % (default yes).',
-      Locale.esEs: 'Incluir símbolos como ! # % (por defecto sí).',
-      Locale.fr: 'Inclure des symboles comme ! # % (oui par défaut).',
+    @Description('Whether to use symbols such as ! # % (default yes).', {
+      Locale.da: 'Om der skal bruges tegn som ! # % (standard ja).',
+      Locale.de: 'Ob Sonderzeichen wie ! # % vorkommen (Standard ja).',
+      Locale.enUs: 'Whether to use symbols such as ! # % (default yes).',
+      Locale.esEs: 'Si se usan símbolos como ! # % (por defecto sí).',
+      Locale.fr: 'Utiliser des symboles comme ! # % (oui par défaut).',
       Locale.ru: 'Использовать символы вроде ! # % (по умолчанию да).',
-      Locale.hi: '! # % जैसे चिह्न शामिल करें (डिफ़ॉल्ट हाँ)।',
-      Locale.zhCn: '包含 ! # % 等符号（默认是）。',
-      Locale.ja: '! # % などの記号を含める（既定はオン）。',
-      Locale.ko: '! # % 같은 기호 포함 (기본값 예).',
+      Locale.hi: '! # % जैसे चिह्न शामिल करें या नहीं (डिफ़ॉल्ट हाँ)।',
+      Locale.zhCn: '是否使用 ! # % 等符号（默认是）。',
+      Locale.ja: '! # % などの記号を使うか（既定ははい）。',
+      Locale.ko: '! # % 같은 기호 사용 여부 (기본값 예).',
     })
     bool? symbols,
   ]) async {
@@ -76,8 +76,8 @@ final _hex = ChatCommand(
     Locale.fr: 'Générer des octets aléatoires en hex, comme openssl rand -hex.',
     Locale.ru: 'Сгенерировать случайные байты в hex, как openssl rand -hex.',
     Locale.hi: 'openssl rand -hex की तरह रैंडम बाइट हेक्स में बनाएँ।',
-    Locale.zhCn: '像 openssl rand -hex 一样生成十六进制随机字节。',
-    Locale.ja: 'openssl rand -hex のようにランダムなバイトを16進数で生成する。',
+    Locale.zhCn: '以十六进制生成随机字节，类似 openssl rand -hex。',
+    Locale.ja: 'openssl rand -hex のようにランダムなバイトを 16 進数で生成します。',
     Locale.ko: 'openssl rand -hex처럼 무작위 바이트를 16진수로 생성합니다.',
   },
   (
@@ -88,10 +88,10 @@ final _hex = ChatCommand(
       Locale.enUs: 'Number of bytes (1-64, default 32).',
       Locale.esEs: 'Número de bytes (1-64, por defecto 32).',
       Locale.fr: 'Nombre d\'octets (1-64, 32 par défaut).',
-      Locale.ru: 'Количество байт (1-64, по умолчанию 32).',
+      Locale.ru: 'Количество байтов (1-64, по умолчанию 32).',
       Locale.hi: 'बाइट की संख्या (1-64, डिफ़ॉल्ट 32)।',
       Locale.zhCn: '字节数（1-64，默认 32）。',
-      Locale.ja: 'バイト数（1〜64、既定は 32）。',
+      Locale.ja: 'バイト数（1-64、既定 32）。',
       Locale.ko: '바이트 수 (1-64, 기본값 32).',
     })
     @UseConverter(IntConverter(min: 1, max: 64))
@@ -123,7 +123,7 @@ final _color = ChatCommand(
     Locale.ru: 'Сгенерировать случайный цвет.',
     Locale.hi: 'एक रैंडम रंग बनाएँ।',
     Locale.zhCn: '生成一个随机颜色。',
-    Locale.ja: 'ランダムな色を生成する。',
+    Locale.ja: 'ランダムな色を生成します。',
     Locale.ko: '무작위 색상을 생성합니다.',
   },
   (ChatContext context) async {
@@ -170,10 +170,10 @@ final generate = ChatGroup(
     Locale.fr:
         'Générer des mots de passe, des valeurs hex aléatoires et des couleurs.',
     Locale.ru: 'Генерировать пароли, случайные hex-значения и цвета.',
-    Locale.hi: 'पासवर्ड, रैंडम हेक्स मान और रंग बनाएँ।',
+    Locale.hi: 'पासवर्ड, रैंडम हेक्स वैल्यू और रंग बनाएँ।',
     Locale.zhCn: '生成密码、随机十六进制值和颜色。',
-    Locale.ja: 'パスワード、ランダムな16進数、色を生成する。',
-    Locale.ko: '비밀번호, 무작위 16진수 값과 색상을 생성합니다.',
+    Locale.ja: 'パスワード、ランダムな 16 進値、色を生成します。',
+    Locale.ko: '비밀번호, 무작위 16진수 값, 색상을 생성합니다.',
   },
   children: [_password, _hex, _color],
 );

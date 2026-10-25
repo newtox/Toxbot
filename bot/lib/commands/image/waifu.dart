@@ -6,17 +6,17 @@ import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:toxbot/utils/reply.dart';
 
 final waifu =
-    ChatCommand('waifu', 'Displays a waifu image.', localizedDescriptions: {
-  Locale.da: 'Viser et waifu-billede.',
-  Locale.de: 'Zeigt ein Waifu-Bild an.',
-  Locale.enUs: 'Displays a waifu image.',
-  Locale.esEs: 'Muestra una imagen de waifu.',
-  Locale.fr: 'Affiche une image de waifu.',
-  Locale.ru: 'Отображает изображение ваифу.',
-  Locale.hi: 'एक वाइफु छवि प्रदर्शित करता है।',
-  Locale.zhCn: '显示一个二次元角色图片。',
-  Locale.ja: 'ワイフの画像を表示します。',
-  Locale.ko: '와이푸 이미지를 표시합니다.'
+    ChatCommand('waifu', 'Show a waifu picture.', localizedDescriptions: {
+  Locale.da: 'Vis et waifu-billede.',
+  Locale.de: 'Ein Waifu-Bild anzeigen.',
+  Locale.enUs: 'Show a waifu picture.',
+  Locale.esEs: 'Mostrar una imagen de waifu.',
+  Locale.fr: 'Afficher une image de waifu.',
+  Locale.ru: 'Показать картинку вайфу.',
+  Locale.hi: 'एक waifu तस्वीर दिखाएँ।',
+  Locale.zhCn: '显示一张老婆图片。',
+  Locale.ja: '嫁の画像を表示します。',
+  Locale.ko: 'waifu 이미지를 표시합니다.'
 }, (ChatContext context) async {
   try {
     final httpPackageUrl = Uri.https('waifu.pics', 'api/sfw/waifu');

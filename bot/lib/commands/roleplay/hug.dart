@@ -8,28 +8,28 @@ import 'package:toxbot/utils/functions.dart';
 import 'package:toxbot/utils/reply.dart';
 
 final hug = ChatCommand('hug', 'Hug someone.', localizedDescriptions: {
-  Locale.da: 'Giv nogen et kram.',
-  Locale.de: 'Umarm jemanden.',
+  Locale.da: 'Kram nogen.',
+  Locale.de: 'Jemanden umarmen.',
   Locale.enUs: 'Hug someone.',
-  Locale.esEs: 'Abraza a alguien.',
-  Locale.fr: 'Embrasse quelqu\'un.',
-  Locale.ru: 'Обними кого-нибудь.',
-  Locale.hi: 'किसी को गले लगाओ।',
+  Locale.esEs: 'Abrazar a alguien.',
+  Locale.fr: 'Faire un câlin à quelqu\'un.',
+  Locale.ru: 'Обнять кого-нибудь.',
+  Locale.hi: 'किसी को गले लगाएँ।',
   Locale.zhCn: '拥抱某人。',
-  Locale.ja: '誰かを抱きしめる。',
-  Locale.ko: '누군가를 안아주세요.'
+  Locale.ja: '誰かをハグします。',
+  Locale.ko: '누군가를 안아 줍니다.'
 }, (ChatContext context,
     [@Description('The user you want to hug.', {
-      Locale.da: 'Den bruger, du vil kramme.',
-      Locale.de: 'Der Benutzer, den du umarmen möchtest.',
+      Locale.da: 'Brugeren, du vil kramme.',
+      Locale.de: 'Der Nutzer, den du umarmen möchtest.',
       Locale.enUs: 'The user you want to hug.',
-      Locale.esEs: 'El usuario que deseas abrazar.',
-      Locale.fr: 'L\'utilisateur que vous voulez embrasser.',
-      Locale.ru: 'Пользователь, которого вы хотите обнять.',
-      Locale.hi: 'जिसे आप गले लगाना चाहते हैं।',
+      Locale.esEs: 'El usuario al que quieres abrazar.',
+      Locale.fr: 'L\'utilisateur à qui tu veux faire un câlin.',
+      Locale.ru: 'Пользователь, которого хочешь обнять.',
+      Locale.hi: 'वह उपयोगकर्ता जिसे आप गले लगाना चाहते हैं।',
       Locale.zhCn: '你想拥抱的用户。',
-      Locale.ja: '抱きしめたいユーザー。',
-      Locale.ko: '포옹하고 싶은 사용자.'
+      Locale.ja: 'ハグしたいユーザー。',
+      Locale.ko: '안아 줄 사용자.'
     })
     User? user]) async {
   try {

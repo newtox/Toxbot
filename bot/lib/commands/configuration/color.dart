@@ -4,30 +4,30 @@ import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:toxbot/utils/database.dart';
 import 'package:toxbot/utils/reply.dart';
 
-final color = ChatCommand('color', 'Configure your color for embeds.',
+final color = ChatCommand('color', 'Set the color of your embeds.',
     localizedDescriptions: {
-      Locale.da: 'Konfigurér din farve til embeds.',
-      Locale.de: 'Konfiguriere deine Farbe für Embeds.',
-      Locale.enUs: 'Configure your color for embeds.',
-      Locale.esEs: 'Configura tu color para incrustaciones.',
-      Locale.fr: 'Configurez votre couleur pour les intégrations.',
-      Locale.ru: 'Настройте цвет для встроенных элементов.',
-      Locale.hi: 'एम्बेड के लिए अपना रंग कॉन्फ़िगर करें।',
-      Locale.zhCn: '配置嵌入内容的颜色。',
-      Locale.ja: '埋め込み用の色を設定してください。',
-      Locale.ko: '임베드의 색상을 구성하세요.'
+      Locale.da: 'Indstil farven på dine embeds.',
+      Locale.de: 'Die Farbe deiner Embeds festlegen.',
+      Locale.enUs: 'Set the color of your embeds.',
+      Locale.esEs: 'Establecer el color de tus embeds.',
+      Locale.fr: 'Définir la couleur de tes embeds.',
+      Locale.ru: 'Задать цвет своих эмбедов.',
+      Locale.hi: 'अपने एम्बेड का रंग सेट करें।',
+      Locale.zhCn: '设置你的嵌入消息颜色。',
+      Locale.ja: '埋め込みの色を設定します。',
+      Locale.ko: '임베드 색상을 설정합니다.'
     }, (ChatContext context,
-        @Description('The color for your embeds.', {
-          Locale.da: 'Farven til dine embeds.',
-          Locale.de: 'Die Farbe für deine Embeds.',
-          Locale.enUs: 'The color for your embeds.',
-          Locale.esEs: 'El color para tus incrustaciones.',
-          Locale.fr: 'La couleur pour tes intégrations.',
-          Locale.ru: 'Цвет для твоих встроенных элементов.',
-          Locale.hi: 'तुम्हारे एम्बेड का रंग।',
-          Locale.zhCn: '你嵌入内容的颜色。',
-          Locale.ja: 'あなたの埋め込みの色。',
-          Locale.ko: '네 임베드의 색상.'
+        @Description('The color as hex code, e.g. #7289da.', {
+          Locale.da: 'Farven som hex-kode, f.eks. #7289da.',
+          Locale.de: 'Die Farbe als Hex-Code, z. B. #7289da.',
+          Locale.enUs: 'The color as hex code, e.g. #7289da.',
+          Locale.esEs: 'El color en código hex, p. ej. #7289da.',
+          Locale.fr: 'La couleur en code hex, ex. #7289da.',
+          Locale.ru: 'Цвет в hex-коде, например #7289da.',
+          Locale.hi: 'हेक्स कोड में रंग, जैसे #7289da।',
+          Locale.zhCn: '十六进制颜色代码，例如 #7289da。',
+          Locale.ja: '16 進数のカラーコード（例: #7289da）。',
+          Locale.ko: '16진수 색상 코드, 예: #7289da.'
         })
         String color) async {
   final connection = await getMySqlConnection();

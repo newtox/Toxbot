@@ -9,27 +9,27 @@ import 'package:toxbot/utils/reply.dart';
 
 final slap = ChatCommand('slap', 'Slap someone.', localizedDescriptions: {
   Locale.da: 'Giv nogen en lussing.',
-  Locale.de: 'Ohrfeige jemanden.',
+  Locale.de: 'Jemanden ohrfeigen.',
   Locale.enUs: 'Slap someone.',
   Locale.esEs: 'Abofetear a alguien.',
   Locale.fr: 'Gifler quelqu\'un.',
-  Locale.ru: 'Дать пощёчину кому-то.',
-  Locale.hi: 'किसी को थप्पड़ मारो।',
-  Locale.zhCn: '打某人耳光。',
-  Locale.ja: '誰かを平手打ちする。',
-  Locale.ko: '누군가를 때리다.'
+  Locale.ru: 'Дать кому-нибудь пощёчину.',
+  Locale.hi: 'किसी को थप्पड़ मारें।',
+  Locale.zhCn: '扇某人耳光。',
+  Locale.ja: '誰かをビンタします。',
+  Locale.ko: '누군가의 뺨을 때립니다.'
 }, (ChatContext context,
     [@Description('The user you want to slap.', {
-      Locale.da: 'Den bruger, du vil give en lussing.',
-      Locale.de: 'Der Benutzer, den du ohrfeigen willst.',
+      Locale.da: 'Brugeren, du vil give en lussing.',
+      Locale.de: 'Der Nutzer, den du ohrfeigen möchtest.',
       Locale.enUs: 'The user you want to slap.',
-      Locale.esEs: 'El usuario que quieres abofetear.',
-      Locale.fr: 'L\'utilisateur que vous voulez gifler.',
-      Locale.ru: 'Пользователь, которому вы хотите дать пощёчину.',
+      Locale.esEs: 'El usuario al que quieres abofetear.',
+      Locale.fr: 'L\'utilisateur que tu veux gifler.',
+      Locale.ru: 'Пользователь, которому хочешь дать пощёчину.',
       Locale.hi: 'वह उपयोगकर्ता जिसे आप थप्पड़ मारना चाहते हैं।',
-      Locale.zhCn: '你想打耳光的用户。',
-      Locale.ja: '平手打ちしたいユーザー。',
-      Locale.ko: '때리고 싶은 사용자.'
+      Locale.zhCn: '你想扇耳光的用户。',
+      Locale.ja: 'ビンタしたいユーザー。',
+      Locale.ko: '뺨을 때릴 사용자.'
     })
     User? user]) async {
   try {

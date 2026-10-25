@@ -9,15 +9,15 @@ import 'package:toxbot/utils/reply.dart';
 
 final happy = ChatCommand('happy', 'Be happy.', localizedDescriptions: {
   Locale.da: 'Vær glad.',
-  Locale.de: 'Sei glücklich.',
+  Locale.de: 'Glücklich sein.',
   Locale.enUs: 'Be happy.',
   Locale.esEs: 'Estar feliz.',
   Locale.fr: 'Être heureux.',
-  Locale.ru: 'Быть счастливым.',
-  Locale.hi: 'खुश होना.',
-  Locale.zhCn: '开心.',
-  Locale.ja: '幸せになる.',
-  Locale.ko: '행복하다.'
+  Locale.ru: 'Радоваться.',
+  Locale.hi: 'खुश हों।',
+  Locale.zhCn: '开心。',
+  Locale.ja: '喜びます。',
+  Locale.ko: '기뻐합니다.'
 }, (ChatContext context) async {
   try {
     final httpPackageUrl = Uri.https('waifu.pics', 'api/sfw/happy');

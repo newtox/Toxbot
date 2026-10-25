@@ -9,27 +9,27 @@ import 'package:toxbot/utils/reply.dart';
 
 final bite = ChatCommand('bite', 'Bite someone.', localizedDescriptions: {
   Locale.da: 'Bid nogen.',
-  Locale.de: 'Beiße jemanden.',
+  Locale.de: 'Jemanden beißen.',
   Locale.enUs: 'Bite someone.',
   Locale.esEs: 'Morder a alguien.',
   Locale.fr: 'Mordre quelqu\'un.',
-  Locale.ru: 'Укусить кого-то.',
-  Locale.hi: 'किसी को काटो।',
-  Locale.zhCn: '咬人。',
-  Locale.ja: '誰かを噛む。',
-  Locale.ko: '누군가를 물다.'
+  Locale.ru: 'Укусить кого-нибудь.',
+  Locale.hi: 'किसी को काटें।',
+  Locale.zhCn: '咬某人。',
+  Locale.ja: '誰かを噛みます。',
+  Locale.ko: '누군가를 깨뭅니다.'
 }, (ChatContext context,
     [@Description('The user you want to bite.', {
-      Locale.da: 'Den bruger, du vil bide.',
-      Locale.de: 'Der Benutzer, den du beißen willst.',
+      Locale.da: 'Brugeren, du vil bide.',
+      Locale.de: 'Der Nutzer, den du beißen möchtest.',
       Locale.enUs: 'The user you want to bite.',
-      Locale.esEs: 'El usuario que quieres morder.',
-      Locale.fr: 'L\'utilisateur que vous voulez mordre.',
-      Locale.ru: 'Пользователь, которого вы хотите укусить.',
+      Locale.esEs: 'El usuario al que quieres morder.',
+      Locale.fr: 'L\'utilisateur que tu veux mordre.',
+      Locale.ru: 'Пользователь, которого хочешь укусить.',
       Locale.hi: 'वह उपयोगकर्ता जिसे आप काटना चाहते हैं।',
       Locale.zhCn: '你想咬的用户。',
       Locale.ja: '噛みたいユーザー。',
-      Locale.ko: '물고 싶은 사용자.'
+      Locale.ko: '깨물 사용자.'
     })
     User? user]) async {
   try {

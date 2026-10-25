@@ -8,28 +8,28 @@ import 'package:toxbot/utils/functions.dart';
 import 'package:toxbot/utils/reply.dart';
 
 final pat = ChatCommand('pat', 'Pat someone.', localizedDescriptions: {
-  Locale.da: 'Klap nogen.',
-  Locale.de: 'Streichel jemanden.',
+  Locale.da: 'Ae nogen.',
+  Locale.de: 'Jemanden streicheln.',
   Locale.enUs: 'Pat someone.',
   Locale.esEs: 'Acariciar a alguien.',
   Locale.fr: 'Caresser quelqu\'un.',
-  Locale.ru: 'Погладить кого-то.',
-  Locale.hi: 'किसी को थपथपाओ।',
-  Locale.zhCn: '拍拍某人。',
-  Locale.ja: '誰かを撫でる。',
-  Locale.ko: '누군가를 쓰다듬다.'
+  Locale.ru: 'Погладить кого-нибудь.',
+  Locale.hi: 'किसी को थपथपाएँ।',
+  Locale.zhCn: '摸摸某人。',
+  Locale.ja: '誰かをなでます。',
+  Locale.ko: '누군가를 쓰다듬습니다.'
 }, (ChatContext context,
     [@Description('The user you want to pat.', {
-      Locale.da: 'Den bruger, du vil klappe.',
-      Locale.de: 'Der Benutzer, den du streicheln willst.',
+      Locale.da: 'Brugeren, du vil ae.',
+      Locale.de: 'Der Nutzer, den du streicheln möchtest.',
       Locale.enUs: 'The user you want to pat.',
-      Locale.esEs: 'El usuario que quieres acariciar.',
-      Locale.fr: 'L\'utilisateur que vous voulez caresser.',
-      Locale.ru: 'Пользователь, которого вы хотите погладить.',
+      Locale.esEs: 'El usuario al que quieres acariciar.',
+      Locale.fr: 'L\'utilisateur que tu veux caresser.',
+      Locale.ru: 'Пользователь, которого хочешь погладить.',
       Locale.hi: 'वह उपयोगकर्ता जिसे आप थपथपाना चाहते हैं।',
-      Locale.zhCn: '你想拍拍的用户。',
-      Locale.ja: '撫でたいユーザー。',
-      Locale.ko: '쓰다듬고 싶은 사용자.'
+      Locale.zhCn: '你想摸摸的用户。',
+      Locale.ja: 'なでたいユーザー。',
+      Locale.ko: '쓰다듬을 사용자.'
     })
     User? user]) async {
   try {

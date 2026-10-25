@@ -9,15 +9,15 @@ import 'package:toxbot/utils/reply.dart';
 
 final smile = ChatCommand('smile', 'Smile.', localizedDescriptions: {
   Locale.da: 'Smil.',
-  Locale.de: 'Lächle.',
+  Locale.de: 'Lächeln.',
   Locale.enUs: 'Smile.',
   Locale.esEs: 'Sonreír.',
   Locale.fr: 'Sourire.',
-  Locale.ru: 'Улыбаться.',
-  Locale.hi: 'मुस्कुराना.',
-  Locale.zhCn: '微笑.',
-  Locale.ja: '微笑む.',
-  Locale.ko: '미소 짓다.'
+  Locale.ru: 'Улыбнуться.',
+  Locale.hi: 'मुस्कुराएँ।',
+  Locale.zhCn: '微笑。',
+  Locale.ja: '笑顔になります。',
+  Locale.ko: '미소 짓습니다.'
 }, (ChatContext context) async {
   try {
     final httpPackageUrl = Uri.https('waifu.pics', 'api/sfw/smile');
