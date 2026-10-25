@@ -58,7 +58,7 @@ Fill in `.env`:
 | `TOXBOT_OWNER_ID` | Your Discord user ID, only this account sees the administration |
 | `TOXBOT_PREMIUM_USERS`, `TOXBOT_PREMIUM_USER_SKUS` | Premium without subscription for these user IDs, and the SKU ID of the subscription |
 | `TOPGG_WEBHOOK_SECRET` | Secret of the Top.gg webhook, leave empty to turn vote rewards off |
-| `TOXBOT_CONTACT_EMAIL`, `TOXBOT_SUPPORT_INVITE` | Optional, shown on the info page |
+| `TOXBOT_CONTACT_EMAIL`, `TOXBOT_SUPPORT_INVITE` | Contact address (defaults to justin.lys26@gmail.com) and an optional support server invite, shown on the info page |
 | `TOXBOT_PREMIUM_GUILDS`, `TOXBOT_PREMIUM_GUILD_SKUS` | Server Premium without subscription for these server IDs, and the SKU ID of the server subscription |
 | `TWITCH_CLIENT_ID`, `TWITCH_CLIENT_SECRET` | [dev.twitch.tv/console](https://dev.twitch.tv/console) → your application |
 | `STREAM_WEBHOOK_SECRET` | Any random string with 10 to 100 characters |

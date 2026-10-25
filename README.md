@@ -70,7 +70,7 @@ On every push to `main`, the GitHub Action in `.github/workflows/docker.yml` bui
 - `ghcr.io/newtox/toxbot`
 - `ghcr.io/newtox/toxbot-dashboard`
 
-The server runs both from `docker-compose.yml`, deployed as a Portainer stack. Secrets are not part of the images; they are set as stack environment variables. See `stack.env.example` for the full list. `CONTACT_EMAIL` and `SUPPORT_INVITE` are optional and show up on the dashboard's info page.
+The server runs both from `docker-compose.yml`, deployed as a Portainer stack. Secrets are not part of the images; they are set as stack environment variables. See `stack.env.example` for the full list. `CONTACT_EMAIL` (defaults to justin.lys26@gmail.com) and the optional `SUPPORT_INVITE` show up on the dashboard's info page.
 
 Both images get the commit and build time as `GIT_COMMIT` and `BUILD_DATE`. The bot writes its status (commit, uptime, ping, servers, memory) to the `bot_status` table once a minute, and the dashboard shows it together with its own version under Info → System.
 
@@ -203,4 +203,4 @@ This project is licensed under the [Creative Commons Attribution-NonCommercial-S
 
 ## Contact
 
-Found a bug or have a feature request? Open an issue on GitHub or write to [contact@placeholder.de](mailto:contact@placeholder.de).
+Found a bug or have a feature request? Open an issue on GitHub or write to [justin.lys26@gmail.com](mailto:justin.lys26@gmail.com).
