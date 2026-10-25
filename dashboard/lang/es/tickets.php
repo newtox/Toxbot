@@ -38,7 +38,7 @@ return [
     'appeals_title' => 'Solicitudes de desbaneo',
     'appeals_description' => 'Los miembros baneados pueden pedir el desbaneo en una página del panel. El equipo decide allí.',
     'appeals_link' => 'Los baneados encuentran el formulario aquí. Toxbot también añade el enlace a los MD de baneo:',
-    'appeals_hint' => 'Las nuevas solicitudes se avisan en el canal de registro de tickets o, si no hay, en el de moderación.',
+    'appeals_hint' => 'Las nuevas solicitudes se avisan en el canal de moderación o, si no hay, en el registro de tickets.',
     'open_count' => ':count ticket abierto|:count tickets abiertos',
     'history_title' => 'Historial de tickets',
     'history_description' => 'Todos los tickets de este servidor con su historial.',

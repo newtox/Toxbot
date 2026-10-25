@@ -38,7 +38,7 @@ return [
     'appeals_title' => 'BAN 解除申請',
     'appeals_description' => 'BAN されたメンバーはダッシュボードのページから BAN 解除を申請できます。判断はチームがそこで行います。',
     'appeals_link' => 'BAN されたメンバーはここからフォームを開けます。Toxbot は BAN の DM にもリンクを添えます:',
-    'appeals_hint' => '新しい申請はチケットのログチャンネル、未設定ならモデレーションログチャンネルに通知されます。',
+    'appeals_hint' => '新しい申請はモデレーションログチャンネル、未設定ならチケットのログチャンネルに通知されます。',
     'open_count' => 'オープン中のチケット :count 件',
     'history_title' => 'チケット履歴',
     'history_description' => 'このサーバーのすべてのチケットと履歴です。',

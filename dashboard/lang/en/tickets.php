@@ -38,7 +38,7 @@ return [
     'appeals_title' => 'Unban appeals',
     'appeals_description' => 'Banned members can ask to be unbanned on a page in the dashboard. The team decides there.',
     'appeals_link' => 'Banned members find the form here. Toxbot also adds the link to ban DMs:',
-    'appeals_hint' => 'New appeals are announced in the ticket log channel, or in the modlog channel if none is set.',
+    'appeals_hint' => 'New appeals are announced in the modlog channel, or in the ticket log channel if there is no modlog.',
     'open_count' => ':count open ticket|:count open tickets',
     'history_title' => 'Ticket history',
     'history_description' => 'All tickets of this server with their transcripts.',

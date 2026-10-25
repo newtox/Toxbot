@@ -38,7 +38,7 @@ return [
     'appeals_title' => 'Demandes de débannissement',
     'appeals_description' => 'Les membres bannis peuvent demander un débannissement sur une page du tableau de bord. L\'équipe décide là-bas.',
     'appeals_link' => 'Les bannis trouvent le formulaire ici. Toxbot ajoute aussi le lien aux MP de bannissement :',
-    'appeals_hint' => 'Les nouvelles demandes sont annoncées dans le salon de logs des tickets, sinon dans le salon de modération.',
+    'appeals_hint' => 'Les nouvelles demandes sont annoncées dans le salon de modération, sinon dans le salon de logs des tickets.',
     'open_count' => ':count ticket ouvert|:count tickets ouverts',
     'history_title' => 'Historique des tickets',
     'history_description' => 'Tous les tickets de ce serveur avec leur historique.',
