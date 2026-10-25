@@ -116,6 +116,7 @@
                                     <div>
                                         <label class="label" for="stream-end-{{ $subscription->id }}">{{ __('streams.end_action') }}</label>
                                         <select id="stream-end-{{ $subscription->id }}" wire:model="endAction" class="input max-w-sm">
+                                            <option value="default">{{ __('streams.end_default') }}</option>
                                             <option value="keep">{{ __('streams.end_keep') }}</option>
                                             <option value="edit">{{ __('streams.end_edit') }}</option>
                                             <option value="delete">{{ __('streams.end_delete') }}</option>

@@ -168,6 +168,25 @@ class StreamsTest extends TestCase
         $this->assertNull($source->fresh()->live_item);
     }
 
+    public function test_server_end_action_works_without_premium_and_premium_overrides_it(): void
+    {
+        $this->guild()->update(['stream_end_action' => 'delete', 'language' => 'de_de']);
+        $source = $this->twitchSource();
+        $subscription = StreamSubscription::create(['guild' => self::GUILD, 'stream_source_id' => $source->id, 'end_action' => 'edit']);
+
+        $this->twitchRequest('notification', ['subscription' => ['type' => 'stream.online'], 'event' => ['id' => 'stream-1', 'broadcaster_user_id' => '42']]);
+        $this->twitchRequest('notification', ['subscription' => ['type' => 'stream.offline'], 'event' => ['broadcaster_user_id' => '42']]);
+        Http::assertSent(fn (Request $r) => $r->method() === 'DELETE' && str_contains($r->url(), '/channels/555/messages/900'));
+
+        config(['toxbot.premium_guilds' => [self::GUILD]]);
+        $this->twitchRequest('notification', ['subscription' => ['type' => 'stream.online'], 'event' => ['id' => 'stream-2', 'broadcaster_user_id' => '42']]);
+        $this->twitchRequest('notification', ['subscription' => ['type' => 'stream.offline'], 'event' => ['broadcaster_user_id' => '42']]);
+        Http::assertSent(fn (Request $r) => $r->method() === 'PATCH' && str_contains($r->url(), '/channels/555/messages/900')
+            && $r['embeds'][0]['title'] === __('streams.ended_title', [], 'de'));
+
+        $this->assertSame('default', (new StreamSubscription)->end_action);
+    }
+
     public function test_youtube_verification_and_new_video(): void
     {
         $this->guild();

@@ -122,14 +122,17 @@ class Announcer
         foreach ($announcements as $announcement) {
             $announcement->update(['ended_at' => now()]);
             $subscription = $announcement->subscription;
+            $guild = Guild::find($subscription->guild);
+            $action = $this->premium->isGuildPremium($subscription->guild) && $subscription->end_action !== 'default'
+                ? $subscription->end_action
+                : ($guild?->stream_end_action ?? 'keep');
 
-            if (! $announcement->message_id || $subscription->end_action === 'keep'
-                || ! $this->premium->isGuildPremium($subscription->guild)) {
+            if (! $announcement->message_id || $action === 'keep') {
                 continue;
             }
 
             try {
-                if ($subscription->end_action === 'delete') {
+                if ($action === 'delete') {
                     $this->discord->deleteMessage($announcement->channel_id, $announcement->message_id);
 
                     continue;
@@ -137,7 +140,7 @@ class Announcer
 
                 $vod ??= rescue(fn () => $this->twitch->latestArchive($userId), report: false) ?: [];
                 $this->discord->editMessage($announcement->channel_id, $announcement->message_id, [
-                    'embeds' => [$this->endedEmbed($source, $since, $vod['url'] ?? null)],
+                    'embeds' => [$this->endedEmbed($source, $since, $vod['url'] ?? null, $guild?->messageLocale() ?? 'en')],
                     'allowed_mentions' => ['parse' => []],
                 ]);
             } catch (Throwable $e) {
@@ -297,19 +300,19 @@ class Announcer
         ]);
     }
 
-    private function endedEmbed(StreamSource $source, ?Carbon $since, ?string $vod): array
+    private function endedEmbed(StreamSource $source, ?Carbon $since, ?string $vod, string $locale): array
     {
         $minutes = $since ? (int) $since->diffInMinutes(now(), true) : null;
         $duration = $minutes !== null ? sprintf('%dh %02dm', intdiv($minutes, 60), $minutes % 60) : null;
 
         return array_filter([
             'author' => array_filter(['name' => $source->name, 'url' => $source->url(), 'icon_url' => $source->avatar_url]),
-            'title' => 'Stream ended',
+            'title' => __('streams.ended_title', [], $locale),
             'url' => $vod ?? $source->url(),
             'color' => self::ENDED_COLOR,
             'description' => implode("\n", array_filter([
-                $duration ? "Streamed for **{$duration}**" : null,
-                $vod ? "[Watch the VOD]({$vod})" : null,
+                $duration ? __('streams.ended_duration', ['duration' => $duration], $locale) : null,
+                $vod ? '['.__('streams.ended_vod', [], $locale).']('.$vod.')' : null,
             ])) ?: null,
             'footer' => ['text' => 'Twitch'],
             'timestamp' => now()->toIso8601String(),

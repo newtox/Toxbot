@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class StreamSubscription extends Model
 {
-    public const END_ACTIONS = ['keep', 'edit', 'delete'];
+    public const END_ACTIONS = ['default', 'keep', 'edit', 'delete'];
 
     protected $fillable = [
         'guild', 'stream_source_id', 'message', 'video_message', 'role', 'filter_games', 'filter_title',
@@ -16,7 +16,7 @@ class StreamSubscription extends Model
     ];
 
     protected $attributes = [
-        'end_action' => 'keep',
+        'end_action' => 'default',
         'notify_videos' => true,
         'notify_live' => true,
     ];
