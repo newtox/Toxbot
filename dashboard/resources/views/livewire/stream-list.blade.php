@@ -8,7 +8,7 @@
         <p class="rounded-lg border-l-4 border-dc-yellow bg-dc-900 px-3 py-2 text-sm">{{ __('streams.not_configured') }}</p>
     @endif
 
-    <form wire:submit="add" class="flex flex-wrap gap-2">
+    <form novalidate wire:submit="add" class="flex flex-wrap gap-2">
         <select wire:model.live="platform" class="input w-auto" aria-label="{{ __('streams.platform') }}">
             <option value="twitch">Twitch</option>
             <option value="youtube">YouTube</option>
@@ -56,7 +56,7 @@
                     </div>
 
                     @if ($editingId === $subscription->id)
-                        <form wire:submit="saveSubscription" class="mt-4 space-y-4 rounded-lg bg-dc-800 p-4">
+                        <form novalidate wire:submit="saveSubscription" class="mt-4 space-y-4 rounded-lg bg-dc-800 p-4">
                             @if ($source->platform === 'youtube')
                                 <div class="flex flex-wrap gap-4 text-sm">
                                     <label class="flex items-center gap-2"><input type="checkbox" wire:model="notifyVideos" class="accent-[var(--color-accent)]"> {{ __('streams.notify_videos') }}</label>

@@ -87,4 +87,5 @@ return [
     'appeal_disabled' => '此服务器不接受解封申请。',
     'appeal_new_title' => '新的解封申请',
     'appeal_user' => '成员',
+    'appeal_min_length' => '至少 :min 个字符',
 ];

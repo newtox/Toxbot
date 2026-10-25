@@ -110,7 +110,7 @@
                     </div>
                 @endif
 
-                <form wire:submit="submit" class="space-y-4">
+                <form novalidate wire:submit="submit" class="space-y-4">
                     <div>
                         <label class="label" for="action-type">{{ __('moderation.action_type') }}</label>
                         <select id="action-type" wire:model.live="actionType" class="input">

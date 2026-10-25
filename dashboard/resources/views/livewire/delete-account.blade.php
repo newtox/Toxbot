@@ -10,7 +10,7 @@
         </button>
     </div>
 
-    <form x-show="open" x-cloak x-collapse.duration.200ms wire:submit="delete" class="space-y-4">
+    <form novalidate x-show="open" x-cloak x-collapse.duration.200ms wire:submit="delete" class="space-y-4">
         <ul class="list-disc space-y-1 pl-5 text-sm text-dc-muted">
             <li>{{ __('data.account_deletes') }}</li>
             <li>{{ __('data.account_anonymized') }}</li>

@@ -87,4 +87,5 @@ return [
     'appeal_disabled' => 'Este servidor no acepta solicitudes de desbaneo.',
     'appeal_new_title' => 'Nueva solicitud de desbaneo',
     'appeal_user' => 'Miembro',
+    'appeal_min_length' => 'mínimo :min caracteres',
 ];

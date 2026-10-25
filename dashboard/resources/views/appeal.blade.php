@@ -19,11 +19,16 @@
                     @if (! empty($banReason))
                         <p class="rounded-lg bg-dc-900 px-3 py-2 text-sm"><span class="text-dc-muted">{{ __('moderation.ban_reason') }}:</span> {{ $banReason }}</p>
                     @endif
-                    <form method="POST" action="{{ route('appeals.submit', $guildId) }}" class="space-y-4">
+                    <form novalidate method="POST" action="{{ route('appeals.submit', $guildId) }}" class="space-y-4">
                         @csrf
                         <div>
                             <label class="label" for="appeal-reason">{{ __('tickets.appeal_reason') }}</label>
-                            <textarea id="appeal-reason" name="reason" rows="7" minlength="20" maxlength="2000" required class="input resize-y">{{ old('reason') }}</textarea>
+                            <div x-data="{ length: {{ mb_strlen((string) old('reason')) }} }">
+                                <textarea id="appeal-reason" name="reason" rows="7" maxlength="2000" x-on:input="length = $el.value.length" class="input resize-y">{{ old('reason') }}</textarea>
+                                <p class="mt-1 text-right text-xs tabular-nums" :class="length < 20 ? 'text-dc-faint' : 'text-dc-muted'">
+                                    <span x-text="length"></span> / 2000 · {{ __('tickets.appeal_min_length', ['min' => 20]) }}
+                                </p>
+                            </div>
                             @error('reason') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
                         </div>
                         <button type="submit" class="btn-primary w-full">{{ __('tickets.appeal_send') }}</button>

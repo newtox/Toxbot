@@ -87,4 +87,5 @@ return [
     'appeal_disabled' => '이 서버는 차단 해제 신청을 받지 않습니다.',
     'appeal_new_title' => '새 차단 해제 신청',
     'appeal_user' => '멤버',
+    'appeal_min_length' => '최소 :min자',
 ];

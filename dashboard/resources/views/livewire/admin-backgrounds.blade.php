@@ -4,7 +4,7 @@
         <p class="text-sm text-dc-muted">{{ __('admin.backgrounds_description') }}</p>
     </div>
 
-    <form wire:submit="add" class="grid gap-4 rounded-lg bg-dc-900 p-4 sm:grid-cols-2">
+    <form novalidate wire:submit="add" class="grid gap-4 rounded-lg bg-dc-900 p-4 sm:grid-cols-2">
         <div class="sm:col-span-2">
             <label class="label" for="bg-upload">{{ __('admin.image') }}</label>
             <input id="bg-upload" type="file" wire:model="upload" accept="image/png,image/jpeg,image/webp"

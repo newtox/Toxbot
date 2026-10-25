@@ -87,4 +87,5 @@ return [
     'appeal_disabled' => 'Dieser Server nimmt keine Entbannungsanträge an.',
     'appeal_new_title' => 'Neuer Entbannungsantrag',
     'appeal_user' => 'Mitglied',
+    'appeal_min_length' => 'mindestens :min Zeichen',
 ];

@@ -23,7 +23,7 @@
         </ul>
     @endif
 
-    <form wire:submit="save" class="space-y-4 rounded-lg bg-dc-900 p-4">
+    <form novalidate wire:submit="save" class="space-y-4 rounded-lg bg-dc-900 p-4">
         <h3 class="text-sm font-semibold text-dc-header">{{ $editingId ? __('tickets.type_edit') : __('tickets.type_new') }}</h3>
         <div class="grid gap-4 sm:grid-cols-[1fr_8rem]">
             <div>

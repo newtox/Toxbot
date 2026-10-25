@@ -29,7 +29,7 @@
                 <p class="text-sm text-dc-muted">{{ __('data.delete_text') }}</p>
             </div>
             @if ($owner)
-                <form wire:submit="deleteServer" class="space-y-3">
+                <form novalidate wire:submit="deleteServer" class="space-y-3">
                     <div>
                         <label class="label" for="confirm-server">{{ __('data.confirm_label', ['name' => $guildName]) }}</label>
                         <input id="confirm-server" type="text" wire:model="confirmName" autocomplete="off" class="input max-w-md" placeholder="{{ $guildName }}">

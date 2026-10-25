@@ -87,4 +87,5 @@ return [
     'appeal_disabled' => 'This server does not accept unban appeals.',
     'appeal_new_title' => 'New unban appeal',
     'appeal_user' => 'Member',
+    'appeal_min_length' => 'at least :min characters',
 ];

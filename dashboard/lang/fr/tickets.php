@@ -87,4 +87,5 @@ return [
     'appeal_disabled' => 'Ce serveur n\'accepte pas de demandes de débannissement.',
     'appeal_new_title' => 'Nouvelle demande de débannissement',
     'appeal_user' => 'Membre',
+    'appeal_min_length' => 'au moins :min caractères',
 ];

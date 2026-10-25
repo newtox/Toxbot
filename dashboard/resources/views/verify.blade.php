@@ -26,7 +26,7 @@
             @switch($status)
                 @case('pending')
                     <p class="text-sm text-dc-muted">{{ __('protection.verify_intro', ['server' => $guildName]) }}</p>
-                    <form method="POST" action="{{ route('verify.submit', $guildId) }}" class="space-y-4">
+                    <form novalidate method="POST" action="{{ route('verify.submit', $guildId) }}" class="space-y-4">
                         @csrf
                         @if ($siteKey)
                             <div class="cf-turnstile flex justify-center" data-sitekey="{{ $siteKey }}" data-theme="dark" data-language="{{ app()->getLocale() }}"></div>

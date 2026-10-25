@@ -13,7 +13,7 @@
     </div>
 
     @if ($formOpen)
-        <form wire:submit="save" class="card space-y-5">
+        <form novalidate wire:submit="save" class="card space-y-5">
             <h2 class="text-lg font-semibold text-dc-header">
                 {{ $editingId ? __('tags.edit_title', ['name' => $name]) : __('tags.new') }}
             </h2>
