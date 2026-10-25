@@ -7,7 +7,7 @@ final _close = ChatCommand(
   'close',
   'Close this ticket.',
   localizedDescriptions: {
-    Locale.da: 'Luk denne ticket.',
+    Locale.da: 'Luk dette ticket.',
     Locale.de: 'Dieses Ticket schließen.',
     Locale.enUs: 'Close this ticket.',
     Locale.esEs: 'Cerrar este ticket.',
@@ -22,7 +22,7 @@ final _close = ChatCommand(
   (
     ChatContext context, [
     @Description('Why the ticket is closed.', {
-      Locale.da: 'Hvorfor ticketten lukkes.',
+      Locale.da: 'Hvorfor ticketet lukkes.',
       Locale.de: 'Warum das Ticket geschlossen wird.',
       Locale.enUs: 'Why the ticket is closed.',
       Locale.esEs: 'Por qué se cierra el ticket.',
@@ -62,7 +62,7 @@ final _add = ChatCommand(
   'add',
   'Add a member to this ticket.',
   localizedDescriptions: {
-    Locale.da: 'Tilføj et medlem til denne ticket.',
+    Locale.da: 'Tilføj et medlem til dette ticket.',
     Locale.de: 'Ein Mitglied zu diesem Ticket hinzufügen.',
     Locale.enUs: 'Add a member to this ticket.',
     Locale.esEs: 'Añadir a un miembro a este ticket.',
@@ -120,7 +120,7 @@ final _remove = ChatCommand(
   'remove',
   'Remove a member from this ticket.',
   localizedDescriptions: {
-    Locale.da: 'Fjern et medlem fra denne ticket.',
+    Locale.da: 'Fjern et medlem fra dette ticket.',
     Locale.de: 'Ein Mitglied aus diesem Ticket entfernen.',
     Locale.enUs: 'Remove a member from this ticket.',
     Locale.esEs: 'Quitar a un miembro de este ticket.',
@@ -173,7 +173,7 @@ final ticket = ChatGroup(
   'ticket',
   'Manage the ticket in this channel.',
   localizedDescriptions: {
-    Locale.da: 'Administrer ticketten i denne kanal.',
+    Locale.da: 'Administrer ticketet i denne kanal.',
     Locale.de: 'Das Ticket in diesem Kanal verwalten.',
     Locale.enUs: 'Manage the ticket in this channel.',
     Locale.esEs: 'Gestionar el ticket de este canal.',
