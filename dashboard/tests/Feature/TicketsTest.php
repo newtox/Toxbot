@@ -280,7 +280,7 @@ class TicketsTest extends TestCase
         $this->login();
         $this->get('/appeal/'.self::GUILD)->assertOk()->assertSee(__('tickets.appeal_disabled'));
 
-        Guild::create(['id' => self::GUILD, 'unban_enabled' => true, 'ticket_log_channel' => '12']);
+        Guild::create(['id' => self::GUILD, 'unban_enabled' => true, 'ticket_log_channel' => '12', 'modlog_channel' => '11']);
         $this->get('/appeal/'.self::GUILD)->assertOk()->assertSee(__('tickets.appeal_send'))->assertSee('Spam');
 
         $this->post('/appeal/'.self::GUILD, ['reason' => 'zu kurz'])->assertSessionHasErrors('reason');
@@ -289,7 +289,7 @@ class TicketsTest extends TestCase
             ->assertOk()
             ->assertSee(__('tickets.appeal_sent'));
         $this->assertSame('pending', UnbanAppeal::first()->status);
-        Http::assertSent(fn (Request $r) => str_ends_with($r->url(), '/channels/12/messages')
+        Http::assertSent(fn (Request $r) => str_ends_with($r->url(), '/channels/11/messages')
             && $r['embeds'][0]['url'] === route('servers.appeals', self::GUILD));
 
         $this->get('/appeal/'.self::GUILD)->assertSee(__('tickets.appeal_pending', ['date' => Timezone::format(UnbanAppeal::first()->created_at, 'll')]));

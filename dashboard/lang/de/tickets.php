@@ -38,7 +38,7 @@ return [
     'appeals_title' => 'Entbannungsanträge',
     'appeals_description' => 'Gebannte Mitglieder können auf einer Seite im Dashboard eine Entbannung beantragen. Das Team entscheidet dort.',
     'appeals_link' => 'Gebannte finden das Formular hier. Toxbot hängt den Link auch an Bann-DMs an:',
-    'appeals_hint' => 'Neue Anträge werden im Ticket-Log-Kanal gemeldet, ohne Ticket-Log im Modlog-Kanal.',
+    'appeals_hint' => 'Neue Anträge werden im Modlog-Kanal gemeldet, ohne Modlog im Ticket-Log-Kanal.',
     'open_count' => ':count offenes Ticket|:count offene Tickets',
     'history_title' => 'Ticket-Verlauf',
     'history_description' => 'Alle Tickets dieses Servers mit ihrem Verlauf.',

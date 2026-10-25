@@ -107,7 +107,7 @@ class AppealController extends Controller
 
     private function notifyTeam(Guild $settings, UnbanAppeal $appeal): void
     {
-        $channel = $settings->ticket_log_channel ?: $settings->modlog_channel;
+        $channel = $settings->modlog_channel ?: $settings->ticket_log_channel;
         if (! $channel) {
             return;
         }

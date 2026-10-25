@@ -38,7 +38,7 @@ return [
     'appeals_title' => 'Unban-anmodninger',
     'appeals_description' => 'Bannede medlemmer kan anmode om unban på en side i dashboardet. Teamet beslutter der.',
     'appeals_link' => 'Bannede medlemmer finder formularen her. Toxbot tilføjer også linket til ban-DM\'er:',
-    'appeals_hint' => 'Nye anmodninger meldes i ticket-logkanalen eller i modlog-kanalen, hvis ingen er valgt.',
+    'appeals_hint' => 'Nye anmodninger meldes i modlog-kanalen eller i ticket-logkanalen, hvis der ikke er nogen modlog.',
     'open_count' => ':count åbent ticket|:count åbne tickets',
     'history_title' => 'Ticket-historik',
     'history_description' => 'Alle tickets på denne server med deres forløb.',
