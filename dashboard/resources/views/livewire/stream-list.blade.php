@@ -103,7 +103,7 @@
                                     @if ($source->platform === 'twitch')
                                         <div>
                                             <label class="label" for="stream-games-{{ $subscription->id }}">{{ __('streams.filter_games') }}</label>
-                                            <input id="stream-games-{{ $subscription->id }}" type="text" wire:model="filterGames" placeholder="Valheim, Palworld" class="input">
+                                            <input id="stream-games-{{ $subscription->id }}" type="text" wire:model="filterGames" placeholder="Minecraft, Fortnite" class="input">
                                         </div>
                                     @endif
                                     <div>
