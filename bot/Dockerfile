@@ -15,4 +15,9 @@ RUN dart pub get
 
 COPY . .
 
+ARG GIT_COMMIT
+ARG BUILD_DATE
+ENV GIT_COMMIT=$GIT_COMMIT \
+    BUILD_DATE=$BUILD_DATE
+
 CMD ["dart", "run", "bin/main.dart"]

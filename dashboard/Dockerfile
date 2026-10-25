@@ -21,3 +21,7 @@ ENV AUTORUN_ENABLED=true \
     LOG_CHANNEL=stderr
 COPY --chown=www-data:www-data --from=vendor /app /var/www/html
 COPY --chown=www-data:www-data --from=assets /app/public/build /var/www/html/public/build
+ARG GIT_COMMIT
+ARG BUILD_DATE
+ENV GIT_COMMIT=$GIT_COMMIT \
+    BUILD_DATE=$BUILD_DATE
