@@ -3,9 +3,9 @@
 Web dashboard for [Toxbot](../README.md), built with Laravel, Livewire and Tailwind CSS.
 
 - **Discord login** via OAuth2 (scopes `identify guilds`)
-- **Server list** with every server where you are owner, administrator or have "Manage Server". Servers without Toxbot get an invite button.
+- **Server list** with every server with Toxbot you are on. Servers where you are owner, administrator or have "Manage Server" can be configured; on the others you only see the member list and the starboard. Servers you manage without Toxbot get an invite button.
 - **Landing page** with features, Premium and invite link, plus live numbers for servers, members with XP and tags
-- **Server overview** with member count, streamers, Server Premium status and every module at a glance; every setting has its own page, grouped into General (welcome, goodbye, autorole, language), Community (levels, streams, live role, tags) and Moderation & safety (moderation, verification, link filter, anti-raid, tickets), and each page can be reset on its own
+- **Server overview** with member count, streamers, Server Premium status and every module at a glance; every setting has its own page, grouped into General (welcome, goodbye, autorole, language), Community (levels, streams, live role, tags, starboard) and Moderation & safety (moderation, verification, link filter, anti-raid, tickets), and each page can be reset on its own
 - **Welcome and goodbye messages** with channel picker, placeholders (`&mention`, `&user`, `&server`) and a live preview that looks like Discord
 - **Autorole**, limited to roles below Toxbot's highest role, same rule as `/autorole`
 - **Server language** for everything posted to the whole server, such as ticket and verify buttons, ticket logs and raid alarms
@@ -19,7 +19,8 @@ Web dashboard for [Toxbot](../README.md), built with Laravel, Livewire and Tailw
 - **Stream notifications**: add Twitch and YouTube channels per server, pick the channel, ping role and message. Twitch uses EventSub webhooks (`/webhooks/twitch`), YouTube uses WebSub (`/webhooks/youtube`). Servers with Server Premium get more streamers, a message and ping role per streamer, filters and an action for when the stream ends.
 - **Server Premium picker** on the profile page: Premium users choose one server they manage that gets Server Premium
 - **Live role** settings, the role itself is given by the bot
-- **Moderation**: member list with search and filters, member profiles with level, roles and cases, actions (warn, timeout, kick, ban, unban) that the bot carries out, the modlog with filters, and settings for the modlog channel, DMs and warning levels
+- **Starboard**: channel, emoji (Unicode or one of the server's own) and the number of reactions needed, plus the list of posts sorted by date or reactions. Expired Discord image links are refreshed when the list is shown. Members without "Manage Server" see the list too.
+- **Moderation**: member list with search and filters, member profiles with level, roles and cases (members without "Manage Server" see the list and profiles without cases, timeouts and actions), actions (warn, timeout, kick, ban, unban) that the bot carries out, the modlog with filters, and settings for the modlog channel, DMs and warning levels
 - **Protection**: verification page with Cloudflare Turnstile under `/verify/{server}`, link filter with scam lists and a domain check, anti-raid and a minimum account age
 - **Tickets**: ticket types with emoji, text and team roles, the button message, and the ticket history with transcripts
 - **Unban appeals**: form for banned members under `/appeal/{server}` and a list for the team to accept or reject
@@ -81,11 +82,11 @@ Open `http://localhost:8000`. Use `localhost`, not `127.0.0.1`, otherwise the Di
 
 `create_toxbot_tables` is safe to run against a database the bot already uses. Existing tables are left as they are; it only adds the `notify` and `stream` columns to `guilds`, which the bot writes but which were missing from the original `toxbot.sql`. On an empty database it creates all bot tables with proper primary keys.
 
-The later migrations only add tables and columns for tags, levels, credits, the shop, entitlements, stream notifications, moderation, protection, tickets, unban appeals and the server language, all with defaults, so an older bot version keeps working with them.
+The later migrations only add tables and columns for tags, levels, credits, the shop, entitlements, stream notifications, moderation, protection, tickets, unban appeals, the server language and the starboard, all with defaults, so an older bot version keeps working with them.
 
 ## Translations
 
-One PHP file per area and language under `lang/{locale}/` (`menu`, `login`, `home`, `servers`, `overview`, `guild`, `profile`, `common`, `levels`, `shop`, `tags`, `admin`, `streams`, `moderation`, `protection`, `tickets`, `setup`, `data`), used as `__('guild.welcome_title')`.
+One PHP file per area and language under `lang/{locale}/` (`menu`, `login`, `home`, `servers`, `overview`, `guild`, `profile`, `common`, `levels`, `shop`, `tags`, `admin`, `streams`, `moderation`, `protection`, `tickets`, `setup`, `data`, `starboard`), used as `__('guild.welcome_title')`.
 
 The list of languages lives in `config/app.php` under `locales`, together with the matching bot language code. To add a language, add it there, copy `lang/en/` to `lang/{code}/` and translate it. `LocaleTest` checks that every language has every key.
 
