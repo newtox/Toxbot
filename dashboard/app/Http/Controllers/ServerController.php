@@ -170,7 +170,9 @@ class ServerController extends Controller
                 'guild' => $found,
                 'guilds' => $guilds,
                 'threshold' => $settings?->starboard_channel ? $settings->starboard_threshold : null,
-                'emoji' => Blade::render('<x-emoji :code="$code" />', ['code' => $settings?->starboard_emoji ?: Guild::DEFAULT_STARBOARD_EMOJI]),
+                'emoji' => collect(($settings ?? new Guild)->starboardEmojis())
+                    ->map(fn (string $code) => Blade::render('<x-emoji :code="$code" />', ['code' => $code]))
+                    ->implode(' '),
             ]);
         }
 

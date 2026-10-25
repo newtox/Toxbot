@@ -292,21 +292,61 @@
             @error('starboardChannel') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
         </div>
 
-        <div>
-            <span class="label">{{ __('starboard.emoji') }}</span>
+        <div x-data="{
+                custom: '',
+                max: {{ \App\Models\Guild::MAX_STARBOARD_EMOJIS }},
+                has(code) { return ($wire.starboardEmojis ?? []).includes(code) },
+                toggle(code) {
+                    const list = $wire.starboardEmojis ?? [];
+                    if (this.has(code)) { $wire.starboardEmojis = list.filter(e => e !== code); return; }
+                    if (list.length < this.max) $wire.starboardEmojis = [...list, code];
+                },
+                add() {
+                    const code = this.custom.trim();
+                    if (code !== '' && !this.has(code)) this.toggle(code);
+                    this.custom = '';
+                },
+                image(code) {
+                    const m = /^<(a?):(\w+):(\d+)>$/.exec(code);
+                    return m ? `https://cdn.discordapp.com/emojis/${m[3]}.${m[1] ? 'gif' : 'webp'}?size=48` : null;
+                },
+             }">
+            <span class="label">{{ __('starboard.emojis') }}</span>
+            <p class="mb-3 text-sm text-dc-muted">{{ __('starboard.emojis_hint') }}</p>
+
+            <div class="mb-3 flex min-h-11 flex-wrap items-center gap-1.5 rounded-lg bg-dc-900 p-1.5 ring-1 ring-white/5">
+                <template x-for="code in ($wire.starboardEmojis ?? [])" :key="code">
+                    <span class="inline-flex items-center gap-1 rounded-md bg-accent/15 py-1 pr-1 pl-2 text-lg ring-1 ring-accent/60">
+                        <template x-if="image(code)"><img :src="image(code)" alt="" class="size-5 object-contain"></template>
+                        <template x-if="!image(code)"><span x-text="code"></span></template>
+                        <button type="button" x-on:click="toggle(code)" class="rounded p-0.5 text-dc-muted hover:bg-dc-600 hover:text-dc-header" aria-label="{{ __('starboard.emoji_remove') }}">
+                            <x-icon name="close" class="size-3.5" />
+                        </button>
+                    </span>
+                </template>
+                <span x-show="($wire.starboardEmojis ?? []).length === 0" class="px-1.5 text-sm text-dc-faint">{{ __('starboard.emoji_required') }}</span>
+            </div>
+
             <div class="flex flex-wrap gap-1.5">
                 @foreach (array_merge(array_map(fn ($e) => ['code' => $e, 'name' => $e], \App\Livewire\GuildSettings::STARBOARD_EMOJIS), $serverEmojis) as $choice)
-                    <button type="button" wire:key="star-emoji-{{ $choice['code'] }}" x-on:click="$wire.starboardEmoji = @js($choice['code'])"
-                            title="{{ $choice['name'] }}" aria-label="{{ $choice['name'] }}"
+                    <button type="button" wire:key="star-emoji-{{ $choice['code'] }}" x-on:click="toggle(@js($choice['code']))"
+                            title="{{ $choice['name'] }}" aria-label="{{ $choice['name'] }}" x-bind:aria-pressed="has(@js($choice['code']))"
                             class="grid size-10 place-items-center rounded-lg bg-dc-900 text-xl ring-1 ring-white/5 transition hover:bg-dc-700"
-                            x-bind:class="$wire.starboardEmoji === @js($choice['code']) && 'ring-2 ring-accent! bg-accent/15'">
+                            x-bind:class="has(@js($choice['code'])) && 'ring-2 ring-accent! bg-accent/15'">
                         <x-emoji :code="$choice['code']" />
                     </button>
                 @endforeach
             </div>
-            <label class="mt-3 block text-sm text-dc-muted" for="starboard-emoji">{{ __('starboard.emoji_custom') }}</label>
-            <input id="starboard-emoji" type="text" wire:model="starboardEmoji" maxlength="80" class="input mt-1 max-w-xs">
-            @error('starboardEmoji') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+
+            <label class="mt-4 block text-sm text-dc-muted" for="starboard-emoji">{{ __('starboard.emoji_custom') }}</label>
+            <div class="mt-1 flex max-w-sm gap-2">
+                <input id="starboard-emoji" type="text" x-model="custom" x-on:keydown.enter.prevent="add()" maxlength="80" class="input">
+                <button type="button" x-on:click="add()" class="btn-secondary shrink-0">{{ __('starboard.emoji_add') }}</button>
+            </div>
+            @error('starboardEmojis') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+            @if ($errors->has('starboardEmojis.*'))
+                <p class="mt-2 text-sm text-dc-red">{{ $errors->first('starboardEmojis.*') }}</p>
+            @endif
         </div>
 
         <div>

@@ -91,7 +91,7 @@ class GuildSettings extends Component
 
     public ?string $starboardChannel = null;
 
-    public string $starboardEmoji = Guild::DEFAULT_STARBOARD_EMOJI;
+    public array $starboardEmojis = [Guild::DEFAULT_STARBOARD_EMOJI];
 
     public int $starboardThreshold = 3;
 
@@ -196,7 +196,7 @@ class GuildSettings extends Component
         $this->liveRole = $row->live_role;
         $this->liveRoleRequired = $row->live_role_required;
         $this->starboardChannel = $row->starboard_channel;
-        $this->starboardEmoji = $row->starboard_emoji ?: Guild::DEFAULT_STARBOARD_EMOJI;
+        $this->starboardEmojis = $row->starboardEmojis();
         $this->starboardThreshold = (int) $row->starboard_threshold;
         $this->modlogChannel = $row->modlog_channel;
         $this->modDm = $row->exists ? (bool) $row->mod_dm : true;
@@ -302,7 +302,8 @@ class GuildSettings extends Component
             'tags' => [],
             'starboard' => [
                 'starboardChannel' => ['nullable', Rule::in($channelIds)],
-                'starboardEmoji' => ['required', 'string', 'max:80', 'regex:'.self::EMOJI_PATTERN],
+                'starboardEmojis' => ['required', 'array', 'min:1', 'max:'.Guild::MAX_STARBOARD_EMOJIS],
+                'starboardEmojis.*' => ['required', 'string', 'max:80', 'regex:'.self::EMOJI_PATTERN],
                 'starboardThreshold' => ['required', 'integer', 'min:1', 'max:50'],
             ],
             'moderation' => [
@@ -345,7 +346,10 @@ class GuildSettings extends Component
                 'streamChannel.in' => __('guild.channel_invalid'),
                 'modlogChannel.in' => __('guild.channel_invalid'),
                 'starboardChannel.in' => __('guild.channel_invalid'),
-                'starboardEmoji.*' => __('starboard.emoji_invalid'),
+                'starboardEmojis.required' => __('starboard.emoji_required'),
+                'starboardEmojis.min' => __('starboard.emoji_required'),
+                'starboardEmojis.max' => __('starboard.emoji_max', ['max' => Guild::MAX_STARBOARD_EMOJIS]),
+                'starboardEmojis.*.*' => __('starboard.emoji_invalid'),
                 'starboardThreshold.*' => __('protection.number_range', ['min' => 1, 'max' => 50]),
                 'streamRole.in' => __('guild.role_invalid'),
                 'liveRole.in' => __('guild.role_invalid'),
@@ -401,7 +405,7 @@ class GuildSettings extends Component
             ],
             'starboard' => [
                 'starboard_channel' => $this->starboardChannel ?: null,
-                'starboard_emoji' => trim($this->starboardEmoji) === Guild::DEFAULT_STARBOARD_EMOJI ? null : trim($this->starboardEmoji),
+                'starboard_emoji' => Guild::serializeStarboardEmojis($this->starboardEmojis),
                 'starboard_threshold' => $this->starboardThreshold,
             ],
             'moderation' => [

@@ -108,24 +108,28 @@ class StarboardTest extends TestCase
         $this->login();
 
         $this->settings()
-            ->assertSet('starboardEmoji', '⭐')
+            ->assertSet('starboardEmojis', ['⭐'])
             ->assertSee('cdn.discordapp.com/emojis/777777777777777777.webp', false)
             ->set('starboardChannel', '15')
-            ->set('starboardEmoji', 'nope')
+            ->set('starboardEmojis', ['⭐', 'nope'])
             ->set('starboardThreshold', 0)
             ->call('save')
-            ->assertHasErrors(['starboardEmoji', 'starboardThreshold'])
-            ->set('starboardEmoji', '<:pog:777777777777777777>')
+            ->assertHasErrors(['starboardEmojis.1', 'starboardThreshold'])
+            ->set('starboardEmojis', [])
+            ->call('save')
+            ->assertHasErrors(['starboardEmojis'])
+            ->set('starboardEmojis', ['<:pog:777777777777777777>', '🔥', '🔥'])
             ->set('starboardThreshold', 5)
             ->call('save')
             ->assertHasNoErrors();
 
         $row = Guild::find(self::MANAGED);
         $this->assertSame('15', $row->starboard_channel);
-        $this->assertSame('<:pog:777777777777777777>', $row->starboard_emoji);
+        $this->assertSame('<:pog:777777777777777777> 🔥', $row->starboard_emoji);
+        $this->assertSame(['<:pog:777777777777777777>', '🔥'], $row->starboardEmojis());
         $this->assertSame(5, $row->starboard_threshold);
 
-        $this->settings()->set('starboardEmoji', '⭐')->call('save')->assertHasNoErrors();
+        $this->settings()->set('starboardEmojis', ['⭐'])->call('save')->assertHasNoErrors();
         $this->assertNull(Guild::find(self::MANAGED)->starboard_emoji);
 
         $this->settings()->call('resetSection');
@@ -151,14 +155,14 @@ class StarboardTest extends TestCase
     public function test_members_see_starboard_posts_sorted(): void
     {
         $this->login();
-        Guild::create(['id' => self::JOINED, 'starboard_channel' => '15', 'starboard_threshold' => 2]);
+        Guild::create(['id' => self::JOINED, 'starboard_channel' => '15', 'starboard_threshold' => 2, 'starboard_emoji' => '⭐ 🔥']);
         $this->starPost(self::JOINED, '601', 3, 'Neu, wenige Sterne');
         $this->starPost(self::JOINED, '602', 12, 'Alt, viele Sterne', daysAgo: 5);
         $this->starPost(self::MANAGED, '603', 50, 'Anderer Server');
 
         $this->get('/servers/'.self::JOINED.'/starboard')
             ->assertOk()
-            ->assertSee(__('starboard.member_description', ['count' => 2, 'emoji' => Blade::render('<x-emoji :code="$code" />', ['code' => '⭐'])]), false)
+            ->assertSee(__('starboard.member_description', ['count' => 2, 'emoji' => Blade::render('<x-emoji :code="$code" />', ['code' => '⭐']).' '.Blade::render('<x-emoji :code="$code" />', ['code' => '🔥'])]), false)
             ->assertSeeInOrder(['Neu, wenige Sterne', 'Alt, viele Sterne'])
             ->assertDontSee('Anderer Server')
             ->assertDontSee(__('starboard.threshold'));
