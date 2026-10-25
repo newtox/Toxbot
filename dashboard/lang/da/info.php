@@ -10,7 +10,6 @@ return [
     'about_title' => 'Om Toxbot',
     'repository' => 'GitHub-repository',
     'issues' => 'Kendte fejl & ønsker',
-    'self_host' => 'Hosting selv',
     'support_server' => 'Supportserver',
     'privacy_title' => 'Privatliv',
     'delete_data' => 'Slet dine data',

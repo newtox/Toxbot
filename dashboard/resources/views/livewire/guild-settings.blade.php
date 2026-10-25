@@ -7,7 +7,9 @@
                 <h1 class="truncate text-2xl font-bold text-dc-header">{{ __('menu.section_'.$section) }}</h1>
             </div>
         </div>
-        <x-reload-button action="refreshDiscordData" :label="__('guild.reload')" />
+        @unless (in_array($section, \App\Livewire\GuildSettings::WITHOUT_DISCORD_DATA, true))
+            <x-reload-button action="refreshDiscordData" :label="__('guild.reload')" />
+        @endunless
     </div>
 
     @if ($loadError)

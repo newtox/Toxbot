@@ -10,7 +10,6 @@ return [
     'about_title' => 'О Toxbot',
     'repository' => 'Репозиторий на GitHub',
     'issues' => 'Известные ошибки и пожелания',
-    'self_host' => 'Свой хостинг',
     'support_server' => 'Сервер поддержки',
     'privacy_title' => 'Конфиденциальность',
     'delete_data' => 'Удалить свои данные',

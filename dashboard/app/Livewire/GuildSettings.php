@@ -27,6 +27,8 @@ class GuildSettings extends Component
 
     public const SECTIONS = ['welcome', 'goodbye', 'autorole', 'language', 'levels', 'streams', 'liverole', 'tags', 'starboard', 'moderation', 'verification', 'links', 'raid', 'tickets'];
 
+    public const WITHOUT_DISCORD_DATA = ['language', 'tags', 'raid'];
+
     public const STARBOARD_EMOJIS = ['⭐', '🌟', '🔥', '💀', '😂', '❤️'];
 
     private const EMOJI_PATTERN = '/^(<a?:\w{2,32}:\d{15,22}>|[^\s<>:A-Za-z]{1,16})$/u';
