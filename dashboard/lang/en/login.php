@@ -9,4 +9,5 @@ return [
     'invalid' => 'Invalid login, please try again.',
     'rejected' => 'Discord rejected the login. Please try again.',
     'expired' => 'Your Discord session has expired. Please log in again.',
+    'blacklisted' => 'Your account is blocked from Toxbot.',
 ];

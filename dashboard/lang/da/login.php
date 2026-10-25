@@ -9,4 +9,5 @@ return [
     'invalid' => 'Ugyldigt login, prøv igen.',
     'rejected' => 'Discord afviste login. Prøv igen.',
     'expired' => 'Din Discord-session er udløbet. Log ind igen.',
+    'blacklisted' => 'Din konto er blokeret fra Toxbot.',
 ];

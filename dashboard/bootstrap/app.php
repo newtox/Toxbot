@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureNotBlacklisted;
 use App\Http\Middleware\SetLocale;
 use App\Support\Timezone;
 use Illuminate\Foundation\Application;
@@ -20,7 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->trustProxies(at: '*');
         $middleware->encryptCookies(except: [Timezone::COOKIE]);
         $middleware->redirectGuestsTo(fn () => route('home'));
-        $middleware->web(append: [SetLocale::class]);
+        $middleware->web(append: [SetLocale::class, EnsureNotBlacklisted::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

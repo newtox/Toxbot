@@ -30,7 +30,7 @@ class AdminReports extends Component
         $tag = $report->tag;
 
         if ($blacklistOwner && ! BlacklistEntry::query()->where('user', $tag->owner)->exists()) {
-            BlacklistEntry::create(['user' => $tag->owner]);
+            BlacklistEntry::create(['user' => $tag->owner, 'reason' => 'Tag: '.$tag->name, 'created_at' => now()]);
         }
 
         $tag->delete();

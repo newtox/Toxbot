@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:mysql1/mysql1.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
+import 'package:toxbot/services/blacklist.dart';
 import 'package:toxbot/services/economy.dart' as economy;
 import 'package:toxbot/services/premium.dart';
 import 'package:toxbot/utils/config.dart';
@@ -174,6 +175,7 @@ void setupMessageXpHandler(NyxxGateway client) {
   client.onMessageCreate.listen((event) async {
     final author = event.message.author;
     if (author is! User || author.isBot || event.guildId == null) return;
+    if (await isUserBlacklisted(author.id)) return;
 
     await giveXp(
       client,

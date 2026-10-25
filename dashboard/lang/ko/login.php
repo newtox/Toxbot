@@ -9,4 +9,5 @@ return [
     'invalid' => '잘못된 로그인입니다. 다시 시도해 주세요.',
     'rejected' => 'Discord가 로그인을 거부했습니다. 다시 시도해 주세요.',
     'expired' => 'Discord 세션이 만료되었습니다. 다시 로그인해 주세요.',
+    'blacklisted' => '계정이 Toxbot에서 차단되었습니다.',
 ];
