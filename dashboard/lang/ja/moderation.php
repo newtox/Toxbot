@@ -18,7 +18,7 @@ return [
     'permanent' => '永久',
     'rule_exists' => 'この警告数のレベルはすでにあります。',
     'duration_invalid' => '期間が無効です。例: 10m、2h、7d。',
-    'timeout_max' => 'タイムアウトには最長 28 日の期間が必要です。',
+    'timeout_max' => 'タイムアウトは最長 28 日までです。',
     'rules_limit' => '警告レベルは最大 :max 個までです。',
     'action_warn' => '警告',
     'action_timeout' => 'タイムアウト',

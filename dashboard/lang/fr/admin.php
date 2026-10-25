@@ -2,7 +2,7 @@
 
 return [
     'title' => 'Administration',
-    'intro' => 'Visible uniquement par vous, propriétaire du bot.',
+    'intro' => 'Visible uniquement par toi, en tant que propriétaire du bot.',
     'reports_title' => 'Tags signalés',
     'reports_description' => 'Signalements via /tag report. Les tags supprimés disparaissent partout.',
     'show_resolved' => 'Afficher les traités',

@@ -58,7 +58,7 @@ return [
     'video_message' => 'Besked ved nye YouTube-videoer',
     'youtube_no_key' => 'Uden en YouTube API-nøgle meldes livestreams som videoer, og kun kanal-ID\'er virker.',
     'end_default' => 'Som serverindstillingen',
-    'end_server_hint' => 'Gælder for Twitch-streams fra alle creators. Med Server Premium kan du vælge noget andet pr. creator.',
+    'end_server_hint' => 'Gælder for Twitch-streams fra alle skabere. Med Server Premium kan du vælge noget andet pr. skaber.',
     'ended_title' => 'Stream afsluttet',
     'ended_duration' => 'Streamede i **:duration**',
     'ended_vod' => 'Se VOD’en',

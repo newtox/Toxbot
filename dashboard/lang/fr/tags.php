@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'title' => 'Vos tags',
-    'intro' => 'Les tags sont vos propres commandes. Ils marchent sur tous les serveurs, avec /tag show.',
+    'title' => 'Tes tags',
+    'intro' => 'Les tags sont tes propres commandes. Ils fonctionnent sur tous les serveurs, avec /tag show.',
     'count' => ':count sur :limit tags',
     'new' => 'Nouveau tag',
     'edit_title' => 'Modifier le tag « :name »',
@@ -10,12 +10,12 @@ return [
     'name_hint' => 'Jusqu\'à 32 caractères : a-z, 0-9, _ et -. Chaque nom n\'existe qu\'une fois.',
     'content' => 'Contenu',
     'embed_title' => 'Afficher en embed',
-    'embed_description' => 'Avec votre propre couleur et une image facultative.',
+    'embed_description' => 'Avec ta propre couleur et une image facultative.',
     'embed_locked' => 'Les embeds sont une fonctionnalité Premium.',
     'embed_color' => 'Couleur',
     'embed_image' => 'Lien de l\'image',
     'cancel' => 'Annuler',
-    'empty' => 'Vous n\'avez pas encore de tags. Créez-en un ici ou avec /tag create.',
+    'empty' => 'Tu n\'as pas encore de tags. Crées-en un ici ou avec /tag create.',
     'uses' => 'utilisé :count×',
     'edit' => 'Modifier',
     'delete' => 'Supprimer',
@@ -27,6 +27,6 @@ return [
     'image_invalid' => 'L\'image doit être un lien https de l\'un de ces hôtes : :hosts',
     'content_invite' => 'Les tags ne peuvent pas contenir d\'invitations de serveur.',
     'content_mention' => 'Les tags ne doivent contenir aucune mention : ni @everyone, @here, &mention, ni mention d’utilisateur ou de rôle.',
-    'blacklisted' => 'Vous n\'êtes pas autorisé à créer des tags.',
-    'limit' => 'Vous avez atteint la limite de :limit tags.',
+    'blacklisted' => 'Tu n\'as pas le droit de créer des tags.',
+    'limit' => 'Tu as atteint la limite de :limit tags.',
 ];

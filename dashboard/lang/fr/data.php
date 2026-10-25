@@ -19,7 +19,7 @@ return [
     'account_description' => 'Supprime tout ce que Toxbot a enregistré sur toi et ton accès au tableau de bord.',
     'account_deletes' => 'Supprimés : ta langue et ta couleur, tes niveaux sur tous les serveurs, les crédits, les arrière-plans, tes tags (sur tous les serveurs), tes posts du starboard, tes emplacements de serveur premium, les demandes de débannissement et ton accès au tableau de bord.',
     'account_anonymized' => 'Anonymisé : tes messages dans l\'historique des tickets restent pour les serveurs, mais sans nom, ID ni avatar.',
-    'account_keeps' => 'Conservé : les cas de modération sur les serveurs, qui appartiennent à ces serveurs, et les justificatifs d\'achat de Discord. Les achats ne sont pas remboursés.',
+    'account_keeps' => 'Conservé : les cas de modération que des serveurs ont créés à ton sujet, et les justificatifs d\'achat de Discord. Les achats ne sont pas remboursés.',
     'account_button' => 'Supprimer mes données',
     'account_deleted' => 'Tes données ont été supprimées et tu as été déconnecté.',
     'section_text' => 'Remet tous les paramètres de la page :section à leur valeur par défaut.',

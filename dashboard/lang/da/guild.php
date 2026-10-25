@@ -51,5 +51,5 @@ return [
     'language_label' => 'Sprog',
     'autorole_after_verify' => 'Verificering er slået til: nye medlemmer får først autorollen, når de har verificeret sig, ikke når de joiner.',
     'levelup_dm_title' => 'Også som DM',
-    'levelup_dm_description' => 'Medlemmer får også en privat besked fra Toxbot, når de når et nyt level på denne server. Virker også alene.',
+    'levelup_dm_description' => 'Medlemmer får også en privat besked fra Toxbot, når de når et nyt level på denne server. Det virker også uden beskeden i kanalen.',
 ];

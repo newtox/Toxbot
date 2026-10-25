@@ -18,7 +18,7 @@ return [
     'permanent' => 'Permanent',
     'rule_exists' => 'Il existe déjà un palier pour ce nombre d\'avertissements.',
     'duration_invalid' => 'Durée invalide. Utilise par exemple 10m, 2h ou 7d.',
-    'timeout_max' => 'Une exclusion nécessite une durée de 28 jours maximum.',
+    'timeout_max' => 'Une exclusion peut durer 28 jours maximum.',
     'rules_limit' => ':max paliers au maximum sont possibles.',
     'action_warn' => 'Avertir',
     'action_timeout' => 'Exclure',
@@ -99,6 +99,6 @@ return [
     'mod_error_timeout_max' => 'Une exclusion peut durer 28 jours au maximum.',
     'mod_error_not_banned' => 'Cet utilisateur n\'est pas banni.',
     'mod_error_permission' => 'Tu n\'as pas la permission Discord pour cette action.',
-    'mod_error_unknown' => 'Une erreur est survenue, réessaie.',
+    'mod_error_unknown' => 'Une erreur est survenue. Réessaie.',
     'members_description_member' => 'Tous les membres du serveur avec leurs rôles, niveau et profil.',
 ];

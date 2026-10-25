@@ -2,7 +2,7 @@
 
 return [
     'headline' => 'Configure Toxbot sans taper de commandes slash.',
-    'intro' => 'Messages de bienvenue et d\'au revoir avec aperçu en direct, autorôle en un clic, ta langue et ta couleur d\'embed.',
+    'intro' => 'Messages de bienvenue et d\'au revoir avec aperçu en direct, rôle auto en un clic, ta langue et ta couleur d\'embed.',
     'button' => 'Se connecter avec Discord',
     'privacy' => 'Nous ne voyons que ton nom, ton avatar et ta liste de serveurs.',
     'cancelled' => 'Connexion annulée.',

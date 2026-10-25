@@ -32,7 +32,7 @@ return [
     'links_action_delete' => 'Solo borrar el mensaje',
     'links_action_warn' => 'Borrar y advertir',
     'links_action_timeout' => 'Borrar y aislar 10 minutos',
-    'links_exempt_hint' => 'Los miembros con el permiso Gestionar mensajes no se ven afectados.',
+    'links_exempt_hint' => 'Los miembros con el permiso «Gestionar mensajes» no se ven afectados.',
     'domains_invalid' => 'Dominios no válidos: :domains',
     'raid_title' => 'Anti-raid',
     'raid_description' => 'Detecta cuando muchas cuentas entran a la vez y protege el servidor durante un tiempo.',

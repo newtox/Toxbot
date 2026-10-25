@@ -18,7 +18,7 @@ return [
     'permanent' => '영구',
     'rule_exists' => '이 경고 수에 대한 단계가 이미 있습니다.',
     'duration_invalid' => '잘못된 기간입니다. 예: 10m, 2h, 7d.',
-    'timeout_max' => '타임아웃은 최대 28일의 기간이 필요합니다.',
+    'timeout_max' => '타임아웃은 최대 28일까지 가능합니다.',
     'rules_limit' => '경고 단계는 최대 :max개까지 가능합니다.',
     'action_warn' => '경고',
     'action_timeout' => '타임아웃',

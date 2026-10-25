@@ -6,7 +6,7 @@ return [
     'button' => 'Log ind med Discord',
     'privacy' => 'Vi ser kun dit navn, din avatar og din serverliste.',
     'cancelled' => 'Login annulleret.',
-    'invalid' => 'Ugyldigt login, prøv igen.',
+    'invalid' => 'Ugyldigt login. Prøv igen.',
     'rejected' => 'Discord afviste login. Prøv igen.',
     'expired' => 'Din Discord-session er udløbet. Log ind igen.',
     'blacklisted' => 'Din konto er blokeret fra Toxbot.',

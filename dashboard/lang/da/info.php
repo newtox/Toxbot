@@ -4,7 +4,7 @@ return [
     'general_title' => 'Generelt',
     'commands_title' => 'Kommandoer',
     'system_title' => 'System',
-    'intro' => 'En Discord-bot til level, moderation, tickets, streams og meget mere. Open source og med dette dashboard.',
+    'intro' => 'En Discord-bot til levels, moderation, tickets, streams og meget mere. Open source og med dette dashboard.',
     'invite' => 'Inviter',
     'vote' => 'Stem på Top.gg',
     'about_title' => 'Om Toxbot',

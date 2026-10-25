@@ -51,5 +51,5 @@ return [
     'language_label' => 'Language',
     'autorole_after_verify' => 'Verification is on: new members get the autorole only after they have verified, not when they join.',
     'levelup_dm_title' => 'Also as a DM',
-    'levelup_dm_description' => 'Members also get a private message from Toxbot when they reach a new level on this server. Works on its own, too.',
+    'levelup_dm_description' => 'Members also get a private message from Toxbot when they reach a new level on this server. This also works without the message in the channel.',
 ];

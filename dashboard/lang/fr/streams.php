@@ -25,7 +25,7 @@ return [
     'youtube_placeholder' => '@handle, ID de chaîne ou lien',
     'youtube_id_placeholder' => 'ID de chaîne (UC…) ou lien',
     'add' => 'Ajouter',
-    'input_required' => 'Saisissez un nom ou un lien.',
+    'input_required' => 'Saisis un nom ou un lien.',
     'empty' => 'Aucun créateur ajouté.',
     'settings' => 'Réglages',
     'confirm_remove' => 'Vraiment retirer :name ?',
@@ -60,6 +60,6 @@ return [
     'end_default' => 'Comme le paramètre du serveur',
     'end_server_hint' => 'S’applique aux streams Twitch de tous les créateurs. Avec Server Premium, tu peux choisir autre chose par créateur.',
     'ended_title' => 'Stream terminé',
-    'ended_duration' => 'A streamé pendant **:duration**',
+    'ended_duration' => 'Durée : **:duration**',
     'ended_vod' => 'Voir la VOD',
 ];

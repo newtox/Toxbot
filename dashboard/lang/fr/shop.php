@@ -2,7 +2,7 @@
 
 return [
     'title' => 'Boutique',
-    'intro' => 'Des fonds pour votre carte de profil. Cliquez sur une image pour l\'aperçu.',
+    'intro' => 'Des fonds pour ta carte de profil. Clique sur une image pour l\'aperçu.',
     'balance' => 'Solde',
     'empty' => 'Il n\'y a pas encore de fonds dans la boutique.',
     'preview' => 'Aperçu',
@@ -15,14 +15,14 @@ return [
     'use' => 'Utiliser',
     'confirm' => 'Acheter :name pour :price ?',
     'buy' => 'Acheter',
-    'earn_hint' => 'Vous gagnez des crédits avec /daily, en montant de niveau et en votant sur Top.gg.',
+    'earn_hint' => 'Tu gagnes des crédits avec /daily, en montant de niveau et en votant sur Top.gg.',
     'bought' => 'Acheté ! Le fond est maintenant actif.',
     'equipped' => 'Le fond est maintenant actif.',
     'not_available' => 'Ce fond n\'est plus disponible.',
     'premium_only' => 'Ce fond n\'est disponible qu\'avec Premium.',
-    'already_owned' => 'Vous possédez déjà ce fond.',
-    'not_enough' => 'Vous n\'avez pas assez de crédits pour cela.',
-    'not_owned' => 'Vous devez d\'abord acheter ce fond.',
+    'already_owned' => 'Tu possèdes déjà ce fond.',
+    'not_enough' => 'Tu n\'as pas assez de crédits pour cela.',
+    'not_owned' => 'Tu dois d\'abord acheter ce fond.',
     'use_default' => 'Utiliser le fond par défaut',
-    'equipped_default' => 'Vous utilisez maintenant le fond par défaut.',
+    'equipped_default' => 'Tu utilises maintenant le fond par défaut.',
 ];
