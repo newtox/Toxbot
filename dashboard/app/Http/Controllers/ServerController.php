@@ -38,7 +38,7 @@ class ServerController extends Controller
 
     public function show(Request $request, string $guild, Premium $premium, SourceManager $streams): View|RedirectResponse
     {
-        [$found, $guilds] = $this->resolve($request, $guild, manage: false);
+        [$found, $guilds] = $this->resolve($request, $guild, null);
         if (! $found['manage']) {
             return redirect()->route('servers.members', $guild);
         }
@@ -161,7 +161,7 @@ class ServerController extends Controller
         }
 
         $public = $section === GuildSettings::STARBOARD;
-        [$found, $guilds] = $this->resolve($request, $guild, manage: ! $public);
+        [$found, $guilds] = $this->resolve($request, $guild, $public ? null : 'manage');
 
         if (! $found['manage']) {
             $settings = Guild::query()->find($guild);
@@ -181,7 +181,8 @@ class ServerController extends Controller
 
     public function tickets(Request $request, string $guild): View
     {
-        [$found, $guilds] = $this->resolve($request, $guild);
+        [$found, $guilds] = $this->resolve($request, $guild, 'tickets');
+        $types = $this->access->ticketTypeIds($request->user(), $found);
         $status = in_array($request->query('status'), ['open', 'closed'], true) ? $request->query('status') : null;
 
         return view('servers.tickets', [
@@ -189,6 +190,7 @@ class ServerController extends Controller
             'guilds' => $guilds,
             'status' => $status,
             'tickets' => Ticket::query()->forGuild($guild)
+                ->when($types !== null, fn ($query) => $query->whereIn('type_id', $types))
                 ->when($status, fn ($query) => $query->where('status', $status))
                 ->orderByDesc('number')
                 ->paginate(25)
@@ -198,18 +200,22 @@ class ServerController extends Controller
 
     public function ticket(Request $request, string $guild, int $ticket): View
     {
-        [$found, $guilds] = $this->resolve($request, $guild);
+        [$found, $guilds] = $this->resolve($request, $guild, 'tickets');
+        $types = $this->access->ticketTypeIds($request->user(), $found);
 
         return view('servers.ticket', [
             'guild' => $found,
             'guilds' => $guilds,
-            'ticket' => Ticket::query()->forGuild($guild)->with('messages')->findOrFail($ticket),
+            'ticket' => Ticket::query()->forGuild($guild)
+                ->when($types !== null, fn ($query) => $query->whereIn('type_id', $types))
+                ->with('messages')
+                ->findOrFail($ticket),
         ]);
     }
 
     public function appeals(Request $request, string $guild): View
     {
-        [$found, $guilds] = $this->resolve($request, $guild);
+        [$found, $guilds] = $this->resolve($request, $guild, 'appeals');
 
         return view('servers.appeals', ['guild' => $found, 'guilds' => $guilds]);
     }
@@ -223,32 +229,35 @@ class ServerController extends Controller
 
     public function members(Request $request, string $guild): View
     {
-        [$found, $guilds] = $this->resolve($request, $guild, manage: false);
+        [$found, $guilds] = $this->resolve($request, $guild, null);
 
         return view('servers.members', ['guild' => $found, 'guilds' => $guilds]);
     }
 
     public function member(Request $request, string $guild, string $user): View
     {
-        [$found, $guilds] = $this->resolve($request, $guild, manage: false);
+        [$found, $guilds] = $this->resolve($request, $guild, null);
 
         return view('servers.member', ['guild' => $found, 'guilds' => $guilds, 'userId' => $user]);
     }
 
     public function modlog(Request $request, string $guild): View
     {
-        [$found, $guilds] = $this->resolve($request, $guild);
+        [$found, $guilds] = $this->resolve($request, $guild, 'moderate');
 
         return view('servers.modlog', ['guild' => $found, 'guilds' => $guilds]);
     }
 
-    private function resolve(Request $request, string $guild, bool $manage = true): array
+    private function resolve(Request $request, string $guild, ?string $ability = 'manage'): array
     {
         $guilds = $this->access->dashboardGuilds($request->user());
 
         $found = collect($guilds)->firstWhere('id', $guild);
+        abort_if($found === null, 403, __('servers.forbidden'));
 
-        abort_if($found === null || ($manage && ! $found['manage']), 403, __('servers.forbidden'));
+        $found['tickets'] = $this->access->canSeeTickets($request->user(), $found);
+
+        abort_if($ability !== null && ! $found[$ability], 403, __('servers.forbidden'));
 
         return [$found, $guilds];
     }

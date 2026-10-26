@@ -20,9 +20,9 @@ class Navigation
             $manage ? self::item(route('servers.show', $id), 'servers', __('menu.overview'), request()->routeIs('servers.show')) : null,
             self::item(route('servers.members', $id), 'users', __('moderation.members_title'), request()->routeIs('servers.members', 'servers.member')),
             self::item(route('servers.settings', [$id, GuildSettings::STARBOARD]), 'star', __('menu.section_starboard'), self::isSection(GuildSettings::STARBOARD)),
-            $manage ? self::item(route('servers.modlog', $id), 'list', __('moderation.modlog_title'), request()->routeIs('servers.modlog')) : null,
-            $manage ? self::item(route('servers.tickets', $id), 'history', __('tickets.history_title'), request()->routeIs('servers.tickets', 'servers.ticket')) : null,
-            $manage ? self::item(route('servers.appeals', $id), 'gavel', __('tickets.appeals_list_title'), request()->routeIs('servers.appeals')) : null,
+            ($guild['moderate'] ?? $manage) ? self::item(route('servers.modlog', $id), 'list', __('moderation.modlog_title'), request()->routeIs('servers.modlog')) : null,
+            ($guild['tickets'] ?? $manage) ? self::item(route('servers.tickets', $id), 'history', __('tickets.history_title'), request()->routeIs('servers.tickets', 'servers.ticket')) : null,
+            ($guild['appeals'] ?? $manage) ? self::item(route('servers.appeals', $id), 'gavel', __('tickets.appeals_list_title'), request()->routeIs('servers.appeals')) : null,
         ]);
 
         $groups = [self::group('server', __('menu.server'), $server, collapsible: false)];

@@ -12,11 +12,19 @@ class Discord
 {
     public const API = 'https://discord.com/api/v10';
 
+    public const PERMISSION_KICK_MEMBERS = 0x2;
+
+    public const PERMISSION_BAN_MEMBERS = 0x4;
+
     public const PERMISSION_ADMINISTRATOR = 0x8;
 
     public const PERMISSION_MANAGE_GUILD = 0x20;
 
+    public const PERMISSION_VIEW_AUDIT_LOG = 0x80;
+
     public const PERMISSION_MANAGE_ROLES = 0x10000000;
+
+    public const PERMISSION_MODERATE_MEMBERS = 0x10000000000;
 
     public const INVITE_PERMISSIONS = 0x10 | 0x8000 | 0x10000 | 0x20 | 0x10000000 | 0x800 | 0x400 | 0x2000 | 0x4000 | 0x2 | 0x4 | 0x80 | 0x20000 | 0x10000000000;
 

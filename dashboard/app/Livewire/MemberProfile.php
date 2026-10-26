@@ -42,19 +42,19 @@ class MemberProfile extends Component
     {
         $this->guildId = $guildId;
         $this->userId = $userId;
-        $this->moderator = app(GuildAccess::class)->find(auth()->user(), $guildId) !== null;
+        $this->moderator = app(GuildAccess::class)->findWith(auth()->user(), $guildId, 'moderate') !== null;
     }
 
     public function submit(): void
     {
-        $this->authorizeGuild();
-
         $this->validate([
             'actionType' => ['required', Rule::in(ModAction::TYPES)],
             'reason' => ['nullable', 'string', 'max:500'],
             'duration' => ['nullable', 'string', 'max:20'],
             'deleteDays' => ['integer', 'min:0', 'max:7'],
         ]);
+
+        $this->authorizeAction($this->actionType);
 
         $seconds = null;
         if (in_array($this->actionType, ['timeout', 'ban'], true) && trim($this->duration) !== '') {
@@ -95,7 +95,7 @@ class MemberProfile extends Component
 
     public function revokeWarning(int $caseId): void
     {
-        $this->authorizeGuild();
+        $this->authorizeAction('warn');
 
         ModCase::query()->forGuild($this->guildId)
             ->where('user_id', $this->userId)
@@ -104,9 +104,14 @@ class MemberProfile extends Component
             ->update(['active' => false]);
     }
 
-    private function authorizeGuild(): void
+    private function allowedActions(): array
     {
-        abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
+        return app(GuildAccess::class)->findMember(auth()->user(), $this->guildId)['actions'] ?? [];
+    }
+
+    private function authorizeAction(string $type): void
+    {
+        abort_unless(in_array($type, $this->allowedActions(), true), 403);
     }
 
     public function render(Discord $discord)
@@ -162,11 +167,12 @@ class MemberProfile extends Component
             $ban !== null => ['unban'],
             default => ['ban'],
         };
+        $types = $this->moderator ? array_values(array_intersect($types, $this->allowedActions())) : [];
         if (! $this->moderator) {
             $summary['timeout_until'] = null;
         }
 
-        if (! in_array($this->actionType, $types, true)) {
+        if ($types !== [] && ! in_array($this->actionType, $types, true)) {
             $this->actionType = $types[0];
         }
 
@@ -188,6 +194,7 @@ class MemberProfile extends Component
                 : collect(),
             'action' => $action,
             'types' => $types,
+            'canRevoke' => $this->moderator && in_array('warn', $this->allowedActions(), true),
         ]);
     }
 }

@@ -18,6 +18,9 @@ class AppealList extends Component
     #[Locked]
     public string $guildId;
 
+    #[Locked]
+    public bool $manage = false;
+
     #[Url(except: 'pending')]
     public string $filter = 'pending';
 
@@ -26,6 +29,7 @@ class AppealList extends Component
     public function mount(string $guildId): void
     {
         $this->guildId = $guildId;
+        $this->manage = app(GuildAccess::class)->find(auth()->user(), $guildId) !== null;
     }
 
     public function toggleEnabled(): void
@@ -62,7 +66,7 @@ class AppealList extends Component
 
     private function handle(int $id, string $status): void
     {
-        abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
+        abort_if(app(GuildAccess::class)->findWith(auth()->user(), $this->guildId, 'appeals') === null, 403);
 
         $this->validate(["responses.{$id}" => ['nullable', 'string', 'max:1000']]);
 

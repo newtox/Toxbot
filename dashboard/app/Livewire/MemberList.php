@@ -37,7 +37,7 @@ class MemberList extends Component
     public function mount(string $guildId): void
     {
         $this->guildId = $guildId;
-        $this->moderator = app(GuildAccess::class)->find(auth()->user(), $guildId) !== null;
+        $this->moderator = app(GuildAccess::class)->findWith(auth()->user(), $guildId, 'moderate') !== null;
     }
 
     public function updatedSearch(): void
