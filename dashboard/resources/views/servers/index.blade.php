@@ -21,7 +21,7 @@
                     <x-guild-icon :guild="$guild" class="rounded-2xl transition-[border-radius] group-hover:rounded-xl" />
                     <div class="min-w-0">
                         <div class="truncate font-semibold text-dc-header">{{ $guild['name'] }}</div>
-                        <div class="text-sm text-dc-muted">{{ $guild['owner'] ? __('servers.owner') : ($guild['manage'] ? __('servers.manager') : __('servers.member')) }}</div>
+                        <div class="text-sm text-dc-muted">{{ __('servers.'.match (true) { $guild['owner'] => 'owner', $guild['manage'] => 'manager', $guild['moderate'] => 'moderator', default => 'member' }) }}</div>
                     </div>
                     <span class="ml-auto text-dc-muted transition group-hover:translate-x-0.5 group-hover:text-dc-header">→</span>
                 </a>

@@ -7,6 +7,7 @@ return [
     'empty' => 'Toxbot がいるサーバーに参加しておらず、管理しているサーバーもありません。',
     'owner' => 'オーナー',
     'manager' => '管理者',
+    'moderator' => 'モデレーター',
     'without_bot' => 'Toxbot がまだ参加していないサーバー',
     'invite' => '招待',
     'after_invite' => '招待したら「リストを再読み込み」をクリックしてください。',

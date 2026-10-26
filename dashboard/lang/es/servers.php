@@ -7,6 +7,7 @@ return [
     'empty' => 'No estás en ningún servidor con Toxbot ni gestionas ningún servidor.',
     'owner' => 'Propietario',
     'manager' => 'Gestor',
+    'moderator' => 'Moderador',
     'without_bot' => 'Toxbot aún no está en estos',
     'invite' => 'Invitar',
     'after_invite' => 'Después de invitar, pulsa «Recargar lista».',

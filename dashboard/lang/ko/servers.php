@@ -7,6 +7,7 @@ return [
     'empty' => 'Toxbot이 있는 서버에 참여하고 있지 않으며 관리하는 서버도 없습니다.',
     'owner' => '소유자',
     'manager' => '관리자',
+    'moderator' => '모더레이터',
     'without_bot' => '아직 Toxbot이 없는 서버',
     'invite' => '초대',
     'after_invite' => '초대한 후 \'목록 새로고침\'을 누르세요.',

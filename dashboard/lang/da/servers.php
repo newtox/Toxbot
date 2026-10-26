@@ -7,6 +7,7 @@ return [
     'empty' => 'Du er ikke på nogen server med Toxbot og administrerer ingen servere.',
     'owner' => 'Ejer',
     'manager' => 'Administrator',
+    'moderator' => 'Moderator',
     'without_bot' => 'Toxbot er ikke på disse endnu',
     'invite' => 'Inviter',
     'after_invite' => 'Klik på „Genindlæs liste“, når du har inviteret.',
