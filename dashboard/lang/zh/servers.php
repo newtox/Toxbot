@@ -7,6 +7,7 @@ return [
     'empty' => '你不在任何有 Toxbot 的服务器上，也没有管理任何服务器。',
     'owner' => '所有者',
     'manager' => '管理者',
+    'moderator' => '管理员',
     'without_bot' => 'Toxbot 还没加入这些服务器',
     'invite' => '邀请',
     'after_invite' => '邀请后，点击“刷新列表”。',

@@ -83,6 +83,17 @@ class PermissionAccessTest extends TestCase
         $this->get(route('servers.data', self::GUILD))->assertForbidden();
     }
 
+    public function test_server_list_names_the_role(): void
+    {
+        $this->get(route('servers.index'))->assertOk()->assertSee(__('servers.member'));
+
+        $this->permissions = 0x2;
+        $this->get(route('servers.index', ['refresh' => 1]))->assertOk()->assertSee(__('servers.moderator'));
+
+        $this->permissions = 0x20;
+        $this->get(route('servers.index', ['refresh' => 1]))->assertOk()->assertSee(__('servers.manager'));
+    }
+
     public function test_plain_members_see_no_moderation_pages(): void
     {
         $this->get(route('servers.members', self::GUILD))->assertOk()->assertDontSee(route('servers.modlog', self::GUILD));
