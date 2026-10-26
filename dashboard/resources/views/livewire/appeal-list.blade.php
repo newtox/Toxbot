@@ -5,12 +5,14 @@
                 <h2 class="text-lg font-semibold text-dc-header">{{ __('tickets.appeals_title') }}</h2>
                 <p class="text-sm text-dc-muted">{{ __('tickets.appeals_description') }}</p>
             </div>
+            @if ($manage)
             <label class="relative mt-1 inline-flex shrink-0 cursor-pointer items-center">
                 <input type="checkbox" wire:click="toggleEnabled" @checked($enabled) class="peer sr-only">
                 <span class="h-6 w-10 rounded-full bg-dc-400 transition-colors peer-checked:bg-accent peer-focus-visible:ring-2 peer-focus-visible:ring-accent-fg peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-dc-800"></span>
                 <span class="absolute top-0.5 left-0.5 size-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-4"></span>
                 <span class="sr-only">{{ __('guild.enable', ['name' => __('tickets.appeals_title')]) }}</span>
             </label>
+            @endif
         </div>
         @if ($enabled)
             <div class="mt-4 space-y-2 text-sm">

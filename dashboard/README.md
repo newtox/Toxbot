@@ -3,7 +3,7 @@
 Web dashboard for [Toxbot](../README.md), built with Laravel, Livewire and Tailwind CSS.
 
 - **Discord login** via OAuth2 (scopes `identify guilds`)
-- **Server list** with every server with Toxbot you are on. Servers where you are owner, administrator or have "Manage Server" can be configured; on the others you only see the member list and the starboard. Servers you manage without Toxbot get an invite button.
+- **Server list** with every server with Toxbot you are on. Servers where you are owner, administrator or have "Manage Server" can be configured; on the others you see the member list and the starboard, plus the modlog with Kick Members, Ban Members, Timeout Members or View Audit Log, the unban appeals with Ban Members, and the tickets of the ticket types whose team roles you have. Servers you manage without Toxbot get an invite button.
 - **Landing page** with features, Premium and invite link, plus live numbers for servers, members with XP and tags
 - **Server overview** with member count, streamers, Server Premium status and every module at a glance; every setting has its own page, grouped into General (welcome, goodbye, autorole, language, data), Community (levels, streams, live role, tags) and Moderation & safety (moderation, verification, link filter, anti-raid, tickets). The groups fold in the sidebar and remember their state, and each page can be reset on its own. Members, starboard, modlog, ticket history and appeals sit above them under Server.
 - **Welcome and goodbye messages** with channel picker, placeholders (`&mention`, `&user`, `&server`) and a live preview that looks like Discord
@@ -20,7 +20,7 @@ Web dashboard for [Toxbot](../README.md), built with Laravel, Livewire and Tailw
 - **Server Premium picker** on the Premium page of the user settings: Premium users choose one server they manage that gets Server Premium
 - **Live role** settings, the role itself is given by the bot
 - **Starboard**: channel, the emojis that count (⭐ by default, plus any Unicode emoji or the server's own) and the number of reactions needed, plus the list of posts sorted by date or reactions. Expired Discord image links are refreshed when the list is shown. Members without "Manage Server" see the list too.
-- **Moderation**: member list with search and filters, member profiles with level, roles and cases (members without "Manage Server" see the list and profiles without cases, timeouts and actions), actions (warn, timeout, kick, ban, unban) that the bot carries out, the modlog with filters, and settings for the modlog channel, DMs and warning levels
+- **Moderation**: member list with search and filters, member profiles with level, roles and cases (members without moderation permissions see the list and profiles without cases, timeouts and actions; moderators only get the actions their permissions allow), actions (warn, timeout, kick, ban, unban) that the bot carries out, the modlog with filters, and settings for the modlog channel, DMs and warning levels
 - **Protection**: verification page with Cloudflare Turnstile under `/verify/{server}`, link filter with scam lists and a domain check, anti-raid and a minimum account age
 - **Tickets**: ticket types with emoji, text and team roles, the button message, and the ticket history with transcripts
 - **Unban appeals**: form for banned members under `/appeal/{server}` and a list for the team to accept or reject

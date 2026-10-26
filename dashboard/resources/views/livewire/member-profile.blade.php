@@ -72,7 +72,7 @@
                             <p class="mt-1 text-sm text-dc-text">{{ $case->reason ?? __('moderation.no_reason') }}</p>
                             <div class="mt-2 flex flex-wrap items-center gap-2 text-xs text-dc-muted">
                                 <span>{{ __('moderation.by', ['name' => $case->moderator_name ?? '–']) }} · {{ __('moderation.source_'.$case->source) }}</span>
-                                @if ($case->type === 'warn' && $case->active)
+                                @if ($canRevoke && $case->type === 'warn' && $case->active)
                                     <button type="button" wire:click="revokeWarning({{ $case->id }})" data-confirm="{{ __('moderation.revoke_confirm') }}"
                                             class="ml-auto rounded-md px-2 py-1 text-dc-muted hover:bg-dc-600 hover:text-dc-header">{{ __('moderation.revoke') }}</button>
                                 @endif
@@ -84,6 +84,7 @@
         </section>
 
         <div class="space-y-6">
+            @if ($types !== [])
             <section class="card space-y-4">
                 <h2 class="text-lg font-semibold text-dc-header">{{ __('moderation.action_title') }}</h2>
 
@@ -155,6 +156,7 @@
                     </button>
                 </form>
             </section>
+            @endif
 
             @include('livewire.partials.member-roles')
         </div>
