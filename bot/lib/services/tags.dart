@@ -1,5 +1,6 @@
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
+import 'package:toxbot/models/server_tag.dart';
 import 'package:toxbot/models/tag.dart';
 import 'package:toxbot/utils/config.dart';
 import 'package:toxbot/utils/database.dart';
@@ -38,6 +39,31 @@ Future<Iterable<CommandOptionChoiceBuilder<String>>> _autocomplete(
     return const [];
   }
 }
+
+Future<List<String>> _serverTagNames(Snowflake guild, String query) =>
+    withConnection((connection) async {
+      final results = await connection.query(
+        'SELECT `name` FROM `server_tags` WHERE `guild` = ? AND `name` LIKE ? ORDER BY `uses` DESC LIMIT 25;',
+        [guild.toString(), query],
+      );
+      return results.map((row) => row['name'] as String).toList();
+    });
+
+Future<ServerTag?> findServerTag(Snowflake guild, String name) =>
+    withConnection((connection) async {
+      final results = await connection.query(
+        'SELECT `id`, `name`, `content` FROM `server_tags` WHERE `guild` = ? AND `name` = ? LIMIT 1;',
+        [guild.toString(), name.toLowerCase()],
+      );
+      return results.isEmpty ? null : ServerTag.fromRow(results.first);
+    });
+
+Future<void> countServerTagUse(ServerTag tag) => withConnection(
+      (connection) => connection.query(
+        'UPDATE `server_tags` SET `uses` = `uses` + 1 WHERE `id` = ?;',
+        [tag.id],
+      ),
+    );
 
 Future<Tag?> findTag(String name) => withConnection((connection) async {
       final results = await connection.query(
@@ -113,3 +139,28 @@ Future<Iterable<CommandOptionChoiceBuilder<String>>> ownTags(
   AutocompleteContext context,
 ) =>
     _autocomplete(context, ownOnly: true);
+
+Future<Iterable<CommandOptionChoiceBuilder<String>>> shownTags(
+  AutocompleteContext context,
+) async {
+  final guild = context.guild;
+  final global = await _autocomplete(context, ownOnly: false);
+  if (guild == null) return global;
+
+  try {
+    final names = await _serverTagNames(
+      guild.id,
+      '${context.currentValue.toLowerCase()}%',
+    );
+    final seen = names.toSet();
+    return [
+      ...names.map(
+        (name) => CommandOptionChoiceBuilder(name: name, value: name),
+      ),
+      ...global.where((choice) => !seen.contains(choice.value)),
+    ].take(25);
+  } catch (e) {
+    print('Error in server tag autocomplete: $e');
+    return global;
+  }
+}

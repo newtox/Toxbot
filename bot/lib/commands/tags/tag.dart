@@ -286,10 +286,24 @@ final _show = ChatCommand(
       Locale.ja: '表示したいタグ。',
       Locale.ko: '표시할 태그.',
     })
-    @Autocomplete(allTags)
+    @Autocomplete(shownTags)
     String name,
   ) async {
     try {
+      final guild = context.guild;
+      final serverTag =
+          guild == null ? null : await findServerTag(guild.id, name);
+      if (serverTag != null) {
+        await context.respond(
+          MessageBuilder(
+            allowedMentions: noMentions,
+            content: await fillTagPlaceholders(serverTag.content, context),
+          ),
+        );
+        await countServerTagUse(serverTag);
+        return;
+      }
+
       final tag = await findTag(name);
       if (tag == null) {
         await replyError(context, 'tag_not_found', replace: {'&tag': name});
