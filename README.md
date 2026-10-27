@@ -30,7 +30,7 @@ Both share the same MySQL database. Whatever you change in the dashboard (welcom
 - **Levels**: XP for messages and commands, with a global level and a separate level per server, plus `/leaderboard`
 - **Credits and shop**: `/daily`, `/credits` for the balance, streak and recent activity, credits for level-ups and Top.gg votes, profile backgrounds to buy with `/shop`
 - **Profile cards**: `/profile` shows level, rank, credits and the chosen background as an image
-- **Tags**: global custom commands with `/tag`, reportable and blockable per server
+- **Tags**: global custom commands with `/tag`, reportable and blockable per server, plus server tags that admins create in the dashboard and that `/tag show` prefers on their server
 - **Starboard**: messages with enough reactions of a chosen emoji are reposted to a starboard channel, and every member can browse them in the dashboard
 - **Dashboard for members**: members without "Manage Server" can open the member list with profiles and the starboard of their servers
 - **Stream notifications** for Twitch and YouTube: a message with role ping when a streamer goes live or uploads a video
@@ -39,7 +39,7 @@ Both share the same MySQL database. Whatever you change in the dashboard (welcom
 - **Protection**: verification of new members with a captcha in the dashboard, a link filter against invites to other servers, scam links and blocked domains (or only allowed ones), anti-raid that raises the verification level and kicks new joins, and a minimum account age
 - **Tickets and unban appeals**: ticket types with their own button, text and team roles, private ticket channels, `/ticket close`, `add` and `remove`, transcripts saved on close and shown in the dashboard, and a dashboard page where banned members can ask to be unbanned
 - **Premium** through Discord subscriptions: double XP and daily reward, premium backgrounds, more tags and tags as embeds, plus a 24 hour XP boost to buy
-- **Server Premium** for one server of the subscriber's choice, included in Premium: more streamers, a custom message and ping role per streamer, game and title filters, and a separate choice per streamer for what happens to the notification when the stream ends
+- **Server Premium** for one server of the subscriber's choice, included in Premium: more streamers, a custom message and ping role per streamer, game and title filters, a separate choice per streamer for what happens to the notification when the stream ends, and 100 server tags instead of 20
 
 ## Running locally
 
@@ -102,7 +102,7 @@ Messages for the whole server (ticket and verify buttons, ticket logs, raid alar
 
 ### Resetting and deleting data
 
-- Every server has a **Data** page under General. Anyone who can manage the server can reset all settings: modules are turned off, ticket types, warning rules, followed creators and blocked tags are removed, and the ticket and verify messages are deleted. Levels, cases, tickets and appeals stay.
+- Every server has a **Data** page under General. Anyone who can manage the server can reset all settings: modules are turned off, ticket types, warning rules, followed creators, blocked tags and server tags are removed, and the ticket and verify messages are deleted. Levels, cases, tickets and appeals stay.
 - Every settings page can also be reset on its own with the button at the bottom of the page.
 - Only the server owner can delete all data of the server (settings, levels, cases, tickets with transcripts, appeals, verifications, starboard posts and its Server Premium slot). Toxbot then leaves the server.
 - Users can delete their own data on the Data page of their user settings. Their starboard posts are removed, their ticket messages are kept without name, ID and avatar; moderation cases and purchase records stay.

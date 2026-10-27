@@ -266,6 +266,14 @@
         </div>
     </section>
 
+    <section class="card space-y-4">
+        <div>
+            <h2 class="text-lg font-semibold text-dc-header">{{ __('guild.server_tags_title') }}</h2>
+            <p class="text-sm text-dc-muted">{{ __('guild.server_tags_description') }}</p>
+        </div>
+        <livewire:server-tags :guild-id="$guildId" :key="'server-tags'" />
+    </section>
+
     @endif
 
     @if ($section === 'starboard')

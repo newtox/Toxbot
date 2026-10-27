@@ -10,6 +10,7 @@ use App\Models\MemberLevel;
 use App\Models\ModAction;
 use App\Models\ModCase;
 use App\Models\PremiumServer;
+use App\Models\ServerTag;
 use App\Models\StarboardPost;
 use App\Models\StreamSubscription;
 use App\Models\Tag;
@@ -63,6 +64,7 @@ class DataDeletion
             WarnRule::query()->where('guild', $guildId)->delete();
             StreamSubscription::query()->where('guild', $guildId)->get()->each->delete();
             TagGuildBlock::query()->where('guild', $guildId)->delete();
+            ServerTag::query()->where('guild', $guildId)->delete();
         });
 
         $this->discord->forgetGuildCache($guildId);
@@ -90,7 +92,10 @@ class DataDeletion
 
         match ($section) {
             'streams' => StreamSubscription::query()->where('guild', $guildId)->get()->each->delete(),
-            'tags' => TagGuildBlock::query()->where('guild', $guildId)->delete(),
+            'tags' => [
+                TagGuildBlock::query()->where('guild', $guildId)->delete(),
+                ServerTag::query()->where('guild', $guildId)->delete(),
+            ],
             'moderation' => WarnRule::query()->where('guild', $guildId)->delete(),
             'tickets' => TicketType::query()->where('guild', $guildId)->delete(),
             default => null,

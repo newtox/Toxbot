@@ -3,7 +3,7 @@
 return [
     'server_description' => 'Alle Einstellungen ausschalten oder alles löschen, was Toxbot zu diesem Server gespeichert hat.',
     'reset_title' => 'Einstellungen zurücksetzen',
-    'reset_text' => 'Schaltet alle Module aus und entfernt Ticket-Arten, Verwarnungsregeln, gefolgte Creator und gesperrte Tags. Die Ticket- und Verifizierungsnachricht werden gelöscht. Levels, Modfälle, Ticket-Verläufe und Anträge bleiben.',
+    'reset_text' => 'Schaltet alle Module aus und entfernt Ticket-Arten, Verwarnungsregeln, gefolgte Creator und gesperrte Tags und Server-Tags. Die Ticket- und Verifizierungsnachricht werden gelöscht. Levels, Modfälle, Ticket-Verläufe und Anträge bleiben.',
     'reset_confirm' => 'Alle Einstellungen dieses Servers zurücksetzen? Das lässt sich nicht rückgängig machen.',
     'reset_button' => 'Einstellungen zurücksetzen',
     'reset_done' => 'Alle Einstellungen des Servers wurden zurückgesetzt.',
@@ -26,7 +26,7 @@ return [
     'section_confirm' => 'Alle Einstellungen auf der Seite :section zurücksetzen? Das lässt sich nicht rückgängig machen.',
     'section_button' => 'Diese Seite zurücksetzen',
     'section_extra_streams' => 'Alle gefolgten Creator werden entfernt.',
-    'section_extra_tags' => 'Gesperrte Tags werden freigegeben.',
+    'section_extra_tags' => 'Server-Tags werden gelöscht und gesperrte Tags freigegeben.',
     'section_extra_moderation' => 'Verwarnungsregeln werden gelöscht.',
     'section_extra_tickets' => 'Ticket-Arten und die Button-Nachricht werden gelöscht.',
     'section_extra_verification' => 'Die Verifizierungsnachricht wird gelöscht.',

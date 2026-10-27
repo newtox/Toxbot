@@ -3,7 +3,7 @@
 return [
     'server_description' => 'Slå alle indstillinger fra, eller slet alt, hvad Toxbot har gemt om denne server.',
     'reset_title' => 'Nulstil indstillinger',
-    'reset_text' => 'Slår alle moduler fra og fjerner ticket-typer, advarselsregler, fulgte skabere og blokerede tags. Ticket- og verificeringsbeskeden slettes. Levels, moderationssager, ticket-historik og ansøgninger bliver.',
+    'reset_text' => 'Slår alle moduler fra og fjerner ticket-typer, advarselsregler, fulgte skabere og blokerede tags og server-tags. Ticket- og verificeringsbeskeden slettes. Levels, moderationssager, ticket-historik og ansøgninger bliver.',
     'reset_confirm' => 'Nulstil alle indstillinger for denne server? Det kan ikke fortrydes.',
     'reset_button' => 'Nulstil indstillinger',
     'reset_done' => 'Alle serverens indstillinger blev nulstillet.',
@@ -26,7 +26,7 @@ return [
     'section_confirm' => 'Nulstil alle indstillinger på siden :section? Det kan ikke fortrydes.',
     'section_button' => 'Nulstil denne side',
     'section_extra_streams' => 'Alle fulgte skabere fjernes.',
-    'section_extra_tags' => 'Blokerede tags frigives.',
+    'section_extra_tags' => 'Server-tags slettes, og blokerede tags frigives.',
     'section_extra_moderation' => 'Advarselsregler slettes.',
     'section_extra_tickets' => 'Ticket-typer og knapbeskeden slettes.',
     'section_extra_verification' => 'Verificeringsbeskeden slettes.',

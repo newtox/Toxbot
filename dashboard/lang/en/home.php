@@ -51,6 +51,7 @@ return [
     'premium_server_2' => 'Own message and ping role per creator',
     'premium_server_3' => 'Game and title filters',
     'premium_server_4' => 'Choose per creator what happens to the notification when the stream ends',
+    'premium_server_5' => 'Up to 100 server tags instead of 20',
     'premium_hint' => 'Premium is bought directly in Discord, in Toxbot\'s profile or the app directory.',
     'cta_title' => 'Ready to try it?',
     'cta_text' => 'Invite Toxbot and set everything up in a few minutes.',

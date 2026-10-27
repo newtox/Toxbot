@@ -3,7 +3,7 @@
 return [
     'server_description' => '모든 설정을 끄거나 Toxbot이 이 서버에 대해 저장한 모든 것을 삭제합니다.',
     'reset_title' => '설정 초기화',
-    'reset_text' => '모든 모듈을 끄고 티켓 유형, 경고 규칙, 팔로우한 크리에이터, 차단한 태그를 지웁니다. 티켓 및 인증 메시지도 삭제됩니다. 레벨, 관리 기록, 티켓 기록, 신청은 남습니다.',
+    'reset_text' => '모든 모듈을 끄고 티켓 유형, 경고 규칙, 팔로우한 크리에이터, 차단한 태그, 서버 태그를 지웁니다. 티켓 및 인증 메시지도 삭제됩니다. 레벨, 관리 기록, 티켓 기록, 신청은 남습니다.',
     'reset_confirm' => '이 서버의 모든 설정을 초기화할까요? 되돌릴 수 없습니다.',
     'reset_button' => '설정 초기화',
     'reset_done' => '서버의 모든 설정을 초기화했습니다.',
@@ -26,7 +26,7 @@ return [
     'section_confirm' => ':section 페이지의 모든 설정을 초기화할까요? 되돌릴 수 없습니다.',
     'section_button' => '이 페이지 초기화',
     'section_extra_streams' => '팔로우한 크리에이터가 모두 제거됩니다.',
-    'section_extra_tags' => '차단한 태그가 해제됩니다.',
+    'section_extra_tags' => '서버 태그는 삭제되고 차단된 태그는 해제됩니다.',
     'section_extra_moderation' => '경고 규칙이 삭제됩니다.',
     'section_extra_tickets' => '티켓 유형과 버튼 메시지가 삭제됩니다.',
     'section_extra_verification' => '인증 메시지가 삭제됩니다.',

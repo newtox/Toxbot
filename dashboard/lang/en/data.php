@@ -3,7 +3,7 @@
 return [
     'server_description' => 'Turn all settings off, or delete everything Toxbot stored about this server.',
     'reset_title' => 'Reset settings',
-    'reset_text' => 'Turns off every module and removes ticket types, warning rules, followed creators and blocked tags. The ticket and verify messages are deleted. Levels, moderation cases, ticket history and appeals stay.',
+    'reset_text' => 'Turns off every module and removes ticket types, warning rules, followed creators and blocked tags and server tags. The ticket and verify messages are deleted. Levels, moderation cases, ticket history and appeals stay.',
     'reset_confirm' => 'Reset all settings of this server? This cannot be undone.',
     'reset_button' => 'Reset settings',
     'reset_done' => 'All settings of the server were reset.',
@@ -26,7 +26,7 @@ return [
     'section_confirm' => 'Reset all settings on the :section page? This cannot be undone.',
     'section_button' => 'Reset this page',
     'section_extra_streams' => 'All followed creators are removed.',
-    'section_extra_tags' => 'Blocked tags are unblocked.',
+    'section_extra_tags' => 'Server tags are deleted and blocked tags are unblocked.',
     'section_extra_moderation' => 'Warning rules are deleted.',
     'section_extra_tickets' => 'Ticket types and the button message are deleted.',
     'section_extra_verification' => 'The verify message is deleted.',

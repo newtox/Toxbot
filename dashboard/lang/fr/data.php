@@ -3,7 +3,7 @@
 return [
     'server_description' => 'Désactive tous les paramètres ou supprime tout ce que Toxbot a enregistré sur ce serveur.',
     'reset_title' => 'Réinitialiser les paramètres',
-    'reset_text' => 'Désactive tous les modules et supprime les types de ticket, les règles d\'avertissement, les créateurs suivis et les tags bloqués. Les messages de ticket et de vérification sont supprimés. Les niveaux, les cas de modération, l\'historique des tickets et les demandes sont conservés.',
+    'reset_text' => 'Désactive tous les modules et supprime les types de ticket, les règles d\'avertissement, les créateurs suivis, les tags bloqués et les tags du serveur. Les messages de ticket et de vérification sont supprimés. Les niveaux, les cas de modération, l\'historique des tickets et les demandes sont conservés.',
     'reset_confirm' => 'Réinitialiser tous les paramètres de ce serveur ? C\'est irréversible.',
     'reset_button' => 'Réinitialiser les paramètres',
     'reset_done' => 'Tous les paramètres du serveur ont été réinitialisés.',
@@ -26,7 +26,7 @@ return [
     'section_confirm' => 'Réinitialiser tous les paramètres de la page :section ? C’est irréversible.',
     'section_button' => 'Réinitialiser cette page',
     'section_extra_streams' => 'Tous les créateurs suivis sont retirés.',
-    'section_extra_tags' => 'Les tags bloqués sont débloqués.',
+    'section_extra_tags' => 'Les tags du serveur sont supprimés et les tags bloqués débloqués.',
     'section_extra_moderation' => 'Les règles d’avertissement sont supprimées.',
     'section_extra_tickets' => 'Les types de ticket et le message à boutons sont supprimés.',
     'section_extra_verification' => 'Le message de vérification est supprimé.',

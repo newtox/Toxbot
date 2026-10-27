@@ -51,6 +51,7 @@ return [
     'premium_server_2' => 'クリエイターごとのメッセージと通知ロール',
     'premium_server_3' => 'ゲームとタイトルのフィルター',
     'premium_server_4' => 'クリエイターごとに配信終了後の通知の扱いを選択',
+    'premium_server_5' => 'サーバータグを 20 個から最大 100 個に',
     'premium_hint' => 'プレミアムは Discord 内、Toxbot のプロフィールやアプリディレクトリから購入できます。',
     'cta_title' => '試してみませんか？',
     'cta_text' => 'Toxbot を招待して、数分ですべて設定しましょう。',

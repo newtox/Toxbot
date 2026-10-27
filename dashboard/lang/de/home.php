@@ -51,6 +51,7 @@ return [
     'premium_server_2' => 'Eigene Nachricht und Ping-Rolle pro Creator',
     'premium_server_3' => 'Spiel- und Titelfilter',
     'premium_server_4' => 'Pro Creator wählen, was nach Streamende mit der Benachrichtigung passiert',
+    'premium_server_5' => 'Bis zu 100 statt 20 Server-Tags',
     'premium_hint' => 'Premium kaufst du direkt in Discord, im Profil von Toxbot oder im App-Verzeichnis.',
     'cta_title' => 'Bereit zum Ausprobieren?',
     'cta_text' => 'Lade Toxbot ein und richte alles in wenigen Minuten ein.',
