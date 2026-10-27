@@ -51,6 +51,7 @@ return [
     'premium_server_2' => 'Mensaje y rol de mención propios por creador',
     'premium_server_3' => 'Filtros de juego y título',
     'premium_server_4' => 'Elegir por creador qué pasa con el aviso cuando termina el directo',
+    'premium_server_5' => 'Hasta 100 tags del servidor en lugar de 20',
     'premium_hint' => 'Premium se compra directamente en Discord, en el perfil de Toxbot o en el directorio de apps.',
     'cta_title' => '¿Listo para probarlo?',
     'cta_text' => 'Invita a Toxbot y configúralo todo en pocos minutos.',

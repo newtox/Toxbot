@@ -113,7 +113,7 @@
                             </div>
                         </div>
                         <ul class="mt-6 space-y-3">
-                            @foreach (range(1, 4) as $i)
+                            @foreach (range(1, $plan === 'user' ? 4 : 5) as $i)
                                 <li class="flex gap-3 text-sm text-dc-text">
                                     <x-icon name="check" @class(['mt-0.5 size-4', 'text-dc-yellow' => $plan === 'user', 'text-accent-fg' => $plan === 'server']) />
                                     {{ __('home.premium_'.$plan.'_'.$i) }}

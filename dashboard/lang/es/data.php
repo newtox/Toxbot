@@ -3,7 +3,7 @@
 return [
     'server_description' => 'Desactiva todos los ajustes o elimina todo lo que Toxbot guardó sobre este servidor.',
     'reset_title' => 'Restablecer ajustes',
-    'reset_text' => 'Desactiva todos los módulos y elimina los tipos de ticket, las reglas de advertencias, los creadores seguidos y los tags bloqueados. Se borran los mensajes de tickets y de verificación. Se conservan los niveles, los casos de moderación, el historial de tickets y las solicitudes.',
+    'reset_text' => 'Desactiva todos los módulos y elimina los tipos de ticket, las reglas de advertencias, los creadores seguidos y los tags bloqueados y los tags del servidor. Se borran los mensajes de tickets y de verificación. Se conservan los niveles, los casos de moderación, el historial de tickets y las solicitudes.',
     'reset_confirm' => '¿Restablecer todos los ajustes de este servidor? No se puede deshacer.',
     'reset_button' => 'Restablecer ajustes',
     'reset_done' => 'Se restablecieron todos los ajustes del servidor.',
@@ -26,7 +26,7 @@ return [
     'section_confirm' => '¿Restablecer todos los ajustes de la página :section? No se puede deshacer.',
     'section_button' => 'Restablecer esta página',
     'section_extra_streams' => 'Se eliminan todos los creadores seguidos.',
-    'section_extra_tags' => 'Se desbloquean los tags bloqueados.',
+    'section_extra_tags' => 'Se eliminan los tags del servidor y se desbloquean los tags bloqueados.',
     'section_extra_moderation' => 'Se eliminan las reglas de advertencias.',
     'section_extra_tickets' => 'Se eliminan los tipos de ticket y el mensaje de botones.',
     'section_extra_verification' => 'Se elimina el mensaje de verificación.',

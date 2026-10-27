@@ -3,7 +3,7 @@
 return [
     'server_description' => '关闭所有设置，或删除 Toxbot 保存的有关此服务器的全部内容。',
     'reset_title' => '重置设置',
-    'reset_text' => '关闭所有模块，并移除工单类型、警告规则、关注的创作者和屏蔽的标签。工单和验证消息会被删除。等级、管理记录、工单历史和申请会保留。',
+    'reset_text' => '关闭所有模块，并移除工单类型、警告规则、关注的创作者、屏蔽的标签和服务器标签。工单和验证消息会被删除。等级、管理记录、工单历史和申请会保留。',
     'reset_confirm' => '要重置此服务器的所有设置吗？此操作无法撤销。',
     'reset_button' => '重置设置',
     'reset_done' => '服务器的所有设置已重置。',
@@ -26,7 +26,7 @@ return [
     'section_confirm' => '要重置“:section”页面的所有设置吗？此操作无法撤销。',
     'section_button' => '重置此页面',
     'section_extra_streams' => '所有关注的创作者都会被移除。',
-    'section_extra_tags' => '已屏蔽的标签会被解除屏蔽。',
+    'section_extra_tags' => '服务器标签会被删除，被屏蔽的标签会解除屏蔽。',
     'section_extra_moderation' => '警告规则会被删除。',
     'section_extra_tickets' => '工单类型和按钮消息会被删除。',
     'section_extra_verification' => '验证消息会被删除。',

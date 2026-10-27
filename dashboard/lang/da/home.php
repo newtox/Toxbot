@@ -51,6 +51,7 @@ return [
     'premium_server_2' => 'Egen besked og ping-rolle pr. skaber',
     'premium_server_3' => 'Spil- og titelfiltre',
     'premium_server_4' => 'Pr. skaber vælge, hvad der sker med notifikationen efter streamen',
+    'premium_server_5' => 'Op til 100 server-tags i stedet for 20',
     'premium_hint' => 'Premium købes direkte i Discord, i Toxbots profil eller i app-kataloget.',
     'cta_title' => 'Klar til at prøve?',
     'cta_text' => 'Inviter Toxbot og sæt alt op på få minutter.',

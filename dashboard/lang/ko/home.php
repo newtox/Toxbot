@@ -51,6 +51,7 @@ return [
     'premium_server_2' => '크리에이터별 메시지와 알림 역할',
     'premium_server_3' => '게임 및 제목 필터',
     'premium_server_4' => '크리에이터마다 방송 종료 후 알림 처리 방식 선택',
+    'premium_server_5' => '서버 태그 20개 대신 최대 100개',
     'premium_hint' => '프리미엄은 Discord에서 Toxbot 프로필이나 앱 디렉터리를 통해 바로 구매합니다.',
     'cta_title' => '사용해 볼 준비가 되셨나요?',
     'cta_text' => 'Toxbot을 초대하고 몇 분 만에 모든 것을 설정하세요.',
