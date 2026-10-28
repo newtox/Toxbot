@@ -28,7 +28,7 @@ Both share the same MySQL database. Whatever you change in the dashboard (welcom
 - **Automatic setup** in the dashboard: creates the channels, roles and permissions for tickets, moderation, protection and verification in one go
 - **Data control**: server admins can reset all settings, the server owner can delete all data and remove Toxbot, and users can delete their own data
 - **Levels**: XP for messages and commands, with a global level and a separate level per server, plus `/leaderboard`
-- **Credits and shop**: `/daily`, `/credits` for the balance, streak and recent activity, credits for level-ups and Top.gg votes, backgrounds, avatar frames and progress bars for the profile card to buy with `/shop` and switch with `/background`, some of them animated
+- **Credits and shop**: `/daily`, `/credits` for the balance, streak and recent activity, credits for level-ups and Top.gg votes, backgrounds, avatar frames and progress bars for the profile card to buy with `/shop` and switch with `/background`, some of them animated; `/pay` sends credits to another member
 - **Profile cards**: `/profile` shows level, rank and credits as an image with the chosen background, avatar frame and progress bar; with an animated item or an animated Discord avatar the card is a GIF
 - **Tags**: global custom commands with `/tag`, reportable and blockable per server, plus server tags that admins create in the dashboard and that `/tag show` prefers on their server
 - **Starboard**: messages with enough reactions of a chosen emoji are reposted to a starboard channel, and every member can browse them in the dashboard
@@ -110,6 +110,10 @@ Messages for the whole server (ticket and verify buttons, ticket logs, raid alar
 ### Blacklist
 
 The bot owner (`OWNER_ID` / `TOXBOT_OWNER_ID`) manages the blacklist on the dashboard's administration page. Blocked users get an error for every command, earn no XP, cannot open tickets and cannot log in to the dashboard. Toxbot leaves blocked servers right away and whenever it is invited again. The bot reloads the list once a minute.
+
+### Credits and items
+
+The bot owner can add or remove credits and give or take away shop items, in Discord with `/system credits`, `/system give-item` and `/system take-item` or on the dashboard's administration page under **Credits & items**. The balance never drops below 0; items that are taken away are unequipped. Retired and Premium items can be given too. Every change shows up in the user's `/credits` history.
 
 ### Moderation
 

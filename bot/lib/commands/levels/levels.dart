@@ -1,5 +1,6 @@
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
+import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:toxbot/services/economy.dart' as economy;
 import 'package:toxbot/services/levels.dart';
 import 'package:toxbot/services/premium.dart';
@@ -263,6 +264,103 @@ final credits = ChatCommand(
       );
     } catch (e) {
       await replyCommandError(context, 'levels_error', 'credits', e);
+    }
+  },
+);
+
+final pay = ChatCommand(
+  'pay',
+  'Send some of your credits to another member.',
+  localizedDescriptions: {
+    Locale.de: 'Einem anderen Mitglied Credits schicken.',
+    Locale.enUs: 'Send some of your credits to another member.',
+    Locale.da: 'Send nogle af dine credits til et andet medlem.',
+    Locale.esEs: 'Enviar parte de tus créditos a otro miembro.',
+    Locale.fr: 'Envoyer une partie de tes crédits à un autre membre.',
+    Locale.ru: 'Отправить часть своих кредитов другому участнику.',
+    Locale.hi: 'अपने कुछ क्रेडिट किसी दूसरे सदस्य को भेजें।',
+    Locale.zhCn: '把你的一些积分转给另一位成员。',
+    Locale.ja: '自分のクレジットを他のメンバーに送ります。',
+    Locale.ko: '내 크레딧을 다른 멤버에게 보냅니다.',
+  },
+  (
+    ChatContext context,
+    @Description('Who gets the credits.', {
+      Locale.de: 'Wer die Credits bekommt.',
+      Locale.enUs: 'Who gets the credits.',
+      Locale.da: 'Hvem der får dine credits.',
+      Locale.esEs: 'Quién recibe los créditos.',
+      Locale.fr: 'Qui reçoit les crédits.',
+      Locale.ru: 'Кто получит кредиты.',
+      Locale.hi: 'क्रेडिट किसे मिलेंगे।',
+      Locale.zhCn: '谁会收到积分。',
+      Locale.ja: 'クレジットを受け取る人。',
+      Locale.ko: '크레딧을 받을 사람.',
+    })
+    User target,
+    @Description('How many credits you send.', {
+      Locale.de: 'Wie viele Credits du schickst.',
+      Locale.enUs: 'How many credits you send.',
+      Locale.da: 'Hvor mange credits du sender.',
+      Locale.esEs: 'Cuántos créditos envías.',
+      Locale.fr: 'Combien de crédits tu envoies.',
+      Locale.ru: 'Сколько кредитов ты отправляешь.',
+      Locale.hi: 'आप कितने क्रेडिट भेजते हैं।',
+      Locale.zhCn: '你要转出的积分数量。',
+      Locale.ja: '送るクレジットの数。',
+      Locale.ko: '보낼 크레딧 수.',
+    })
+    @UseConverter(IntConverter(min: 1, max: 1000000000))
+    int amount,
+  ) async {
+    final user = context.user;
+    try {
+      if (target.id == user.id) {
+        await replyError(context, 'pay_self');
+        return;
+      }
+      if (target.isBot) {
+        await replyError(context, 'pay_bot');
+        return;
+      }
+
+      final (error, balance) = await withConnection((connection) async {
+        final error = await economy.transferCredits(
+          connection,
+          user.id.toString(),
+          target.id.toString(),
+          amount,
+        );
+        return (
+          error,
+          await economy.getCredits(connection, user.id.toString())
+        );
+      });
+
+      if (error != null) {
+        await replyError(context, error,
+            replace: {'&amount': formatCredits(balance)});
+        return;
+      }
+
+      await context.respond(
+        MessageBuilder(
+          content: target.mention,
+          allowedMentions: AllowedMentions(users: [target.id]),
+          embeds: [
+            EmbedBuilder(
+              color: DiscordColor.parseHexString(successColor),
+              description: await localized(user, 'pay_success', {
+                '&from': user.mention,
+                '&to': target.mention,
+                '&amount': formatCredits(amount),
+              }),
+            ),
+          ],
+        ),
+      );
+    } catch (e) {
+      await replyCommandError(context, 'levels_error', 'pay', e);
     }
   },
 );
