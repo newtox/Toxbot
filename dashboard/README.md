@@ -13,7 +13,7 @@ Web dashboard for [Toxbot](../README.md), built with Laravel, Livewire and Tailw
 - **User settings** with their own sidebar: profile card with level, rank and credits, language and embed color (same as `/language` and `/color`, the color is also the dashboard's accent color), Premium, shop, tags and your data
 - **Shop** to buy and switch profile backgrounds, with a live preview of the card. The shop starts empty; backgrounds are uploaded on the administration page, and cards without one get a gradient in the user's embed color.
 - **Tags**: create, edit and delete your own tags
-- **Administration** for the bot owner: handle reported tags, manage the backgrounds in the shop and block users or servers
+- **Administration** for the bot owner, with its own sidebar: handle reported tags, manage the backgrounds in the shop, block users or servers, and give Premium or Server Premium without a purchase, with or without an end date
 - **Profile cards** rendered as PNG under `/card/{user}.png`, used by `/profile` in Discord
 - **Top.gg webhook** under `/webhooks/topgg` that pays credits for votes
 - **Stream notifications**: add Twitch and YouTube channels per server, pick the channel, ping role and message. Twitch uses EventSub webhooks (`/webhooks/twitch`), YouTube uses WebSub (`/webhooks/youtube`). Servers with Server Premium get more streamers, a message and ping role per streamer, filters and an action for when the stream ends.
@@ -84,7 +84,7 @@ Open `http://localhost:8000`. Use `localhost`, not `127.0.0.1`, otherwise the Di
 
 `create_toxbot_tables` is safe to run against a database the bot already uses. Existing tables are left as they are; it only adds the `notify` and `stream` columns to `guilds`, which the bot writes but which were missing from the original `toxbot.sql`. On an empty database it creates all bot tables with proper primary keys.
 
-The later migrations only add tables and columns for tags, levels, credits, the shop, entitlements, stream notifications, moderation, protection, tickets, unban appeals, the server language, the starboard, the bot status and server tags, all with defaults, so an older bot version keeps working with them.
+The later migrations only add tables and columns for tags, levels, credits, the shop, entitlements, stream notifications, moderation, protection, tickets, unban appeals, the server language, the starboard, the bot status, server tags and Premium grants, all with defaults, so an older bot version keeps working with them.
 
 ## Translations
 

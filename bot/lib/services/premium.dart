@@ -15,8 +15,26 @@ bool _isActive(Entitlement entitlement) {
   return true;
 }
 
+Future<bool> _hasPremiumGrant(Snowflake userId) async {
+  try {
+    return await withConnection((connection) async {
+      final results = await connection.query(
+        'SELECT 1 FROM `premium_grants` '
+        "WHERE `type` = 'user' AND `target_id` = ? "
+        'AND (`ends_at` IS NULL OR `ends_at` > UTC_TIMESTAMP()) LIMIT 1;',
+        [userId.toString()],
+      );
+      return results.isNotEmpty;
+    });
+  } catch (e) {
+    print('Error in _hasPremiumGrant: $e');
+    return false;
+  }
+}
+
 Future<bool> isUserPremium(Snowflake userId, {CommandContext? context}) async {
   if (premiumUserIds.contains(userId.toString())) return true;
+  if (await _hasPremiumGrant(userId)) return true;
 
   final skus = premiumUserSkus;
   if (skus.isEmpty) return false;

@@ -90,7 +90,7 @@ chown 33:33 /docker_volumes/toxbot-dashboard/backgrounds
 ### Premium and Top.gg
 
 - Create the SKUs in the Developer Portal under **Monetization**: a user subscription for Premium and a consumable for the XP boost. Put their IDs into `PREMIUM_USER_SKUS` and `XP_BOOST_SKU`.
-- `PREMIUM_USERS` gives Premium to the listed user IDs without a subscription, for example for testing.
+- As the bot owner you can give Premium without a subscription on the **Premium** page of the administration in the dashboard: Toxbot Premium for a user or Server Premium for a server, either without an end date or until a chosen day, after which it runs out on its own. `PREMIUM_USERS` and `PREMIUM_GUILDS` still work for fixed IDs, for example for testing.
 - For vote rewards, add `https://<dashboard>/webhooks/topgg` as webhook on Top.gg and put the generated secret into `TOPGG_WEBHOOK_SECRET`.
 - Server Premium comes with the user subscription: subscribers pick one server on the Premium page of their user settings in the dashboard. Discord only allows one published subscription per app, so a separate server subscription is optional; if you ever sell one, put its SKU ID into `PREMIUM_GUILD_SKUS`. `PREMIUM_GUILDS` gives Server Premium to the listed server IDs without a subscription.
 

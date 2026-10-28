@@ -86,5 +86,6 @@ Route::middleware('auth')->group(function () {
         Route::view('/admin', 'admin.reports')->name('admin');
         Route::view('/admin/backgrounds', 'admin.backgrounds')->name('admin.backgrounds');
         Route::view('/admin/blacklist', 'admin.blacklist')->name('admin.blacklist');
+        Route::view('/admin/premium', 'admin.premium')->name('admin.premium');
     });
 });

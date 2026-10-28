@@ -74,6 +74,7 @@ class Navigation
             self::item(route('admin'), 'alert', __('admin.reports_title'), request()->routeIs('admin')),
             self::item(route('admin.backgrounds'), 'card', __('admin.backgrounds_title'), request()->routeIs('admin.backgrounds')),
             self::item(route('admin.blacklist'), 'lock', __('admin.blacklist_title'), request()->routeIs('admin.blacklist')),
+            self::item(route('admin.premium'), 'sparkles', __('admin.premium_title'), request()->routeIs('admin.premium')),
         ], collapsible: false)];
     }
 
