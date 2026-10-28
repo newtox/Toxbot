@@ -576,88 +576,107 @@ final shop = ChatCommand(
 
 final background = ChatCommand(
   'background',
-  'Change the background, avatar frame or progress bar of your profile card.',
+  'Change the background of your profile card.',
   localizedDescriptions: {
-    Locale.de:
-        'Hintergrund, Avatar-Rahmen oder Fortschrittsbalken deiner Profilkarte wechseln.',
-    Locale.enUs:
-        'Change the background, avatar frame or progress bar of your profile card.',
-    Locale.da:
-        'Skift baggrund, avatarramme eller statuslinje på dit profilkort.',
-    Locale.esEs:
-        'Cambiar el fondo, el marco de avatar o la barra de progreso de tu tarjeta de perfil.',
-    Locale.fr:
-        'Changer le fond, le cadre d\'avatar ou la barre de progression de ta carte de profil.',
-    Locale.ru:
-        'Сменить фон, рамку аватара или полоску прогресса на карточке профиля.',
-    Locale.hi:
-        'अपने प्रोफ़ाइल कार्ड का बैकग्राउंड, अवतार फ़्रेम या प्रोग्रेस बार बदलें।',
-    Locale.zhCn: '更换资料卡的背景、头像框或进度条。',
-    Locale.ja: 'プロフィールカードの背景、アバターフレーム、進行バーを変更します。',
-    Locale.ko: '프로필 카드의 배경, 아바타 테두리 또는 진행 막대를 변경합니다.',
+    Locale.de: 'Den Hintergrund deiner Profilkarte wechseln.',
+    Locale.enUs: 'Change the background of your profile card.',
+    Locale.da: 'Skift baggrunden på dit profilkort.',
+    Locale.esEs: 'Cambiar el fondo de tu tarjeta de perfil.',
+    Locale.fr: 'Changer le fond de ta carte de profil.',
+    Locale.ru: 'Сменить фон карточки профиля.',
+    Locale.hi: 'अपने प्रोफ़ाइल कार्ड का बैकग्राउंड बदलें।',
+    Locale.zhCn: '更换资料卡的背景。',
+    Locale.ja: 'プロフィールカードの背景を変更します。',
+    Locale.ko: '프로필 카드의 배경을 변경합니다.',
   },
   (
     ChatContext context,
-    @Description('One of your items, or the default.', {
-      Locale.de: 'Einer deiner Artikel oder der Standard.',
-      Locale.enUs: 'One of your items, or the default.',
-      Locale.da: 'En af dine ting eller standard.',
-      Locale.esEs: 'Uno de tus artículos o el predeterminado.',
-      Locale.fr: 'Un de tes articles ou celui par défaut.',
-      Locale.ru: 'Один из твоих предметов или стандартный.',
-      Locale.hi: 'आपकी कोई चीज़ या डिफ़ॉल्ट।',
-      Locale.zhCn: '你的一件物品，或默认项。',
-      Locale.ja: '持っているアイテム、または既定のもの。',
-      Locale.ko: '보유한 아이템 또는 기본값.',
+    @Description('One of your backgrounds, or the default.', {
+      Locale.de: 'Einer deiner Hintergründe oder der Standard.',
+      Locale.enUs: 'One of your backgrounds, or the default.',
+      Locale.da: 'En af dine baggrunde eller standard.',
+      Locale.esEs: 'Uno de tus fondos o el predeterminado.',
+      Locale.fr: 'Un de tes fonds ou celui par défaut.',
+      Locale.ru: 'Один из твоих фонов или стандартный.',
+      Locale.hi: 'आपका कोई बैकग्राउंड या डिफ़ॉल्ट।',
+      Locale.zhCn: '你的一个背景，或默认背景。',
+      Locale.ja: '持っている背景、または既定のもの。',
+      Locale.ko: '보유한 배경 또는 기본값.',
     })
-    @Autocomplete(ownedItemChoices)
+    @Autocomplete(backgroundChoices)
     String name,
-  ) async {
-    final user = context.user;
-    try {
-      if (name.startsWith('default:')) {
-        final type = name.substring('default:'.length);
-        if (!economy.shopItemTypes.contains(type)) {
-          await replyError(context, 'background_not_found',
-              replace: {'&name': name});
-          return;
-        }
-        await withConnection(
-          (connection) => economy.unequip(connection, user.id.toString(), type),
-        );
-        await replySuccess(context, 'shop_equipped',
-            replace: {'&name': await getString(user, 'shop_default_$type')},
-            level: ResponseLevel.hint);
-        return;
-      }
+  ) =>
+      equipItem(context, 'background', name),
+);
 
-      final premium = await isUserPremium(user.id, context: context);
-      final error = await withConnection((connection) async {
-        final found = await economy.shopItems(
-          connection,
-          name: name,
-          includeRetired: true,
-        );
-        if (found.isEmpty) return 'background_not_found';
-        return economy.buyOrEquip(
-          connection,
-          user.id.toString(),
-          found.first,
-          premium: premium,
-          allowBuy: false,
-        );
-      });
-
-      if (error != null) {
-        await replyError(context, error, replace: {'&name': name});
-        return;
-      }
-      await replySuccess(context, 'shop_equipped',
-          replace: {'&name': name}, level: ResponseLevel.hint);
-    } catch (e) {
-      await replyCommandError(context, 'levels_error', 'background', e);
-    }
+final frame = ChatCommand(
+  'frame',
+  'Change the avatar frame of your profile card.',
+  localizedDescriptions: {
+    Locale.de: 'Den Avatar-Rahmen deiner Profilkarte wechseln.',
+    Locale.enUs: 'Change the avatar frame of your profile card.',
+    Locale.da: 'Skift avatarrammen på dit profilkort.',
+    Locale.esEs: 'Cambiar el marco de avatar de tu tarjeta de perfil.',
+    Locale.fr: 'Changer le cadre d\'avatar de ta carte de profil.',
+    Locale.ru: 'Сменить рамку аватара на карточке профиля.',
+    Locale.hi: 'अपने प्रोफ़ाइल कार्ड का अवतार फ़्रेम बदलें।',
+    Locale.zhCn: '更换资料卡的头像框。',
+    Locale.ja: 'プロフィールカードのアバターフレームを変更します。',
+    Locale.ko: '프로필 카드의 아바타 테두리를 변경합니다.',
   },
+  (
+    ChatContext context,
+    @Description('One of your avatar frames, or none.', {
+      Locale.de: 'Einer deiner Avatar-Rahmen oder keiner.',
+      Locale.enUs: 'One of your avatar frames, or none.',
+      Locale.da: 'En af dine avatarrammer eller ingen.',
+      Locale.esEs: 'Uno de tus marcos de avatar o ninguno.',
+      Locale.fr: 'Un de tes cadres d\'avatar ou aucun.',
+      Locale.ru: 'Одна из твоих рамок аватара или без рамки.',
+      Locale.hi: 'आपका कोई अवतार फ़्रेम या कोई नहीं।',
+      Locale.zhCn: '你的一个头像框，或不使用。',
+      Locale.ja: '持っているアバターフレーム、またはなし。',
+      Locale.ko: '보유한 아바타 테두리 또는 없음.',
+    })
+    @Autocomplete(frameChoices)
+    String name,
+  ) =>
+      equipItem(context, 'frame', name),
+);
+
+final bar = ChatCommand(
+  'bar',
+  'Change the progress bar of your profile card.',
+  localizedDescriptions: {
+    Locale.de: 'Den Fortschrittsbalken deiner Profilkarte wechseln.',
+    Locale.enUs: 'Change the progress bar of your profile card.',
+    Locale.da: 'Skift statuslinjen på dit profilkort.',
+    Locale.esEs: 'Cambiar la barra de progreso de tu tarjeta de perfil.',
+    Locale.fr: 'Changer la barre de progression de ta carte de profil.',
+    Locale.ru: 'Сменить полоску прогресса на карточке профиля.',
+    Locale.hi: 'अपने प्रोफ़ाइल कार्ड का प्रोग्रेस बार बदलें।',
+    Locale.zhCn: '更换资料卡的进度条。',
+    Locale.ja: 'プロフィールカードの進行バーを変更します。',
+    Locale.ko: '프로필 카드의 진행 막대를 변경합니다.',
+  },
+  (
+    ChatContext context,
+    @Description('One of your progress bars, or the default.', {
+      Locale.de: 'Einer deiner Fortschrittsbalken oder der Standard.',
+      Locale.enUs: 'One of your progress bars, or the default.',
+      Locale.da: 'En af dine statuslinjer eller standard.',
+      Locale.esEs: 'Una de tus barras de progreso o la predeterminada.',
+      Locale.fr: 'Une de tes barres de progression ou celle par défaut.',
+      Locale.ru: 'Одна из твоих полосок прогресса или стандартная.',
+      Locale.hi: 'आपका कोई प्रोग्रेस बार या डिफ़ॉल्ट।',
+      Locale.zhCn: '你的一个进度条，或默认进度条。',
+      Locale.ja: '持っている進行バー、または既定のもの。',
+      Locale.ko: '보유한 진행 막대 또는 기본값.',
+    })
+    @Autocomplete(barChoices)
+    String name,
+  ) =>
+      equipItem(context, 'bar', name),
 );
 
 final leaderboard = ChatCommand(
