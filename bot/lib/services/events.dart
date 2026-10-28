@@ -144,9 +144,11 @@ CommandsPlugin setupCommandHandler(CommandsPlugin commands) {
   commands.addCommand(waifu);
 
   commands.addCommand(background);
+  commands.addCommand(bar);
   commands.addCommand(boost);
   commands.addCommand(credits);
   commands.addCommand(daily);
+  commands.addCommand(frame);
   commands.addCommand(leaderboard);
   commands.addCommand(pay);
   commands.addCommand(profile);

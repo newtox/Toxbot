@@ -65,6 +65,35 @@ Future<void> _announceLevelUp(
   }
 }
 
+Future<Iterable<CommandOptionChoiceBuilder<String>>> _ownedItemChoices(
+  AutocompleteContext context,
+  String type,
+) async {
+  try {
+    final user = context.user;
+    final search = context.currentValue.toLowerCase();
+    final items = await withConnection(
+      (connection) => economy.usableItems(
+        connection,
+        user.id.toString(),
+        context.currentValue,
+        type: type,
+      ),
+    );
+    final label = await getString(user, 'shop_default_$type');
+    return [
+      ...items.map(
+        (item) => CommandOptionChoiceBuilder(name: item.$1, value: item.$1),
+      ),
+      if (search.isEmpty || label.toLowerCase().contains(search))
+        CommandOptionChoiceBuilder(name: label, value: 'default:$type'),
+    ].take(25);
+  } catch (e) {
+    print('Error in item autocomplete: $e');
+    return const [];
+  }
+}
+
 String formatNumber(int value) {
   final digits = value.abs().toString();
   final buffer = StringBuffer(value < 0 ? '-' : '');
@@ -170,44 +199,60 @@ Future<({List<int> data, String fileName})?> fetchProfileCard(
   }
 }
 
-Future<Iterable<CommandOptionChoiceBuilder<String>>> ownedItemChoices(
+Future<Iterable<CommandOptionChoiceBuilder<String>>> backgroundChoices(
   AutocompleteContext context,
-) async {
+) =>
+    _ownedItemChoices(context, 'background');
+
+Future<Iterable<CommandOptionChoiceBuilder<String>>> frameChoices(
+  AutocompleteContext context,
+) =>
+    _ownedItemChoices(context, 'frame');
+
+Future<Iterable<CommandOptionChoiceBuilder<String>>> barChoices(
+  AutocompleteContext context,
+) =>
+    _ownedItemChoices(context, 'bar');
+
+Future<void> equipItem(ChatContext context, String type, String name) async {
+  final user = context.user;
   try {
-    final user = context.user;
-    final search = context.currentValue.toLowerCase();
-    final items = await withConnection(
-      (connection) => economy.usableItems(
+    if (name == 'default:$type') {
+      await withConnection(
+        (connection) => economy.unequip(connection, user.id.toString(), type),
+      );
+      await replySuccess(context, 'shop_equipped',
+          replace: {'&name': await getString(user, 'shop_default_$type')},
+          level: ResponseLevel.hint);
+      return;
+    }
+
+    final premium = await isUserPremium(user.id, context: context);
+    final error = await withConnection((connection) async {
+      final found = await economy.shopItems(
+        connection,
+        type: type,
+        name: name,
+        includeRetired: true,
+      );
+      if (found.isEmpty) return 'background_not_found';
+      return economy.buyOrEquip(
         connection,
         user.id.toString(),
-        context.currentValue,
-      ),
-    );
-    final defaults = <CommandOptionChoiceBuilder<String>>[];
-    for (final type in economy.shopItemTypes) {
-      final label = await getString(user, 'shop_default_$type');
-      if (search.isEmpty || label.toLowerCase().contains(search)) {
-        defaults.add(
-          CommandOptionChoiceBuilder(name: label, value: 'default:$type'),
-        );
-      }
+        found.first,
+        premium: premium,
+        allowBuy: false,
+      );
+    });
+
+    if (error != null) {
+      await replyError(context, error, replace: {'&name': name});
+      return;
     }
-    final kinds = {
-      for (final type in economy.shopItemTypes)
-        type: await getString(user, 'shop_kind_$type'),
-    };
-    return [
-      ...items.map(
-        (item) => CommandOptionChoiceBuilder(
-          name: '${item.$1} · ${kinds[item.$2] ?? item.$2}',
-          value: item.$1,
-        ),
-      ),
-      ...defaults,
-    ].take(25);
+    await replySuccess(context, 'shop_equipped',
+        replace: {'&name': name}, level: ResponseLevel.hint);
   } catch (e) {
-    print('Error in item autocomplete: $e');
-    return const [];
+    await replyCommandError(context, 'levels_error', type, e);
   }
 }
 

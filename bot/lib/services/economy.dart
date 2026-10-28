@@ -236,15 +236,16 @@ Future<Set<int>> ownedItems(
 Future<List<(String, String)>> usableItems(
   MySqlConnection connection,
   String userId,
-  String search,
-) async {
+  String search, {
+  String? type,
+}) async {
   final rows = await connection.query(
     'SELECT `b`.`name`, `b`.`type` FROM `backgrounds` AS `b` '
     'LEFT JOIN `user_backgrounds` AS `ub` ON `ub`.`background_id` = `b`.`id` AND `ub`.`user` = ? '
-    'WHERE `b`.`name` LIKE ? '
+    'WHERE `b`.`name` LIKE ? ${type != null ? 'AND `b`.`type` = ? ' : ''}'
     'AND (`ub`.`id` IS NOT NULL OR (`b`.`active` = 1 AND `b`.`price` = 0 AND `b`.`premium_only` = 0)) '
-    'ORDER BY `b`.`type`, `b`.`sort`, `b`.`id` LIMIT 22;',
-    [userId, '%$search%'],
+    'ORDER BY `b`.`type`, `b`.`sort`, `b`.`id` LIMIT 24;',
+    [userId, '%$search%', if (type != null) type],
   );
   return rows
       .map((row) => (row['name'] as String, row['type'] as String))
