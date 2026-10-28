@@ -29,4 +29,5 @@ return [
     'tab_frame' => 'Marcos de avatar',
     'tab_bar' => 'Barras de progreso',
     'animated' => 'Animado',
+    'retired' => 'Ya no disponible',
 ];

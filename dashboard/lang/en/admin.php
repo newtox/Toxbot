@@ -16,7 +16,7 @@ return [
     'confirm_blacklist' => 'Delete the tag and ban the owner from tags?',
     'delete_and_blacklist' => 'Delete and ban owner',
     'backgrounds_title' => 'Shop',
-    'backgrounds_description' => 'What is in the shop: backgrounds, avatar frames and progress bars. Items that are switched off stay owned but are not shown.',
+    'backgrounds_description' => 'What is in the shop: backgrounds, avatar frames and progress bars. Items taken out of the shop can no longer be bought, but whoever owns them keeps using them.',
     'image' => 'Image',
     'name' => 'Name',
     'price' => 'Price',

@@ -29,4 +29,5 @@ return [
     'tab_frame' => 'Avatar frames',
     'tab_bar' => 'Progress bars',
     'animated' => 'Animated',
+    'retired' => 'No longer available',
 ];

@@ -29,4 +29,5 @@ return [
     'tab_frame' => 'Avatarrammer',
     'tab_bar' => 'Statuslinjer',
     'animated' => 'Animeret',
+    'retired' => 'Ikke længere til salg',
 ];

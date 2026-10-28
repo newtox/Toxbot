@@ -16,7 +16,7 @@ return [
     'confirm_blacklist' => 'Supprimer le tag et bannir le propriétaire des tags ?',
     'delete_and_blacklist' => 'Supprimer et bannir',
     'backgrounds_title' => 'Boutique',
-    'backgrounds_description' => 'Le contenu de la boutique : fonds, cadres d\'avatar et barres de progression. Les articles désactivés restent achetés mais ne s\'affichent pas.',
+    'backgrounds_description' => 'Le contenu de la boutique : fonds, cadres d\'avatar et barres de progression. Les articles retirés de la boutique ne peuvent plus être achetés, mais ceux qui les possèdent peuvent continuer à les utiliser.',
     'image' => 'Image',
     'name' => 'Nom',
     'price' => 'Prix',

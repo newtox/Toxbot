@@ -32,8 +32,8 @@ class Shop extends Component
 
     public function preview(int $id): void
     {
-        $item = ShopItem::query()->where('active', true)->find($id);
-        if ($item) {
+        $item = ShopItem::query()->find($id);
+        if ($item && ($item->active || BotUser::forDiscordId($this->userId())->items()->whereKey($id)->exists())) {
             $this->previews[$item->type] = $item->id;
         }
     }
@@ -83,14 +83,17 @@ class Shop extends Component
         $premium = app(Premium::class)->isPremium($this->userId());
         $equipped = collect(ShopItem::TYPES)->mapWithKeys(fn (string $type) => [$type => $user->equippedId($type)])->all();
 
-        $items = ShopItem::query()->inShop()->ofType($this->tab)->get()->map(fn (ShopItem $item) => [
+        $visible = fn ($query) => $query->where(fn ($q) => $q->where('active', true)->orWhereIn('id', $owned));
+
+        $items = ShopItem::query()->tap($visible)->ofType($this->tab)->orderBy('sort')->orderBy('price')->orderBy('id')->get()->map(fn (ShopItem $item) => [
             'id' => $item->id,
             'name' => $item->name,
             'price' => $item->price,
             'premium_only' => $item->premium_only,
             'animated' => $item->animated,
             'url' => $item->url(),
-            'owned' => in_array($item->id, $owned, true) || $item->isFree(),
+            'owned' => in_array($item->id, $owned, true) || ($item->isFree() && $item->active),
+            'retired' => ! $item->active,
             'equipped' => $equipped[$this->tab] === $item->id,
             'locked' => $item->premium_only && ! $premium,
         ]);
@@ -99,7 +102,7 @@ class Shop extends Component
 
         return view('livewire.shop', [
             'items' => $items,
-            'counts' => ShopItem::query()->where('active', true)->selectRaw('type, count(*) as total')->groupBy('type')->pluck('total', 'type'),
+            'counts' => ShopItem::query()->tap($visible)->selectRaw('type, count(*) as total')->groupBy('type')->pluck('total', 'type'),
             'credits' => (int) $user->credits,
             'premium' => $premium,
             'selected' => $selected,

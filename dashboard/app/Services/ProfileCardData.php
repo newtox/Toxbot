@@ -30,7 +30,7 @@ class ProfileCardData
             if ($item === null) {
                 $id = $user->equippedId($type);
                 $item = $id ? ShopItem::query()->ofType($type)->find($id) : null;
-                if ($item && (! $item->active || ($item->premium_only && ! $premium))) {
+                if ($item && ($item->premium_only && ! $premium)) {
                     $item = null;
                 }
             }

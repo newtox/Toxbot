@@ -29,4 +29,5 @@ return [
     'tab_frame' => 'アバターフレーム',
     'tab_bar' => '進行バー',
     'animated' => 'アニメーション',
+    'retired' => '販売終了',
 ];

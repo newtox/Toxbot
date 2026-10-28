@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BotUser;
 use App\Models\ShopItem;
 use App\Services\ProfileCard;
 use App\Services\ProfileCardData;
@@ -27,8 +28,8 @@ class CardController extends Controller
         $previews = [];
         foreach (self::PREVIEW_PARAMS as $type => $param) {
             $value = (string) $request->query($param);
-            $item = ctype_digit($value) ? ShopItem::query()->where('active', true)->ofType($type)->find((int) $value) : null;
-            if ($item) {
+            $item = ctype_digit($value) ? ShopItem::query()->ofType($type)->find((int) $value) : null;
+            if ($item && ($item->active || BotUser::forDiscordId($user)->items()->whereKey($item->id)->exists())) {
                 $previews[$type] = $item;
             }
         }

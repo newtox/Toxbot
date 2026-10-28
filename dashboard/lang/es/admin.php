@@ -16,7 +16,7 @@ return [
     'confirm_blacklist' => '¿Eliminar el tag y bloquear al propietario?',
     'delete_and_blacklist' => 'Eliminar y bloquear',
     'backgrounds_title' => 'Tienda',
-    'backgrounds_description' => 'Lo que hay en la tienda: fondos, marcos de avatar y barras de progreso. Los artículos desactivados siguen comprados, pero no se muestran.',
+    'backgrounds_description' => 'Lo que hay en la tienda: fondos, marcos de avatar y barras de progreso. Los artículos que retires de la tienda ya no se pueden comprar, pero quien los tiene puede seguir usándolos.',
     'image' => 'Imagen',
     'name' => 'Nombre',
     'price' => 'Precio',

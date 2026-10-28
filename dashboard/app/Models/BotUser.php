@@ -94,6 +94,6 @@ class BotUser extends Model
 
     public function owns(ShopItem $item): bool
     {
-        return $item->isFree() || $this->items()->whereKey($item->id)->exists();
+        return ($item->isFree() && $item->active) || $this->items()->whereKey($item->id)->exists();
     }
 }

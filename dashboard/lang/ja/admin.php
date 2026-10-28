@@ -16,7 +16,7 @@ return [
     'confirm_blacklist' => 'タグを削除し、所有者のタグ作成を禁止しますか？',
     'delete_and_blacklist' => '削除して所有者を禁止',
     'backgrounds_title' => 'ショップ',
-    'backgrounds_description' => 'ショップの内容：背景、アバターフレーム、進行バー。オフにしたアイテムは購入済みのまま残りますが、表示されません。',
+    'backgrounds_description' => 'ショップの内容：背景、アバターフレーム、進行バー。ショップから外したアイテムは購入できなくなりますが、持っている人はそのまま使い続けられます。',
     'image' => '画像',
     'name' => '名前',
     'price' => '価格',

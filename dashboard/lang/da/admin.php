@@ -16,7 +16,7 @@ return [
     'confirm_blacklist' => 'Slet tagget og bloker ejeren fra tags?',
     'delete_and_blacklist' => 'Slet og bloker ejer',
     'backgrounds_title' => 'Butik',
-    'backgrounds_description' => 'Det, der er i butikken: baggrunde, avatarrammer og statuslinjer. Slukkede ting forbliver købt, men vises ikke.',
+    'backgrounds_description' => 'Det, der er i butikken: baggrunde, avatarrammer og statuslinjer. Ting, du tager ud af butikken, kan ikke længere købes, men dem, der ejer dem, kan stadig bruge dem.',
     'image' => 'Billede',
     'name' => 'Navn',
     'price' => 'Pris',

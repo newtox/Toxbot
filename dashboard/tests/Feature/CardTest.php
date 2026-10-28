@@ -118,6 +118,16 @@ class CardTest extends TestCase
         Storage::fake('local');
         $this->fakeDiscord();
 
+        $retired = $this->item('Gold Ring', ShopItem::FRAME, 'frame-gold.png');
+        $retired->update(['active' => false]);
+        $owner = BotUser::forDiscordId('123456789012345678');
+        $owner->frame_id = $retired->id;
+        $owner->save();
+        $static = $this->get('/card/123456789012345678.png')->getContent();
+        $owner->frame_id = null;
+        $owner->save();
+        $this->assertNotSame($static, $this->get('/card/123456789012345678.png')->getContent());
+
         $ring = $this->item('Ember Ring', ShopItem::FRAME, 'frame-ember.gif');
         $ring->update(['premium_only' => true]);
         $user = BotUser::forDiscordId('123456789012345678');

@@ -76,10 +76,6 @@ class Economy
 
     public function equip(string $userId, ShopItem $item): void
     {
-        if (! $item->active) {
-            throw new RuntimeException('shop.not_available');
-        }
-
         if ($item->premium_only && ! $this->premium->isPremium($userId)) {
             throw new RuntimeException('shop.premium_only');
         }
@@ -91,6 +87,10 @@ class Economy
 
         $user->{$item->column()} = $item->id;
         $user->save();
+
+        if ($item->isFree()) {
+            $user->items()->syncWithoutDetaching([$item->id => ['created_at' => now()]]);
+        }
     }
 
     public function unequip(string $userId, string $type): void
