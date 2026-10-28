@@ -26,9 +26,12 @@
                 <button type="button" wire:click="useDefault" wire:loading.attr="disabled" class="btn-secondary px-3 py-1.5">{{ __('shop.use_default') }}</button>
             @endif
         </div>
-        <div class="relative overflow-hidden rounded-lg bg-dc-900 ring-1 ring-black/30">
+        <div class="relative overflow-hidden rounded-lg bg-dc-900 ring-1 ring-black/30" wire:key="preview-{{ md5($previewUrl) }}" x-data="{ loaded: false }">
             <img src="{{ $previewUrl }}" alt="{{ __('shop.preview') }}" width="1000" height="600"
-                 class="aspect-[5/3] w-full object-cover" wire:key="preview-{{ md5($previewUrl) }}">
+                 class="aspect-[5/3] w-full object-cover" x-init="loaded = $el.complete && $el.naturalWidth > 0" x-on:load="loaded = true" x-on:error="loaded = true">
+            <div x-show="!loaded" class="absolute inset-0 flex items-center justify-center bg-dc-900/60" role="status" aria-label="{{ __('shop.preview_loading') }}">
+                <x-icon name="refresh" class="size-6 animate-spin text-dc-header" />
+            </div>
             <div wire:loading.flex wire:target="preview,selectTab" class="absolute inset-0 items-center justify-center bg-dc-900/60">
                 <x-icon name="refresh" class="size-6 animate-spin text-dc-header" />
             </div>

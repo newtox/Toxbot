@@ -30,4 +30,5 @@ return [
     'tab_bar' => '진행 막대',
     'animated' => '애니메이션',
     'retired' => '판매 종료',
+    'preview_loading' => '미리보기 불러오는 중',
 ];

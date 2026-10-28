@@ -30,4 +30,5 @@ return [
     'tab_bar' => 'Progress bars',
     'animated' => 'Animated',
     'retired' => 'No longer available',
+    'preview_loading' => 'Loading preview',
 ];
