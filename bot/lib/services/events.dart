@@ -11,7 +11,9 @@ import 'package:toxbot/commands/fun/eightball.dart';
 import 'package:toxbot/commands/fun/someone.dart';
 import 'package:toxbot/commands/general/generate.dart';
 import 'package:toxbot/commands/general/info.dart';
+import 'package:toxbot/commands/general/invite.dart';
 import 'package:toxbot/commands/general/ping.dart';
+import 'package:toxbot/commands/general/vote.dart';
 import 'package:toxbot/commands/image/awoo.dart';
 import 'package:toxbot/commands/image/neko.dart';
 import 'package:toxbot/commands/image/waifu.dart';
@@ -133,7 +135,9 @@ CommandsPlugin setupCommandHandler(CommandsPlugin commands) {
   commands.addCommand(someone);
 
   commands.addCommand(info);
+  commands.addCommand(invite);
   commands.addCommand(ping);
+  commands.addCommand(vote);
 
   commands.addCommand(awoo);
   commands.addCommand(neko);

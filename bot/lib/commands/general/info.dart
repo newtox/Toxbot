@@ -27,9 +27,6 @@ final info = ChatCommand('info', 'Show information about Toxbot.',
     return '$current/$rss MB';
   }
 
-  final invite =
-      'https://discord.com/oauth2/authorize?client_id=${context.client.user.id}&permissions=$invitePermissions&integration_type=0&scope=bot+applications.commands';
-
   await context.respond(MessageBuilder(embeds: [
     EmbedBuilder(
         color: await getUserColorFromDatabase(context.user.id),
@@ -68,7 +65,7 @@ final info = ChatCommand('info', 'Show information about Toxbot.',
     ActionRowBuilder(components: [
       ButtonBuilder.link(
           label: await getString(context.user, 'info_invite'),
-          url: Uri.parse(invite))
+          url: inviteUrl(context.client.user.id))
     ])
   ]));
 });

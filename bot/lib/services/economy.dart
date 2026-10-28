@@ -466,3 +466,12 @@ Future<List<(String, String)>> allItems(
       .map((row) => (row['name'] as String, row['type'] as String))
       .toList();
 }
+
+Future<DateTime?> lastVote(MySqlConnection connection, String userId) async {
+  final rows = await connection.query(
+    'SELECT `created_at` FROM `credit_transactions` '
+    'WHERE `user` = ? AND `reason` = ? ORDER BY `id` DESC LIMIT 1;',
+    [userId, 'vote'],
+  );
+  return rows.isEmpty ? null : rows.first['created_at'] as DateTime?;
+}
