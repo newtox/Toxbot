@@ -2,7 +2,7 @@
 
 return [
     'card_title' => 'Твоя карточка профиля',
-    'card_description' => 'Так выглядит /profile в Discord. Фон меняется в магазине.',
+    'card_description' => 'Так выглядит /profile в Discord. Выбери ниже из своих предметов, новые есть в магазине.',
     'to_shop' => 'В магазин',
     'card_alt' => 'Твоя карточка профиля',
     'level' => 'Уровень',
@@ -11,4 +11,9 @@ return [
     'commands' => 'Команды',
     'premium_active' => 'Premium активен: двойной XP, двойная ежедневная награда и Premium-фоны.',
     'earn_hint' => 'XP даётся за сообщения и команды, кредиты — за /daily, голоса и новые уровни.',
+    'equip_background' => 'Фон',
+    'equip_frame' => 'Рамка аватара',
+    'equip_bar' => 'Полоска прогресса',
+    'equip_default' => 'Стандарт',
+    'equip_no_frame' => 'Без рамки',
 ];
