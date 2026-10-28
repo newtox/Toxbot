@@ -61,5 +61,4 @@ return [
     'server_tags_limit' => '每个服务器最多可以有 :max 个服务器标签。',
     'server_tags_premium' => '使用 Server Premium 最多 :max 个',
     'server_tag_name_taken' => '此服务器已有同名标签。',
-    'server_tags_placeholders' => '&user、&server 和 &membercount 会被替换。不会提及任何人。',
 ];

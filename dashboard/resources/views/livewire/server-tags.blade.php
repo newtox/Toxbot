@@ -46,7 +46,6 @@
                             class="rounded-full bg-dc-600 px-3 py-1 font-mono text-xs text-dc-text transition hover:bg-accent hover:text-on-accent">{{ $token }}</button>
                 @endforeach
             </div>
-            <p class="mt-2 text-xs text-dc-faint">{{ __('guild.server_tags_placeholders') }}</p>
         </div>
         <div class="flex justify-end gap-2">
             @if ($editingId)

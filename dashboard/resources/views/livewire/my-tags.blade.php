@@ -35,14 +35,8 @@
                           :class="($wire.content ?? '').length > {{ \App\Models\Tag::MAX_LENGTH }} ? 'text-dc-red' : 'text-dc-faint'"
                           x-text="($wire.content ?? '').length + ' / {{ \App\Models\Tag::MAX_LENGTH }}'"></span>
                 </div>
-                <textarea id="tag-content" x-ref="content" wire:model="content" rows="6" class="input resize-y font-mono text-sm leading-relaxed"></textarea>
+                <textarea id="tag-content" wire:model="content" rows="6" class="input resize-y font-mono text-sm leading-relaxed"></textarea>
                 @error('content') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
-                <div class="mt-3 flex flex-wrap gap-2">
-                    @foreach (['&user', '&server', '&membercount'] as $token)
-                        <button type="button" x-on:click="toxbot.insertAtCursor($refs.content, '{{ $token }}')"
-                                class="rounded-full bg-dc-600 px-3 py-1 font-mono text-xs text-dc-text transition hover:bg-accent hover:text-on-accent">{{ $token }}</button>
-                    @endforeach
-                </div>
             </div>
 
             <fieldset @class(['space-y-4 rounded-lg bg-dc-900 p-4', 'opacity-60' => ! $premium]) @disabled(! $premium)>

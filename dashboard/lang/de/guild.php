@@ -61,5 +61,4 @@ return [
     'server_tags_limit' => 'Ein Server kann bis zu :max Server-Tags haben.',
     'server_tags_premium' => 'Mit Server Premium bis zu :max',
     'server_tag_name_taken' => 'Dieser Server hat schon einen Tag mit diesem Namen.',
-    'server_tags_placeholders' => '&user, &server und &membercount werden ersetzt. Niemand wird gepingt.',
 ];

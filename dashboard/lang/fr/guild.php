@@ -61,5 +61,4 @@ return [
     'server_tags_limit' => 'Un serveur peut avoir jusqu\'à :max tags du serveur.',
     'server_tags_premium' => 'Avec Server Premium, jusqu\'à :max',
     'server_tag_name_taken' => 'Ce serveur a déjà un tag avec ce nom.',
-    'server_tags_placeholders' => '&user, &server et &membercount sont remplacés. Personne n\'est mentionné.',
 ];
