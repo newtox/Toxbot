@@ -99,4 +99,54 @@ class Economy
         $user->{ShopItem::COLUMNS[$type]} = null;
         $user->save();
     }
+
+    public function adjustCredits(string $userId, int $amount): int
+    {
+        return DB::transaction(function () use ($userId, $amount) {
+            $user = BotUser::forDiscordId($userId);
+            if (! $user->exists) {
+                $user->save();
+            }
+            $user = BotUser::query()->whereKey($userId)->lockForUpdate()->first();
+            $balance = (int) $user->credits;
+            $change = $amount < 0 ? -min($balance, -$amount) : $amount;
+
+            if ($change !== 0) {
+                $user->credits = $balance + $change;
+                $user->save();
+                CreditTransaction::create(['user' => $userId, 'amount' => $change, 'reason' => 'admin']);
+            }
+
+            return $balance + $change;
+        });
+    }
+
+    public function giveItem(string $userId, ShopItem $item): bool
+    {
+        $user = BotUser::forDiscordId($userId);
+        if (! $user->exists) {
+            $user->save();
+        }
+        if ($user->items()->whereKey($item->id)->exists()) {
+            return false;
+        }
+        $user->items()->attach($item->id, ['created_at' => now()]);
+
+        return true;
+    }
+
+    public function takeItem(string $userId, ShopItem $item): bool
+    {
+        $user = BotUser::query()->find($userId);
+        if (! $user) {
+            return false;
+        }
+        $removed = $user->items()->detach($item->id) > 0;
+        if ($user->{$item->column()} === $item->id) {
+            $user->{$item->column()} = null;
+            $user->save();
+        }
+
+        return $removed;
+    }
 }
