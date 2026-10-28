@@ -11,7 +11,7 @@ return [
     'embed_text' => 'Toxbot usa este color, por ejemplo, en /hug, /pat o /info.',
     'color_invalid' => 'Introduce un color hexadecimal como #7289da.',
     'premium_server_title' => 'Server Premium',
-    'premium_server_description' => 'Con Toxbot Premium desbloqueas Server Premium para un servidor que administras: más creadores, mensaje y rol de mención por creador, filtros y más.',
+    'premium_server_description' => 'Con Toxbot Premium desbloqueas Server Premium para un servidor que administras: hasta 50 creadores en lugar de 5, aviso de stream y rol de mención propios por creador, filtros de juego y título, y 100 tags del servidor en lugar de 20.',
     'premium_server_none' => 'Ningún servidor',
     'premium_server_locked' => 'Server Premium para un servidor a tu elección está incluido en Toxbot Premium.',
     'premium_server_invalid' => 'Elige un servidor que administres y en el que esté Toxbot.',

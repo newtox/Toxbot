@@ -11,7 +11,7 @@ return [
     'embed_text' => 'उदाहरण के लिए, Toxbot यह रंग /hug, /pat या /info में इस्तेमाल करता है।',
     'color_invalid' => 'कृपया #7289da जैसा हेक्स रंग डालें।',
     'premium_server_title' => 'Server Premium',
-    'premium_server_description' => 'Toxbot Premium के साथ आप अपने प्रबंधित एक सर्वर के लिए Server Premium अनलॉक करते हैं: ज़्यादा क्रिएटर, हर क्रिएटर के लिए अपना संदेश और पिंग रोल, फ़िल्टर और भी बहुत कुछ।',
+    'premium_server_description' => 'Toxbot Premium से आप अपने प्रबंधित किसी एक सर्वर के लिए Server Premium अनलॉक करते हैं: 5 की जगह 50 तक क्रिएटर, हर क्रिएटर के लिए अपनी स्ट्रीम सूचना और पिंग रोल, गेम और शीर्षक फ़िल्टर, और 20 की जगह 100 सर्वर टैग।',
     'premium_server_none' => 'कोई सर्वर नहीं',
     'premium_server_locked' => 'अपनी पसंद के एक सर्वर के लिए Server Premium, Toxbot Premium में शामिल है।',
     'premium_server_invalid' => 'कृपया ऐसा सर्वर चुनें जिसे आप प्रबंधित करते हैं और जिस पर Toxbot है।',
