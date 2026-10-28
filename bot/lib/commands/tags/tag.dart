@@ -314,8 +314,6 @@ final _show = ChatCommand(
         return;
       }
 
-      final content = await fillTagPlaceholders(tag.content, context);
-
       final asEmbed =
           tag.embed && await isUserPremium(tag.owner, context: context);
 
@@ -329,7 +327,7 @@ final _show = ChatCommand(
             embeds: [
               EmbedBuilder(
                 color: color,
-                description: content,
+                description: tag.content,
                 image: tag.embedImage == null
                     ? null
                     : EmbedImageBuilder(url: Uri.parse(tag.embedImage!)),
@@ -339,7 +337,7 @@ final _show = ChatCommand(
         );
       } else {
         await context.respond(
-          MessageBuilder(allowedMentions: noMentions, content: content),
+          MessageBuilder(allowedMentions: noMentions, content: tag.content),
         );
       }
 
