@@ -3,9 +3,13 @@
 namespace App\Livewire;
 
 use App\Http\Middleware\EnsureBotOwner;
-use App\Models\Background;
+use App\Models\BotUser;
+use App\Models\ShopItem;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+use Imagick;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -14,6 +18,8 @@ class AdminBackgrounds extends Component
     use WithFileUploads;
 
     public $upload;
+
+    public string $newType = ShopItem::BACKGROUND;
 
     public string $newName = '';
 
@@ -31,8 +37,8 @@ class AdminBackgrounds extends Component
 
     private function loadRows(): void
     {
-        $this->rows = Background::query()->orderBy('sort')->orderBy('id')->get()
-            ->mapWithKeys(fn (Background $bg) => [$bg->id => [
+        $this->rows = ShopItem::query()->orderByRaw("CASE type WHEN 'background' THEN 0 WHEN 'frame' THEN 1 ELSE 2 END")->orderBy('sort')->orderBy('id')->get()
+            ->mapWithKeys(fn (ShopItem $bg) => [$bg->id => [
                 'name' => $bg->name,
                 'price' => $bg->price,
                 'premium_only' => $bg->premium_only,
@@ -46,21 +52,24 @@ class AdminBackgrounds extends Component
         $this->authorizeOwner();
 
         $this->validate([
-            'upload' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
-            'newName' => ['required', 'string', 'max:64'],
+            'newType' => ['required', Rule::in(ShopItem::TYPES)],
+            'upload' => ['required', 'image', 'mimes:jpg,jpeg,png,webp,gif', 'max:8192'],
+            'newName' => ['required', 'string', 'max:64', Rule::unique('backgrounds', 'name')],
             'newPrice' => ['required', 'integer', 'min:0', 'max:100000000'],
         ]);
 
         $file = Str::random(24).'.'.$this->upload->extension();
         Storage::disk('local')->putFileAs('backgrounds', $this->upload, $file);
 
-        Background::create([
+        ShopItem::create([
             'name' => $this->newName,
+            'type' => $this->newType,
             'file' => $file,
+            'animated' => $this->isAnimated(ShopItem::pathFor($file)),
             'price' => $this->newPrice,
             'premium_only' => $this->newPremium,
             'active' => true,
-            'sort' => (int) Background::max('sort') + 1,
+            'sort' => (int) ShopItem::query()->ofType($this->newType)->max('sort') + 1,
         ]);
 
         $this->reset(['upload', 'newName', 'newPrice', 'newPremium']);
@@ -68,17 +77,34 @@ class AdminBackgrounds extends Component
         $this->dispatch('saved');
     }
 
+    private function isAnimated(?string $path): bool
+    {
+        if ($path === null || ! class_exists(Imagick::class)) {
+            return false;
+        }
+
+        try {
+            $image = new Imagick($path);
+            $animated = $image->getNumberImages() > 1;
+            $image->clear();
+
+            return $animated;
+        } catch (\Throwable) {
+            return false;
+        }
+    }
+
     public function saveRow(int $id): void
     {
         $this->authorizeOwner();
 
         $this->validate([
-            "rows.$id.name" => ['required', 'string', 'max:64'],
+            "rows.$id.name" => ['required', 'string', 'max:64', Rule::unique('backgrounds', 'name')->ignore($id)],
             "rows.$id.price" => ['required', 'integer', 'min:0', 'max:100000000'],
             "rows.$id.sort" => ['required', 'integer'],
         ]);
 
-        Background::findOrFail($id)->update([
+        ShopItem::findOrFail($id)->update([
             'name' => $this->rows[$id]['name'],
             'price' => (int) $this->rows[$id]['price'],
             'premium_only' => (bool) $this->rows[$id]['premium_only'],
@@ -93,13 +119,13 @@ class AdminBackgrounds extends Component
     {
         $this->authorizeOwner();
 
-        $background = Background::findOrFail($id);
+        $item = ShopItem::findOrFail($id);
         $disk = Storage::disk('local');
-        if ($disk->exists('backgrounds/'.$background->file)) {
-            $disk->delete('backgrounds/'.$background->file);
+        if ($disk->exists('backgrounds/'.$item->file)) {
+            $disk->delete('backgrounds/'.$item->file);
         }
-        \App\Models\BotUser::query()->where('background_id', $id)->update(['background_id' => null]);
-        $background->delete();
+        BotUser::query()->where($item->column(), $id)->update([$item->column() => null]);
+        $item->delete();
 
         $this->loadRows();
     }
@@ -112,8 +138,8 @@ class AdminBackgrounds extends Component
     public function render()
     {
         return view('livewire.admin-backgrounds', [
-            'backgrounds' => Background::query()->orderBy('sort')->orderBy('id')->get()->keyBy('id'),
-            'owners' => \Illuminate\Support\Facades\DB::table('user_backgrounds')
+            'items' => ShopItem::query()->get()->keyBy('id'),
+            'owners' => DB::table('user_backgrounds')
                 ->selectRaw('background_id, count(*) as total')->groupBy('background_id')->pluck('total', 'background_id'),
         ]);
     }

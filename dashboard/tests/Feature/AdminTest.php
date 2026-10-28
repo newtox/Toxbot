@@ -4,10 +4,10 @@ namespace Tests\Feature;
 
 use App\Livewire\AdminBackgrounds;
 use App\Livewire\AdminReports;
-use App\Models\Background;
 use App\Models\BlacklistEntry;
 use App\Models\BotUser;
 use App\Models\DashboardUser;
+use App\Models\ShopItem;
 use App\Models\Tag;
 use App\Models\TagReport;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -64,7 +64,7 @@ class AdminTest extends TestCase
             ->call('add')
             ->assertHasNoErrors();
 
-        $bg = Background::where('name', 'Mine')->first();
+        $bg = ShopItem::where('name', 'Mine')->first();
         $this->assertSame(42, $bg->price);
         Storage::disk('local')->assertExists('backgrounds/'.$bg->file);
 
@@ -76,6 +76,41 @@ class AdminTest extends TestCase
         $this->assertNull($bg->fresh());
         $this->assertNull(BotUser::find('5')->background_id);
         Storage::disk('local')->assertMissing('backgrounds/'.$bg->file);
+    }
+
+    public function test_upload_an_animated_frame(): void
+    {
+        if (! class_exists(\Imagick::class)) {
+            $this->markTestSkipped('Imagick is not installed.');
+        }
+        Storage::fake('local');
+        $this->actingAs(DashboardUser::create(['id' => (int) self::OWNER, 'username' => 'newtox']));
+
+        $gif = UploadedFile::fake()->createWithContent('ring.gif', file_get_contents(resource_path('shop/frame-rainbow.gif')));
+
+        Livewire::test(AdminBackgrounds::class)
+            ->set('newType', ShopItem::FRAME)
+            ->set('upload', $gif)
+            ->set('newName', 'Spin')
+            ->set('newPrice', 100)
+            ->call('add')
+            ->assertHasNoErrors()
+            ->set('newType', ShopItem::FRAME)
+            ->set('upload', UploadedFile::fake()->image('again.png', 392, 392))
+            ->set('newName', 'Spin')
+            ->call('add')
+            ->assertHasErrors('newName');
+
+        $frame = ShopItem::where('name', 'Spin')->sole();
+        $this->assertSame(ShopItem::FRAME, $frame->type);
+        $this->assertTrue($frame->animated);
+
+        $user = BotUser::forDiscordId('5');
+        $user->frame_id = $frame->id;
+        $user->save();
+
+        Livewire::test(AdminBackgrounds::class)->call('delete', $frame->id);
+        $this->assertNull(BotUser::find('5')->frame_id);
     }
 
     public function test_non_owner_cannot_use_admin_components(): void

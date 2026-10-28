@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\Background;
 use App\Models\BotUser;
+use App\Models\ShopItem;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
@@ -17,7 +17,7 @@ class CardTest extends TestCase
     {
         Storage::fake('local');
         Storage::disk('local')->put('backgrounds/test.jpg', 'image');
-        $bg = Background::create(['name' => 'Test', 'file' => 'test.jpg']);
+        $bg = ShopItem::create(['name' => 'Test', 'file' => 'test.jpg']);
 
         $this->get(route('backgrounds.show', $bg))->assertOk();
         $this->get('/backgrounds/99999')->assertNotFound();
@@ -42,5 +42,88 @@ class CardTest extends TestCase
         $response = $this->get('/card/123456789012345678.png?guild=222222222222222222');
         $response->assertOk()->assertHeader('Content-Type', 'image/png');
         $this->assertStringStartsWith("\x89PNG", $response->getContent());
+    }
+
+    private function fakeDiscord(): void
+    {
+        config(['services.discord.bot_token' => 'bot-token']);
+        Http::fake([
+            'discord.com/*' => Http::response(['id' => '123456789012345678', 'avatar' => null]),
+            'cdn.discordapp.com/*' => Http::response('', 404),
+        ]);
+    }
+
+    private function item(string $name, string $type, string $source): ShopItem
+    {
+        Storage::disk('local')->put('backgrounds/'.$source, file_get_contents(resource_path('shop/'.$source)));
+
+        return ShopItem::create([
+            'name' => $name,
+            'type' => $type,
+            'file' => $source,
+            'animated' => str_ends_with($source, '.gif'),
+        ]);
+    }
+
+    public function test_static_items_keep_the_card_a_png(): void
+    {
+        if (! function_exists('imagettftext')) {
+            $this->markTestSkipped('GD with FreeType is not installed.');
+        }
+        Storage::fake('local');
+        $this->fakeDiscord();
+
+        $frame = $this->item('Gold Ring', ShopItem::FRAME, 'frame-gold.png');
+        $bar = $this->item('Candy Bar', ShopItem::BAR, 'bar-candy.png');
+        $user = BotUser::forDiscordId('123456789012345678');
+        $user->xp = 350;
+        $user->frame_id = $frame->id;
+        $user->bar_id = $bar->id;
+        $user->save();
+
+        $response = $this->get('/card/123456789012345678.png');
+        $response->assertOk()->assertHeader('Content-Type', 'image/png');
+        $this->assertStringStartsWith("\x89PNG", $response->getContent());
+
+        $user->frame_id = null;
+        $user->bar_id = null;
+        $user->save();
+        $this->assertNotSame($response->getContent(), $this->get('/card/123456789012345678.png')->getContent());
+    }
+
+    public function test_animated_items_turn_the_card_into_a_cached_gif(): void
+    {
+        if (! function_exists('imagettftext') || ! class_exists(\Imagick::class)) {
+            $this->markTestSkipped('GD with FreeType and Imagick are needed.');
+        }
+        Storage::fake('local');
+        $this->fakeDiscord();
+
+        $ring = $this->item('Rainbow Ring', ShopItem::FRAME, 'frame-rainbow.gif');
+
+        $response = $this->get('/card/123456789012345678.png?frame='.$ring->id);
+        $response->assertOk()->assertHeader('Content-Type', 'image/gif');
+        $this->assertStringStartsWith('GIF89a', $response->getContent());
+        $this->assertCount(1, Storage::disk('local')->files('cards'));
+
+        $this->get('/card/123456789012345678.png?frame='.$ring->id)->assertOk();
+        $this->assertCount(1, Storage::disk('local')->files('cards'));
+    }
+
+    public function test_premium_items_are_ignored_without_premium(): void
+    {
+        if (! function_exists('imagettftext') || ! class_exists(\Imagick::class)) {
+            $this->markTestSkipped('GD with FreeType and Imagick are needed.');
+        }
+        Storage::fake('local');
+        $this->fakeDiscord();
+
+        $ring = $this->item('Ember Ring', ShopItem::FRAME, 'frame-ember.gif');
+        $ring->update(['premium_only' => true]);
+        $user = BotUser::forDiscordId('123456789012345678');
+        $user->frame_id = $ring->id;
+        $user->save();
+
+        $this->get('/card/123456789012345678.png')->assertOk()->assertHeader('Content-Type', 'image/png');
     }
 }

@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\CardController;
 use App\Models\StreamAnnouncement;
 use App\Models\StreamSource;
 use App\Models\WebhookDelivery;
+use App\Services\ItemFrames;
 use App\Services\Streams\Announcer;
 use App\Services\Streams\SourceManager;
 use App\Services\Streams\Twitch;
@@ -10,6 +12,7 @@ use App\Services\Streams\YouTube;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
+use Illuminate\Support\Facades\Storage;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
@@ -75,6 +78,25 @@ Artisan::command('streams:sync', function (Announcer $announcer, Twitch $twitch)
     rescue(fn () => $announcer->syncYoutube());
 })->purpose('Correct the live status of followed streamers in case a webhook was missed');
 
+Artisan::command('cards:prune', function () {
+    $disk = Storage::disk('local');
+    $deleted = 0;
+    foreach ($disk->files(CardController::CACHE_DIR) as $file) {
+        if ($disk->lastModified($file) < now()->subHours(6)->getTimestamp()) {
+            $disk->delete($file);
+            $deleted++;
+        }
+    }
+    foreach ($disk->directories(ItemFrames::DIR) as $dir) {
+        $meta = "{$dir}/frames.json";
+        if (! $disk->exists($meta) || $disk->lastModified($meta) < now()->subDays(30)->getTimestamp()) {
+            $disk->deleteDirectory($dir);
+        }
+    }
+    $this->info("Deleted {$deleted} cached cards.");
+})->purpose('Delete cached animated profile cards and old prepared item frames');
+
+Schedule::command('cards:prune')->hourly()->withoutOverlapping();
 Schedule::command('streams:maintain')->hourly()->withoutOverlapping();
 Schedule::command('streams:sync')->everyFiveMinutes()->withoutOverlapping();
 Schedule::command('streams:check-upcoming')->everyTwoMinutes()->withoutOverlapping();

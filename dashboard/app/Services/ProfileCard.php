@@ -2,35 +2,136 @@
 
 namespace App\Services;
 
-use App\Models\Background;
+use App\Models\ShopItem;
 use GdImage;
+use Imagick;
 use RuntimeException;
 
 class ProfileCard
 {
+    public const FRAME_SIZE = 196;
+
+    public const AVATAR_X = 107;
+
+    public const AVATAR_Y = 495;
+
+    public const BAR_X1 = 197;
+
+    public const BAR_X2 = 650;
+
+    public const BAR_Y1 = 505;
+
+    public const BAR_Y2 = 531;
+
     private const SCALE = 2;
 
-    private const W = Background::WIDTH;
+    private const W = ShopItem::WIDTH;
 
-    private const H = Background::HEIGHT;
+    private const H = ShopItem::HEIGHT;
 
-    public function render(array $data): string
+    private const FRAME_DELAY = 6;
+
+    private const MAX_DURATION = 400;
+
+    private const MAX_FRAMES = 32;
+
+    private array $layers = [];
+
+    public function __construct(private readonly ItemFrames $itemFrames) {}
+
+    public function render(array $data): array
     {
         if (! function_exists('imagecreatetruecolor') || ! function_exists('imagettftext')) {
             throw new RuntimeException('The GD extension with FreeType support is required for profile cards.');
         }
 
-        $s = self::SCALE;
-        $img = imagecreatetruecolor(self::W * $s, self::H * $s);
-        imagealphablending($img, true);
-        imagesavealpha($img, false);
-
         $accent = $this->hex($data['accent']);
+        $this->layers = [
+            'background' => $this->layer($data['background'] ?? null, self::W, self::H, true),
+            'frame' => $this->layer($data['frame'] ?? null, self::FRAME_SIZE, self::FRAME_SIZE, false),
+            'bar' => $this->layer($data['bar'] ?? null, self::BAR_X2 - self::BAR_X1, self::BAR_Y2 - self::BAR_Y1, true),
+        ];
 
-        $this->drawBackground($img, $data['background'], $accent);
+        $overlay = $this->overlay($data, $accent);
+        $progress = $data['level']['needed'] > 0 ? min(1, $data['level']['current'] / $data['level']['needed']) : 0;
+        $mask = $this->barMask($progress);
+
+        $durations = array_filter(array_map(fn (?array $layer) => $layer['duration'] ?? 0, $this->layers));
+
+        if ($durations === []) {
+            $image = $this->compose($overlay, $mask, $accent, 0);
+            $png = $this->png($image, 6);
+            imagedestroy($image);
+            $this->layers = [];
+
+            return [$png, 'image/png'];
+        }
+
+        [$count, $delay] = $this->timeline(min(self::MAX_DURATION, max($durations)));
+
+        $gif = new Imagick;
+        for ($i = 0; $i < $count; $i++) {
+            $image = $this->compose($overlay, $mask, $accent, $i * $delay);
+            $frame = new Imagick;
+            $frame->readImageBlob($this->png($image, 1));
+            imagedestroy($image);
+            $frame->setImageDelay($delay);
+            $gif->addImage($frame);
+            $frame->clear();
+        }
+        $this->layers = [];
+
+        return [$this->gif($gif), 'image/gif'];
+    }
+
+    private function timeline(int $duration): array
+    {
+        for ($delay = self::FRAME_DELAY; $delay <= self::FRAME_DELAY * 2; $delay++) {
+            if ($duration % $delay === 0 && $duration / $delay <= self::MAX_FRAMES) {
+                return [max(2, intdiv($duration, $delay)), $delay];
+            }
+        }
+
+        $count = (int) min(self::MAX_FRAMES, max(2, ceil($duration / self::FRAME_DELAY)));
+
+        return [$count, (int) max(self::FRAME_DELAY, round($duration / $count))];
+    }
+
+    private function compose(GdImage $overlay, ?GdImage $mask, array $accent, int $time): GdImage
+    {
+        $img = imagecreatetruecolor(self::W, self::H);
+        imagealphablending($img, true);
+
+        $background = $this->at('background', $time);
+        if ($background !== null) {
+            imagecopy($img, $background, 0, 0, 0, 0, self::W, self::H);
+        } else {
+            $this->drawDefaultBackground($img, $accent);
+        }
+
+        imagecopy($img, $overlay, 0, 0, 0, 0, self::W, self::H);
+
+        if ($mask !== null) {
+            $this->drawBarFill($img, $mask, $this->at('bar', $time), $accent);
+        }
+
+        $frame = $this->at('frame', $time);
+        if ($frame !== null) {
+            $half = intdiv(self::FRAME_SIZE, 2);
+            imagecopy($img, $frame, self::AVATAR_X - $half, self::AVATAR_Y - $half, 0, 0, self::FRAME_SIZE, self::FRAME_SIZE);
+        }
+
+        return $img;
+    }
+
+    private function overlay(array $data, array $accent): GdImage
+    {
+        $s = self::SCALE;
+        $img = $this->transparent(self::W * $s, self::H * $s);
+        imagealphablending($img, true);
 
         $this->roundedRect($img, 25, 415, 675, 575, 14, [10, 12, 16], 45);
-        $this->drawAvatar($img, $data['avatar'], 107, 495, 66, $accent);
+        $this->drawAvatar($img, $data['avatar'], self::AVATAR_X, self::AVATAR_Y, 66, $accent, ($data['frame'] ?? null) === null);
 
         $level = $data['level'];
         $this->text($img, 'LEVEL '.number_format($level['level'], 0, '', ' '), 'Regular', 42, 650, 489, [255, 255, 255], 'right');
@@ -38,14 +139,7 @@ class ProfileCard
         $currentWidth = $this->textWidth(number_format($level['current'], 0, '', ' '), 'Regular', 15);
         $this->text($img, ' / '.number_format($level['needed'], 0, '', ' ').' XP', 'Regular', 15, 197 + $currentWidth, 489, [150, 155, 165]);
 
-        $barX1 = 197;
-        $barX2 = 650;
-        $this->roundedRect($img, $barX1, 505, $barX2, 531, 13, [72, 74, 80], 0);
-        $progress = $level['needed'] > 0 ? min(1, $level['current'] / $level['needed']) : 0;
-        if ($progress > 0) {
-            $fillEnd = (int) round($barX1 + max(26, ($barX2 - $barX1) * $progress));
-            $this->roundedRect($img, $barX1, 505, $fillEnd, 531, 13, $accent, 0);
-        }
+        $this->roundedRect($img, self::BAR_X1, self::BAR_Y1, self::BAR_X2, self::BAR_Y2, 13, [72, 74, 80], 0);
 
         $this->roundedRect($img, 695, 415, 975, 575, 14, [10, 12, 16], 45);
         $rows = array_slice($data['stats'], 0, 4, true);
@@ -63,34 +157,155 @@ class ProfileCard
             $this->text($img, $label, 'Bold', 11, 25 + 14, 47, $this->onColor($accent));
         }
 
-        $out = imagecreatetruecolor(self::W, self::H);
+        $out = $this->transparent(self::W, self::H);
         imagecopyresampled($out, $img, 0, 0, 0, 0, self::W, self::H, self::W * $s, self::H * $s);
         imagedestroy($img);
+        imagealphablending($out, true);
 
+        return $out;
+    }
+
+    private function barMask(float $progress): ?GdImage
+    {
+        if ($progress <= 0) {
+            return null;
+        }
+
+        $s = self::SCALE;
+        $width = self::BAR_X2 - self::BAR_X1;
+        $height = self::BAR_Y2 - self::BAR_Y1;
+        $fill = (int) round(max($height, $width * $progress));
+
+        $big = $this->transparent($width * $s, $height * $s);
+        $white = imagecolorallocatealpha($big, 255, 255, 255, 0);
+        $r = $height * $s / 2;
+        $right = $fill * $s - 1;
+        imagefilledrectangle($big, (int) $r, 0, (int) ($right - $r), $height * $s - 1, $white);
+        imagefilledellipse($big, (int) $r, (int) $r, (int) ($r * 2), (int) ($r * 2), $white);
+        imagefilledellipse($big, (int) ($right - $r), (int) $r, (int) ($r * 2), (int) ($r * 2), $white);
+
+        $mask = $this->transparent($width, $height);
+        imagecopyresampled($mask, $big, 0, 0, 0, 0, $width, $height, $width * $s, $height * $s);
+        imagedestroy($big);
+
+        return $mask;
+    }
+
+    private function drawBarFill(GdImage $img, GdImage $mask, ?GdImage $style, array $accent): void
+    {
+        $width = imagesx($mask);
+        $height = imagesy($mask);
+        $layer = $this->transparent($width, $height);
+
+        for ($y = 0; $y < $height; $y++) {
+            for ($x = 0; $x < $width; $x++) {
+                $alpha = (imagecolorat($mask, $x, $y) >> 24) & 0x7F;
+                if ($alpha === 127) {
+                    continue;
+                }
+                if ($style !== null) {
+                    $rgb = imagecolorat($style, $x, $y);
+                    $sourceAlpha = ($rgb >> 24) & 0x7F;
+                    $combined = 127 - (int) round((127 - $alpha) * (127 - $sourceAlpha) / 127);
+                    $color = ($combined << 24) | ($rgb & 0xFFFFFF);
+                } else {
+                    $color = ($alpha << 24) | ($accent[0] << 16) | ($accent[1] << 8) | $accent[2];
+                }
+                imagesetpixel($layer, $x, $y, $color);
+            }
+        }
+
+        imagecopy($img, $layer, self::BAR_X1, self::BAR_Y1, 0, 0, $width, $height);
+        imagedestroy($layer);
+    }
+
+    private function layer(?array $source, int $width, int $height, bool $cover): ?array
+    {
+        $path = $source['path'] ?? null;
+        if (! $path || ! is_file($path)) {
+            return null;
+        }
+
+        if ($source['animated'] ?? false) {
+            $prepared = $this->itemFrames->prepare($path, $width, $height, $cover);
+            if ($prepared !== null) {
+                return $prepared + ['duration' => array_sum($prepared['delays']), 'index' => null, 'image' => null];
+            }
+        }
+
+        $image = @imagecreatefromstring((string) @file_get_contents($path));
+        if (! $image) {
+            return null;
+        }
+
+        return ['image' => ItemFrames::fit($image, $width, $height, $cover), 'duration' => 0];
+    }
+
+    private function at(string $name, int $time): ?GdImage
+    {
+        $layer = $this->layers[$name] ?? null;
+        if ($layer === null) {
+            return null;
+        }
+        if ($layer['duration'] === 0) {
+            return $layer['image'];
+        }
+
+        $time %= $layer['duration'];
+        $index = 0;
+        foreach ($layer['delays'] as $i => $delay) {
+            if ($time < $delay) {
+                $index = $i;
+                break;
+            }
+            $time -= $delay;
+        }
+
+        if ($layer['index'] !== $index) {
+            if ($layer['image'] instanceof GdImage) {
+                imagedestroy($layer['image']);
+            }
+            $image = @imagecreatefrompng($layer['files'][$index]);
+            if ($image) {
+                imagealphablending($image, true);
+            }
+            $this->layers[$name]['image'] = $image ?: null;
+            $this->layers[$name]['index'] = $index;
+        }
+
+        return $this->layers[$name]['image'];
+    }
+
+    private function png(GdImage $image, int $level): string
+    {
         ob_start();
-        imagepng($out, null, 6);
-        imagedestroy($out);
+        imagepng($image, null, $level);
 
         return (string) ob_get_clean();
     }
 
-    private function drawBackground(GdImage $img, ?string $path, array $accent): void
+    private function gif(Imagick $gif): string
     {
-        $source = $path ? @imagecreatefromstring((string) @file_get_contents($path)) : false;
+        $gif->quantizeImages(256, Imagick::COLORSPACE_SRGB, 0, true, false);
+        $gif = $gif->optimizeImageLayers();
+        $gif->quantizeImages(256, Imagick::COLORSPACE_SRGB, 0, false, false);
+        $gif->setFormat('gif');
+        $gif->setImageIterations(0);
 
-        if (! $source) {
-            $this->drawDefaultBackground($img, $accent);
+        $blob = $gif->getImagesBlob();
+        $gif->clear();
 
-            return;
-        }
+        return $blob;
+    }
 
-        $sw = imagesx($source);
-        $sh = imagesy($source);
-        $ratio = max(imagesx($img) / $sw, imagesy($img) / $sh);
-        $cw = (int) round(imagesx($img) / $ratio);
-        $ch = (int) round(imagesy($img) / $ratio);
-        imagecopyresampled($img, $source, 0, 0, (int) (($sw - $cw) / 2), (int) (($sh - $ch) / 2), imagesx($img), imagesy($img), $cw, $ch);
-        imagedestroy($source);
+    private function transparent(int $width, int $height): GdImage
+    {
+        $img = imagecreatetruecolor($width, $height);
+        imagealphablending($img, false);
+        imagesavealpha($img, true);
+        imagefilledrectangle($img, 0, 0, $width - 1, $height - 1, imagecolorallocatealpha($img, 0, 0, 0, 127));
+
+        return $img;
     }
 
     private function drawDefaultBackground(GdImage $img, array $accent): void
@@ -112,10 +327,12 @@ class ProfileCard
         }
     }
 
-    private function drawAvatar(GdImage $img, ?string $bytes, int $cx, int $cy, int $r, array $accent): void
+    private function drawAvatar(GdImage $img, ?string $bytes, int $cx, int $cy, int $r, array $accent, bool $ring): void
     {
         $s = self::SCALE;
-        $this->circle($img, $cx, $cy, $r + 4, $accent, 0);
+        if ($ring) {
+            $this->circle($img, $cx, $cy, $r + 4, $accent, 0);
+        }
 
         $avatar = $bytes ? @imagecreatefromstring($bytes) : false;
         if (! $avatar) {
@@ -138,7 +355,7 @@ class ProfileCard
             $from = (int) floor($radius - $half);
             $to = (int) ceil($radius + $half);
             for ($x = $from; $x < $to; $x++) {
-                imagesetpixel($img, $x0 + $x, $y0 + $y, imagecolorat($scaled, $x, $y));
+                imagesetpixel($img, $x0 + $x, $y0 + $y, imagecolorat($scaled, $x, $y) & 0xFFFFFF);
             }
         }
         imagedestroy($scaled);
@@ -150,10 +367,7 @@ class ProfileCard
         [$x1, $y1, $x2, $y2, $r] = [$x1 * $s, $y1 * $s, $x2 * $s - 1, $y2 * $s - 1, $radius * $s];
         $r = (int) min($r, ($x2 - $x1) / 2, ($y2 - $y1) / 2);
 
-        $layer = imagecreatetruecolor($x2 - $x1 + 1, $y2 - $y1 + 1);
-        imagealphablending($layer, false);
-        imagesavealpha($layer, true);
-        imagefill($layer, 0, 0, imagecolorallocatealpha($layer, 0, 0, 0, 127));
+        $layer = $this->transparent($x2 - $x1 + 1, $y2 - $y1 + 1);
 
         $color = imagecolorallocatealpha($layer, $rgb[0], $rgb[1], $rgb[2], $alpha);
         $w = $x2 - $x1;

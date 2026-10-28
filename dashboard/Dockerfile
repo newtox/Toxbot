@@ -14,7 +14,7 @@ RUN npm run build
 
 FROM serversideup/php:8.4-fpm-nginx
 USER root
-RUN install-php-extensions gd
+RUN install-php-extensions gd imagick
 USER www-data
 ENV AUTORUN_ENABLED=true \
     PHP_OPCACHE_ENABLE=1 \

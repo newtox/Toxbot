@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\Background;
 use App\Models\BotUser;
 use App\Models\MemberLevel;
+use App\Models\ShopItem;
 use App\Support\Level;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
@@ -16,14 +16,22 @@ class ProfileCardData
         private readonly Premium $premium,
     ) {}
 
-    public function build(string $userId, ?string $guildId = null, ?Background $preview = null): array
+    public function build(string $userId, ?string $guildId = null, array $previews = []): array
     {
         $user = BotUser::forDiscordId($userId);
         $premium = $this->premium->isPremium($userId);
 
-        $background = $preview ?? $user->background;
-        if ($preview === null && $background && (! $background->active || ($background->premium_only && ! $premium))) {
-            $background = null;
+        $items = [];
+        foreach (ShopItem::TYPES as $type) {
+            $item = $previews[$type] ?? null;
+            if ($item === null) {
+                $id = $user->equippedId($type);
+                $item = $id ? ShopItem::query()->ofType($type)->find($id) : null;
+                if ($item && (! $item->active || ($item->premium_only && ! $premium))) {
+                    $item = null;
+                }
+            }
+            $items[$type] = $item && $item->type === $type ? ['path' => $item->path(), 'animated' => $item->animated] : null;
         }
 
         $stats = ['Global Rank' => '#'.$this->number($user->globalRank())];
@@ -37,7 +45,9 @@ class ProfileCardData
         $stats['Commands'] = $this->number((int) $user->commands_used);
 
         return [
-            'background' => $background?->path(),
+            'background' => $items[ShopItem::BACKGROUND],
+            'frame' => $items[ShopItem::FRAME],
+            'bar' => $items[ShopItem::BAR],
             'avatar' => $this->avatar($userId),
             'accent' => $user->color ?: BotUser::DEFAULT_COLOR,
             'level' => $user->level(),

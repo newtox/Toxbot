@@ -11,10 +11,10 @@ Web dashboard for [Toxbot](../README.md), built with Laravel, Livewire and Tailw
 - **Server language** for everything posted to the whole server, such as ticket and verify buttons, ticket logs and raid alarms
 - **Level-up messages** and **tags** per server: turn them on or off, pick the channel, send level-ups as a DM as well, unblock blocked tags and manage server tags (20 per server, 100 with Server Premium, only on that server, shown by `/tag show` ahead of global tags with the same name)
 - **User settings** with their own sidebar: profile card with level, rank and credits, language and embed color (same as `/language` and `/color`, the color is also the dashboard's accent color), Premium, shop, tags and your data
-- **Shop** to buy and switch profile backgrounds, with a live preview of the card. The shop starts empty; backgrounds are uploaded on the administration page, and cards without one get a gradient in the user's embed color.
+- **Shop** with three categories, backgrounds, avatar frames and progress bars, to buy and switch with a live preview of the card. A starter set of 22 items (some animated) is added on the first start; more are uploaded on the administration page. Cards without a background get a gradient in the user's embed color.
 - **Tags**: create, edit and delete your own tags
-- **Administration** for the bot owner, with its own sidebar: handle reported tags, manage the backgrounds in the shop, block users or servers, and give Premium or Server Premium without a purchase, with or without an end date
-- **Profile cards** rendered as PNG under `/card/{user}.png`, used by `/profile` in Discord
+- **Administration** for the bot owner, with its own sidebar: handle reported tags, manage the shop items (images or animated GIFs), block users or servers, and give Premium or Server Premium without a purchase, with or without an end date
+- **Profile cards** rendered under `/card/{user}.png`, used by `/profile` in Discord: a PNG, or an animated GIF when an animated item is equipped (cached for a few hours, `cards:prune` cleans up)
 - **Top.gg webhook** under `/webhooks/topgg` that pays credits for votes
 - **Stream notifications**: add Twitch and YouTube channels per server, pick the channel, ping role and message. Twitch uses EventSub webhooks (`/webhooks/twitch`), YouTube uses WebSub (`/webhooks/youtube`). Servers with Server Premium get more streamers, a message and ping role per streamer, filters and an action for when the stream ends.
 - **Server Premium picker** on the Premium page of the user settings: Premium users choose one server they manage that gets Server Premium
@@ -84,7 +84,7 @@ Open `http://localhost:8000`. Use `localhost`, not `127.0.0.1`, otherwise the Di
 
 `create_toxbot_tables` is safe to run against a database the bot already uses. Existing tables are left as they are; it only adds the `notify` and `stream` columns to `guilds`, which the bot writes but which were missing from the original `toxbot.sql`. On an empty database it creates all bot tables with proper primary keys.
 
-The later migrations only add tables and columns for tags, levels, credits, the shop, entitlements, stream notifications, moderation, protection, tickets, unban appeals, the server language, the starboard, the bot status, server tags and Premium grants, all with defaults, so an older bot version keeps working with them.
+The later migrations only add tables and columns for tags, levels, credits, the shop, entitlements, stream notifications, moderation, protection, tickets, unban appeals, the server language, the starboard, the bot status, server tags, Premium grants and shop item types, all with defaults, so an older bot version keeps working with them.
 
 ## Translations
 
@@ -102,4 +102,4 @@ The Discord API is faked with `Http::fake()`, so the tests need no token and no 
 
 ## Production
 
-The `Dockerfile` builds a production image (PHP 8.4 with Nginx and GD, assets compiled, migrations run on start). It is built by GitHub Actions and deployed together with the bot; see [Deployment](../README.md#deployment) in the main README.
+The `Dockerfile` builds a production image (PHP 8.4 with Nginx, GD and Imagick, assets compiled, migrations run on start). It is built by GitHub Actions and deployed together with the bot; see [Deployment](../README.md#deployment) in the main README.
