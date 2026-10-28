@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Entitlement;
+use App\Models\PremiumGrant;
 use App\Models\PremiumServer;
 
 class Premium
@@ -17,7 +18,9 @@ class Premium
             return true;
         }
 
-        return $this->guildCache[$guildId] ??= $this->hasGuildSubscription($guildId) || $this->hasPremiumMember($guildId);
+        return $this->guildCache[$guildId] ??= PremiumGrant::covers('guild', $guildId)
+            || $this->hasGuildSubscription($guildId)
+            || $this->hasPremiumMember($guildId);
     }
 
     private function hasGuildSubscription(string $guildId): bool
@@ -48,13 +51,14 @@ class Premium
             return true;
         }
 
+        return $this->cache[$userId] ??= PremiumGrant::covers('user', $userId) || $this->hasUserSubscription($userId);
+    }
+
+    private function hasUserSubscription(string $userId): bool
+    {
         $skus = config('toxbot.premium_user_skus');
 
-        if ($skus === []) {
-            return false;
-        }
-
-        return $this->cache[$userId] ??= Entitlement::query()
+        return $skus !== [] && Entitlement::query()
             ->active()
             ->where('user_id', $userId)
             ->whereIn('sku_id', $skus)
