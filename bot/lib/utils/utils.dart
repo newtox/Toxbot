@@ -6,6 +6,11 @@ import 'package:nyxx/nyxx.dart';
 
 const invitePermissions = 1099780320438;
 
+Uri inviteUrl(Snowflake botId) => Uri.parse(
+    'https://discord.com/oauth2/authorize?client_id=$botId&permissions=$invitePermissions&integration_type=0&scope=bot+applications.commands');
+
+Uri voteUrl(Snowflake botId) => Uri.parse('https://top.gg/bot/$botId/vote');
+
 String numberWithCommas(num numb) {
   return numb.toString().replaceAllMapped(
       RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');

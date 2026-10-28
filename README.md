@@ -70,7 +70,7 @@ On every push to `main`, the GitHub Action in `.github/workflows/docker.yml` bui
 - `ghcr.io/newtox/toxbot`
 - `ghcr.io/newtox/toxbot-dashboard`
 
-The server runs both from `docker-compose.yml`, deployed as a Portainer stack. Secrets are not part of the images; they are set as stack environment variables. See `stack.env.example` for the full list. `CONTACT_EMAIL` (defaults to justin.lys26@gmail.com) and the optional `SUPPORT_INVITE` show up on the dashboard's info page.
+The server runs both from `docker-compose.yml`, deployed as a Portainer stack. Secrets are not part of the images; they are set as stack environment variables. See `stack.env.example` for the full list. `CONTACT_EMAIL` (defaults to justin.lys26@gmail.com) and the optional `SUPPORT_INVITE` show up on the dashboard's info page; `/invite` also links the support server.
 
 Both images get the commit and build time as `GIT_COMMIT` and `BUILD_DATE`. The bot writes its status (commit, uptime, ping, servers, memory) to the `bot_status` table once a minute, and the dashboard shows it together with its own version under Info → System.
 
@@ -84,14 +84,14 @@ chown 33:33 /docker_volumes/toxbot-dashboard/backgrounds
 ### Discord application
 
 - Under **Installation**, keep only **Guild Install**. Toxbot's commands work on servers, so a user install is not needed.
-- Use the link provided by Discord with the scopes `bot` and `applications.commands` and the same permissions as the invite links in the dashboard and in `/info`: View Channels, Send Messages, Embed Links, Attach Files, Read Message History, Mention Everyone, Manage Messages, Manage Channels, Manage Roles, Manage Server, View Audit Log, Kick Members, Ban Members and Timeout Members (permission integer `1099780320438`).
+- Use the link provided by Discord with the scopes `bot` and `applications.commands` and the same permissions as the invite links in the dashboard, `/info` and `/invite`: View Channels, Send Messages, Embed Links, Attach Files, Read Message History, Mention Everyone, Manage Messages, Manage Channels, Manage Roles, Manage Server, View Audit Log, Kick Members, Ban Members and Timeout Members (permission integer `1099780320438`).
 - Mention Everyone is only used so that ticket team roles and stream ping roles are pinged even when they are not mentionable; Toxbot never pings `@everyone` or `@here`.
 
 ### Premium and Top.gg
 
 - Create the SKUs in the Developer Portal under **Monetization**: a user subscription for Premium and a consumable for the XP boost. Put their IDs into `PREMIUM_USER_SKUS` and `XP_BOOST_SKU`.
 - As the bot owner you can give Premium without a subscription on the **Premium** page of the administration in the dashboard: Toxbot Premium for a user or Server Premium for a server, either without an end date or until a chosen day, after which it runs out on its own. `PREMIUM_USERS` and `PREMIUM_GUILDS` still work for fixed IDs, for example for testing.
-- For vote rewards, add `https://<dashboard>/webhooks/topgg` as webhook on Top.gg and put the generated secret into `TOPGG_WEBHOOK_SECRET`.
+- For vote rewards, add `https://<dashboard>/webhooks/topgg` as webhook on Top.gg and put the generated secret into `TOPGG_WEBHOOK_SECRET`. `TOPGG_VOTE_REWARD` sets the credits per vote (200 by default, doubled on weekends). `/vote` links to the vote page and shows when a user can vote again.
 - Server Premium comes with the user subscription: subscribers pick one server on the Premium page of their user settings in the dashboard. Discord only allows one published subscription per app, so a separate server subscription is optional; if you ever sell one, put its SKU ID into `PREMIUM_GUILD_SKUS`. `PREMIUM_GUILDS` gives Server Premium to the listed server IDs without a subscription.
 
 ### Automatic setup

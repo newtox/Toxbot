@@ -55,6 +55,8 @@ services:
       premium_user_skus: ${PREMIUM_USER_SKUS:-}
       xp_boost_sku: ${XP_BOOST_SKU:-}
       currency: ${CURRENCY:-Credits}
+      support_invite: ${SUPPORT_INVITE:-}
+      vote_reward: ${TOPGG_VOTE_REWARD:-200}
       tag_report_channel: ${TAG_REPORT_CHANNEL:-}
       log_channel: ${LOG_CHANNEL:-}
     extra_hosts:
