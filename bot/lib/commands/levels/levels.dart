@@ -58,7 +58,7 @@ final profile = ChatCommand(
           MessageBuilder(
             allowedMentions: noMentions,
             attachments: [
-              AttachmentBuilder(data: card, fileName: 'profile.png'),
+              AttachmentBuilder(data: card.data, fileName: card.fileName),
             ],
           ),
         );
@@ -269,90 +269,135 @@ final credits = ChatCommand(
 
 final shop = ChatCommand(
   'shop',
-  'Browse and buy profile backgrounds.',
+  'Browse and buy backgrounds, avatar frames and progress bars.',
   localizedDescriptions: {
-    Locale.de: 'Profilhintergründe ansehen und kaufen.',
-    Locale.enUs: 'Browse and buy profile backgrounds.',
-    Locale.da: 'Se og køb profilbaggrunde.',
-    Locale.esEs: 'Ver y comprar fondos de perfil.',
-    Locale.fr: 'Parcourir et acheter des fonds de profil.',
-    Locale.ru: 'Смотреть и покупать фоны профиля.',
-    Locale.hi: 'प्रोफ़ाइल बैकग्राउंड देखें और खरीदें।',
-    Locale.zhCn: '浏览并购买资料背景。',
-    Locale.ja: 'プロフィール背景を見て購入します。',
-    Locale.ko: '프로필 배경을 둘러보고 구매합니다.',
+    Locale.de:
+        'Hintergründe, Avatar-Rahmen und Fortschrittsbalken ansehen und kaufen.',
+    Locale.enUs: 'Browse and buy backgrounds, avatar frames and progress bars.',
+    Locale.da: 'Se og køb baggrunde, avatarrammer og statuslinjer.',
+    Locale.esEs: 'Ver y comprar fondos, marcos de avatar y barras de progreso.',
+    Locale.fr:
+        'Parcourir et acheter des fonds, cadres d\'avatar et barres de progression.',
+    Locale.ru: 'Смотреть и покупать фоны, рамки аватара и полоски прогресса.',
+    Locale.hi: 'बैकग्राउंड, अवतार फ़्रेम और प्रोग्रेस बार देखें और खरीदें।',
+    Locale.zhCn: '浏览并购买背景、头像框和进度条。',
+    Locale.ja: '背景、アバターフレーム、進行バーを見て購入します。',
+    Locale.ko: '배경, 아바타 테두리, 진행 막대를 둘러보고 구매합니다.',
   },
   (ChatContext context) async {
     final user = context.user;
     try {
       final premium = await isUserPremium(user.id, context: context);
-      final (backgrounds, owned, credits) = await withConnection((
+      final (items, owned, credits) = await withConnection((
         connection,
       ) async {
         await economy.ensureUser(connection, user.id.toString());
         return (
-          await economy.shopBackgrounds(connection),
-          await economy.ownedBackgrounds(connection, user.id.toString()),
+          await economy.shopItems(connection),
+          await economy.ownedItems(connection, user.id.toString()),
           await economy.getCredits(connection, user.id.toString()),
         );
       });
 
-      if (backgrounds.isEmpty) {
+      if (items.isEmpty) {
         await replyError(context, 'shop_empty');
         return;
       }
 
-      String status(economy.ShopBackground bg) {
-        if (owned.contains(bg.id) || bg.isFree) return '✅';
-        if (bg.premiumOnly) return '⭐';
-        return formatCredits(bg.price);
+      final color = await getUserColorFromDatabase(user.id);
+      final balance = await localized(user, 'shop_balance', {
+        '&amount': formatCredits(credits),
+      });
+      final types = economy.shopItemTypes
+          .where((type) => items.any((item) => item.type == type))
+          .toList();
+      final typeLabels = {
+        for (final type in types)
+          type: await getString(user, 'shop_type_$type'),
+      };
+
+      final type = types.length == 1
+          ? types.first
+          : await context.getSelection<String>(
+              types,
+              MessageBuilder(
+                allowedMentions: noMentions,
+                embeds: [
+                  EmbedBuilder(
+                    color: color,
+                    title: await getString(user, 'shop_title'),
+                    description: await getString(user, 'shop_pick_category'),
+                    footer: EmbedFooterBuilder(text: balance),
+                  ),
+                ],
+              ),
+              level: ResponseLevel.hint,
+              timeout: const Duration(minutes: 2),
+              toSelectMenuOption: (type) => SelectMenuOptionBuilder(
+                label: typeLabels[type]!,
+                value: type,
+                description:
+                    '${items.where((item) => item.type == type).length}',
+              ),
+            );
+
+      final choices =
+          items.where((item) => item.type == type).take(25).toList();
+
+      bool isOwned(economy.ShopItem item) =>
+          owned.contains(item.id) || item.isFree;
+
+      String status(economy.ShopItem item) {
+        if (isOwned(item)) return '✅';
+        if (item.premiumOnly) return '⭐';
+        return formatCredits(item.price);
       }
 
       final ownedLabel = await getString(user, 'shop_owned');
       final premiumLabel = await getString(user, 'shop_premium');
+      final animatedLabel = await getString(user, 'shop_animated');
 
-      final choice = await context.getSelection<economy.ShopBackground>(
-        backgrounds,
+      final choice = await context.getSelection<economy.ShopItem>(
+        choices,
         MessageBuilder(
           allowedMentions: noMentions,
           embeds: [
             EmbedBuilder(
-              color: await getUserColorFromDatabase(user.id),
-              title: await getString(user, 'shop_title'),
+              color: color,
+              title:
+                  '${await getString(user, 'shop_title')} · ${typeLabels[type]}',
               description: '${await getString(user, 'shop_intro')}\n\n'
-                  '${backgrounds.map((bg) => '**${bg.name}** · ${status(bg)}').join('\n')}',
-              footer: EmbedFooterBuilder(
-                text: await localized(user, 'shop_balance', {
-                  '&amount': formatCredits(credits),
-                }),
-              ),
+                  '${choices.map((item) => '**${item.name}**${item.animated ? ' ✨' : ''} · ${status(item)}').join('\n')}',
+              footer: EmbedFooterBuilder(text: balance),
             ),
           ],
         ),
         level: ResponseLevel.hint,
         timeout: const Duration(minutes: 2),
-        toSelectMenuOption: (bg) => SelectMenuOptionBuilder(
-          label: bg.name,
-          value: bg.id.toString(),
-          description: owned.contains(bg.id) || bg.isFree
-              ? ownedLabel
-              : bg.premiumOnly
-                  ? premiumLabel
-                  : formatCredits(bg.price),
+        toSelectMenuOption: (item) => SelectMenuOptionBuilder(
+          label: item.name,
+          value: item.id.toString(),
+          description: [
+            isOwned(item)
+                ? ownedLabel
+                : item.premiumOnly
+                    ? premiumLabel
+                    : formatCredits(item.price),
+            if (item.animated) animatedLabel,
+          ].join(' · '),
         ),
       );
 
-      final isOwned = owned.contains(choice.id) || choice.isFree;
       final card = await fetchProfileCard(
         user.id,
         guildId: context.guild?.id,
-        background: choice.id,
+        preview: choice,
       );
 
       final String question;
       if (choice.premiumOnly && !premium) {
         question = await getString(user, 'shop_needs_premium');
-      } else if (isOwned) {
+      } else if (isOwned(choice)) {
         question = await localized(user, 'shop_equip_question', {
           '&name': choice.name,
         });
@@ -368,17 +413,19 @@ final shop = ChatCommand(
         allowedMentions: noMentions,
         embeds: [
           EmbedBuilder(
-            color: await getUserColorFromDatabase(user.id),
+            color: color,
             title: choice.name,
             description: question,
             image: card == null
                 ? null
-                : EmbedImageBuilder(url: Uri.parse('attachment://preview.png')),
+                : EmbedImageBuilder(
+                    url: Uri.parse('attachment://${card.fileName}'),
+                  ),
           ),
         ],
         attachments: card == null
             ? null
-            : [AttachmentBuilder(data: card, fileName: 'preview.png')],
+            : [AttachmentBuilder(data: card.data, fileName: card.fileName)],
       );
 
       if (choice.premiumOnly && !premium) {
@@ -389,7 +436,8 @@ final shop = ChatCommand(
       final confirmed = await context.getConfirmation(
         preview,
         values: {
-          true: await getString(user, isOwned ? 'shop_equip' : 'shop_buy'),
+          true: await getString(
+              user, isOwned(choice) ? 'shop_equip' : 'shop_buy'),
           false: await getString(user, 'shop_cancel'),
         },
         styles: {true: ButtonStyle.success, false: ButtonStyle.secondary},
@@ -417,7 +465,8 @@ final shop = ChatCommand(
         return;
       }
 
-      await replySuccess(context, isOwned ? 'shop_equipped' : 'shop_bought',
+      await replySuccess(
+          context, isOwned(choice) ? 'shop_equipped' : 'shop_bought',
           replace: {'&name': choice.name}, level: ResponseLevel.hint);
     } on InteractionTimeoutException {
       return;
@@ -429,41 +478,64 @@ final shop = ChatCommand(
 
 final background = ChatCommand(
   'background',
-  'Change the background of your profile card.',
+  'Change the background, avatar frame or progress bar of your profile card.',
   localizedDescriptions: {
-    Locale.de: 'Den Hintergrund deiner Profilkarte wechseln.',
-    Locale.enUs: 'Change the background of your profile card.',
-    Locale.da: 'Skift baggrunden på dit profilkort.',
-    Locale.esEs: 'Cambiar el fondo de tu tarjeta de perfil.',
-    Locale.fr: 'Changer le fond de ta carte de profil.',
-    Locale.ru: 'Сменить фон карточки профиля.',
-    Locale.hi: 'अपने प्रोफ़ाइल कार्ड का बैकग्राउंड बदलें।',
-    Locale.zhCn: '更换资料卡背景。',
-    Locale.ja: 'プロフィールカードの背景を変更します。',
-    Locale.ko: '프로필 카드 배경을 변경합니다.',
+    Locale.de:
+        'Hintergrund, Avatar-Rahmen oder Fortschrittsbalken deiner Profilkarte wechseln.',
+    Locale.enUs:
+        'Change the background, avatar frame or progress bar of your profile card.',
+    Locale.da:
+        'Skift baggrund, avatarramme eller statuslinje på dit profilkort.',
+    Locale.esEs:
+        'Cambiar el fondo, el marco de avatar o la barra de progreso de tu tarjeta de perfil.',
+    Locale.fr:
+        'Changer le fond, le cadre d\'avatar ou la barre de progression de ta carte de profil.',
+    Locale.ru:
+        'Сменить фон, рамку аватара или полоску прогресса на карточке профиля.',
+    Locale.hi:
+        'अपने प्रोफ़ाइल कार्ड का बैकग्राउंड, अवतार फ़्रेम या प्रोग्रेस बार बदलें।',
+    Locale.zhCn: '更换资料卡的背景、头像框或进度条。',
+    Locale.ja: 'プロフィールカードの背景、アバターフレーム、進行バーを変更します。',
+    Locale.ko: '프로필 카드의 배경, 아바타 테두리 또는 진행 막대를 변경합니다.',
   },
   (
     ChatContext context,
-    @Description('One of your backgrounds.', {
-      Locale.de: 'Einer deiner Hintergründe.',
-      Locale.enUs: 'One of your backgrounds.',
-      Locale.da: 'En af dine baggrunde.',
-      Locale.esEs: 'Uno de tus fondos.',
-      Locale.fr: 'Un de tes fonds.',
-      Locale.ru: 'Один из твоих фонов.',
-      Locale.hi: 'आपके बैकग्राउंड में से एक।',
-      Locale.zhCn: '你的一个背景。',
-      Locale.ja: '持っている背景のひとつ。',
-      Locale.ko: '보유한 배경 중 하나.',
+    @Description('One of your items, or the default.', {
+      Locale.de: 'Einer deiner Artikel oder der Standard.',
+      Locale.enUs: 'One of your items, or the default.',
+      Locale.da: 'En af dine ting eller standard.',
+      Locale.esEs: 'Uno de tus artículos o el predeterminado.',
+      Locale.fr: 'Un de tes articles ou celui par défaut.',
+      Locale.ru: 'Один из твоих предметов или стандартный.',
+      Locale.hi: 'आपकी कोई चीज़ या डिफ़ॉल्ट।',
+      Locale.zhCn: '你的一件物品，或默认项。',
+      Locale.ja: '持っているアイテム、または既定のもの。',
+      Locale.ko: '보유한 아이템 또는 기본값.',
     })
-    @Autocomplete(ownedBackgroundChoices)
+    @Autocomplete(ownedItemChoices)
     String name,
   ) async {
     final user = context.user;
     try {
+      if (name.startsWith('default:')) {
+        final type = name.substring('default:'.length);
+        if (!economy.shopItemTypes.contains(type)) {
+          await replyError(context, 'background_not_found',
+              replace: {'&name': name});
+          return;
+        }
+        await withConnection(
+          (connection) => economy.unequip(connection, user.id.toString(), type),
+        );
+        await replySuccess(context, 'shop_equipped',
+            replace: {'&name': await getString(user, 'shop_default_$type')},
+            level: ResponseLevel.hint);
+        return;
+      }
+
       final premium = await isUserPremium(user.id, context: context);
       final error = await withConnection((connection) async {
-        final found = await economy.shopBackgrounds(connection, name: name);
+        final found = await economy.shopItems(connection, name: name);
         if (found.isEmpty) return 'background_not_found';
         return economy.buyOrEquip(
           connection,
