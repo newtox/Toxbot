@@ -5,6 +5,7 @@ use App\Models\StreamAnnouncement;
 use App\Models\StreamSource;
 use App\Models\WebhookDelivery;
 use App\Services\ItemFrames;
+use App\Services\ProfileCardData;
 use App\Services\Streams\Announcer;
 use App\Services\Streams\SourceManager;
 use App\Services\Streams\Twitch;
@@ -85,6 +86,11 @@ Artisan::command('cards:prune', function () {
         if ($disk->lastModified($file) < now()->subHours(6)->getTimestamp()) {
             $disk->delete($file);
             $deleted++;
+        }
+    }
+    foreach ($disk->files(ProfileCardData::AVATAR_DIR) as $file) {
+        if ($disk->lastModified($file) < now()->subDays(7)->getTimestamp()) {
+            $disk->delete($file);
         }
     }
     foreach ($disk->directories(ItemFrames::DIR) as $dir) {

@@ -126,4 +126,25 @@ class CardTest extends TestCase
 
         $this->get('/card/123456789012345678.png')->assertOk()->assertHeader('Content-Type', 'image/png');
     }
+
+    public function test_animated_discord_avatars_make_the_card_a_gif(): void
+    {
+        if (! function_exists('imagettftext') || ! class_exists(\Imagick::class)) {
+            $this->markTestSkipped('GD with FreeType and Imagick are needed.');
+        }
+        Storage::fake('local');
+        config(['services.discord.bot_token' => 'bot-token']);
+        $gif = file_get_contents(resource_path('shop/starfield.gif'));
+        Http::fake([
+            'discord.com/api/v10/users/111111111111111111' => Http::response(['id' => '111111111111111111', 'avatar' => 'a_0123abcd']),
+            'discord.com/api/v10/users/222222222222222222' => Http::response(['id' => '222222222222222222', 'avatar' => '0123abcd']),
+            'cdn.discordapp.com/avatars/111111111111111111/a_0123abcd.gif*' => Http::response($gif),
+            'cdn.discordapp.com/*' => Http::response('', 404),
+        ]);
+
+        $this->get('/card/111111111111111111.png')->assertOk()->assertHeader('Content-Type', 'image/gif');
+        Storage::disk('local')->assertExists('avatars/111111111111111111-a_0123abcd.gif');
+
+        $this->get('/card/222222222222222222.png')->assertOk()->assertHeader('Content-Type', 'image/png');
+    }
 }

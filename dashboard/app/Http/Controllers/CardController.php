@@ -34,7 +34,7 @@ class CardController extends Controller
         }
 
         $input = $data->build($user, $guild, $previews);
-        $animated = collect([$input['background'], $input['frame'], $input['bar']])->contains(fn (?array $item) => $item['animated'] ?? false);
+        $animated = collect([$input['background'], $input['frame'], $input['bar'], $input['avatar_animated'] ?? null])->contains(fn (?array $item) => $item['animated'] ?? false);
 
         if (! $animated) {
             [$body, $type] = $card->render($input);
