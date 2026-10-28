@@ -29,7 +29,7 @@ Both share the same MySQL database. Whatever you change in the dashboard (welcom
 - **Data control**: server admins can reset all settings, the server owner can delete all data and remove Toxbot, and users can delete their own data
 - **Levels**: XP for messages and commands, with a global level and a separate level per server, plus `/leaderboard`
 - **Credits and shop**: `/daily`, `/credits` for the balance, streak and recent activity, credits for level-ups and Top.gg votes, backgrounds, avatar frames and progress bars for the profile card to buy with `/shop` and switch with `/background`, some of them animated
-- **Profile cards**: `/profile` shows level, rank and credits as an image with the chosen background, avatar frame and progress bar; with an animated item the card is a GIF
+- **Profile cards**: `/profile` shows level, rank and credits as an image with the chosen background, avatar frame and progress bar; with an animated item or an animated Discord avatar the card is a GIF
 - **Tags**: global custom commands with `/tag`, reportable and blockable per server, plus server tags that admins create in the dashboard and that `/tag show` prefers on their server
 - **Starboard**: messages with enough reactions of a chosen emoji are reposted to a starboard channel, and every member can browse them in the dashboard
 - **Dashboard for members**: members without "Manage Server" can open the member list with profiles and the starboard of their servers

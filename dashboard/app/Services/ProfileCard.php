@@ -29,6 +29,8 @@ class ProfileCard
 
     private const H = ShopItem::HEIGHT;
 
+    private const AVATAR_SIZE = 132;
+
     private const FRAME_DELAY = 6;
 
     private const MAX_DURATION = 400;
@@ -36,6 +38,8 @@ class ProfileCard
     private const MAX_FRAMES = 32;
 
     private array $layers = [];
+
+    private ?GdImage $avatarMask = null;
 
     public function __construct(private readonly ItemFrames $itemFrames) {}
 
@@ -50,9 +54,12 @@ class ProfileCard
             'background' => $this->layer($data['background'] ?? null, self::W, self::H, true),
             'frame' => $this->layer($data['frame'] ?? null, self::FRAME_SIZE, self::FRAME_SIZE, false),
             'bar' => $this->layer($data['bar'] ?? null, self::BAR_X2 - self::BAR_X1, self::BAR_Y2 - self::BAR_Y1, true),
+            'avatar' => $this->animatedOnly($this->layer($data['avatar_animated'] ?? null, self::AVATAR_SIZE, self::AVATAR_SIZE, true)),
         ];
+        $avatarMask = $this->layers['avatar'] !== null ? $this->circleMask(self::AVATAR_SIZE) : null;
 
         $overlay = $this->overlay($data, $accent);
+        $this->avatarMask = $avatarMask;
         $progress = $data['level']['needed'] > 0 ? min(1, $data['level']['current'] / $data['level']['needed']) : 0;
         $mask = $this->barMask($progress);
 
@@ -63,6 +70,7 @@ class ProfileCard
             $png = $this->png($image, 6);
             imagedestroy($image);
             $this->layers = [];
+            $this->avatarMask = null;
 
             return [$png, 'image/png'];
         }
@@ -80,6 +88,7 @@ class ProfileCard
             $frame->clear();
         }
         $this->layers = [];
+        $this->avatarMask = null;
 
         return [$this->gif($gif), 'image/gif'];
     }
@@ -113,6 +122,12 @@ class ProfileCard
 
         if ($mask !== null) {
             $this->drawBarFill($img, $mask, $this->at('bar', $time), $accent);
+        }
+
+        $avatar = $this->at('avatar', $time);
+        if ($avatar !== null && $this->avatarMask !== null) {
+            $half = intdiv(self::AVATAR_SIZE, 2);
+            $this->drawMasked($img, $avatar, $this->avatarMask, self::AVATAR_X - $half, self::AVATAR_Y - $half);
         }
 
         $frame = $this->at('frame', $time);
@@ -239,6 +254,43 @@ class ProfileCard
         }
 
         return ['image' => ItemFrames::fit($image, $width, $height, $cover), 'duration' => 0];
+    }
+
+    private function animatedOnly(?array $layer): ?array
+    {
+        return $layer !== null && $layer['duration'] > 0 ? $layer : null;
+    }
+
+    private function circleMask(int $size): GdImage
+    {
+        $s = self::SCALE;
+        $big = $this->transparent($size * $s, $size * $s);
+        imagefilledellipse($big, intdiv($size * $s, 2), intdiv($size * $s, 2), $size * $s, $size * $s, imagecolorallocatealpha($big, 255, 255, 255, 0));
+        $mask = $this->transparent($size, $size);
+        imagecopyresampled($mask, $big, 0, 0, 0, 0, $size, $size, $size * $s, $size * $s);
+        imagedestroy($big);
+
+        return $mask;
+    }
+
+    private function drawMasked(GdImage $img, GdImage $source, GdImage $mask, int $x0, int $y0): void
+    {
+        $width = imagesx($mask);
+        $height = imagesy($mask);
+        $layer = $this->transparent($width, $height);
+
+        for ($y = 0; $y < $height; $y++) {
+            for ($x = 0; $x < $width; $x++) {
+                $alpha = (imagecolorat($mask, $x, $y) >> 24) & 0x7F;
+                if ($alpha === 127) {
+                    continue;
+                }
+                imagesetpixel($layer, $x, $y, ($alpha << 24) | (imagecolorat($source, $x, $y) & 0xFFFFFF));
+            }
+        }
+
+        imagecopy($img, $layer, $x0, $y0, 0, 0, $width, $height);
+        imagedestroy($layer);
     }
 
     private function at(string $name, int $time): ?GdImage

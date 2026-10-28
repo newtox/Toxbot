@@ -14,7 +14,7 @@ Web dashboard for [Toxbot](../README.md), built with Laravel, Livewire and Tailw
 - **Shop** with three categories, backgrounds, avatar frames and progress bars, to buy and switch with a live preview of the card. A starter set of 22 items (some animated) is added on the first start; more are uploaded on the administration page. Cards without a background get a gradient in the user's embed color.
 - **Tags**: create, edit and delete your own tags
 - **Administration** for the bot owner, with its own sidebar: handle reported tags, manage the shop items (images or animated GIFs), block users or servers, and give Premium or Server Premium without a purchase, with or without an end date
-- **Profile cards** rendered under `/card/{user}.png`, used by `/profile` in Discord: a PNG, or an animated GIF when an animated item is equipped (cached for a few hours, `cards:prune` cleans up)
+- **Profile cards** rendered under `/card/{user}.png`, used by `/profile` in Discord: a PNG, or an animated GIF when an animated item is equipped or the Discord avatar is animated (cached for a few hours, `cards:prune` cleans up)
 - **Top.gg webhook** under `/webhooks/topgg` that pays credits for votes
 - **Stream notifications**: add Twitch and YouTube channels per server, pick the channel, ping role and message. Twitch uses EventSub webhooks (`/webhooks/twitch`), YouTube uses WebSub (`/webhooks/youtube`). Servers with Server Premium get more streamers, a message and ping role per streamer, filters and an action for when the stream ends.
 - **Server Premium picker** on the Premium page of the user settings: Premium users choose one server they manage that gets Server Premium
