@@ -61,5 +61,4 @@ return [
     'server_tags_limit' => 'En server kan have op til :max server-tags.',
     'server_tags_premium' => 'Med Server Premium op til :max',
     'server_tag_name_taken' => 'Denne server har allerede et tag med dette navn.',
-    'server_tags_placeholders' => '&user, &server og &membercount bliver erstattet. Ingen bliver pinget.',
 ];

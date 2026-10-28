@@ -61,5 +61,4 @@ return [
     'server_tags_limit' => 'サーバータグは 1 サーバーにつき最大 :max 個までです。',
     'server_tags_premium' => 'Server Premium なら最大 :max 個',
     'server_tag_name_taken' => 'このサーバーには同じ名前のタグがすでにあります。',
-    'server_tags_placeholders' => '&user、&server、&membercount は置き換えられます。誰にもメンションは送られません。',
 ];

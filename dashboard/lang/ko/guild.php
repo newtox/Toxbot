@@ -61,5 +61,4 @@ return [
     'server_tags_limit' => '서버당 서버 태그는 최대 :max개까지 만들 수 있습니다.',
     'server_tags_premium' => 'Server Premium이면 최대 :max개',
     'server_tag_name_taken' => '이 서버에 이미 같은 이름의 태그가 있습니다.',
-    'server_tags_placeholders' => '&user, &server, &membercount는 바뀌어 표시됩니다. 아무도 멘션되지 않습니다.',
 ];

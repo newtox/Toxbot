@@ -61,5 +61,4 @@ return [
     'server_tags_limit' => 'На сервере может быть до :max тегов сервера.',
     'server_tags_premium' => 'С Server Premium до :max',
     'server_tag_name_taken' => 'На этом сервере уже есть тег с таким именем.',
-    'server_tags_placeholders' => '&user, &server и &membercount заменяются. Никто не получает упоминание.',
 ];

@@ -61,5 +61,4 @@ return [
     'server_tags_limit' => 'एक सर्वर पर ज़्यादा से ज़्यादा :max सर्वर टैग हो सकते हैं।',
     'server_tags_premium' => 'Server Premium के साथ :max तक',
     'server_tag_name_taken' => 'इस सर्वर पर इस नाम का टैग पहले से है।',
-    'server_tags_placeholders' => '&user, &server और &membercount बदल दिए जाते हैं। किसी को पिंग नहीं किया जाता।',
 ];
