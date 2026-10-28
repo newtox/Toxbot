@@ -35,6 +35,8 @@ class BotUser extends Model
         return [
             'xp' => 'integer',
             'background_id' => 'integer',
+            'frame_id' => 'integer',
+            'bar_id' => 'integer',
             'credits' => 'integer',
             'commands_used' => 'integer',
             'daily_streak' => 'integer',
@@ -56,13 +58,28 @@ class BotUser extends Model
 
     public function background(): BelongsTo
     {
-        return $this->belongsTo(Background::class);
+        return $this->belongsTo(ShopItem::class, 'background_id');
     }
 
-    public function backgrounds(): BelongsToMany
+    public function frame(): BelongsTo
     {
-        return $this->belongsToMany(Background::class, 'user_backgrounds', 'user', 'background_id')
+        return $this->belongsTo(ShopItem::class, 'frame_id');
+    }
+
+    public function bar(): BelongsTo
+    {
+        return $this->belongsTo(ShopItem::class, 'bar_id');
+    }
+
+    public function items(): BelongsToMany
+    {
+        return $this->belongsToMany(ShopItem::class, 'user_backgrounds', 'user', 'background_id')
             ->withPivot('created_at');
+    }
+
+    public function equippedId(string $type): ?int
+    {
+        return $this->{ShopItem::COLUMNS[$type]};
     }
 
     public function level(): array
@@ -75,9 +92,8 @@ class BotUser extends Model
         return static::query()->where('xp', '>', (int) $this->xp)->count() + 1;
     }
 
-    public function owns(Background $background): bool
+    public function owns(ShopItem $item): bool
     {
-        return $background->price === 0 && ! $background->premium_only
-            || $this->backgrounds()->whereKey($background->id)->exists();
+        return $item->isFree() || $this->items()->whereKey($item->id)->exists();
     }
 }

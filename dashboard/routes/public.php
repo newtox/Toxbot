@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\BackgroundImageController;
 use App\Http\Controllers\CardController;
+use App\Http\Controllers\ShopItemImageController;
 use App\Http\Controllers\TopggWebhookController;
 use App\Http\Controllers\TwitchWebhookController;
 use App\Http\Controllers\YouTubeWebhookController;
@@ -12,7 +12,7 @@ Route::get('/card/{user}.png', [CardController::class, 'show'])
     ->middleware('throttle:60,1')
     ->name('card');
 
-Route::get('/backgrounds/{background}', [BackgroundImageController::class, 'show'])
+Route::get('/backgrounds/{background}', [ShopItemImageController::class, 'show'])
     ->whereNumber('background')
     ->name('backgrounds.show');
 

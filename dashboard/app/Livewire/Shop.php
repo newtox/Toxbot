@@ -2,17 +2,21 @@
 
 namespace App\Livewire;
 
-use App\Models\Background;
 use App\Models\BotUser;
+use App\Models\ShopItem;
 use App\Services\Economy;
 use App\Services\Premium;
 use Livewire\Attributes\Locked;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use RuntimeException;
 
 class Shop extends Component
 {
-    public ?int $previewId = null;
+    #[Url(except: ShopItem::BACKGROUND)]
+    public string $tab = ShopItem::BACKGROUND;
+
+    public array $previews = [];
 
     #[Locked]
     public ?string $message = null;
@@ -20,25 +24,34 @@ class Shop extends Component
     #[Locked]
     public bool $success = false;
 
+    public function selectTab(string $tab): void
+    {
+        $this->tab = in_array($tab, ShopItem::TYPES, true) ? $tab : ShopItem::BACKGROUND;
+        $this->message = null;
+    }
+
     public function preview(int $id): void
     {
-        $this->previewId = Background::query()->where('active', true)->whereKey($id)->exists() ? $id : null;
+        $item = ShopItem::query()->where('active', true)->find($id);
+        if ($item) {
+            $this->previews[$item->type] = $item->id;
+        }
     }
 
     public function buy(int $id, Economy $economy): void
     {
-        $this->run(fn () => $economy->buy($this->userId(), Background::findOrFail($id)), 'shop.bought');
+        $this->run(fn () => $economy->buy($this->userId(), ShopItem::findOrFail($id)), 'shop.bought');
     }
 
     public function equip(int $id, Economy $economy): void
     {
-        $this->run(fn () => $economy->equip($this->userId(), Background::findOrFail($id)), 'shop.equipped');
+        $this->run(fn () => $economy->equip($this->userId(), ShopItem::findOrFail($id)), 'shop.equipped');
     }
 
     public function useDefault(Economy $economy): void
     {
-        $this->run(fn () => $economy->equip($this->userId(), null), 'shop.equipped_default');
-        $this->previewId = null;
+        $this->run(fn () => $economy->unequip($this->userId(), $this->tab), 'shop.equipped_default');
+        unset($this->previews[$this->tab]);
     }
 
     private function run(callable $action, string $successKey): void
@@ -61,30 +74,43 @@ class Shop extends Component
 
     public function render()
     {
-        $user = BotUser::forDiscordId($this->userId());
-        $owned = $user->exists ? $user->backgrounds()->pluck('backgrounds.id')->all() : [];
-        $premium = app(Premium::class)->isPremium($this->userId());
+        if (! in_array($this->tab, ShopItem::TYPES, true)) {
+            $this->tab = ShopItem::BACKGROUND;
+        }
 
-        $backgrounds = Background::query()->inShop()->get()->map(fn (Background $bg) => [
-            'id' => $bg->id,
-            'name' => $bg->name,
-            'price' => $bg->price,
-            'premium_only' => $bg->premium_only,
-            'url' => $bg->url(),
-            'owned' => in_array($bg->id, $owned, true) || ($bg->price === 0 && ! $bg->premium_only),
-            'equipped' => $user->background_id === $bg->id,
-            'locked' => $bg->premium_only && ! $premium,
+        $user = BotUser::forDiscordId($this->userId());
+        $owned = $user->exists ? $user->items()->pluck('backgrounds.id')->all() : [];
+        $premium = app(Premium::class)->isPremium($this->userId());
+        $equipped = collect(ShopItem::TYPES)->mapWithKeys(fn (string $type) => [$type => $user->equippedId($type)])->all();
+
+        $items = ShopItem::query()->inShop()->ofType($this->tab)->get()->map(fn (ShopItem $item) => [
+            'id' => $item->id,
+            'name' => $item->name,
+            'price' => $item->price,
+            'premium_only' => $item->premium_only,
+            'animated' => $item->animated,
+            'url' => $item->url(),
+            'owned' => in_array($item->id, $owned, true) || $item->isFree(),
+            'equipped' => $equipped[$this->tab] === $item->id,
+            'locked' => $item->premium_only && ! $premium,
         ]);
 
-        $previewId = $this->previewId ?? $backgrounds->firstWhere('equipped', true)['id'] ?? null;
+        $selected = $this->previews[$this->tab] ?? $equipped[$this->tab];
 
         return view('livewire.shop', [
-            'backgrounds' => $backgrounds,
+            'items' => $items,
+            'counts' => ShopItem::query()->where('active', true)->selectRaw('type, count(*) as total')->groupBy('type')->pluck('total', 'type'),
             'credits' => (int) $user->credits,
             'premium' => $premium,
-            'previewId' => $previewId,
-            'previewUrl' => route('card', array_filter(['user' => $this->userId(), 'bg' => $previewId, 'v' => $user->background_id ?? 0])),
-            'hasBackground' => $user->background_id !== null,
+            'selected' => $selected,
+            'previewUrl' => route('card', array_filter([
+                'user' => $this->userId(),
+                'bg' => $this->previews[ShopItem::BACKGROUND] ?? null,
+                'frame' => $this->previews[ShopItem::FRAME] ?? null,
+                'bar' => $this->previews[ShopItem::BAR] ?? null,
+                'v' => implode('-', array_map('intval', $equipped)),
+            ])),
+            'hasEquipped' => $equipped[$this->tab] !== null,
         ]);
     }
 }

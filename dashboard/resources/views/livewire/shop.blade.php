@@ -19,67 +19,84 @@
         ])>{{ $message }}</div>
     @endif
 
-    @if ($backgrounds->isEmpty())
+    <section class="card space-y-3">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+            <h2 class="text-sm font-medium text-dc-muted">{{ __('shop.preview') }}</h2>
+            @if ($hasEquipped)
+                <button type="button" wire:click="useDefault" wire:loading.attr="disabled" class="btn-secondary px-3 py-1.5">{{ __('shop.use_default') }}</button>
+            @endif
+        </div>
+        <div class="relative overflow-hidden rounded-lg bg-dc-900 ring-1 ring-black/30">
+            <img src="{{ $previewUrl }}" alt="{{ __('shop.preview') }}" width="1000" height="600"
+                 class="aspect-[5/3] w-full object-cover" wire:key="preview-{{ md5($previewUrl) }}">
+            <div wire:loading.flex wire:target="preview,selectTab" class="absolute inset-0 items-center justify-center bg-dc-900/60">
+                <x-icon name="refresh" class="size-6 animate-spin text-dc-header" />
+            </div>
+        </div>
+    </section>
+
+    <div class="flex flex-wrap gap-2" role="tablist">
+        @foreach (\App\Models\ShopItem::TYPES as $type)
+            <button type="button" role="tab" wire:click="selectTab('{{ $type }}')" aria-selected="{{ $tab === $type ? 'true' : 'false' }}"
+                    @class([
+                        'rounded-full px-4 py-1.5 text-sm font-medium transition',
+                        'bg-accent text-on-accent' => $tab === $type,
+                        'bg-dc-800 text-dc-muted hover:text-dc-header' => $tab !== $type,
+                    ])>
+                {{ __('shop.tab_'.$type) }}
+                <span class="ml-1 tabular-nums opacity-70">{{ $counts[$type] ?? 0 }}</span>
+            </button>
+        @endforeach
+    </div>
+
+    @if ($items->isEmpty())
         <div class="card text-center text-dc-muted">{{ __('shop.empty') }}</div>
     @else
-        @if ($previewUrl)
-            <section class="card space-y-3">
-                <div class="flex flex-wrap items-center justify-between gap-2">
-                    <h2 class="text-sm font-medium text-dc-muted">{{ __('shop.preview') }}</h2>
-                    @if ($hasBackground)
-                        <button type="button" wire:click="useDefault" wire:loading.attr="disabled" class="btn-secondary px-3 py-1.5">{{ __('shop.use_default') }}</button>
-                    @endif
-                </div>
-                <div class="relative overflow-hidden rounded-lg bg-dc-900 ring-1 ring-black/30">
-                    <img src="{{ $previewUrl }}" alt="{{ __('shop.preview') }}" width="1000" height="600"
-                         class="aspect-[5/3] w-full object-cover" wire:key="preview-{{ $previewId }}">
-                    <div wire:loading.flex wire:target="preview" class="absolute inset-0 items-center justify-center bg-dc-900/60">
-                        <x-icon name="refresh" class="size-6 animate-spin text-dc-header" />
-                    </div>
-                </div>
-            </section>
-        @endif
-
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            @foreach ($backgrounds as $bg)
-                <article wire:key="bg-{{ $bg['id'] }}" @class([
+            @foreach ($items as $item)
+                <article wire:key="item-{{ $item['id'] }}" @class([
                     'overflow-hidden rounded-xl bg-dc-800 ring-2 transition',
-                    'ring-accent' => $bg['id'] === $previewId,
-                    'ring-transparent hover:ring-dc-500' => $bg['id'] !== $previewId,
+                    'ring-accent' => $item['id'] === $selected,
+                    'ring-transparent hover:ring-dc-500' => $item['id'] !== $selected,
                 ])>
-                    <button type="button" wire:click="preview({{ $bg['id'] }})" class="relative block w-full" title="{{ __('shop.show_preview') }}">
-                        <img src="{{ $bg['url'] }}" alt="" class="aspect-[5/3] w-full object-cover" loading="lazy">
-                        @if ($bg['premium_only'])
-                            <span class="absolute top-2 left-2 rounded-full bg-dc-yellow px-2 py-0.5 text-xs font-semibold text-dc-950">Premium</span>
-                        @endif
-                        @if ($bg['equipped'])
+                    <button type="button" wire:click="preview({{ $item['id'] }})" class="relative block w-full" title="{{ __('shop.show_preview') }}">
+                        @include('livewire.partials.shop-thumbnail', ['type' => $tab, 'url' => $item['url']])
+                        <span class="absolute top-2 left-2 flex gap-1.5">
+                            @if ($item['premium_only'])
+                                <span class="rounded-full bg-dc-yellow px-2 py-0.5 text-xs font-semibold text-dc-950">Premium</span>
+                            @endif
+                            @if ($item['animated'])
+                                <span class="rounded-full bg-dc-950/80 px-2 py-0.5 text-xs font-semibold text-dc-header">{{ __('shop.animated') }}</span>
+                            @endif
+                        </span>
+                        @if ($item['equipped'])
                             <span class="absolute top-2 right-2 rounded-full bg-accent px-2 py-0.5 text-xs font-semibold text-on-accent">{{ __('shop.equipped_badge') }}</span>
                         @endif
                     </button>
                     <div class="flex items-center gap-3 p-3">
                         <div class="min-w-0 flex-1">
-                            <div class="truncate font-semibold text-dc-header">{{ $bg['name'] }}</div>
+                            <div class="truncate font-semibold text-dc-header">{{ $item['name'] }}</div>
                             <div class="text-sm text-dc-muted tabular-nums">
-                                @if ($bg['owned'])
+                                @if ($item['owned'])
                                     {{ __('shop.owned') }}
-                                @elseif ($bg['premium_only'] && $bg['price'] === 0)
+                                @elseif ($item['premium_only'] && $item['price'] === 0)
                                     {{ __('shop.free_with_premium') }}
                                 @else
-                                    {{ number_format($bg['price'], 0, '', ' ') }} {{ $currency }}
+                                    {{ number_format($item['price'], 0, '', ' ') }} {{ $currency }}
                                 @endif
                             </div>
                         </div>
 
-                        @if ($bg['equipped'])
+                        @if ($item['equipped'])
                             <span class="text-sm text-dc-faint">{{ __('shop.in_use') }}</span>
-                        @elseif ($bg['locked'])
+                        @elseif ($item['locked'])
                             <span class="text-sm text-dc-yellow">{{ __('shop.premium_label') }}</span>
-                        @elseif ($bg['owned'])
-                            <button type="button" wire:click="equip({{ $bg['id'] }})" wire:loading.attr="disabled" class="btn-secondary px-3 py-1.5">{{ __('shop.use') }}</button>
+                        @elseif ($item['owned'])
+                            <button type="button" wire:click="equip({{ $item['id'] }})" wire:loading.attr="disabled" class="btn-secondary px-3 py-1.5">{{ __('shop.use') }}</button>
                         @else
-                            <button type="button" wire:click="buy({{ $bg['id'] }})" wire:loading.attr="disabled"
-                                    data-confirm="{{ __('shop.confirm', ['name' => $bg['name'], 'price' => number_format($bg['price'], 0, '', ' ').' '.$currency]) }}" data-confirm-tone="primary"
-                                    @disabled($bg['price'] > $credits)
+                            <button type="button" wire:click="buy({{ $item['id'] }})" wire:loading.attr="disabled"
+                                    data-confirm="{{ __('shop.confirm', ['name' => $item['name'], 'price' => number_format($item['price'], 0, '', ' ').' '.$currency]) }}" data-confirm-tone="primary"
+                                    @disabled($item['price'] > $credits)
                                     class="btn-primary px-3 py-1.5">{{ __('shop.buy') }}</button>
                         @endif
                     </div>

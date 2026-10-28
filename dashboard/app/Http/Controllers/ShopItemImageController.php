@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Background;
+use App\Models\ShopItem;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-class BackgroundImageController extends Controller
+class ShopItemImageController extends Controller
 {
-    public function show(Background $background): BinaryFileResponse
+    public function show(ShopItem $background): BinaryFileResponse
     {
         $path = $background->path();
         abort_if($path === null, 404);

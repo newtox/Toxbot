@@ -6,10 +6,18 @@
 
     <form novalidate wire:submit="add" class="grid gap-4 rounded-lg bg-dc-900 p-4 sm:grid-cols-2">
         <div class="sm:col-span-2">
+            <label class="label" for="bg-type">{{ __('admin.item_type') }}</label>
+            <select id="bg-type" wire:model.live="newType" class="input max-w-xs">
+                @foreach (\App\Models\ShopItem::TYPES as $type)
+                    <option value="{{ $type }}">{{ __('shop.tab_'.$type) }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="sm:col-span-2">
             <label class="label" for="bg-upload">{{ __('admin.image') }}</label>
-            <input id="bg-upload" type="file" wire:model="upload" accept="image/png,image/jpeg,image/webp"
+            <input id="bg-upload" type="file" wire:model="upload" accept="image/png,image/jpeg,image/webp,image/gif"
                    class="block w-full text-sm text-dc-muted file:mr-3 file:rounded-md file:border-0 file:bg-dc-600 file:px-3 file:py-2 file:text-dc-header hover:file:bg-dc-500">
-            <p class="mt-2 text-xs text-dc-faint">{{ __('admin.image_hint') }}</p>
+            <p class="mt-2 text-xs text-dc-faint">{{ __('admin.image_hint_'.$newType) }}</p>
             @error('upload') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
         </div>
         <div>
@@ -32,10 +40,17 @@
 
     <ul class="space-y-3">
         @foreach ($rows as $id => $row)
-            @php($bg = $backgrounds[$id] ?? null)
-            @continue(! $bg)
+            @php($item = $items[$id] ?? null)
+            @continue(! $item)
             <li wire:key="admin-bg-{{ $id }}" class="grid gap-3 rounded-lg bg-dc-900 p-3 sm:grid-cols-[10rem_1fr]">
-                <img src="{{ $bg->url() }}" alt="" class="aspect-[5/3] w-full rounded object-cover sm:w-40">
+                <div class="relative overflow-hidden rounded sm:w-40">
+                    @include('livewire.partials.shop-thumbnail', ['type' => $item->type, 'url' => $item->url()])
+                    <span class="absolute top-1.5 left-1.5 flex gap-1">
+                        @if ($item->animated)
+                            <span class="rounded-full bg-dc-950/80 px-2 py-0.5 text-xs font-semibold text-dc-header">{{ __('shop.animated') }}</span>
+                        @endif
+                    </span>
+                </div>
                 <div class="grid gap-3 sm:grid-cols-4">
                     <input type="text" wire:model="rows.{{ $id }}.name" aria-label="{{ __('admin.name') }}" class="input sm:col-span-2">
                     <label class="flex items-center gap-2 text-sm text-dc-muted">
