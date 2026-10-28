@@ -82,5 +82,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/info/commands', [InfoController::class, 'commands'])->name('info.commands');
     Route::get('/info/system', [InfoController::class, 'system'])->name('info.system');
 
-    Route::view('/admin', 'admin')->middleware(EnsureBotOwner::class)->name('admin');
+    Route::middleware(EnsureBotOwner::class)->group(function () {
+        Route::view('/admin', 'admin.reports')->name('admin');
+        Route::view('/admin/backgrounds', 'admin.backgrounds')->name('admin.backgrounds');
+        Route::view('/admin/blacklist', 'admin.blacklist')->name('admin.blacklist');
+    });
 });

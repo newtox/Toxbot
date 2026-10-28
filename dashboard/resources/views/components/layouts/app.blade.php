@@ -94,6 +94,8 @@
                         @include('components.layouts.partials.nav-groups', ['groups' => \App\Support\Navigation::forUser()])
                     @elseif (request()->routeIs(...\App\Support\Navigation::INFO_ROUTES))
                         @include('components.layouts.partials.nav-groups', ['groups' => \App\Support\Navigation::forInfo()])
+                    @elseif (request()->routeIs(...\App\Support\Navigation::ADMIN_ROUTES))
+                        @include('components.layouts.partials.nav-groups', ['groups' => \App\Support\Navigation::forAdmin()])
                     @else
                         @php
                             $sidebarGuilds = rescue(
