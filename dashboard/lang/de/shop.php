@@ -30,4 +30,5 @@ return [
     'tab_bar' => 'Fortschrittsbalken',
     'animated' => 'Animiert',
     'retired' => 'Nicht mehr erhältlich',
+    'preview_loading' => 'Vorschau wird geladen',
 ];

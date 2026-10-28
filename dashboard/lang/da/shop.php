@@ -30,4 +30,5 @@ return [
     'tab_bar' => 'Statuslinjer',
     'animated' => 'Animeret',
     'retired' => 'Ikke længere til salg',
+    'preview_loading' => 'Indlæser forhåndsvisning',
 ];

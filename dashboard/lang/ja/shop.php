@@ -30,4 +30,5 @@ return [
     'tab_bar' => '進行バー',
     'animated' => 'アニメーション',
     'retired' => '販売終了',
+    'preview_loading' => 'プレビューを読み込み中',
 ];

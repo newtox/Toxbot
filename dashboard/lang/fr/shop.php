@@ -30,4 +30,5 @@ return [
     'tab_bar' => 'Barres de progression',
     'animated' => 'Animé',
     'retired' => 'Plus disponible',
+    'preview_loading' => 'Chargement de l\'aperçu',
 ];

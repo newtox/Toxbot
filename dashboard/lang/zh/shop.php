@@ -30,4 +30,5 @@ return [
     'tab_bar' => '进度条',
     'animated' => '动态',
     'retired' => '已下架',
+    'preview_loading' => '正在加载预览',
 ];
