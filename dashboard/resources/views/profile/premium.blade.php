@@ -18,7 +18,14 @@
                 @endforeach
             </ul>
             @unless ($isPremium)
-                <p class="text-sm text-dc-faint">{{ __('home.premium_hint') }}</p>
+                <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+                    @if ($storeUrl = \App\Services\Premium::storeUrl())
+                        <a href="{{ $storeUrl }}" target="_blank" rel="noopener" class="btn bg-dc-yellow font-semibold text-dc-950 hover:brightness-110">
+                            {{ __('home.premium_buy') }} <x-icon name="external" class="size-4" />
+                        </a>
+                    @endif
+                    <p class="min-w-0 flex-1 basis-64 text-sm text-dc-faint">{{ __('home.premium_hint') }}</p>
+                </div>
             @endunless
         </section>
 

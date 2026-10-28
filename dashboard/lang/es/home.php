@@ -53,6 +53,7 @@ return [
     'premium_server_4' => 'Elegir por creador qué pasa con el aviso cuando termina el directo',
     'premium_server_5' => 'Hasta 100 tags del servidor en lugar de 20',
     'premium_hint' => 'Premium se compra directamente en Discord, en el perfil de Toxbot o en el directorio de apps.',
+    'premium_buy' => 'Comprar en Discord',
     'cta_title' => '¿Listo para probarlo?',
     'cta_text' => 'Invita a Toxbot y configúralo todo en pocos minutos.',
     'footer_terms' => 'Términos del servicio',

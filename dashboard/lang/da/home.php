@@ -53,6 +53,7 @@ return [
     'premium_server_4' => 'Pr. skaber vælge, hvad der sker med notifikationen efter streamen',
     'premium_server_5' => 'Op til 100 server-tags i stedet for 20',
     'premium_hint' => 'Premium købes direkte i Discord, i Toxbots profil eller i app-kataloget.',
+    'premium_buy' => 'Køb i Discord',
     'cta_title' => 'Klar til at prøve?',
     'cta_text' => 'Inviter Toxbot og sæt alt op på få minutter.',
     'footer_terms' => 'Servicevilkår',

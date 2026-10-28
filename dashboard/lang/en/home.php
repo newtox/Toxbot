@@ -53,6 +53,7 @@ return [
     'premium_server_4' => 'Choose per creator what happens to the notification when the stream ends',
     'premium_server_5' => 'Up to 100 server tags instead of 20',
     'premium_hint' => 'Premium is bought directly in Discord, in Toxbot\'s profile or the app directory.',
+    'premium_buy' => 'Buy in Discord',
     'cta_title' => 'Ready to try it?',
     'cta_text' => 'Invite Toxbot and set everything up in a few minutes.',
     'footer_terms' => 'Terms of Service',
