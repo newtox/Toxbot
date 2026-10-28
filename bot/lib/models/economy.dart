@@ -35,20 +35,34 @@ class DailyResult {
         streak = 0;
 }
 
-class ShopBackground {
+const shopItemTypes = ['background', 'frame', 'bar'];
+
+class ShopItem {
   final int id;
   final String name;
+  final String type;
+  final bool animated;
   final int price;
   final bool premiumOnly;
 
-  ShopBackground.fromRow(ResultRow row)
+  ShopItem.fromRow(ResultRow row)
       : id = row['id'] as int,
         name = row['name'] as String,
+        type = row['type'] as String? ?? 'background',
+        animated = row['animated'] == 1,
         price = row['price'] as int,
         premiumOnly = row['premium_only'] == 1;
 
   bool get isFree => price == 0 && !premiumOnly;
+
+  String get column => shopItemColumn(type);
 }
+
+String shopItemColumn(String type) => switch (type) {
+      'frame' => 'frame_id',
+      'bar' => 'bar_id',
+      _ => 'background_id',
+    };
 
 class ProfileStats {
   final int xp;

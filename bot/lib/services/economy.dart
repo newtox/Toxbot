@@ -207,19 +207,21 @@ Future<CreditsOverview> creditsOverview(
       rows.first['credits'] as int, streak, nextDaily, entries);
 }
 
-Future<List<ShopBackground>> shopBackgrounds(
+Future<List<ShopItem>> shopItems(
   MySqlConnection connection, {
+  String? type,
   String? name,
 }) async {
   final rows = await connection.query(
-    'SELECT `id`, `name`, `price`, `premium_only` FROM `backgrounds` '
-    'WHERE `active` = 1 ${name != null ? 'AND `name` = ? ' : ''}ORDER BY `sort`, `price`, `id`;',
-    [if (name != null) name],
+    'SELECT `id`, `name`, `type`, `animated`, `price`, `premium_only` FROM `backgrounds` '
+    'WHERE `active` = 1 ${type != null ? 'AND `type` = ? ' : ''}${name != null ? 'AND `name` = ? ' : ''}'
+    'ORDER BY `sort`, `price`, `id`;',
+    [if (type != null) type, if (name != null) name],
   );
-  return rows.map(ShopBackground.fromRow).toList();
+  return rows.map(ShopItem.fromRow).toList();
 }
 
-Future<Set<int>> ownedBackgrounds(
+Future<Set<int>> ownedItems(
   MySqlConnection connection,
   String userId,
 ) async {
@@ -230,70 +232,84 @@ Future<Set<int>> ownedBackgrounds(
   return rows.map((row) => row['background_id'] as int).toSet();
 }
 
-Future<List<String>> usableBackgroundNames(
+Future<List<(String, String)>> usableItems(
   MySqlConnection connection,
   String userId,
   String search,
 ) async {
   final rows = await connection.query(
-    'SELECT `b`.`name` FROM `backgrounds` AS `b` '
+    'SELECT `b`.`name`, `b`.`type` FROM `backgrounds` AS `b` '
     'LEFT JOIN `user_backgrounds` AS `ub` ON `ub`.`background_id` = `b`.`id` AND `ub`.`user` = ? '
     'WHERE `b`.`active` = 1 AND `b`.`name` LIKE ? '
     'AND (`ub`.`id` IS NOT NULL OR (`b`.`price` = 0 AND `b`.`premium_only` = 0)) '
-    'ORDER BY `b`.`sort`, `b`.`id` LIMIT 25;',
+    'ORDER BY `b`.`type`, `b`.`sort`, `b`.`id` LIMIT 22;',
     [userId, '%$search%'],
   );
-  return rows.map((row) => row['name'] as String).toList();
+  return rows
+      .map((row) => (row['name'] as String, row['type'] as String))
+      .toList();
 }
 
 Future<String?> buyOrEquip(
   MySqlConnection connection,
   String userId,
-  ShopBackground background, {
+  ShopItem item, {
   required bool premium,
   bool allowBuy = true,
 }) async {
-  if (background.premiumOnly && !premium) return 'shop_needs_premium';
+  if (item.premiumOnly && !premium) return 'shop_needs_premium';
   await ensureUser(connection, userId);
 
-  final owned = background.isFree ||
-      (await ownedBackgrounds(connection, userId)).contains(background.id);
+  final owned =
+      item.isFree || (await ownedItems(connection, userId)).contains(item.id);
 
   if (!owned) {
     if (!allowBuy) return 'background_not_owned';
 
-    if (background.price > 0) {
+    if (item.price > 0) {
       final paid = await connection.query(
         'UPDATE `users` SET `credits` = `credits` - ? WHERE `id` = ? AND `credits` >= ?;',
-        [background.price, userId, background.price],
+        [item.price, userId, item.price],
       );
       if ((paid.affectedRows ?? 0) == 0) return 'shop_not_enough';
     }
 
     final added = await connection.query(
       'INSERT IGNORE INTO `user_backgrounds` (`user`, `background_id`, `created_at`) VALUES (?, ?, UTC_TIMESTAMP());',
-      [userId, background.id],
+      [userId, item.id],
     );
     if ((added.affectedRows ?? 0) == 0) {
-      if (background.price > 0) {
+      if (item.price > 0) {
         await connection.query(
           'UPDATE `users` SET `credits` = `credits` + ? WHERE `id` = ?;',
-          [background.price, userId],
+          [item.price, userId],
         );
       }
-    } else if (background.price > 0) {
+    } else if (item.price > 0) {
       await connection.query(
         'INSERT INTO `credit_transactions` (`user`, `amount`, `reason`, `created_at`) VALUES (?, ?, ?, UTC_TIMESTAMP());',
-        [userId, -background.price, 'purchase'],
+        [userId, -item.price, 'purchase'],
       );
     }
   }
 
   await connection.query(
-    'UPDATE `users` SET `background_id` = ? WHERE `id` = ?;',
-    [background.id, userId],
+    'UPDATE `users` SET `${item.column}` = ? WHERE `id` = ?;',
+    [item.id, userId],
   );
   return null;
+}
+
+Future<void> unequip(
+  MySqlConnection connection,
+  String userId,
+  String type,
+) async {
+  await ensureUser(connection, userId);
+  await connection.query(
+    'UPDATE `users` SET `${shopItemColumn(type)}` = NULL WHERE `id` = ?;',
+    [userId],
+  );
 }
 
 Future<List<(String, int)>> leaderboard(

@@ -140,10 +140,10 @@ Future<void> countCommand(NyxxGateway client, CommandContext context) async {
   );
 }
 
-Future<List<int>?> fetchProfileCard(
+Future<({List<int> data, String fileName})?> fetchProfileCard(
   Snowflake userId, {
   Snowflake? guildId,
-  int? background,
+  economy.ShopItem? preview,
 }) async {
   final base = dashboardUrl;
   if (base == null) return null;
@@ -151,37 +151,62 @@ Future<List<int>?> fetchProfileCard(
     final uri = Uri.parse('$base/card/$userId.png').replace(
       queryParameters: {
         if (guildId != null) 'guild': guildId.toString(),
-        if (background != null) 'bg': background.toString(),
+        if (preview != null)
+          (preview.type == 'background' ? 'bg' : preview.type):
+              preview.id.toString(),
       },
     );
-    final response = await http.get(uri).timeout(const Duration(seconds: 10));
+    final response = await http.get(uri).timeout(const Duration(seconds: 25));
     if (response.statusCode != 200) {
       print('Profile card: dashboard answered ${response.statusCode}');
       return null;
     }
-    return response.bodyBytes;
+    final gif =
+        response.headers['content-type']?.startsWith('image/gif') ?? false;
+    return (data: response.bodyBytes, fileName: gif ? 'card.gif' : 'card.png');
   } catch (e) {
     print('Profile card could not be loaded: $e');
     return null;
   }
 }
 
-Future<Iterable<CommandOptionChoiceBuilder<String>>> ownedBackgroundChoices(
+Future<Iterable<CommandOptionChoiceBuilder<String>>> ownedItemChoices(
   AutocompleteContext context,
 ) async {
   try {
-    final names = await withConnection(
-      (connection) => economy.usableBackgroundNames(
+    final user = context.user;
+    final search = context.currentValue.toLowerCase();
+    final items = await withConnection(
+      (connection) => economy.usableItems(
         connection,
-        context.user.id.toString(),
+        user.id.toString(),
         context.currentValue,
       ),
     );
-    return names.map(
-      (name) => CommandOptionChoiceBuilder(name: name, value: name),
-    );
+    final defaults = <CommandOptionChoiceBuilder<String>>[];
+    for (final type in economy.shopItemTypes) {
+      final label = await getString(user, 'shop_default_$type');
+      if (search.isEmpty || label.toLowerCase().contains(search)) {
+        defaults.add(
+          CommandOptionChoiceBuilder(name: label, value: 'default:$type'),
+        );
+      }
+    }
+    final kinds = {
+      for (final type in economy.shopItemTypes)
+        type: await getString(user, 'shop_kind_$type'),
+    };
+    return [
+      ...items.map(
+        (item) => CommandOptionChoiceBuilder(
+          name: '${item.$1} · ${kinds[item.$2] ?? item.$2}',
+          value: item.$1,
+        ),
+      ),
+      ...defaults,
+    ].take(25);
   } catch (e) {
-    print('Error in background autocomplete: $e');
+    print('Error in item autocomplete: $e');
     return const [];
   }
 }
