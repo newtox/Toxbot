@@ -11,7 +11,7 @@ return [
     'embed_text' => '例如，Toxbot 会在 /hug、/pat 或 /info 中使用这个颜色。',
     'color_invalid' => '请输入像 #7289da 这样的十六进制颜色。',
     'premium_server_title' => 'Server Premium',
-    'premium_server_description' => '拥有 Toxbot Premium 后，你可以为一个你管理的服务器开启 Server Premium：更多创作者、每位创作者专属的消息和提及身份组、过滤器等。',
+    'premium_server_description' => '拥有 Toxbot Premium，你可以为一个你管理的服务器开启 Server Premium：最多 50 位创作者（而不是 5 位）、每位创作者专属的直播通知和提及身份组、游戏和标题过滤，以及 100 个服务器标签（而不是 20 个）。',
     'premium_server_none' => '不选择服务器',
     'premium_server_locked' => 'Toxbot Premium 包含一个自选服务器的 Server Premium。',
     'premium_server_invalid' => '请选择一个你管理且有 Toxbot 的服务器。',

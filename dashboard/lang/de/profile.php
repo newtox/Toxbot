@@ -11,7 +11,7 @@ return [
     'embed_text' => 'Toxbot nutzt diese Farbe zum Beispiel bei /hug, /pat oder /info.',
     'color_invalid' => 'Bitte gib eine Hex-Farbe wie #7289da an.',
     'premium_server_title' => 'Server Premium',
-    'premium_server_description' => 'Mit Toxbot Premium schaltest du Server Premium für einen Server frei, den du verwaltest: mehr Creator, eigene Nachricht und Ping-Rolle pro Creator, Filter und mehr.',
+    'premium_server_description' => 'Mit Toxbot Premium schaltest du Server Premium für einen Server frei, den du verwaltest: bis zu 50 Creator statt 5, eigene Stream-Benachrichtigung und Ping-Rolle pro Creator, Spiel- und Titelfilter und 100 statt 20 Server-Tags.',
     'premium_server_none' => 'Kein Server',
     'premium_server_locked' => 'Server Premium für einen Server deiner Wahl ist in Toxbot Premium enthalten.',
     'premium_server_invalid' => 'Bitte wähle einen Server, den du verwaltest und auf dem Toxbot ist.',
