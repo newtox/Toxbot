@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:nyxx/nyxx.dart';
@@ -5,6 +6,7 @@ import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:toxbot/services/developer.dart';
+import 'package:toxbot/services/structure.dart';
 import 'package:toxbot/utils/config.dart';
 import 'package:toxbot/utils/reply.dart';
 
@@ -300,6 +302,48 @@ final _eval = ChatCommand(
   },
 );
 
+final _structure = ChatCommand(
+  'structure',
+  'Export the roles, channels and permissions of this server as JSON.',
+  localizedDescriptions: {
+    Locale.da: 'Eksportér serverens roller, kanaler og tilladelser som JSON.',
+    Locale.de:
+        'Rollen, Kanäle und Berechtigungen dieses Servers als JSON exportieren.',
+    Locale.enUs:
+        'Export the roles, channels and permissions of this server as JSON.',
+    Locale.esEs:
+        'Exportar los roles, canales y permisos de este servidor como JSON.',
+    Locale.fr:
+        'Exporter les rôles, salons et permissions de ce serveur en JSON.',
+    Locale.ru: 'Экспортировать роли, каналы и права этого сервера в JSON.',
+    Locale.hi:
+        'इस सर्वर के रोल, चैनल और अनुमतियाँ JSON के रूप में निर्यात करें।',
+    Locale.zhCn: '将此服务器的身份组、频道和权限导出为 JSON。',
+    Locale.ja: 'このサーバーのロール、チャンネル、権限を JSON でエクスポートします。',
+    Locale.ko: '이 서버의 역할, 채널, 권한을 JSON으로 내보냅니다.',
+  },
+  checks: [GuildCheck.all()],
+  (ChatContext context) async {
+    try {
+      final guild = context.guild!;
+      final json = await exportGuildStructure(context.client, guild);
+      await context.respond(
+        MessageBuilder(
+          attachments: [
+            AttachmentBuilder(
+              data: utf8.encode(json),
+              fileName: 'structure-${guild.id}.json',
+            ),
+          ],
+        ),
+        level: ResponseLevel.hint,
+      );
+    } catch (e) {
+      await replyException(context, e);
+    }
+  },
+);
+
 final system = ChatGroup(
   'system',
   'Tools for the developer.',
@@ -316,5 +360,13 @@ final system = ChatGroup(
     Locale.ko: '개발자용 도구입니다.',
   },
   checks: [UserCheck.id(ownerId)],
-  children: [_clearCache, _skid, _listRoles, _rustdeskIds, _sql, _eval],
+  children: [
+    _clearCache,
+    _skid,
+    _listRoles,
+    _structure,
+    _rustdeskIds,
+    _sql,
+    _eval,
+  ],
 );
