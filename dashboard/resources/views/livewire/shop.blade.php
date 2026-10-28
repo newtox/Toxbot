@@ -68,6 +68,9 @@
                             @if ($item['animated'])
                                 <span class="rounded-full bg-dc-950/80 px-2 py-0.5 text-xs font-semibold text-dc-header">{{ __('shop.animated') }}</span>
                             @endif
+                            @if ($item['retired'])
+                                <span class="rounded-full bg-dc-950/80 px-2 py-0.5 text-xs font-semibold text-dc-muted">{{ __('shop.retired') }}</span>
+                            @endif
                         </span>
                         @if ($item['equipped'])
                             <span class="absolute top-2 right-2 rounded-full bg-accent px-2 py-0.5 text-xs font-semibold text-on-accent">{{ __('shop.equipped_badge') }}</span>

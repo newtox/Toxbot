@@ -169,4 +169,33 @@ class ShopTest extends TestCase
             ->assertSet('previews', [ShopItem::BACKGROUND => $ocean->id, ShopItem::FRAME => $frame->id])
             ->assertSee('bg='.$ocean->id.'&amp;frame='.$frame->id, false);
     }
+
+    public function test_retired_items_stay_with_their_owners(): void
+    {
+        $this->credits(800);
+        $ocean = ShopItem::where('name', 'Ocean')->first();
+        Livewire::test(Shop::class)->call('buy', $ocean->id);
+        $network = ShopItem::where('name', 'Network')->first();
+        Livewire::test(Shop::class)->call('equip', $network->id);
+        $forest = ShopItem::where('name', 'Forest')->first();
+
+        $ocean->update(['active' => false]);
+        $network->update(['active' => false]);
+        $forest->update(['active' => false]);
+
+        Livewire::test(Shop::class)
+            ->assertSee('Ocean')->assertSee('Network')->assertDontSee('Forest')
+            ->assertSee(__('shop.retired'))
+            ->call('equip', $ocean->id)->assertSet('success', true)
+            ->call('equip', $network->id)->assertSet('success', true)
+            ->call('buy', $forest->id)->assertSet('success', false);
+
+        $this->assertSame($network->id, BotUser::find(self::USER)->background_id);
+
+        $this->actingAs(DashboardUser::create(['id' => 223456789012345678, 'username' => 'other']));
+        Livewire::test(Shop::class)
+            ->assertDontSee('Ocean')->assertDontSee('Network')
+            ->call('equip', $network->id)->assertSet('success', false)
+            ->call('preview', $ocean->id)->assertSet('previews', []);
+    }
 }

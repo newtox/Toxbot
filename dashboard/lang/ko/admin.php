@@ -16,7 +16,7 @@ return [
     'confirm_blacklist' => '태그를 삭제하고 소유자의 태그 사용을 금지할까요?',
     'delete_and_blacklist' => '삭제 및 소유자 차단',
     'backgrounds_title' => '상점',
-    'backgrounds_description' => '상점 구성: 배경, 아바타 테두리, 진행 막대. 꺼진 아이템은 구매 상태로 남지만 표시되지 않습니다.',
+    'backgrounds_description' => '상점 구성: 배경, 아바타 테두리, 진행 막대. 상점에서 뺀 아이템은 더 이상 구매할 수 없지만, 이미 가진 사람은 계속 사용할 수 있습니다.',
     'image' => '이미지',
     'name' => '이름',
     'price' => '가격',

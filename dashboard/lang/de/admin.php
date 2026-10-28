@@ -16,7 +16,7 @@ return [
     'confirm_blacklist' => 'Tag löschen und den Besitzer für Tags sperren?',
     'delete_and_blacklist' => 'Löschen und Besitzer sperren',
     'backgrounds_title' => 'Shop',
-    'backgrounds_description' => 'Was im Shop steht: Hintergründe, Avatar-Rahmen und Fortschrittsbalken. Ausgeschaltete Artikel bleiben gekauft, werden aber nicht angezeigt.',
+    'backgrounds_description' => 'Was im Shop steht: Hintergründe, Avatar-Rahmen und Fortschrittsbalken. Artikel, die du aus dem Shop nimmst, kann niemand mehr kaufen, wer sie schon hat, behält und benutzt sie weiter.',
     'image' => 'Bild',
     'name' => 'Name',
     'price' => 'Preis',

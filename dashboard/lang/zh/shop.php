@@ -29,4 +29,5 @@ return [
     'tab_frame' => '头像框',
     'tab_bar' => '进度条',
     'animated' => '动态',
+    'retired' => '已下架',
 ];

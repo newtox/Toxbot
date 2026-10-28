@@ -29,4 +29,5 @@ return [
     'tab_frame' => 'Avatar-Rahmen',
     'tab_bar' => 'Fortschrittsbalken',
     'animated' => 'Animiert',
+    'retired' => 'Nicht mehr erhältlich',
 ];

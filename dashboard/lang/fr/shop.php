@@ -29,4 +29,5 @@ return [
     'tab_frame' => 'Cadres d\'avatar',
     'tab_bar' => 'Barres de progression',
     'animated' => 'Animé',
+    'retired' => 'Plus disponible',
 ];

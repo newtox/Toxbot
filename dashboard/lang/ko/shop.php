@@ -29,4 +29,5 @@ return [
     'tab_frame' => '아바타 테두리',
     'tab_bar' => '진행 막대',
     'animated' => '애니메이션',
+    'retired' => '판매 종료',
 ];

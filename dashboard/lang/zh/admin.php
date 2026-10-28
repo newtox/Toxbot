@@ -16,7 +16,7 @@ return [
     'confirm_blacklist' => '删除标签并禁止所有者使用标签？',
     'delete_and_blacklist' => '删除并封禁所有者',
     'backgrounds_title' => '商店',
-    'backgrounds_description' => '商店内容：背景、头像框和进度条。关闭的物品仍归已购买的人所有，但不会显示。',
+    'backgrounds_description' => '商店内容：背景、头像框和进度条。从商店下架的物品无法再购买，但已拥有的人可以继续使用。',
     'image' => '图片',
     'name' => '名称',
     'price' => '价格',
