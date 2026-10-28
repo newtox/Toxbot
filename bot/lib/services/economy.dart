@@ -383,3 +383,86 @@ Future<DateTime> extendXpBoost(
   );
   return rows.first['xp_boost_until'] as DateTime;
 }
+
+Future<String?> transferCredits(
+  MySqlConnection connection,
+  String fromId,
+  String toId,
+  int amount,
+) async {
+  await ensureUser(connection, fromId);
+  final paid = await connection.query(
+    'UPDATE `users` SET `credits` = `credits` - ? WHERE `id` = ? AND `credits` >= ?;',
+    [amount, fromId, amount],
+  );
+  if ((paid.affectedRows ?? 0) == 0) return 'pay_not_enough';
+
+  await ensureUser(connection, toId);
+  await connection.query(
+    'UPDATE `users` SET `credits` = `credits` + ? WHERE `id` = ?;',
+    [amount, toId],
+  );
+  await connection.query(
+    'INSERT INTO `credit_transactions` (`user`, `amount`, `reason`, `reference`, `created_at`) '
+    'VALUES (?, ?, ?, NULL, UTC_TIMESTAMP()), (?, ?, ?, NULL, UTC_TIMESTAMP());',
+    [fromId, -amount, 'transfer_out', toId, amount, 'transfer_in'],
+  );
+  return null;
+}
+
+Future<int> adjustCredits(
+  MySqlConnection connection,
+  String userId,
+  int amount,
+) async {
+  await ensureUser(connection, userId);
+  final balance = await getCredits(connection, userId);
+  final change = amount < 0 ? -min(balance, -amount) : amount;
+  if (change != 0) {
+    await addCredits(connection, userId, change, 'admin');
+  }
+  return balance + change;
+}
+
+Future<bool> giveItem(
+  MySqlConnection connection,
+  String userId,
+  ShopItem item,
+) async {
+  await ensureUser(connection, userId);
+  final added = await connection.query(
+    'INSERT IGNORE INTO `user_backgrounds` (`user`, `background_id`, `created_at`) VALUES (?, ?, UTC_TIMESTAMP());',
+    [userId, item.id],
+  );
+  return (added.affectedRows ?? 0) > 0;
+}
+
+Future<bool> takeItem(
+  MySqlConnection connection,
+  String userId,
+  ShopItem item,
+) async {
+  final removed = await connection.query(
+    'DELETE FROM `user_backgrounds` WHERE `user` = ? AND `background_id` = ?;',
+    [userId, item.id],
+  );
+  await connection.query(
+    'UPDATE `users` SET `${item.column}` = NULL WHERE `id` = ? AND `${item.column}` = ?;',
+    [userId, item.id],
+  );
+  return (removed.affectedRows ?? 0) > 0;
+}
+
+Future<List<(String, String)>> allItems(
+  MySqlConnection connection,
+  String search,
+) async {
+  final rows = await connection.query(
+    'SELECT `name`, `type` FROM `backgrounds` WHERE `name` LIKE ? '
+    'ORDER BY `type`, `sort`, `id` LIMIT 25;',
+    ['%$search%'],
+  );
+  return rows
+      .map((row) => (row['name'] as String, row['type'] as String))
+      .toList();
+}

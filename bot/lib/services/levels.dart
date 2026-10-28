@@ -211,6 +211,29 @@ Future<Iterable<CommandOptionChoiceBuilder<String>>> ownedItemChoices(
   }
 }
 
+Future<Iterable<CommandOptionChoiceBuilder<String>>> allItemChoices(
+  AutocompleteContext context,
+) async {
+  try {
+    final items = await withConnection(
+      (connection) => economy.allItems(connection, context.currentValue),
+    );
+    final kinds = {
+      for (final type in economy.shopItemTypes)
+        type: await getString(context.user, 'shop_kind_$type'),
+    };
+    return items.map(
+      (item) => CommandOptionChoiceBuilder(
+        name: '${item.$1} · ${kinds[item.$2] ?? item.$2}',
+        value: item.$1,
+      ),
+    );
+  } catch (e) {
+    print('Error in item autocomplete: $e');
+    return const [];
+  }
+}
+
 void setupMessageXpHandler(NyxxGateway client) {
   client.onMessageCreate.listen((event) async {
     final author = event.message.author;

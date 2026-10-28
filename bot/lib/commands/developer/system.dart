@@ -6,8 +6,11 @@ import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:toxbot/services/developer.dart';
+import 'package:toxbot/services/economy.dart' as economy;
+import 'package:toxbot/services/levels.dart';
 import 'package:toxbot/services/structure.dart';
 import 'package:toxbot/utils/config.dart';
+import 'package:toxbot/utils/database.dart';
 import 'package:toxbot/utils/reply.dart';
 
 final _clearCache = ChatCommand(
@@ -267,6 +270,205 @@ final _sql = ChatCommand(
   },
 );
 
+final _credits = ChatCommand(
+  'credits',
+  'Give a user credits or take them away.',
+  localizedDescriptions: {
+    Locale.da: 'Giv en bruger credits eller tag dem fra brugeren.',
+    Locale.de: 'Einem Nutzer Credits geben oder abziehen.',
+    Locale.enUs: 'Give a user credits or take them away.',
+    Locale.esEs: 'Dar créditos a un usuario o quitárselos.',
+    Locale.fr: 'Donner des crédits à un utilisateur ou lui en retirer.',
+    Locale.ru: 'Выдать пользователю кредиты или забрать их.',
+    Locale.hi: 'किसी उपयोगकर्ता को क्रेडिट दें या उससे लें।',
+    Locale.zhCn: '给用户发放或扣除积分。',
+    Locale.ja: 'ユーザーにクレジットを付与または没収します。',
+    Locale.ko: '사용자에게 크레딧을 주거나 회수합니다.',
+  },
+  (
+    ChatContext context,
+    @Description('The user.', {
+      Locale.da: 'Brugeren.',
+      Locale.de: 'Der Nutzer.',
+      Locale.enUs: 'The user.',
+      Locale.esEs: 'El usuario.',
+      Locale.fr: 'L\'utilisateur.',
+      Locale.ru: 'Пользователь.',
+      Locale.hi: 'उपयोगकर्ता।',
+      Locale.zhCn: '用户。',
+      Locale.ja: 'ユーザー。',
+      Locale.ko: '사용자.',
+    })
+    User target,
+    @Description('Credits to add, negative to take away.', {
+      Locale.da: 'Credits der lægges til, negativt for at trække fra.',
+      Locale.de: 'Credits zum Hinzufügen, negativ zum Abziehen.',
+      Locale.enUs: 'Credits to add, negative to take away.',
+      Locale.esEs: 'Créditos para sumar; en negativo para quitar.',
+      Locale.fr: 'Crédits à ajouter, négatif pour en retirer.',
+      Locale.ru: 'Сколько кредитов добавить, отрицательное число забирает.',
+      Locale.hi: 'जोड़ने के लिए क्रेडिट, घटाने के लिए ऋणात्मक संख्या।',
+      Locale.zhCn: '要增加的积分，负数表示扣除。',
+      Locale.ja: '追加するクレジット。マイナスで没収。',
+      Locale.ko: '추가할 크레딧, 음수면 회수합니다.',
+    })
+    int amount,
+  ) async {
+    try {
+      final balance = await withConnection(
+        (connection) =>
+            economy.adjustCredits(connection, target.id.toString(), amount),
+      );
+      await replySuccess(context, 'system_credits_done',
+          replace: {
+            '&user': target.mention,
+            '&amount': formatCredits(balance),
+          },
+          level: ResponseLevel.hint);
+    } catch (e) {
+      await replyException(context, e);
+    }
+  },
+);
+
+final _giveItem = ChatCommand(
+  'give-item',
+  'Give a user a shop item for free.',
+  localizedDescriptions: {
+    Locale.da: 'Giv en bruger en ting fra butikken gratis.',
+    Locale.de: 'Einem Nutzer einen Shop-Artikel schenken.',
+    Locale.enUs: 'Give a user a shop item for free.',
+    Locale.esEs: 'Regalar a un usuario un artículo de la tienda.',
+    Locale.fr: 'Offrir un article de la boutique à un utilisateur.',
+    Locale.ru: 'Подарить пользователю предмет из магазина.',
+    Locale.hi: 'किसी उपयोगकर्ता को दुकान की कोई चीज़ मुफ़्त दें।',
+    Locale.zhCn: '免费送给用户一件商店物品。',
+    Locale.ja: 'ユーザーにショップのアイテムをプレゼントします。',
+    Locale.ko: '사용자에게 상점 아이템을 무료로 줍니다.',
+  },
+  (
+    ChatContext context,
+    @Description('The user.', {
+      Locale.da: 'Brugeren.',
+      Locale.de: 'Der Nutzer.',
+      Locale.enUs: 'The user.',
+      Locale.esEs: 'El usuario.',
+      Locale.fr: 'L\'utilisateur.',
+      Locale.ru: 'Пользователь.',
+      Locale.hi: 'उपयोगकर्ता।',
+      Locale.zhCn: '用户。',
+      Locale.ja: 'ユーザー。',
+      Locale.ko: '사용자.',
+    })
+    User target,
+    @Description('The shop item.', {
+      Locale.da: 'Tingen fra butikken.',
+      Locale.de: 'Der Shop-Artikel.',
+      Locale.enUs: 'The shop item.',
+      Locale.esEs: 'El artículo de la tienda.',
+      Locale.fr: 'L\'article de la boutique.',
+      Locale.ru: 'Предмет из магазина.',
+      Locale.hi: 'दुकान की चीज़।',
+      Locale.zhCn: '商店物品。',
+      Locale.ja: 'ショップのアイテム。',
+      Locale.ko: '상점 아이템.',
+    })
+    @Autocomplete(allItemChoices)
+    String name,
+  ) async {
+    try {
+      final result = await withConnection((connection) async {
+        final found = await economy.shopItems(connection,
+            name: name, includeRetired: true);
+        if (found.isEmpty) return null;
+        return economy.giveItem(connection, target.id.toString(), found.first);
+      });
+      if (result == null) {
+        await replyError(context, 'background_not_found',
+            replace: {'&name': name});
+        return;
+      }
+      await replySuccess(
+          context, result ? 'system_item_given' : 'system_item_already',
+          replace: {'&user': target.mention, '&name': name},
+          level: ResponseLevel.hint);
+    } catch (e) {
+      await replyException(context, e);
+    }
+  },
+);
+
+final _takeItem = ChatCommand(
+  'take-item',
+  'Take a shop item away from a user.',
+  localizedDescriptions: {
+    Locale.da: 'Tag en ting fra butikken fra en bruger.',
+    Locale.de: 'Einem Nutzer einen Shop-Artikel wegnehmen.',
+    Locale.enUs: 'Take a shop item away from a user.',
+    Locale.esEs: 'Quitar a un usuario un artículo de la tienda.',
+    Locale.fr: 'Retirer un article de la boutique à un utilisateur.',
+    Locale.ru: 'Забрать у пользователя предмет из магазина.',
+    Locale.hi: 'किसी उपयोगकर्ता से दुकान की कोई चीज़ वापस लें।',
+    Locale.zhCn: '收回用户的一件商店物品。',
+    Locale.ja: 'ユーザーからショップのアイテムを取り上げます。',
+    Locale.ko: '사용자에게서 상점 아이템을 회수합니다.',
+  },
+  (
+    ChatContext context,
+    @Description('The user.', {
+      Locale.da: 'Brugeren.',
+      Locale.de: 'Der Nutzer.',
+      Locale.enUs: 'The user.',
+      Locale.esEs: 'El usuario.',
+      Locale.fr: 'L\'utilisateur.',
+      Locale.ru: 'Пользователь.',
+      Locale.hi: 'उपयोगकर्ता।',
+      Locale.zhCn: '用户。',
+      Locale.ja: 'ユーザー。',
+      Locale.ko: '사용자.',
+    })
+    User target,
+    @Description('The shop item.', {
+      Locale.da: 'Tingen fra butikken.',
+      Locale.de: 'Der Shop-Artikel.',
+      Locale.enUs: 'The shop item.',
+      Locale.esEs: 'El artículo de la tienda.',
+      Locale.fr: 'L\'article de la boutique.',
+      Locale.ru: 'Предмет из магазина.',
+      Locale.hi: 'दुकान की चीज़।',
+      Locale.zhCn: '商店物品。',
+      Locale.ja: 'ショップのアイテム。',
+      Locale.ko: '상점 아이템.',
+    })
+    @Autocomplete(allItemChoices)
+    String name,
+  ) async {
+    try {
+      final result = await withConnection((connection) async {
+        final found = await economy.shopItems(connection,
+            name: name, includeRetired: true);
+        if (found.isEmpty) return null;
+        return economy.takeItem(connection, target.id.toString(), found.first);
+      });
+      if (result == null) {
+        await replyError(context, 'background_not_found',
+            replace: {'&name': name});
+        return;
+      }
+      if (!result) {
+        await replyError(context, 'system_item_not_owned',
+            replace: {'&user': target.mention, '&name': name});
+        return;
+      }
+      await replySuccess(context, 'system_item_taken',
+          replace: {'&user': target.mention, '&name': name},
+          level: ResponseLevel.hint);
+    } catch (e) {
+      await replyException(context, e);
+    }
+  },
+);
+
 final _eval = ChatCommand(
   'eval',
   'Run Dart code.',
@@ -365,6 +567,9 @@ final system = ChatGroup(
     _skid,
     _listRoles,
     _structure,
+    _credits,
+    _giveItem,
+    _takeItem,
     _rustdeskIds,
     _sql,
     _eval,

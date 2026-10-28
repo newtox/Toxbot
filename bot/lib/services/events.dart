@@ -144,6 +144,7 @@ CommandsPlugin setupCommandHandler(CommandsPlugin commands) {
   commands.addCommand(credits);
   commands.addCommand(daily);
   commands.addCommand(leaderboard);
+  commands.addCommand(pay);
   commands.addCommand(profile);
   commands.addCommand(shop);
 
