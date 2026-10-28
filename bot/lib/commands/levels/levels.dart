@@ -535,7 +535,11 @@ final background = ChatCommand(
 
       final premium = await isUserPremium(user.id, context: context);
       final error = await withConnection((connection) async {
-        final found = await economy.shopItems(connection, name: name);
+        final found = await economy.shopItems(
+          connection,
+          name: name,
+          includeRetired: true,
+        );
         if (found.isEmpty) return 'background_not_found';
         return economy.buyOrEquip(
           connection,
