@@ -11,6 +11,8 @@ class Navigation
 
     public const INFO_ROUTES = ['info', 'info.*'];
 
+    public const ADMIN_ROUTES = ['admin', 'admin.*'];
+
     public static function forGuild(array $guild): array
     {
         $id = $guild['id'];
@@ -66,6 +68,15 @@ class Navigation
         ], collapsible: false)];
     }
 
+    public static function forAdmin(): array
+    {
+        return [self::group('admin', __('menu.admin'), [
+            self::item(route('admin'), 'alert', __('admin.reports_title'), request()->routeIs('admin')),
+            self::item(route('admin.backgrounds'), 'card', __('admin.backgrounds_title'), request()->routeIs('admin.backgrounds')),
+            self::item(route('admin.blacklist'), 'lock', __('admin.blacklist_title'), request()->routeIs('admin.blacklist')),
+        ], collapsible: false)];
+    }
+
     public static function userMenu(): array
     {
         return array_filter([
@@ -73,7 +84,7 @@ class Navigation
             self::item(route('profile'), 'profile', __('menu.account'), request()->routeIs(...self::USER_ROUTES)),
             self::item(route('info'), 'info', __('menu.info'), request()->routeIs(...self::INFO_ROUTES)),
             EnsureBotOwner::check(auth()->id())
-                ? self::item(route('admin'), 'shield', __('menu.admin'), request()->routeIs('admin'))
+                ? self::item(route('admin'), 'shield', __('menu.admin'), request()->routeIs(...self::ADMIN_ROUTES))
                 : null,
         ]);
     }
