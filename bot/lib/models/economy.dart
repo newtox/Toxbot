@@ -44,6 +44,7 @@ class ShopItem {
   final bool animated;
   final int price;
   final bool premiumOnly;
+  final bool active;
 
   ShopItem.fromRow(ResultRow row)
       : id = row['id'] as int,
@@ -51,7 +52,8 @@ class ShopItem {
         type = row['type'] as String? ?? 'background',
         animated = row['animated'] == 1,
         price = row['price'] as int,
-        premiumOnly = row['premium_only'] == 1;
+        premiumOnly = row['premium_only'] == 1,
+        active = row['active'] != 0;
 
   bool get isFree => price == 0 && !premiumOnly;
 

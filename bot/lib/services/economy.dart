@@ -211,10 +211,11 @@ Future<List<ShopItem>> shopItems(
   MySqlConnection connection, {
   String? type,
   String? name,
+  bool includeRetired = false,
 }) async {
   final rows = await connection.query(
-    'SELECT `id`, `name`, `type`, `animated`, `price`, `premium_only` FROM `backgrounds` '
-    'WHERE `active` = 1 ${type != null ? 'AND `type` = ? ' : ''}${name != null ? 'AND `name` = ? ' : ''}'
+    'SELECT `id`, `name`, `type`, `animated`, `price`, `premium_only`, `active` FROM `backgrounds` '
+    'WHERE ${includeRetired ? '1 = 1' : '`active` = 1'} ${type != null ? 'AND `type` = ? ' : ''}${name != null ? 'AND `name` = ? ' : ''}'
     'ORDER BY `sort`, `price`, `id`;',
     [if (type != null) type, if (name != null) name],
   );
@@ -240,8 +241,8 @@ Future<List<(String, String)>> usableItems(
   final rows = await connection.query(
     'SELECT `b`.`name`, `b`.`type` FROM `backgrounds` AS `b` '
     'LEFT JOIN `user_backgrounds` AS `ub` ON `ub`.`background_id` = `b`.`id` AND `ub`.`user` = ? '
-    'WHERE `b`.`active` = 1 AND `b`.`name` LIKE ? '
-    'AND (`ub`.`id` IS NOT NULL OR (`b`.`price` = 0 AND `b`.`premium_only` = 0)) '
+    'WHERE `b`.`name` LIKE ? '
+    'AND (`ub`.`id` IS NOT NULL OR (`b`.`active` = 1 AND `b`.`price` = 0 AND `b`.`premium_only` = 0)) '
     'ORDER BY `b`.`type`, `b`.`sort`, `b`.`id` LIMIT 22;',
     [userId, '%$search%'],
   );
@@ -260,10 +261,11 @@ Future<String?> buyOrEquip(
   if (item.premiumOnly && !premium) return 'shop_needs_premium';
   await ensureUser(connection, userId);
 
-  final owned =
-      item.isFree || (await ownedItems(connection, userId)).contains(item.id);
+  final bought = (await ownedItems(connection, userId)).contains(item.id);
+  final owned = bought || (item.isFree && item.active);
 
   if (!owned) {
+    if (!item.active) return 'background_not_owned';
     if (!allowBuy) return 'background_not_owned';
 
     if (item.price > 0) {
@@ -291,6 +293,13 @@ Future<String?> buyOrEquip(
         [userId, -item.price, 'purchase'],
       );
     }
+  }
+
+  if (owned && !bought) {
+    await connection.query(
+      'INSERT IGNORE INTO `user_backgrounds` (`user`, `background_id`, `created_at`) VALUES (?, ?, UTC_TIMESTAMP());',
+      [userId, item.id],
+    );
   }
 
   await connection.query(
