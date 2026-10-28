@@ -94,10 +94,16 @@ class AdminBackgrounds extends Component
         }
     }
 
-    public function saveRow(int $id): void
+    public function updatedRows(mixed $value, string $key): void
     {
         $this->authorizeOwner();
 
+        $id = (int) explode('.', $key)[0];
+        if (! isset($this->rows[$id])) {
+            return;
+        }
+
+        $this->resetValidation();
         $this->validate([
             "rows.$id.name" => ['required', 'string', 'max:64', Rule::unique('backgrounds', 'name')->ignore($id)],
             "rows.$id.price" => ['required', 'integer', 'min:0', 'max:100000000'],
@@ -105,7 +111,7 @@ class AdminBackgrounds extends Component
         ]);
 
         ShopItem::findOrFail($id)->update([
-            'name' => $this->rows[$id]['name'],
+            'name' => trim($this->rows[$id]['name']),
             'price' => (int) $this->rows[$id]['price'],
             'premium_only' => (bool) $this->rows[$id]['premium_only'],
             'active' => (bool) $this->rows[$id]['active'],

@@ -78,6 +78,30 @@ class AdminTest extends TestCase
         Storage::disk('local')->assertMissing('backgrounds/'.$bg->file);
     }
 
+    public function test_item_changes_are_saved_right_away(): void
+    {
+        $this->actingAs(DashboardUser::create(['id' => (int) self::OWNER, 'username' => 'newtox']));
+        $item = ShopItem::create(['name' => 'Ocean', 'file' => 'ocean.jpg', 'price' => 500]);
+        ShopItem::create(['name' => 'Forest', 'file' => 'forest.jpg', 'price' => 500]);
+
+        $component = Livewire::test(AdminBackgrounds::class)
+            ->set("rows.{$item->id}.price", '750')
+            ->set("rows.{$item->id}.premium_only", true)
+            ->set("rows.{$item->id}.active", false)
+            ->set("rows.{$item->id}.name", 'Deep Ocean')
+            ->assertHasNoErrors()
+            ->assertDispatched('saved');
+
+        $item->refresh();
+        $this->assertSame('Deep Ocean', $item->name);
+        $this->assertSame(750, $item->price);
+        $this->assertTrue($item->premium_only);
+        $this->assertFalse($item->active);
+
+        $component->set("rows.{$item->id}.name", 'Forest')->assertHasErrors("rows.{$item->id}.name");
+        $this->assertSame('Deep Ocean', $item->fresh()->name);
+    }
+
     public function test_upload_an_animated_frame(): void
     {
         if (! class_exists(\Imagick::class)) {

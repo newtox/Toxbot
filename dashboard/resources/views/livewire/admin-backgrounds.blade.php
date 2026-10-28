@@ -52,20 +52,19 @@
                     </span>
                 </div>
                 <div class="grid gap-3 sm:grid-cols-4">
-                    <input type="text" wire:model="rows.{{ $id }}.name" aria-label="{{ __('admin.name') }}" class="input sm:col-span-2">
+                    <input type="text" wire:model.live.blur="rows.{{ $id }}.name" aria-label="{{ __('admin.name') }}" class="input sm:col-span-2">
                     <label class="flex items-center gap-2 text-sm text-dc-muted">
                         <span class="shrink-0">{{ config('toxbot.currency') }}</span>
-                        <input type="number" min="0" wire:model="rows.{{ $id }}.price" aria-label="{{ __('admin.price') }}" class="input">
+                        <input type="number" min="0" wire:model.live.blur="rows.{{ $id }}.price" aria-label="{{ __('admin.price') }}" class="input">
                     </label>
                     <label class="flex items-center gap-2 text-sm text-dc-muted">
                         <span class="shrink-0">{{ __('admin.sort') }}</span>
-                        <input type="number" wire:model="rows.{{ $id }}.sort" class="input">
+                        <input type="number" wire:model.live.blur="rows.{{ $id }}.sort" class="input">
                     </label>
-                    <label class="flex items-center gap-2 text-sm"><input type="checkbox" wire:model="rows.{{ $id }}.premium_only" class="accent-[var(--color-accent)]"> {{ __('admin.premium_only') }}</label>
-                    <label class="flex items-center gap-2 text-sm"><input type="checkbox" wire:model="rows.{{ $id }}.active" class="accent-[var(--color-accent)]"> {{ __('admin.active') }}</label>
+                    <label class="flex items-center gap-2 text-sm"><input type="checkbox" wire:model.live="rows.{{ $id }}.premium_only" class="accent-[var(--color-accent)]"> {{ __('admin.premium_only') }}</label>
+                    <label class="flex items-center gap-2 text-sm"><input type="checkbox" wire:model.live="rows.{{ $id }}.active" class="accent-[var(--color-accent)]"> {{ __('admin.active') }}</label>
                     <span class="self-center text-xs text-dc-faint">{{ __('admin.owners', ['count' => $owners[$id] ?? 0]) }}</span>
                     <div class="flex justify-end gap-2">
-                        <button type="button" wire:click="saveRow({{ $id }})" class="btn-secondary px-3 py-1.5 whitespace-nowrap">{{ __('admin.save') }}</button>
                         <button type="button" wire:click="delete({{ $id }})" data-confirm="{{ __('admin.confirm_delete_background', ['name' => $row['name']]) }}"
                                 class="btn px-3 py-1.5 text-dc-red hover:bg-dc-red hover:text-white">{{ __('admin.delete') }}</button>
                     </div>
