@@ -29,16 +29,17 @@ class AdminPremiumTest extends TestCase
 
     public function test_admin_pages_have_their_own_sidebar(): void
     {
-        foreach (['admin', 'admin.backgrounds', 'admin.blacklist', 'admin.premium'] as $route) {
+        foreach (['admin', 'admin.backgrounds', 'admin.users', 'admin.blacklist', 'admin.premium'] as $route) {
             $this->get(route($route))
                 ->assertOk()
                 ->assertSee(route('admin.backgrounds'))
+                ->assertSee(route('admin.users'))
                 ->assertSee(route('admin.blacklist'))
                 ->assertSee(route('admin.premium'));
         }
 
         $this->actingAs(DashboardUser::create(['id' => (int) self::USER, 'username' => 'someone']));
-        foreach (['admin', 'admin.backgrounds', 'admin.blacklist', 'admin.premium'] as $route) {
+        foreach (['admin', 'admin.backgrounds', 'admin.users', 'admin.blacklist', 'admin.premium'] as $route) {
             $this->get(route($route))->assertForbidden();
         }
     }
