@@ -53,6 +53,7 @@ return [
     'premium_server_4' => '为每位创作者单独选择直播结束后如何处理通知',
     'premium_server_5' => '最多 100 个服务器标签，而不是 20 个',
     'premium_hint' => '高级版可直接在 Discord 中，通过 Toxbot 的资料页或应用目录购买。',
+    'premium_buy' => '在 Discord 中购买',
     'cta_title' => '准备好试试了吗？',
     'cta_text' => '邀请 Toxbot，几分钟内完成全部设置。',
     'footer_terms' => '服务条款',

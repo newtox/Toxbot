@@ -53,6 +53,7 @@ return [
     'premium_server_4' => 'Choisir par créateur ce que devient la notification à la fin du stream',
     'premium_server_5' => 'Jusqu\'à 100 tags du serveur au lieu de 20',
     'premium_hint' => 'Premium s\'achète directement dans Discord, sur le profil de Toxbot ou dans l\'annuaire des applications.',
+    'premium_buy' => 'Acheter sur Discord',
     'cta_title' => 'Prêt à essayer ?',
     'cta_text' => 'Invite Toxbot et configure tout en quelques minutes.',
     'footer_terms' => 'Conditions d\'utilisation',
