@@ -52,6 +52,8 @@ return [
     'autorole_after_verify' => '인증이 켜져 있습니다: 새 멤버는 참가할 때가 아니라 인증을 마친 뒤에 자동 역할을 받습니다.',
     'levelup_dm_title' => 'DM으로도 알림',
     'levelup_dm_description' => '이 서버에서 새 레벨에 도달하면 Toxbot이 개인 메시지도 보냅니다. 채널 메시지 없이도 사용할 수 있습니다.',
+    'slots_title' => '/slots 허용',
+    'slots_description' => '멤버가 여기서 크레딧으로 슬롯머신을 돌릴 수 있습니다. 크레딧은 게임용 화폐일 뿐이며 구매할 수 없습니다.',
     'server_tags_title' => '서버 태그',
     'server_tags_description' => '이 서버에만 있는 태그로, 규칙, FAQ, 링크 등에 쓸 수 있습니다. 이 서버에서는 /tag show가 같은 이름의 전역 태그보다 먼저 표시하며, 전역 태그를 꺼도 작동합니다.',
     'server_tags_empty' => '아직 서버 태그가 없습니다.',

@@ -33,7 +33,7 @@ class DataDeletion
         'goodbye' => ['bye_channel', 'bye_msg'],
         'autorole' => ['autorole'],
         'language' => ['language'],
-        'levels' => ['levelup_enabled', 'levelup_channel', 'levelup_dm'],
+        'levels' => ['levelup_enabled', 'levelup_channel', 'levelup_dm', 'slots_enabled'],
         'streams' => ['stream', 'notify', 'stream_msg', 'stream_video_msg', 'stream_end_action'],
         'liverole' => ['live_role', 'live_role_required'],
         'tags' => ['tags_enabled'],

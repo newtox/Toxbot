@@ -109,7 +109,7 @@ Messages for the whole server (ticket and verify buttons, ticket logs, raid alar
 
 ### Slots
 
-`/slots bet` spins three reels for 10 to 10,000 credits, `/slots` alone shows the payout table. Three of a kind pay 8× (🍒) up to 500× (7️⃣), two of a kind return the bet. On average about 93 % of the bets come back, so slots slowly take credits out of the economy. Every member can spin once every five seconds. Credits cannot be bought with real money, so slots are play money only. Server admins who do not want slots can turn the command off under **Server Settings → Integrations → Toxbot**.
+`/slots bet` spins three reels for 10 to 10,000 credits, `/slots` alone shows the payout table. Three of a kind pay 8× (🍒) up to 500× (7️⃣), two of a kind return the bet. On average about 93 % of the bets come back, so slots slowly take credits out of the economy. Every member can spin once every five seconds. Credits cannot be bought with real money, so slots are play money only. Server admins can turn slots off on the Levels page of the dashboard.
 
 ### Blacklist
 

@@ -52,6 +52,8 @@ return [
     'autorole_after_verify' => 'Die Verifizierung ist an: Neue Mitglieder bekommen die Autorole erst, wenn sie sich verifiziert haben, nicht schon beim Beitreten.',
     'levelup_dm_title' => 'Zusätzlich per DM',
     'levelup_dm_description' => 'Mitglieder bekommen außerdem eine private Nachricht von Toxbot, wenn sie auf diesem Server ein neues Level erreichen. Geht auch ohne die Nachricht im Kanal.',
+    'slots_title' => '/slots erlauben',
+    'slots_description' => 'Mitglieder dürfen hier mit ihren Credits am Spielautomaten spielen. Credits sind reines Spielgeld und lassen sich nicht kaufen.',
     'server_tags_title' => 'Server-Tags',
     'server_tags_description' => 'Tags, die es nur auf diesem Server gibt, etwa für Regeln, FAQs oder Links. Auf diesem Server zeigt /tag show sie zuerst an, noch vor globalen Tags mit demselben Namen, und sie funktionieren auch, wenn globale Tags abgeschaltet sind.',
     'server_tags_empty' => 'Noch keine Server-Tags.',

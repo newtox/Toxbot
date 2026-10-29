@@ -52,6 +52,8 @@ return [
     'autorole_after_verify' => '認証がオンです: 新メンバーには参加時ではなく、認証が済んでから自動ロールが付与されます。',
     'levelup_dm_title' => 'DM でも通知',
     'levelup_dm_description' => 'このサーバーで新しいレベルに達したとき、Toxbot からも DM が届きます。チャンネルへのメッセージがなくても使えます。',
+    'slots_title' => '/slots を許可',
+    'slots_description' => 'メンバーはここでクレジットを使ってスロットを遊べます。クレジットは遊び用で、購入はできません。',
     'server_tags_title' => 'サーバータグ',
     'server_tags_description' => 'このサーバーだけにあるタグです。ルール、FAQ、リンクなどに使えます。このサーバーでは /tag show が同じ名前のグローバルタグより先に表示し、グローバルタグをオフにしても使えます。',
     'server_tags_empty' => 'サーバータグはまだありません。',

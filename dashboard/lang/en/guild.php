@@ -52,6 +52,8 @@ return [
     'autorole_after_verify' => 'Verification is on: new members get the autorole only after they have verified, not when they join.',
     'levelup_dm_title' => 'Also as a DM',
     'levelup_dm_description' => 'Members also get a private message from Toxbot when they reach a new level on this server. This also works without the message in the channel.',
+    'slots_title' => 'Allow /slots',
+    'slots_description' => 'Members can play the slot machine with their credits here. Credits are play money only and cannot be bought.',
     'server_tags_title' => 'Server tags',
     'server_tags_description' => 'Tags that only exist on this server, for rules, FAQs or links. On this server, /tag show shows them first, ahead of global tags with the same name, and they keep working when global tags are switched off.',
     'server_tags_empty' => 'No server tags yet.',

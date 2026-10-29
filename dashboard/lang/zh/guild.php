@@ -52,6 +52,8 @@ return [
     'autorole_after_verify' => '验证已开启：新成员会在完成验证后，而不是加入时获得自动身份组。',
     'levelup_dm_title' => '同时私信通知',
     'levelup_dm_description' => '成员在此服务器升级时，还会收到 Toxbot 的私信。即使频道中不发送消息也可以使用。',
+    'slots_title' => '允许 /slots',
+    'slots_description' => '成员可以在这里用积分玩老虎机。积分只是游戏币，无法购买。',
     'server_tags_title' => '服务器标签',
     'server_tags_description' => '只存在于此服务器的标签，可用于规则、常见问题或链接。在此服务器上，/tag show 会优先显示它们，先于同名的全局标签；即使关闭了全局标签，它们也能使用。',
     'server_tags_empty' => '还没有服务器标签。',

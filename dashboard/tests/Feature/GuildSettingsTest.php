@@ -179,6 +179,8 @@ class GuildSettingsTest extends TestCase
             ->set('levelupEnabled', true)
             ->set('levelupChannel', '11')
             ->set('levelupDm', true)
+            ->assertSet('slotsEnabled', true)
+            ->set('slotsEnabled', false)
             ->call('save')
             ->assertHasNoErrors();
 
@@ -192,6 +194,7 @@ class GuildSettingsTest extends TestCase
         $this->assertFalse($row->tags_enabled);
         $this->assertTrue($row->levelup_enabled);
         $this->assertTrue($row->levelup_dm);
+        $this->assertFalse($row->slots_enabled);
         $this->assertSame('11', $row->levelup_channel);
     }
 
