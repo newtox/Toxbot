@@ -52,6 +52,8 @@ return [
     'autorole_after_verify' => 'Verificering er slået til: nye medlemmer får først autorollen, når de har verificeret sig, ikke når de joiner.',
     'levelup_dm_title' => 'Også som DM',
     'levelup_dm_description' => 'Medlemmer får også en privat besked fra Toxbot, når de når et nyt level på denne server. Det virker også uden beskeden i kanalen.',
+    'slots_title' => 'Tillad /slots',
+    'slots_description' => 'Medlemmer kan spille på enarmet tyveknægt med deres credits her. Credits er kun spillepenge og kan ikke købes.',
     'server_tags_title' => 'Server-tags',
     'server_tags_description' => 'Tags, der kun findes på denne server, f.eks. til regler, FAQ eller links. På denne server viser /tag show dem først, før globale tags med samme navn, og de virker også, når globale tags er slået fra.',
     'server_tags_empty' => 'Ingen server-tags endnu.',

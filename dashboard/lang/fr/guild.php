@@ -52,6 +52,8 @@ return [
     'autorole_after_verify' => 'La vérification est activée : les nouveaux membres reçoivent le rôle auto seulement après s’être vérifiés, pas à leur arrivée.',
     'levelup_dm_title' => 'Aussi en MP',
     'levelup_dm_description' => 'Les membres reçoivent aussi un message privé de Toxbot quand ils atteignent un nouveau niveau sur ce serveur. Cela fonctionne aussi sans le message dans le salon.',
+    'slots_title' => 'Autoriser /slots',
+    'slots_description' => 'Les membres peuvent jouer à la machine à sous avec leurs crédits ici. Les crédits sont de l\'argent fictif et ne peuvent pas être achetés.',
     'server_tags_title' => 'Tags du serveur',
     'server_tags_description' => 'Des tags qui n\'existent que sur ce serveur, par exemple pour les règles, une FAQ ou des liens. Sur ce serveur, /tag show les affiche en premier, avant les tags globaux du même nom, et ils fonctionnent même si les tags globaux sont désactivés.',
     'server_tags_empty' => 'Pas encore de tags du serveur.',

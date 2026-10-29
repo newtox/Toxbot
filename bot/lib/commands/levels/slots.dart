@@ -121,6 +121,14 @@ final slots = ChatCommand(
   ]) async {
     final user = context.user;
     try {
+      final guild = context.guild;
+      if (guild != null &&
+          !await withConnection((connection) =>
+              economy.slotsAllowed(connection, guild.id.toString()))) {
+        await replyError(context, 'slots_disabled');
+        return;
+      }
+
       if (bet == null) {
         await _showPaytable(context);
         return;

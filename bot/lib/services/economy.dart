@@ -505,3 +505,11 @@ Future<int?> settleSlots(
   }
   return getCredits(connection, userId);
 }
+
+Future<bool> slotsAllowed(MySqlConnection connection, String guildId) async {
+  final rows = await connection.query(
+    'SELECT `slots_enabled` FROM `guilds` WHERE `id` = ? LIMIT 1;',
+    [guildId],
+  );
+  return rows.isEmpty || rows.first['slots_enabled'] != 0;
+}

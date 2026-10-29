@@ -32,7 +32,7 @@ class Guild extends Model
         'raid_enabled', 'raid_joins', 'raid_seconds', 'raid_minutes', 'raid_kick', 'raid_level', 'raid_until',
         'min_account_age',
         'ticket_category', 'ticket_log_channel', 'ticket_limit', 'ticket_panel_channel', 'ticket_panel_message_id',
-        'unban_enabled', 'language', 'stream_end_action', 'levelup_dm',
+        'unban_enabled', 'language', 'stream_end_action', 'levelup_dm', 'slots_enabled',
         'starboard_channel', 'starboard_emoji', 'starboard_threshold',
     ];
 
@@ -60,6 +60,7 @@ class Guild extends Model
         'tags_enabled' => true,
         'levelup_enabled' => false,
         'levelup_dm' => false,
+        'slots_enabled' => true,
         'stream_end_action' => 'keep',
         'mod_dm' => true,
         'verify_enabled' => false,
@@ -85,6 +86,7 @@ class Guild extends Model
             'tags_enabled' => 'boolean',
             'levelup_enabled' => 'boolean',
             'levelup_dm' => 'boolean',
+            'slots_enabled' => 'boolean',
             'mod_dm' => 'boolean',
             'verify_enabled' => 'boolean',
             'link_invites' => 'boolean',

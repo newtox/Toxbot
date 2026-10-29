@@ -52,6 +52,8 @@ return [
     'autorole_after_verify' => 'La verificación está activada: los miembros nuevos reciben el autorol solo después de verificarse, no al unirse.',
     'levelup_dm_title' => 'También por MD',
     'levelup_dm_description' => 'Los miembros también reciben un mensaje privado de Toxbot al subir de nivel en este servidor. También funciona sin el mensaje en el canal.',
+    'slots_title' => 'Permitir /slots',
+    'slots_description' => 'Los miembros pueden jugar a la tragaperras con sus créditos aquí. Los créditos son solo dinero de juego y no se pueden comprar.',
     'server_tags_title' => 'Tags del servidor',
     'server_tags_description' => 'Tags que solo existen en este servidor, por ejemplo para reglas, preguntas frecuentes o enlaces. En este servidor, /tag show los muestra primero, antes que los tags globales con el mismo nombre, y siguen funcionando aunque los tags globales estén desactivados.',
     'server_tags_empty' => 'Todavía no hay tags del servidor.',
