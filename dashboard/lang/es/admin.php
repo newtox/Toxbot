@@ -90,5 +90,6 @@ return [
     'reason_purchase' => 'Compra en la tienda',
     'reason_transfer_in' => 'Recibido de un miembro',
     'reason_transfer_out' => 'Enviado a un miembro',
+    'reason_slots' => 'Tragaperras',
     'reason_admin' => 'Cambiado por el equipo de Toxbot',
 ];

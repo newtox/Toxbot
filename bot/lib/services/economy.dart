@@ -476,3 +476,32 @@ Future<DateTime?> lastVote(MySqlConnection connection, String userId) async {
   );
   return rows.isEmpty ? null : rows.first['created_at'] as DateTime?;
 }
+
+Future<int?> settleSlots(
+  MySqlConnection connection,
+  String userId,
+  int bet,
+  int payout,
+) async {
+  await ensureUser(connection, userId);
+  final paid = await connection.query(
+    'UPDATE `users` SET `credits` = `credits` - ? WHERE `id` = ? AND `credits` >= ?;',
+    [bet, userId, bet],
+  );
+  if ((paid.affectedRows ?? 0) == 0) return null;
+
+  final change = payout - bet;
+  if (payout > 0) {
+    await connection.query(
+      'UPDATE `users` SET `credits` = `credits` + ? WHERE `id` = ?;',
+      [payout, userId],
+    );
+  }
+  if (change != 0) {
+    await connection.query(
+      'INSERT INTO `credit_transactions` (`user`, `amount`, `reason`, `created_at`) VALUES (?, ?, ?, UTC_TIMESTAMP());',
+      [userId, change, 'slots'],
+    );
+  }
+  return getCredits(connection, userId);
+}

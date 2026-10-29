@@ -90,5 +90,6 @@ return [
     'reason_purchase' => 'Покупка в магазине',
     'reason_transfer_in' => 'Получено от участника',
     'reason_transfer_out' => 'Отправлено участнику',
+    'reason_slots' => 'Слоты',
     'reason_admin' => 'Изменено командой Toxbot',
 ];
