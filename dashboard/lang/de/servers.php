@@ -11,6 +11,6 @@ return [
     'without_bot' => 'Toxbot noch nicht drauf',
     'invite' => 'Einladen',
     'after_invite' => 'Nach dem Einladen „Liste neu laden“ klicken.',
-    'forbidden' => 'Diesen Server darfst du nicht verwalten, oder Toxbot ist nicht drauf.',
+    'forbidden' => 'Auf diesen Server hast du keinen Zugriff, oder Toxbot ist dort nicht mehr.',
     'member' => 'Mitglied',
 ];
