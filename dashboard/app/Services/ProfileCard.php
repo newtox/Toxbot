@@ -165,13 +165,6 @@ class ProfileCard
             $this->text($img, $rows[$label], 'Regular', 15, 953, $y, [255, 255, 255], 'right');
         }
 
-        if ($data['premium']) {
-            $label = 'PREMIUM';
-            $width = $this->textWidth($label, 'Bold', 11) + 28;
-            $this->roundedRect($img, 25, 25, 25 + $width, 57, 16, $accent, 0);
-            $this->text($img, $label, 'Bold', 11, 25 + 14, 47, $this->onColor($accent));
-        }
-
         $out = $this->transparent(self::W, self::H);
         imagecopyresampled($out, $img, 0, 0, 0, 0, self::W, self::H, self::W * $s, self::H * $s);
         imagedestroy($img);
@@ -474,12 +467,5 @@ class ProfileCard
         }
 
         return array_map('hexdec', str_split($hex, 2));
-    }
-
-    private function onColor(array $rgb): array
-    {
-        $luminance = (0.299 * $rgb[0] + 0.587 * $rgb[1] + 0.114 * $rgb[2]) / 255;
-
-        return $luminance > 0.6 ? [16, 17, 19] : [255, 255, 255];
     }
 }

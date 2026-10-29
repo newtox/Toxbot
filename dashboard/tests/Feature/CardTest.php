@@ -110,7 +110,7 @@ class CardTest extends TestCase
         $this->assertCount(1, Storage::disk('local')->files('cards'));
     }
 
-    public function test_premium_items_are_ignored_without_premium(): void
+    public function test_retired_items_still_show_for_their_owners(): void
     {
         if (! function_exists('imagettftext') || ! class_exists(\Imagick::class)) {
             $this->markTestSkipped('GD with FreeType and Imagick are needed.');
@@ -127,14 +127,6 @@ class CardTest extends TestCase
         $owner->frame_id = null;
         $owner->save();
         $this->assertNotSame($static, $this->get('/card/123456789012345678.png')->getContent());
-
-        $ring = $this->item('Ember Ring', ShopItem::FRAME, 'frame-ember.gif');
-        $ring->update(['premium_only' => true]);
-        $user = BotUser::forDiscordId('123456789012345678');
-        $user->frame_id = $ring->id;
-        $user->save();
-
-        $this->get('/card/123456789012345678.png')->assertOk()->assertHeader('Content-Type', 'image/png');
     }
 
     public function test_animated_discord_avatars_make_the_card_a_gif(): void

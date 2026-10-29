@@ -30,7 +30,7 @@ Both share the same MySQL database. Whatever you change in the dashboard (welcom
 - **Levels**: XP for messages and commands, with a global level and a separate level per server, plus `/leaderboard`
 - **Credits and shop**: `/daily`, `/credits` for the balance, streak and recent activity, credits for level-ups and Top.gg votes, backgrounds, avatar frames and progress bars for the profile card to buy with `/shop` and switch with `/background`, `/frame` and `/bar` or on the dashboard profile, some of them animated; `/pay` sends credits to another member; `/slots` is a slot machine for credits
 - **Profile cards**: `/profile` shows level, rank and credits as an image with the chosen background, avatar frame and progress bar; with an animated item or an animated Discord avatar the card is a GIF
-- **Tags**: global custom commands with `/tag`, reportable and blockable per server, plus server tags that admins create in the dashboard and that `/tag show` prefers on their server
+- **Tags**: global custom commands with `/tag`, also as embeds, reportable and blockable per server, plus server tags that admins create in the dashboard and that `/tag show` prefers on their server. Everyone gets 10 tags; `/tag slots` or the Tags page in the dashboard sells 5 more for 1,000 credits, up to 250
 - **Starboard**: messages with enough reactions of a chosen emoji are reposted to a starboard channel, and every member can browse them in the dashboard
 - **Dashboard for members**: members without "Manage Server" can open the member list with profiles and the starboard of their servers
 - **Stream notifications** for Twitch and YouTube: a message with role ping when a streamer goes live or uploads a video
@@ -38,8 +38,8 @@ Both share the same MySQL database. Whatever you change in the dashboard (welcom
 - **Moderation**: `/mod warn`, `timeout`, `untimeout`, `kick`, `ban` (also temporary), `unban` and `clear`, numbered cases in a modlog channel, DMs to members, automatic actions after a number of warnings, and bans, kicks and timeouts done in Discord or by other bots are logged too
 - **Protection**: verification of new members with a captcha in the dashboard, a link filter against invites to other servers, scam links and blocked domains (or only allowed ones), anti-raid that raises the verification level and kicks new joins, and a minimum account age
 - **Tickets and unban appeals**: ticket types with their own button, text and team roles, private ticket channels, `/ticket close`, `add` and `remove`, transcripts saved on close and shown in the dashboard, and a dashboard page where banned members can ask to be unbanned
-- **Premium** through Discord subscriptions: double XP and daily reward, premium backgrounds, more tags and tags as embeds, plus a 24 hour XP boost to buy
-- **Server Premium** for one server of the subscriber's choice, included in Premium: more streamers, a custom message and ping role per streamer, game and title filters, a separate choice per streamer for what happens to the notification when the stream ends, and 100 server tags instead of 20
+- **Server Premium**, a Discord subscription for one server: more streamers, a custom message and ping role per streamer, game and title filters, a separate choice per streamer for what happens to the notification when the stream ends, and 100 server tags instead of 20
+- **Exclusive items**: backgrounds, frames and bars that are only sold in the Discord store, purely cosmetic
 
 ## Running locally
 
@@ -89,10 +89,11 @@ chown 33:33 /docker_volumes/toxbot-dashboard/backgrounds
 
 ### Premium and Top.gg
 
-- Create the SKUs in the Developer Portal under **Monetization**: a user subscription for Premium and a consumable for the XP boost. Put their IDs into `PREMIUM_USER_SKUS` and `XP_BOOST_SKU`.
-- As the bot owner you can give Premium without a subscription on the **Premium** page of the administration in the dashboard: Toxbot Premium for a user or Server Premium for a server, either without an end date or until a chosen day, after which it runs out on its own. `PREMIUM_USERS` and `PREMIUM_GUILDS` still work for fixed IDs, for example for testing.
+- Create a **guild subscription** SKU in the Developer Portal under **Monetization** and put its ID into `PREMIUM_GUILD_SKUS`. Whoever buys it picks the server in Discord, and Server Premium applies to that server.
+- For an exclusive shop item, create a **durable** SKU and enter its ID at the item on the dashboard's **Shop** administration page. The item then can't be bought with credits; the dashboard and `/shop` link to the Discord store, and Toxbot gives the item to the buyer as soon as Discord reports the purchase.
+- As the bot owner you can give Server Premium without a subscription on the **Premium** page of the administration in the dashboard, either without an end date or until a chosen day, after which it runs out on its own. `PREMIUM_GUILDS` still works for fixed server IDs, for example for testing.
 - For vote rewards, add `https://<dashboard>/webhooks/topgg` as webhook on Top.gg and put the generated secret into `TOPGG_WEBHOOK_SECRET`. `TOPGG_VOTE_REWARD` sets the credits per vote (200 by default, doubled on weekends). `/vote` links to the vote page and shows when a user can vote again.
-- Server Premium comes with the user subscription: subscribers pick one server on the Premium page of their user settings in the dashboard. Discord only allows one published subscription per app, so a separate server subscription is optional; if you ever sell one, put its SKU ID into `PREMIUM_GUILD_SKUS`. `PREMIUM_GUILDS` gives Server Premium to the listed server IDs without a subscription.
+- The Premium page of the user settings lists the servers someone manages and whether Server Premium is active there.
 
 ### Automatic setup
 
@@ -104,7 +105,7 @@ Messages for the whole server (ticket and verify buttons, ticket logs, raid alar
 
 - Every server has a **Data** page under General. Anyone who can manage the server can reset all settings: modules are turned off, ticket types, warning rules, followed creators, blocked tags and server tags are removed, and the ticket and verify messages are deleted. Levels, cases, tickets and appeals stay.
 - Every settings page can also be reset on its own with the button at the bottom of the page.
-- Only the server owner can delete all data of the server (settings, levels, cases, tickets with transcripts, appeals, verifications, starboard posts and its Server Premium slot). Toxbot then leaves the server.
+- Only the server owner can delete all data of the server (settings, levels, cases, tickets with transcripts, appeals, verifications, starboard posts). Toxbot then leaves the server.
 - Users can delete their own data on the Data page of their user settings. Their starboard posts are removed, their ticket messages are kept without name, ID and avatar; moderation cases and purchase records stay.
 
 ### Slots
@@ -117,7 +118,7 @@ The bot owner (`OWNER_ID` / `TOXBOT_OWNER_ID`) manages the blacklist on the dash
 
 ### Credits and items
 
-The bot owner can add or remove credits and give or take away shop items, in Discord with `/system credits`, `/system give-item` and `/system take-item` or on the dashboard's administration page under **Credits & items**. The balance never drops below 0; items that are taken away are unequipped. Retired and Premium items can be given too. Every change shows up in the user's `/credits` history.
+The bot owner can add or remove credits and give or take away shop items, in Discord with `/system credits`, `/system give-item` and `/system take-item` or on the dashboard's administration page under **Credits & items**. The balance never drops below 0; items that are taken away are unequipped. Retired and exclusive items can be given too. Every change shows up in the user's `/credits` history.
 
 ### Moderation
 

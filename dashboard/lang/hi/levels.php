@@ -9,7 +9,6 @@ return [
     'rank' => 'ग्लोबल रैंक',
     'credits' => 'क्रेडिट',
     'commands' => 'कमांड',
-    'premium_active' => 'Premium सक्रिय है: दोगुना XP, दोगुना दैनिक इनाम और Premium बैकग्राउंड।',
     'earn_hint' => 'संदेशों और कमांड से XP मिलता है, /daily, वोट और लेवल-अप से क्रेडिट।',
     'equip_background' => 'बैकग्राउंड',
     'equip_frame' => 'अवतार फ़्रेम',

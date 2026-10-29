@@ -2,12 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Livewire\PremiumServerPicker;
+use App\Livewire\PremiumServers;
 use App\Livewire\StreamList;
 use App\Models\DashboardUser;
 use App\Models\Entitlement;
 use App\Models\Guild;
-use App\Models\PremiumServer;
 use App\Models\StreamAnnouncement;
 use App\Models\StreamSource;
 use App\Models\StreamSubscription;
@@ -375,25 +374,20 @@ class StreamsTest extends TestCase
         $this->assertSame(['parse' => [], 'roles' => ['888']], $this->discordPosts[0]['allowed_mentions']);
     }
 
-    public function test_premium_users_unlock_server_premium_for_one_server(): void
+    public function test_server_subscription_unlocks_server_premium(): void
     {
         $this->login();
         $this->mock(GuildAccess::class, fn ($mock) => $mock
-            ->shouldReceive('manageableGuilds')->andReturn([['id' => self::GUILD, 'name' => 'Toxic', 'has_bot' => true]])
+            ->shouldReceive('manageableGuilds')->andReturn([['id' => self::GUILD, 'name' => 'Toxic', 'icon_url' => null, 'has_bot' => true]])
             ->shouldReceive('find')->andReturn(['id' => self::GUILD]));
 
-        Livewire::test(PremiumServerPicker::class)->set('guildId', self::GUILD)->call('save')->assertForbidden();
+        config(['toxbot.premium_guild_skus' => ['900']]);
+        $this->assertFalse(app(Premium::class)->isGuildPremium(self::GUILD));
+        Livewire::test(PremiumServers::class)->assertSee('Toxic')->assertSee(__('profile.premium_inactive'));
 
-        config(['toxbot.premium_users' => ['123456789012345678']]);
-        Livewire::test(PremiumServerPicker::class)
-            ->set('guildId', '222')->call('save')->assertHasErrors('guildId')
-            ->set('guildId', self::GUILD)->call('save')->assertHasNoErrors();
-
-        $this->assertSame(self::GUILD, PremiumServer::find('123456789012345678')->guild_id);
-        $this->assertTrue(app(Premium::class)->isGuildPremium(self::GUILD));
-
-        config(['toxbot.premium_users' => []]);
-        $this->assertFalse((new Premium)->isGuildPremium(self::GUILD));
+        Entitlement::create(['id' => '1', 'sku_id' => '900', 'guild_id' => self::GUILD, 'type' => 8, 'deleted' => false, 'consumed' => false]);
+        $this->assertTrue((new Premium)->isGuildPremium(self::GUILD));
+        Livewire::test(PremiumServers::class)->assertSee(__('profile.premium_active'));
     }
 
     public function test_only_free_limit_streamers_are_announced_without_premium(): void

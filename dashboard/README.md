@@ -12,12 +12,12 @@ Web dashboard for [Toxbot](../README.md), built with Laravel, Livewire and Tailw
 - **Level-up messages** and **tags** per server: turn them on or off, pick the channel, send level-ups as a DM as well, unblock blocked tags and manage server tags (20 per server, 100 with Server Premium, only on that server, shown by `/tag show` ahead of global tags with the same name)
 - **User settings** with their own sidebar: profile card with level, rank and credits and a picker for your background, avatar frame and progress bar, language and embed color (same as `/language` and `/color`, the color is also the dashboard's accent color), Premium, shop, tags and your data
 - **Shop** with three categories, backgrounds, avatar frames and progress bars, to buy and switch with a live preview of the card. A starter set of 31 items (some animated) is added on the first start; more are uploaded on the administration page. Cards without a background get a gradient in the user's embed color.
-- **Tags**: create, edit and delete your own tags
-- **Administration** for the bot owner, with its own sidebar: handle reported tags, manage the shop items (images or animated GIFs; items taken out of the shop can no longer be bought but stay with their owners), adjust a user's credits and give or take away items, block users or servers, and give Premium or Server Premium without a purchase, with or without an end date
+- **Tags**: create, edit and delete your own tags, also as embeds, and buy more tag slots with credits
+- **Administration** for the bot owner, with its own sidebar: handle reported tags, manage the shop items (images or animated GIFs; items taken out of the shop can no longer be bought but stay with their owners), adjust a user's credits and give or take away items, block users or servers, and give Server Premium without a purchase, with or without an end date. A shop item with a SKU ID is exclusive: it is sold in the Discord store instead of for credits
 - **Profile cards** rendered under `/card/{user}.png`, used by `/profile` in Discord: a PNG, or an animated GIF when an animated item is equipped or the Discord avatar is animated (cached for a few hours, `cards:prune` cleans up)
 - **Top.gg webhook** under `/webhooks/topgg` that pays credits for votes
 - **Stream notifications**: add Twitch and YouTube channels per server, pick the channel, ping role and message. Twitch uses EventSub webhooks (`/webhooks/twitch`), YouTube uses WebSub (`/webhooks/youtube`). Servers with Server Premium get more streamers, a message and ping role per streamer, filters and an action for when the stream ends.
-- **Server Premium picker** on the Premium page of the user settings: Premium users choose one server they manage that gets Server Premium
+- **Premium page** in the user settings: what Server Premium includes, the Discord store link and which of your servers have it
 - **Live role** settings, the role itself is given by the bot
 - **Starboard**: channel, the emojis that count (⭐ by default, plus any Unicode emoji or the server's own) and the number of reactions needed, plus the list of posts sorted by date or reactions. Expired Discord image links are refreshed when the list is shown. Members without "Manage Server" see the list too.
 - **Moderation**: member list with search and filters, member profiles with level, roles and cases (members without moderation permissions see the list and profiles without cases, timeouts and actions; moderators only get the actions their permissions allow), actions (warn, timeout, kick, ban, unban) that the bot carries out, the modlog with filters, and settings for the modlog channel, DMs and warning levels
@@ -56,7 +56,6 @@ Fill in `.env`:
 | `DISCORD_BOT_TOKEN` | Same token as `token=` in the bot's `.env` |
 | `DB_*` | Toxbot's MySQL database, or `DB_CONNECTION=sqlite` for a throwaway local database |
 | `TOXBOT_OWNER_ID` | Your Discord user ID, only this account sees the administration |
-| `TOXBOT_PREMIUM_USERS`, `TOXBOT_PREMIUM_USER_SKUS` | Premium without subscription for these user IDs, and the SKU ID of the subscription |
 | `TOPGG_WEBHOOK_SECRET` | Secret of the Top.gg webhook, leave empty to turn vote rewards off |
 | `TOXBOT_CONTACT_EMAIL`, `TOXBOT_SUPPORT_INVITE` | Contact address (defaults to justin.lys26@gmail.com) and an optional support server invite, shown on the info page |
 | `TOXBOT_PREMIUM_GUILDS`, `TOXBOT_PREMIUM_GUILD_SKUS` | Server Premium without subscription for these server IDs, and the SKU ID of the server subscription |
@@ -84,7 +83,7 @@ Open `http://localhost:8000`. Use `localhost`, not `127.0.0.1`, otherwise the Di
 
 `create_toxbot_tables` is safe to run against a database the bot already uses. Existing tables are left as they are; it only adds the `notify` and `stream` columns to `guilds`, which the bot writes but which were missing from the original `toxbot.sql`. On an empty database it creates all bot tables with proper primary keys.
 
-The later migrations only add tables and columns for tags, levels, credits, the shop, entitlements, stream notifications, moderation, protection, tickets, unban appeals, the server language, the starboard, the bot status, server tags, Premium grants and shop item types, all with defaults, so an older bot version keeps working with them.
+The later migrations add tables and columns for tags, levels, credits, the shop, entitlements, stream notifications, moderation, protection, tickets, unban appeals, the server language, the starboard, the bot status, server tags, Premium grants, shop item types, and tag slots, all with defaults. The switch to server subscriptions also removes the user Premium columns (`premium_only` on shop items, `xp_boost_until` on users and the `premium_servers` table), so deploy the bot and the dashboard together.
 
 ## Translations
 

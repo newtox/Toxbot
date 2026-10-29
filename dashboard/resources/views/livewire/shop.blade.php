@@ -65,8 +65,8 @@
                     <button type="button" wire:click="preview({{ $item['id'] }})" class="relative block w-full" title="{{ __('shop.show_preview') }}">
                         @include('livewire.partials.shop-thumbnail', ['type' => $tab, 'url' => $item['url']])
                         <span class="absolute top-2 left-2 flex gap-1.5">
-                            @if ($item['premium_only'])
-                                <span class="rounded-full bg-dc-yellow px-2 py-0.5 text-xs font-semibold text-dc-950">Premium</span>
+                            @if ($item['for_money'])
+                                <span class="rounded-full bg-dc-yellow px-2 py-0.5 text-xs font-semibold text-dc-950">{{ __('shop.exclusive') }}</span>
                             @endif
                             @if ($item['animated'])
                                 <span class="rounded-full bg-dc-950/80 px-2 py-0.5 text-xs font-semibold text-dc-header">{{ __('shop.animated') }}</span>
@@ -85,8 +85,8 @@
                             <div class="text-sm text-dc-muted tabular-nums">
                                 @if ($item['owned'])
                                     {{ __('shop.owned') }}
-                                @elseif ($item['premium_only'] && $item['price'] === 0)
-                                    {{ __('shop.free_with_premium') }}
+                                @elseif ($item['for_money'])
+                                    {{ __('shop.in_discord') }}
                                 @else
                                     {{ number_format($item['price'], 0, '', ' ') }} {{ $currency }}
                                 @endif
@@ -95,10 +95,14 @@
 
                         @if ($item['equipped'])
                             <span class="text-sm text-dc-faint">{{ __('shop.in_use') }}</span>
-                        @elseif ($item['locked'])
-                            <span class="text-sm text-dc-yellow">{{ __('shop.premium_label') }}</span>
                         @elseif ($item['owned'])
                             <button type="button" wire:click="equip({{ $item['id'] }})" wire:loading.attr="disabled" class="btn-secondary px-3 py-1.5">{{ __('shop.use') }}</button>
+                        @elseif ($item['for_money'])
+                            @if ($item['store_url'])
+                                <a href="{{ $item['store_url'] }}" target="_blank" rel="noopener" class="btn bg-dc-yellow px-3 py-1.5 font-semibold text-dc-950 hover:brightness-110">
+                                    {{ __('shop.buy') }} <x-icon name="external" class="size-4" />
+                                </a>
+                            @endif
                         @else
                             <button type="button" wire:click="buy({{ $item['id'] }})" wire:loading.attr="disabled"
                                     data-confirm="{{ __('shop.confirm', ['name' => $item['name'], 'price' => number_format($item['price'], 0, '', ' ').' '.$currency]) }}" data-confirm-tone="primary"
@@ -112,4 +116,7 @@
     @endif
 
     <p class="text-sm text-dc-faint">{{ __('shop.earn_hint') }}</p>
+    @if ($hasExclusive)
+        <p class="text-sm text-dc-faint">{{ __('shop.exclusive_hint') }}</p>
+    @endif
 </div>

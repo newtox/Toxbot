@@ -93,19 +93,19 @@
             </div>
 
             <div class="mt-12 grid gap-4 md:grid-cols-2">
-                @foreach (['user', 'server'] as $plan)
+                @foreach (['server' => 5, 'items' => 3] as $plan => $count)
                     <div @class([
                         'rounded-lg p-6 ring-1',
-                        'bg-dc-800 ring-dc-yellow/40 shadow-[inset_0_3px_0_var(--color-dc-yellow)]' => $plan === 'user',
-                        'bg-dc-800 ring-white/5' => $plan === 'server',
+                        'bg-dc-800 ring-dc-yellow/40 shadow-[inset_0_3px_0_var(--color-dc-yellow)]' => $plan === 'server',
+                        'bg-dc-800 ring-white/5' => $plan === 'items',
                     ])>
                         <div class="flex items-center gap-3">
                             <span @class([
                                 'grid size-11 place-items-center rounded-lg',
-                                'bg-dc-yellow/20 text-dc-yellow' => $plan === 'user',
-                                'bg-accent/15 text-accent-fg' => $plan === 'server',
+                                'bg-dc-yellow/20 text-dc-yellow' => $plan === 'server',
+                                'bg-accent/15 text-accent-fg' => $plan === 'items',
                             ])>
-                                <x-icon :name="$plan === 'user' ? 'sparkles' : 'servers'" />
+                                <x-icon :name="$plan === 'server' ? 'servers' : 'sparkles'" />
                             </span>
                             <div>
                                 <h3 class="text-lg font-semibold text-dc-header">{{ __('home.premium_'.$plan.'_t') }}</h3>
@@ -113,16 +113,20 @@
                             </div>
                         </div>
                         <ul class="mt-6 space-y-3">
-                            @foreach (range(1, $plan === 'user' ? 4 : 5) as $i)
+                            @foreach (range(1, $count) as $i)
                                 <li class="flex gap-3 text-sm text-dc-text">
-                                    <x-icon name="check" @class(['mt-0.5 size-4', 'text-dc-yellow' => $plan === 'user', 'text-accent-fg' => $plan === 'server']) />
+                                    <x-icon name="check" @class(['mt-0.5 size-4 shrink-0', 'text-dc-yellow' => $plan === 'server', 'text-accent-fg' => $plan === 'items']) />
                                     {{ __('home.premium_'.$plan.'_'.$i) }}
                                 </li>
                             @endforeach
                         </ul>
-                        @if ($plan === 'user' && ($storeUrl = \App\Services\Premium::storeUrl()))
+                        @if ($plan === 'server' && ($storeUrl = \App\Services\Premium::storeUrl()))
                             <a href="{{ $storeUrl }}" target="_blank" rel="noopener" class="btn mt-6 bg-dc-yellow font-semibold text-dc-950 hover:brightness-110">
                                 {{ __('home.premium_buy') }} <x-icon name="external" class="size-4" />
+                            </a>
+                        @elseif ($plan === 'items')
+                            <a href="{{ route('shop') }}" class="btn-secondary mt-6">
+                                <x-icon name="shop" class="size-4" />{{ __('home.premium_items_link') }}
                             </a>
                         @endif
                     </div>

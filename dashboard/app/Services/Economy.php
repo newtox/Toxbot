@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\BotUser;
 use App\Models\CreditTransaction;
+use App\Models\Entitlement;
 use App\Models\ShopItem;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Facades\DB;
@@ -11,8 +12,6 @@ use RuntimeException;
 
 class Economy
 {
-    public function __construct(private readonly Premium $premium) {}
-
     public function addCredits(string $userId, int $amount, string $reason, ?string $reference = null): bool
     {
         try {
@@ -41,8 +40,8 @@ class Economy
             throw new RuntimeException('shop.not_available');
         }
 
-        if ($item->premium_only && ! $this->premium->isPremium($userId)) {
-            throw new RuntimeException('shop.premium_only');
+        if ($item->forMoney()) {
+            throw new RuntimeException('shop.for_money');
         }
 
         DB::transaction(function () use ($userId, $item) {
@@ -76,9 +75,7 @@ class Economy
 
     public function equip(string $userId, ShopItem $item): void
     {
-        if ($item->premium_only && ! $this->premium->isPremium($userId)) {
-            throw new RuntimeException('shop.premium_only');
-        }
+        $this->syncPurchases($userId);
 
         $user = BotUser::forDiscordId($userId);
         if (! $user->owns($item)) {
@@ -148,5 +145,65 @@ class Economy
         }
 
         return $removed;
+    }
+
+    public function syncPurchases(string $userId): void
+    {
+        $skus = Entitlement::query()->active()->where('user_id', $userId)->pluck('sku_id')->map(fn ($sku) => (string) $sku)->all();
+        if ($skus === []) {
+            return;
+        }
+
+        $items = ShopItem::query()->whereIn('sku_id', $skus)->pluck('id');
+        if ($items->isEmpty()) {
+            return;
+        }
+
+        $user = BotUser::forDiscordId($userId);
+        if (! $user->exists) {
+            $user->save();
+        }
+        $user->items()->syncWithoutDetaching($items->mapWithKeys(fn ($id) => [$id => ['created_at' => now()]])->all());
+    }
+
+    public function tagLimit(string $userId): int
+    {
+        $user = BotUser::query()->find($userId);
+
+        return min(
+            (int) config('toxbot.tags.max_limit'),
+            (int) config('toxbot.tags.free_limit') + (int) $user?->tag_slots * (int) config('toxbot.tags.slot_size'),
+        );
+    }
+
+    public function buyTagSlots(string $userId): void
+    {
+        $price = (int) config('toxbot.tags.slot_price');
+
+        DB::transaction(function () use ($userId, $price) {
+            $user = BotUser::forDiscordId($userId);
+            if (! $user->exists) {
+                $user->save();
+            }
+            $user = BotUser::query()->whereKey($userId)->lockForUpdate()->first();
+
+            if ($this->tagLimit($userId) >= (int) config('toxbot.tags.max_limit')) {
+                throw new RuntimeException('tags.slots_max');
+            }
+
+            if ((int) $user->credits < $price) {
+                throw new RuntimeException('shop.not_enough');
+            }
+
+            $user->credits = (int) $user->credits - $price;
+            $user->tag_slots = (int) $user->tag_slots + 1;
+            $user->save();
+
+            CreditTransaction::create([
+                'user' => $userId,
+                'amount' => -$price,
+                'reason' => 'tag_slots',
+            ]);
+        });
     }
 }

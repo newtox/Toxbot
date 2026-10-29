@@ -9,7 +9,6 @@ use App\Models\Guild;
 use App\Models\MemberLevel;
 use App\Models\ModAction;
 use App\Models\ModCase;
-use App\Models\PremiumServer;
 use App\Models\ServerTag;
 use App\Models\StarboardPost;
 use App\Models\StreamSubscription;
@@ -115,7 +114,6 @@ class DataDeletion
             Verification::query()->where('guild', $guildId)->delete();
             MemberLevel::query()->where('guild', $guildId)->delete();
             StarboardPost::query()->where('guild', $guildId)->delete();
-            PremiumServer::query()->where('guild_id', $guildId)->delete();
         });
 
         $this->discord->leaveGuild($guildId);
@@ -138,7 +136,6 @@ class DataDeletion
             TagGuildBlock::query()->whereIn('tag_id', $tagIds)->delete();
             Tag::query()->whereIn('id', $tagIds)->delete();
             TagReport::query()->where('reporter', $userId)->delete();
-            PremiumServer::query()->where('user_id', $userId)->delete();
             Verification::query()->where('user_id', $userId)->delete();
             UnbanAppeal::query()->where('user_id', $userId)->delete();
             StarboardPost::query()->where('author_id', $userId)->delete();

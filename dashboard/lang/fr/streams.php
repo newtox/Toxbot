@@ -33,7 +33,7 @@ return [
     'notify_videos' => 'Nouvelles vidéos',
     'notify_live' => 'Lives',
     'premium_title' => 'Réglages avancés',
-    'premium_locked' => 'Ces réglages sont inclus dans Server Premium. Toute personne ayant Toxbot Premium peut le débloquer pour ce serveur dans Premium, dans ses paramètres utilisateur.',
+    'premium_locked' => 'Ces paramètres viennent avec Server Premium. Tu peux l\'acheter dans tes paramètres utilisateur, sous Premium.',
     'paused' => 'En pause',
     'paused_hint' => 'Sans Server Premium, seuls les :limit premiers créateurs sont annoncés.',
     'own_message' => 'Message personnalisé pour les lives',

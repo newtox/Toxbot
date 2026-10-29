@@ -9,7 +9,6 @@ return [
     'rank' => 'Global rank',
     'credits' => 'Credits',
     'commands' => 'Commands',
-    'premium_active' => 'Premium is active: double XP, double daily reward and premium backgrounds.',
     'earn_hint' => 'You get XP for messages and commands, credits for /daily, votes and level-ups.',
     'equip_background' => 'Background',
     'equip_frame' => 'Avatar frame',

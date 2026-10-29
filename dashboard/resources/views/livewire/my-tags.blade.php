@@ -12,6 +12,23 @@
         </div>
     </div>
 
+    @if ($slotMessage)
+        <div role="status" @class([
+            'rounded-lg border-l-4 bg-dc-800 px-4 py-3 text-sm',
+            'border-accent' => $slotSuccess,
+            'border-dc-red' => ! $slotSuccess,
+        ])>{{ $slotMessage }}</div>
+    @endif
+
+    @if ($canBuySlots)
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-lg bg-dc-800 px-4 py-3">
+            <p class="min-w-0 flex-1 basis-64 text-sm text-dc-muted">{{ __('tags.slots_hint', ['count' => $slotSize, 'price' => number_format($slotPrice, 0, '', ' ').' '.config('toxbot.currency')]) }}</p>
+            <button type="button" wire:click="buySlots" wire:loading.attr="disabled" @disabled($credits < $slotPrice)
+                    data-confirm="{{ __('tags.slots_confirm', ['count' => $slotSize, 'price' => number_format($slotPrice, 0, '', ' ').' '.config('toxbot.currency')]) }}" data-confirm-tone="primary"
+                    class="btn-secondary whitespace-nowrap">{{ __('tags.slots_buy', ['count' => $slotSize]) }}</button>
+        </div>
+    @endif
+
     @if ($formOpen)
         <form novalidate wire:submit="save" class="card space-y-5">
             <h2 class="text-lg font-semibold text-dc-header">
@@ -39,7 +56,7 @@
                 @error('content') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
             </div>
 
-            <fieldset @class(['space-y-4 rounded-lg bg-dc-900 p-4', 'opacity-60' => ! $premium]) @disabled(! $premium)>
+            <fieldset class="space-y-4 rounded-lg bg-dc-900 p-4">
                 <legend class="sr-only">{{ __('tags.embed_title') }}</legend>
                 <div class="flex items-start gap-3">
                     <label class="relative mt-0.5 inline-flex cursor-pointer items-center">
@@ -48,8 +65,8 @@
                         <span class="absolute top-0.5 left-0.5 size-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-4"></span>
                     </label>
                     <div>
-                        <div class="font-medium text-dc-header">{{ __('tags.embed_title') }} <span class="ml-1 rounded-full bg-dc-yellow px-2 py-0.5 text-xs font-semibold text-dc-950">Premium</span></div>
-                        <p class="text-sm text-dc-muted">{{ $premium ? __('tags.embed_description') : __('tags.embed_locked') }}</p>
+                        <div class="font-medium text-dc-header">{{ __('tags.embed_title') }}</div>
+                        <p class="text-sm text-dc-muted">{{ __('tags.embed_description') }}</p>
                     </div>
                 </div>
                 <div class="grid gap-4 sm:grid-cols-2">

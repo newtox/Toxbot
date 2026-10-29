@@ -3,17 +3,13 @@
 namespace App\Livewire;
 
 use App\Http\Middleware\EnsureBotOwner;
-use App\Models\DashboardUser;
 use App\Models\PremiumGrant;
 use App\Support\Timezone;
 use Illuminate\Support\Carbon;
-use Illuminate\Validation\Rule;
 use Livewire\Component;
 
 class AdminPremium extends Component
 {
-    public string $type = 'user';
-
     public string $target = '';
 
     public string $until = '';
@@ -32,7 +28,6 @@ class AdminPremium extends Component
         $this->authorizeOwner();
 
         $this->validate([
-            'type' => ['required', Rule::in(PremiumGrant::TYPES)],
             'target' => ['required', 'regex:/^\d{15,22}$/'],
             'until' => ['nullable', 'date_format:Y-m-d'],
             'note' => ['nullable', 'string', 'max:200'],
@@ -52,7 +47,7 @@ class AdminPremium extends Component
         }
 
         PremiumGrant::updateOrCreate(
-            ['type' => $this->type, 'target_id' => $this->target],
+            ['type' => 'guild', 'target_id' => $this->target],
             ['ends_at' => $endsAt, 'note' => trim($this->note) ?: null, 'granted_by' => (string) auth()->id()],
         );
 
@@ -70,16 +65,10 @@ class AdminPremium extends Component
 
     public function render()
     {
-        $grants = PremiumGrant::query()->orderByRaw('ends_at IS NOT NULL')->orderByDesc('ends_at')->orderByDesc('id')->get();
+        $grants = PremiumGrant::query()->where('type', 'guild')->orderByRaw('ends_at IS NOT NULL')->orderByDesc('ends_at')->orderByDesc('id')->get();
 
         return view('livewire.admin-premium', [
             'grants' => $grants,
-            'names' => DashboardUser::query()
-                ->whereIn('id', $grants->where('type', 'user')->pluck('target_id'))
-                ->get()
-                ->mapWithKeys(fn (DashboardUser $user) => [(string) $user->id => $user->global_name ?: $user->username])
-                ->all(),
-            'configUsers' => config('toxbot.premium_users'),
             'configGuilds' => config('toxbot.premium_guilds'),
         ]);
     }

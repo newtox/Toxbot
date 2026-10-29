@@ -9,7 +9,6 @@ return [
     'rank' => 'Rang global',
     'credits' => 'Crédits',
     'commands' => 'Commandes',
-    'premium_active' => 'Premium est actif : XP doublée, récompense quotidienne doublée et fonds Premium.',
     'earn_hint' => 'Tu gagnes de l\'XP avec les messages et les commandes, et des crédits avec /daily, les votes et les montées de niveau.',
     'equip_background' => 'Fond',
     'equip_frame' => 'Cadre d\'avatar',

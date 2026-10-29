@@ -14,15 +14,11 @@ class ProfileCardData
 {
     public const AVATAR_DIR = 'avatars';
 
-    public function __construct(
-        private readonly Discord $discord,
-        private readonly Premium $premium,
-    ) {}
+    public function __construct(private readonly Discord $discord) {}
 
     public function build(string $userId, ?string $guildId = null, array $previews = []): array
     {
         $user = BotUser::forDiscordId($userId);
-        $premium = $this->premium->isPremium($userId);
 
         $items = [];
         foreach (ShopItem::TYPES as $type) {
@@ -30,9 +26,6 @@ class ProfileCardData
             if ($item === null) {
                 $id = $user->equippedId($type);
                 $item = $id ? ShopItem::query()->ofType($type)->find($id) : null;
-                if ($item && ($item->premium_only && ! $premium)) {
-                    $item = null;
-                }
             }
             $items[$type] = $item && $item->type === $type ? ['path' => $item->path(), 'animated' => $item->animated] : null;
         }
@@ -56,7 +49,6 @@ class ProfileCardData
             'accent' => $user->color ?: BotUser::DEFAULT_COLOR,
             'level' => $user->level(),
             'stats' => $stats,
-            'premium' => $premium,
         ];
     }
 

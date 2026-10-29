@@ -10,7 +10,6 @@ use App\Models\DashboardUser;
 use App\Models\Guild;
 use App\Models\MemberLevel;
 use App\Models\ModCase;
-use App\Models\PremiumServer;
 use App\Models\StreamSource;
 use App\Models\StreamSubscription;
 use App\Models\Tag;
@@ -113,7 +112,6 @@ class DataDeletionTest extends TestCase
         $this->ticket(self::OTHER);
         UnbanAppeal::create(['guild' => self::GUILD, 'user_id' => '555', 'reason' => 'Bitte entbannen.']);
         Verification::create(['guild' => self::GUILD, 'user_id' => '555']);
-        PremiumServer::create(['user_id' => self::USER, 'guild_id' => self::GUILD]);
     }
 
     public function test_reset_turns_settings_off_and_keeps_history(): void
@@ -131,7 +129,6 @@ class DataDeletionTest extends TestCase
         $this->assertSame(2, ModCase::count());
         $this->assertSame(2, Ticket::count());
         $this->assertSame(1, UnbanAppeal::count());
-        $this->assertSame(1, PremiumServer::count());
         Http::assertSent(fn (Request $r) => $r->method() === 'DELETE' && str_ends_with($r->url(), '/channels/11/messages/700'));
         Http::assertSent(fn (Request $r) => $r->method() === 'DELETE' && str_ends_with($r->url(), '/channels/13/messages/701'));
         Http::assertNotSent(fn (Request $r) => str_contains($r->url(), '/users/@me/guilds/'.self::GUILD));
@@ -154,7 +151,6 @@ class DataDeletionTest extends TestCase
         $this->assertSame(1, TicketMessage::count());
         $this->assertSame(0, UnbanAppeal::count());
         $this->assertSame(0, Verification::count());
-        $this->assertSame(0, PremiumServer::count());
         Http::assertSent(fn (Request $r) => $r->method() === 'DELETE' && str_ends_with($r->url(), '/users/@me/guilds/'.self::GUILD));
     }
 
@@ -195,7 +191,6 @@ class DataDeletionTest extends TestCase
         $this->assertSame(0, CreditTransaction::count());
         $this->assertSame(0, Tag::count());
         $this->assertSame(0, TagGuildBlock::count());
-        $this->assertSame(0, PremiumServer::count());
         $this->assertSame(1, UnbanAppeal::count());
         $this->assertSame(3, ModCase::count());
         $this->assertGuest();

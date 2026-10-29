@@ -33,7 +33,7 @@ return [
     'notify_videos' => 'Neue Videos',
     'notify_live' => 'Livestreams',
     'premium_title' => 'Erweiterte Einstellungen',
-    'premium_locked' => 'Diese Einstellungen gibt es mit Server Premium. Wer Toxbot Premium hat, kann es in den Benutzereinstellungen unter Premium für diesen Server freischalten.',
+    'premium_locked' => 'Diese Einstellungen gibt es mit Server Premium. Kaufen kannst du es in den Benutzereinstellungen unter Premium.',
     'paused' => 'Pausiert',
     'paused_hint' => 'Ohne Server Premium werden nur die ersten :limit Creator gemeldet.',
     'own_message' => 'Eigene Nachricht bei Livestreams',

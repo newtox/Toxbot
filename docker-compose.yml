@@ -21,8 +21,6 @@ x-dashboard-env: &dashboard-env
   DISCORD_REDIRECT_URI: ${APP_URL}/auth/discord/callback
   DISCORD_BOT_TOKEN: ${DISCORD_BOT_TOKEN}
   TOXBOT_OWNER_ID: ${OWNER_ID}
-  TOXBOT_PREMIUM_USERS: ${PREMIUM_USERS:-}
-  TOXBOT_PREMIUM_USER_SKUS: ${PREMIUM_USER_SKUS:-}
   TOXBOT_PREMIUM_GUILDS: ${PREMIUM_GUILDS:-}
   TOXBOT_PREMIUM_GUILD_SKUS: ${PREMIUM_GUILD_SKUS:-}
   TOXBOT_CURRENCY: ${CURRENCY:-Credits}
@@ -51,9 +49,6 @@ services:
       owner_id: ${OWNER_ID}
       dashboard_url: http://toxbot-dashboard:8080
       public_dashboard_url: ${APP_URL}
-      premium_users: ${PREMIUM_USERS:-}
-      premium_user_skus: ${PREMIUM_USER_SKUS:-}
-      xp_boost_sku: ${XP_BOOST_SKU:-}
       currency: ${CURRENCY:-Credits}
       support_invite: ${SUPPORT_INVITE:-}
       vote_reward: ${TOPGG_VOTE_REWARD:-200}

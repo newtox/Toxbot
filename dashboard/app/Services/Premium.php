@@ -4,18 +4,15 @@ namespace App\Services;
 
 use App\Models\Entitlement;
 use App\Models\PremiumGrant;
-use App\Models\PremiumServer;
 
 class Premium
 {
-    private array $cache = [];
-
     private array $guildCache = [];
 
-    public static function storeUrl(): ?string
+    public static function storeUrl(?string $sku = null): ?string
     {
         $app = (string) config('services.discord.client_id');
-        $sku = config('toxbot.premium_user_skus')[0] ?? null;
+        $sku ??= config('toxbot.premium_guild_skus')[0] ?? null;
 
         return $app !== '' && $sku ? "https://discord.com/application-directory/{$app}/store/{$sku}" : null;
     }
@@ -27,8 +24,7 @@ class Premium
         }
 
         return $this->guildCache[$guildId] ??= PremiumGrant::covers('guild', $guildId)
-            || $this->hasGuildSubscription($guildId)
-            || $this->hasPremiumMember($guildId);
+            || $this->hasGuildSubscription($guildId);
     }
 
     private function hasGuildSubscription(string $guildId): bool
@@ -38,37 +34,6 @@ class Premium
         return $skus !== [] && Entitlement::query()
             ->active()
             ->where('guild_id', $guildId)
-            ->whereIn('sku_id', $skus)
-            ->exists();
-    }
-
-    private function hasPremiumMember(string $guildId): bool
-    {
-        foreach (PremiumServer::query()->where('guild_id', $guildId)->pluck('user_id') as $userId) {
-            if ($this->isPremium((string) $userId)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public function isPremium(string $userId): bool
-    {
-        if (in_array($userId, config('toxbot.premium_users'), true)) {
-            return true;
-        }
-
-        return $this->cache[$userId] ??= PremiumGrant::covers('user', $userId) || $this->hasUserSubscription($userId);
-    }
-
-    private function hasUserSubscription(string $userId): bool
-    {
-        $skus = config('toxbot.premium_user_skus');
-
-        return $skus !== [] && Entitlement::query()
-            ->active()
-            ->where('user_id', $userId)
             ->whereIn('sku_id', $skus)
             ->exists();
     }

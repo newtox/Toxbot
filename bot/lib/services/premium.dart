@@ -1,71 +1,6 @@
 import 'package:nyxx/nyxx.dart';
-import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:toxbot/utils/config.dart';
+import 'package:toxbot/services/economy.dart' as economy;
 import 'package:toxbot/utils/database.dart';
-
-bool _isActive(Entitlement entitlement) {
-  if (entitlement.isDeleted) return false;
-  final now = DateTime.now().toUtc();
-  if (entitlement.startsAt != null && entitlement.startsAt!.isAfter(now)) {
-    return false;
-  }
-  if (entitlement.endsAt != null && entitlement.endsAt!.isBefore(now)) {
-    return false;
-  }
-  return true;
-}
-
-Future<bool> _hasPremiumGrant(Snowflake userId) async {
-  try {
-    return await withConnection((connection) async {
-      final results = await connection.query(
-        'SELECT 1 FROM `premium_grants` '
-        "WHERE `type` = 'user' AND `target_id` = ? "
-        'AND (`ends_at` IS NULL OR `ends_at` > UTC_TIMESTAMP()) LIMIT 1;',
-        [userId.toString()],
-      );
-      return results.isNotEmpty;
-    });
-  } catch (e) {
-    print('Error in _hasPremiumGrant: $e');
-    return false;
-  }
-}
-
-Future<bool> isUserPremium(Snowflake userId, {CommandContext? context}) async {
-  if (premiumUserIds.contains(userId.toString())) return true;
-  if (await _hasPremiumGrant(userId)) return true;
-
-  final skus = premiumUserSkus;
-  if (skus.isEmpty) return false;
-
-  if (context is InteractionCommandContext && context.user.id == userId) {
-    return context.interaction.entitlements.any(
-      (entitlement) =>
-          entitlement.userId == userId &&
-          skus.contains(entitlement.skuId.toString()) &&
-          _isActive(entitlement),
-    );
-  }
-
-  final connection = await getMySqlConnection();
-  try {
-    final results = await connection.query(
-      'SELECT COUNT(*) AS `count` FROM `entitlements` '
-      'WHERE `user_id` = ? AND `sku_id` IN (${List.filled(skus.length, '?').join(', ')}) '
-      'AND `deleted` = 0 '
-      'AND (`starts_at` IS NULL OR `starts_at` <= UTC_TIMESTAMP()) '
-      'AND (`ends_at` IS NULL OR `ends_at` > UTC_TIMESTAMP());',
-      [userId.toString(), ...skus],
-    );
-    return (results.first['count'] as int) > 0;
-  } catch (e) {
-    print('Error in isUserPremium: $e');
-    return false;
-  } finally {
-    await connection.close();
-  }
-}
 
 Future<void> storeEntitlement(Entitlement entitlement, {bool? deleted}) async {
   final connection = await getMySqlConnection();
@@ -90,6 +25,14 @@ Future<void> storeEntitlement(Entitlement entitlement, {bool? deleted}) async {
         entitlement.isConsumed ? 1 : 0,
       ],
     );
+    final userId = entitlement.userId;
+    if (userId != null && !(deleted ?? entitlement.isDeleted)) {
+      await economy.grantPurchasedItems(
+        connection,
+        userId.toString(),
+        [entitlement.skuId.toString()],
+      );
+    }
   } catch (e) {
     print('Error in storeEntitlement: $e');
   } finally {

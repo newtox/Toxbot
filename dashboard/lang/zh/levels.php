@@ -9,7 +9,6 @@ return [
     'rank' => '全球排名',
     'credits' => '积分',
     'commands' => '命令',
-    'premium_active' => 'Premium 已启用：双倍 XP、双倍每日奖励和 Premium 背景。',
     'earn_hint' => '发消息和使用命令可获得 XP，/daily、投票和升级可获得积分。',
     'equip_background' => '背景',
     'equip_frame' => '头像框',
