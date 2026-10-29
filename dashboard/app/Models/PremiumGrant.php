@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PremiumGrant extends Model
 {
-    public const TYPES = ['user', 'guild'];
+    public const TYPES = ['guild'];
 
     protected $fillable = ['type', 'target_id', 'ends_at', 'note', 'granted_by'];
 

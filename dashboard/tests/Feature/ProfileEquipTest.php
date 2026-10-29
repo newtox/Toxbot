@@ -19,7 +19,6 @@ class ProfileEquipTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        config(['toxbot.premium_user_skus' => [], 'toxbot.premium_users' => []]);
         $this->actingAs(DashboardUser::create(['id' => (int) self::USER, 'username' => 'newtox']));
     }
 
@@ -28,7 +27,7 @@ class ProfileEquipTest extends TestCase
         $owned = ShopItem::create(['name' => 'Ocean', 'file' => 'ocean.jpg', 'price' => 500]);
         ShopItem::create(['name' => 'Network', 'file' => 'network.jpg', 'price' => 0]);
         ShopItem::create(['name' => 'Forest', 'file' => 'forest.jpg', 'price' => 500]);
-        ShopItem::create(['name' => 'Galaxy', 'file' => 'galaxy.jpg', 'price' => 0, 'premium_only' => true]);
+        ShopItem::create(['name' => 'Galaxy', 'file' => 'galaxy.jpg', 'price' => 0, 'sku_id' => '1300000000000000001']);
         ShopItem::create(['name' => 'Gold Ring', 'type' => ShopItem::FRAME, 'file' => 'gold.png', 'price' => 1000]);
 
         $user = BotUser::forDiscordId(self::USER);

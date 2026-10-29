@@ -33,7 +33,7 @@ return [
     'notify_videos' => 'New videos',
     'notify_live' => 'Livestreams',
     'premium_title' => 'Advanced settings',
-    'premium_locked' => 'These settings come with Server Premium. Anyone with Toxbot Premium can unlock it for this server under Premium in their user settings.',
+    'premium_locked' => 'These settings come with Server Premium. You can buy it in your user settings under Premium.',
     'paused' => 'Paused',
     'paused_hint' => 'Without Server Premium only the first :limit creators are announced.',
     'own_message' => 'Own message for livestreams',

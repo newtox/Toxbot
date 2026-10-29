@@ -145,7 +145,6 @@ CommandsPlugin setupCommandHandler(CommandsPlugin commands) {
 
   commands.addCommand(background);
   commands.addCommand(bar);
-  commands.addCommand(boost);
   commands.addCommand(credits);
   commands.addCommand(daily);
   commands.addCommand(frame);

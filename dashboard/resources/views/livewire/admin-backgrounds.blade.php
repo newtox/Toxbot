@@ -30,10 +30,13 @@
             <input id="bg-price" type="number" min="0" wire:model="newPrice" class="input">
             @error('newPrice') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
         </div>
-        <label class="flex items-center gap-2 text-sm">
-            <input type="checkbox" wire:model="newPremium" class="accent-[var(--color-accent)]"> {{ __('admin.premium_only') }}
-        </label>
-        <div class="flex justify-end">
+        <div>
+            <label class="label" for="bg-sku">{{ __('admin.sku') }}</label>
+            <input id="bg-sku" type="text" inputmode="numeric" wire:model="newSku" placeholder="{{ __('admin.sku_placeholder') }}" class="input font-mono">
+            <p class="mt-2 text-xs text-dc-faint">{{ __('admin.sku_hint') }}</p>
+            @error('newSku') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+        </div>
+        <div class="flex items-end justify-end">
             <button type="submit" wire:loading.attr="disabled" class="btn-primary">{{ __('admin.add') }}</button>
         </div>
     </form>
@@ -61,7 +64,10 @@
                         <span class="shrink-0">{{ __('admin.sort') }}</span>
                         <input type="number" wire:model.live.blur="rows.{{ $id }}.sort" class="input">
                     </label>
-                    <label class="flex items-center gap-2 text-sm"><input type="checkbox" wire:model.live="rows.{{ $id }}.premium_only" class="accent-[var(--color-accent)]"> {{ __('admin.premium_only') }}</label>
+                    <label class="flex items-center gap-2 text-sm text-dc-muted">
+                        <span class="shrink-0">SKU</span>
+                        <input type="text" inputmode="numeric" wire:model.live.blur="rows.{{ $id }}.sku_id" placeholder="{{ __('admin.sku_placeholder') }}" aria-label="{{ __('admin.sku') }}" class="input font-mono">
+                    </label>
                     <label class="flex items-center gap-2 text-sm"><input type="checkbox" wire:model.live="rows.{{ $id }}.active" class="accent-[var(--color-accent)]"> {{ __('admin.active') }}</label>
                     <span class="self-center text-xs text-dc-faint">{{ __('admin.owners', ['count' => $owners[$id] ?? 0]) }}</span>
                     <div class="flex justify-end gap-2">

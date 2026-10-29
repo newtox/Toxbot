@@ -78,9 +78,9 @@ class Shop extends Component
             $this->tab = ShopItem::BACKGROUND;
         }
 
+        app(Economy::class)->syncPurchases($this->userId());
         $user = BotUser::forDiscordId($this->userId());
         $owned = $user->exists ? $user->items()->pluck('backgrounds.id')->all() : [];
-        $premium = app(Premium::class)->isPremium($this->userId());
         $equipped = collect(ShopItem::TYPES)->mapWithKeys(fn (string $type) => [$type => $user->equippedId($type)])->all();
 
         $visible = fn ($query) => $query->where(fn ($q) => $q->where('active', true)->orWhereIn('id', $owned));
@@ -89,13 +89,13 @@ class Shop extends Component
             'id' => $item->id,
             'name' => $item->name,
             'price' => $item->price,
-            'premium_only' => $item->premium_only,
+            'for_money' => $item->forMoney(),
+            'store_url' => $item->forMoney() ? Premium::storeUrl($item->sku_id) : null,
             'animated' => $item->animated,
             'url' => $item->url(),
             'owned' => in_array($item->id, $owned, true) || ($item->isFree() && $item->active),
             'retired' => ! $item->active,
             'equipped' => $equipped[$this->tab] === $item->id,
-            'locked' => $item->premium_only && ! $premium,
         ]);
 
         $selected = $this->previews[$this->tab] ?? $equipped[$this->tab];
@@ -104,7 +104,7 @@ class Shop extends Component
             'items' => $items,
             'counts' => ShopItem::query()->tap($visible)->selectRaw('type, count(*) as total')->groupBy('type')->pluck('total', 'type'),
             'credits' => (int) $user->credits,
-            'premium' => $premium,
+            'hasExclusive' => $items->contains('for_money', true),
             'selected' => $selected,
             'previewUrl' => route('card', array_filter([
                 'user' => $this->userId(),

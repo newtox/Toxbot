@@ -1,6 +1,6 @@
 # Privacy Policy for Toxbot Discord Bot
 
-Last Updated: 25.10.2026
+Last Updated: 29.10.2026
 
 ## Introduction
 
@@ -13,17 +13,16 @@ This Privacy Policy explains how Toxbot ("we", "our", or "the bot") and the Toxb
 - **Settings**: your language and embed color, and each server's welcome and goodbye messages, autorole, level-up and tag settings
 - **Command usage**: which command you used and when. The total number of your commands is shown on your profile card. Each use is also logged with your username and ID in a private channel that only the developer can see.
 - **Levels**: your XP and level, globally and per server, and when you last received XP. To give XP for chat messages, the bot notices that you sent a message on a server. **The content of your messages is not stored**, except in tickets (see below).
-- **Credits and shop**: your credit balance, a history of what you earned and spent (for example daily rewards, level-ups, votes and purchases), your daily streak and the backgrounds you own and use
+- **Credits and shop**: your credit balance, a history of what you earned and spent (for example daily rewards, level-ups, votes and purchases), your daily streak, extra tag slots and the shop items you own and use
 - **Tags**: the name and content of tags you create, how often they were used, and reports about tags, including who reported them and why
 - **Stream notifications**: the Twitch and YouTube channels a server follows (channel ID, name and avatar), the server's notification settings, and which streams and videos were announced in which message
 - **Live role**: to give the live role, the bot sees on servers with a live role whether you are currently streaming on Discord. This status is not stored.
-- **Server Premium**: which server you chose for Server Premium
 - **Moderation**: when a moderator warns, times out, kicks, bans or unbans you on a server, or when Discord reports such an action from its audit log, we store a case with your ID and name, the moderator's ID and name, the reason and the duration. Moderators of that server can see these cases and your roles, join date and level in the dashboard. The member list in the dashboard is loaded from Discord when it is opened and is not stored.
 - **Link filter**: on servers that turn on the link filter, the bot checks new messages for links. Messages with unwanted links are deleted; if the server also warns or times out, a moderation case with the blocked domain is stored. Other messages are not stored.
 - **Verification**: on servers with verification, we store when you joined and when you verified. The captcha is provided by Cloudflare Turnstile.
 - **Tickets**: when you open a ticket, we store the ticket number, type, your ID and name, and who closed it and why. When a ticket is closed with Toxbot, the messages in the ticket channel are saved as a transcript: author ID, name and avatar, the text and links to attachments. The server's team can read the transcript in the dashboard, and a copy is posted in the server's ticket log channel.
 - **Unban appeals**: if you are banned and send an appeal, we store your ID, name, your text, the ban reason Discord tells us, and the team's decision and answer.
-- **Purchases**: when you buy Premium or an XP boost, Discord tells us which product you bought and how long it is valid. **We never see your payment details**; payments are handled entirely by Discord.
+- **Purchases**: when you buy Server Premium or an exclusive shop item, Discord tells us which product you bought, for which server or account, and how long it is valid. **We never see your payment details**; payments are handled entirely by Discord.
 
 ### When you use the dashboard
 - When you log in with Discord, we receive your Discord ID, username, display name, avatar and the list of your servers. We use the server list only to show which servers you can manage.
@@ -36,7 +35,7 @@ To draw your profile card, the dashboard loads your current avatar from Discord 
 ## How We Use Your Information
 
 We use the collected information to:
-- Provide the bot's and dashboard's features, such as settings, levels, leaderboards, the shop, tags and Premium
+- Provide the bot's and dashboard's features, such as settings, levels, leaderboards, the shop, tags and Server Premium
 - Prevent abuse, for example by removing reported tags and blocking users or servers that misuse Toxbot. For a block we store the user or server ID, a short reason and the date.
 - Improve and develop new features
 - Respond to user requests and support needs
@@ -79,7 +78,7 @@ You have the right to:
 - Request correction or deletion of your data
 - Object to or restrict certain processing
 
-You can delete your data yourself in the dashboard under **Profile → Delete my data**. This deletes your settings, your levels on every server, credits, backgrounds, tags, Server Premium choices, unban appeals and your dashboard login. Your messages in ticket transcripts are kept for the servers, but without your name, ID and avatar. Moderation cases about you belong to the servers where they happened and are kept; ask the server's team or us if you want them removed. Records of purchases from Discord are kept, and purchases are not refunded by deleting your data; refunds are handled by Discord.
+You can delete your data yourself in the dashboard under **Profile → Delete my data**. This deletes your settings, your levels on every server, credits, shop items, tags, unban appeals and your dashboard login. Your messages in ticket transcripts are kept for the servers, but without your name, ID and avatar. Moderation cases about you belong to the servers where they happened and are kept; ask the server's team or us if you want them removed. Records of purchases from Discord are kept, and purchases are not refunded by deleting your data; refunds are handled by Discord.
 
 For everything else, contact us using the details below.
 

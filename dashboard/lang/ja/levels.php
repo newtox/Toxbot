@@ -9,7 +9,6 @@ return [
     'rank' => 'グローバルランク',
     'credits' => 'クレジット',
     'commands' => 'コマンド',
-    'premium_active' => 'Premium有効: XP2倍、デイリー報酬2倍、Premium背景。',
     'earn_hint' => 'メッセージとコマンドでXP、/daily・投票・レベルアップでクレジットがもらえます。',
     'equip_background' => '背景',
     'equip_frame' => 'アバターフレーム',

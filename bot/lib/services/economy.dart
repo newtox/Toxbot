@@ -51,15 +51,6 @@ Future<int> getCredits(MySqlConnection connection, String userId) async {
   return rows.isEmpty ? 0 : rows.first['credits'] as int;
 }
 
-Future<bool> hasXpBoost(MySqlConnection connection, String userId) async {
-  final rows = await connection.query(
-    'SELECT (`xp_boost_until` IS NOT NULL AND `xp_boost_until` > UTC_TIMESTAMP()) AS `boost` '
-    'FROM `users` WHERE `id` = ?;',
-    [userId],
-  );
-  return rows.isNotEmpty && (rows.first['boost'] as int? ?? 0) == 1;
-}
-
 Future<XpResult> applyXp(
   MySqlConnection connection,
   String userId, {
@@ -148,7 +139,6 @@ Future<DailyResult> claimDaily(
   String userId, {
   required int reward,
   required int streakBonus,
-  required bool premium,
 }) async {
   await ensureUser(connection, userId);
   final rows = await connection.query(
@@ -164,8 +154,7 @@ Future<DailyResult> claimDaily(
   final streak = since != null && since < 2 * day
       ? (rows.first['daily_streak'] as int) + 1
       : 1;
-  final amount =
-      reward * (premium ? 2 : 1) + (streak - 1).clamp(0, 10) * streakBonus;
+  final amount = reward + (streak - 1).clamp(0, 10) * streakBonus;
 
   final updated = await connection.query(
     'UPDATE `users` SET `daily_at` = UTC_TIMESTAMP(), `daily_streak` = ? '
@@ -214,7 +203,7 @@ Future<List<ShopItem>> shopItems(
   bool includeRetired = false,
 }) async {
   final rows = await connection.query(
-    'SELECT `id`, `name`, `type`, `animated`, `price`, `premium_only`, `active` FROM `backgrounds` '
+    'SELECT `id`, `name`, `type`, `animated`, `price`, `sku_id`, `active` FROM `backgrounds` '
     'WHERE ${includeRetired ? '1 = 1' : '`active` = 1'} ${type != null ? 'AND `type` = ? ' : ''}${name != null ? 'AND `name` = ? ' : ''}'
     'ORDER BY `sort`, `price`, `id`;',
     [if (type != null) type, if (name != null) name],
@@ -243,7 +232,7 @@ Future<List<(String, String)>> usableItems(
     'SELECT `b`.`name`, `b`.`type` FROM `backgrounds` AS `b` '
     'LEFT JOIN `user_backgrounds` AS `ub` ON `ub`.`background_id` = `b`.`id` AND `ub`.`user` = ? '
     'WHERE `b`.`name` LIKE ? ${type != null ? 'AND `b`.`type` = ? ' : ''}'
-    'AND (`ub`.`id` IS NOT NULL OR (`b`.`active` = 1 AND `b`.`price` = 0 AND `b`.`premium_only` = 0)) '
+    'AND (`ub`.`id` IS NOT NULL OR (`b`.`active` = 1 AND `b`.`price` = 0 AND `b`.`sku_id` IS NULL)) '
     'ORDER BY `b`.`type`, `b`.`sort`, `b`.`id` LIMIT 24;',
     [userId, '%$search%', if (type != null) type],
   );
@@ -256,16 +245,15 @@ Future<String?> buyOrEquip(
   MySqlConnection connection,
   String userId,
   ShopItem item, {
-  required bool premium,
   bool allowBuy = true,
 }) async {
-  if (item.premiumOnly && !premium) return 'shop_needs_premium';
   await ensureUser(connection, userId);
 
   final bought = (await ownedItems(connection, userId)).contains(item.id);
   final owned = bought || (item.isFree && item.active);
 
   if (!owned) {
+    if (item.forMoney) return 'shop_for_money';
     if (!item.active) return 'background_not_owned';
     if (!allowBuy) return 'background_not_owned';
 
@@ -365,24 +353,6 @@ Future<ProfileStats> profileStats(
     row['rank'] as int,
     serverXp,
   );
-}
-
-Future<DateTime> extendXpBoost(
-  MySqlConnection connection,
-  String userId,
-) async {
-  await ensureUser(connection, userId);
-  await connection.query(
-    'UPDATE `users` SET `xp_boost_until` = '
-    'GREATEST(COALESCE(`xp_boost_until`, UTC_TIMESTAMP()), UTC_TIMESTAMP()) + INTERVAL 24 HOUR '
-    'WHERE `id` = ?;',
-    [userId],
-  );
-  final rows = await connection.query(
-    'SELECT `xp_boost_until` FROM `users` WHERE `id` = ?;',
-    [userId],
-  );
-  return rows.first['xp_boost_until'] as DateTime;
 }
 
 Future<String?> transferCredits(
@@ -512,4 +482,17 @@ Future<bool> slotsAllowed(MySqlConnection connection, String guildId) async {
     [guildId],
   );
   return rows.isEmpty || rows.first['slots_enabled'] != 0;
+}
+
+Future<void> grantPurchasedItems(
+  MySqlConnection connection,
+  String userId,
+  List<String> skuIds,
+) async {
+  if (skuIds.isEmpty) return;
+  await connection.query(
+    'INSERT IGNORE INTO `user_backgrounds` (`user`, `background_id`, `created_at`) '
+    'SELECT ?, `id`, UTC_TIMESTAMP() FROM `backgrounds` WHERE `sku_id` IN (${List.filled(skuIds.length, '?').join(', ')});',
+    [userId, ...skuIds],
+  );
 }

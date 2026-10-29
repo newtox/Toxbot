@@ -42,7 +42,7 @@ class BotUser extends Model
             'daily_streak' => 'integer',
             'xp_at' => 'datetime',
             'daily_at' => 'datetime',
-            'xp_boost_until' => 'datetime',
+            'tag_slots' => 'integer',
         ];
     }
 

@@ -9,7 +9,6 @@ return [
     'rank' => '글로벌 순위',
     'credits' => '크레딧',
     'commands' => '명령어',
-    'premium_active' => 'Premium 활성화: XP 2배, 일일 보상 2배, Premium 배경.',
     'earn_hint' => '메시지와 명령어로 XP를, /daily·투표·레벨업으로 크레딧을 받습니다.',
     'equip_background' => '배경',
     'equip_frame' => '아바타 테두리',

@@ -3,7 +3,6 @@ import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:toxbot/services/economy.dart' as economy;
 import 'package:toxbot/services/levels.dart';
-import 'package:toxbot/services/premium.dart';
 import 'package:toxbot/utils/config.dart';
 import 'package:toxbot/utils/database.dart';
 import 'package:toxbot/utils/functions.dart';
@@ -139,15 +138,12 @@ final daily = ChatCommand(
   (ChatContext context) async {
     final user = context.user;
     try {
-      final premium = await isUserPremium(user.id, context: context);
-
       final result = await withConnection(
         (connection) => economy.claimDaily(
           connection,
           user.id.toString(),
           reward: dailyReward,
           streakBonus: dailyStreakBonus,
-          premium: premium,
         ),
       );
       final claimed = result.claimed;
@@ -173,11 +169,6 @@ final daily = ChatCommand(
                 '&amount': formatCredits(amount),
                 '&streak': streak.toString(),
               }),
-              footer: premium
-                  ? EmbedFooterBuilder(
-                      text: await getString(user, 'daily_premium'),
-                    )
-                  : null,
             ),
           ],
         ),
@@ -385,11 +376,18 @@ final shop = ChatCommand(
   (ChatContext context) async {
     final user = context.user;
     try {
-      final premium = await isUserPremium(user.id, context: context);
+      final purchased = context is InteractionChatContext
+          ? context.interaction.entitlements
+              .where((entitlement) => !entitlement.isDeleted)
+              .map((entitlement) => entitlement.skuId.toString())
+              .toList()
+          : const <String>[];
       final (items, owned, credits) = await withConnection((
         connection,
       ) async {
         await economy.ensureUser(connection, user.id.toString());
+        await economy.grantPurchasedItems(
+            connection, user.id.toString(), purchased);
         return (
           await economy.shopItems(connection),
           await economy.ownedItems(connection, user.id.toString()),
@@ -447,12 +445,12 @@ final shop = ChatCommand(
 
       String status(economy.ShopItem item) {
         if (isOwned(item)) return '✅';
-        if (item.premiumOnly) return '⭐';
+        if (item.forMoney) return '💎';
         return formatCredits(item.price);
       }
 
       final ownedLabel = await getString(user, 'shop_owned');
-      final premiumLabel = await getString(user, 'shop_premium');
+      final exclusiveLabel = await getString(user, 'shop_exclusive');
       final animatedLabel = await getString(user, 'shop_animated');
 
       final choice = await context.getSelection<economy.ShopItem>(
@@ -478,8 +476,8 @@ final shop = ChatCommand(
           description: [
             isOwned(item)
                 ? ownedLabel
-                : item.premiumOnly
-                    ? premiumLabel
+                : item.forMoney
+                    ? exclusiveLabel
                     : formatCredits(item.price),
             if (item.animated) animatedLabel,
           ].join(' · '),
@@ -493,8 +491,9 @@ final shop = ChatCommand(
       );
 
       final String question;
-      if (choice.premiumOnly && !premium) {
-        question = await getString(user, 'shop_needs_premium');
+      final buyInDiscord = choice.forMoney && !isOwned(choice);
+      if (buyInDiscord) {
+        question = await getString(user, 'shop_in_discord');
       } else if (isOwned(choice)) {
         question = await localized(user, 'shop_equip_question', {
           '&name': choice.name,
@@ -526,7 +525,16 @@ final shop = ChatCommand(
             : [AttachmentBuilder(data: card.data, fileName: card.fileName)],
       );
 
-      if (choice.premiumOnly && !premium) {
+      if (buyInDiscord) {
+        preview.components = [
+          ActionRowBuilder(components: [
+            ButtonBuilder.link(
+              label: await getString(user, 'shop_buy_in_discord'),
+              url: Uri.parse(
+                  'https://discord.com/application-directory/${context.client.user.id}/store/${choice.skuId}'),
+            ),
+          ]),
+        ];
         await context.respond(preview, level: ResponseLevel.hint);
         return;
       }
@@ -555,7 +563,6 @@ final shop = ChatCommand(
           connection,
           user.id.toString(),
           choice,
-          premium: premium,
         ),
       );
       if (error != null) {
@@ -749,87 +756,6 @@ final leaderboard = ChatCommand(
       );
     } catch (e) {
       await replyCommandError(context, 'levels_error', 'leaderboard', e);
-    }
-  },
-);
-
-final boost = ChatCommand(
-  'boost',
-  'Use an XP boost for 24 hours of extra XP.',
-  localizedDescriptions: {
-    Locale.de: 'Einen XP-Boost für 24 Stunden extra XP einlösen.',
-    Locale.enUs: 'Use an XP boost for 24 hours of extra XP.',
-    Locale.da: 'Brug et XP-boost til 24 timers ekstra XP.',
-    Locale.esEs: 'Usar un boost de XP para 24 horas de XP extra.',
-    Locale.fr: 'Utiliser un boost d\'XP pour 24 heures d\'XP en plus.',
-    Locale.ru: 'Использовать буст XP на 24 часа дополнительного XP.',
-    Locale.hi: '24 घंटे अतिरिक्त XP के लिए XP बूस्ट इस्तेमाल करें।',
-    Locale.zhCn: '使用经验加成，24 小时内获得额外经验。',
-    Locale.ja: 'XP ブーストを使い、24 時間 XP を増やします。',
-    Locale.ko: 'XP 부스트를 사용해 24시간 동안 추가 XP를 받습니다.',
-  },
-  (ChatContext context) async {
-    final user = context.user;
-    try {
-      final sku = xpBoostSku;
-      if (sku == null || context is! InteractionChatContext) {
-        await replyError(context, 'boost_unavailable');
-        return;
-      }
-
-      final entitlement = context.interaction.entitlements
-          .where(
-            (e) =>
-                e.skuId.toString() == sku &&
-                e.userId == user.id &&
-                !e.isConsumed &&
-                !e.isDeleted,
-          )
-          .firstOrNull;
-
-      if (entitlement == null) {
-        await context.respond(
-          MessageBuilder(
-            embeds: [
-              EmbedBuilder(
-                color: await getUserColorFromDatabase(user.id),
-                description: await getString(user, 'boost_none'),
-              ),
-            ],
-            components: [
-              ActionRowBuilder(
-                components: [
-                  ButtonBuilder.premium(skuId: Snowflake.parse(sku)),
-                ],
-              ),
-            ],
-          ),
-          level: ResponseLevel.hint,
-        );
-        return;
-      }
-
-      await entitlement.consume();
-
-      final until = await withConnection(
-        (connection) => economy.extendXpBoost(connection, user.id.toString()),
-      );
-
-      await context.respond(
-        MessageBuilder(
-          embeds: [
-            EmbedBuilder(
-              color: DiscordColor.parseHexString(successColor),
-              description: await localized(user, 'boost_active', {
-                '&time':
-                    '<t:${until.toUtc().millisecondsSinceEpoch ~/ 1000}:R>',
-              }),
-            ),
-          ],
-        ),
-      );
-    } catch (e) {
-      await replyCommandError(context, 'levels_error', 'boost', e);
     }
   },
 );

@@ -20,13 +20,11 @@ class ShopTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        config(['toxbot.premium_user_skus' => ['900']]);
-
         foreach ([
             ['Network', 0, false], ['Ocean', 500, false], ['Forest', 500, false],
             ['Synthwave', 1500, false], ['Galaxy', 0, true],
-        ] as $i => [$name, $price, $premium]) {
-            ShopItem::create(['name' => $name, 'file' => strtolower($name).'.jpg', 'price' => $price, 'premium_only' => $premium, 'sort' => $i]);
+        ] as $i => [$name, $price, $exclusive]) {
+            ShopItem::create(['name' => $name, 'file' => strtolower($name).'.jpg', 'price' => $price, 'sku_id' => $exclusive ? '900' : null, 'sort' => $i]);
         }
 
         $this->actingAs(DashboardUser::create(['id' => (int) self::USER, 'username' => 'newtox']));
@@ -72,16 +70,24 @@ class ShopTest extends TestCase
         $this->assertSame(3500, BotUser::find(self::USER)->credits);
     }
 
-    public function test_premium_backgrounds_need_premium(): void
+    public function test_exclusive_items_are_bought_in_discord(): void
     {
+        config(['services.discord.client_id' => '561253410591211520']);
+        $this->credits(10000);
         $galaxy = ShopItem::where('name', 'Galaxy')->first();
 
+        $this->get('/shop')->assertOk()->assertSee(__('shop.exclusive'))
+            ->assertSee('https://discord.com/application-directory/561253410591211520/store/900', false);
         Livewire::test(Shop::class)->call('buy', $galaxy->id)->assertSet('success', false);
+        Livewire::test(Shop::class)->call('equip', $galaxy->id)->assertSet('success', false);
+        $this->assertSame(10000, BotUser::find(self::USER)->credits);
 
-        Entitlement::create(['id' => '1', 'sku_id' => '900', 'user_id' => self::USER, 'type' => 8, 'deleted' => false, 'consumed' => false]);
+        Entitlement::create(['id' => '1', 'sku_id' => '900', 'user_id' => self::USER, 'type' => 2, 'deleted' => false, 'consumed' => false]);
 
-        Livewire::test(Shop::class)->call('buy', $galaxy->id)->assertSet('success', true);
-        $this->assertSame($galaxy->id, BotUser::find(self::USER)->background_id);
+        Livewire::test(Shop::class)->call('equip', $galaxy->id)->assertSet('success', true);
+        $user = BotUser::find(self::USER);
+        $this->assertSame($galaxy->id, $user->background_id);
+        $this->assertTrue($user->items()->whereKey($galaxy->id)->exists());
     }
 
     public function test_free_background_can_be_equipped_without_buying(): void
@@ -96,14 +102,6 @@ class ShopTest extends TestCase
 
         $forest = ShopItem::where('name', 'Forest')->first();
         Livewire::test(Shop::class)->call('equip', $forest->id)->assertSet('success', false);
-    }
-
-    public function test_manual_premium_users_get_premium_without_sku(): void
-    {
-        config(['toxbot.premium_user_skus' => [], 'toxbot.premium_users' => [self::USER]]);
-        $galaxy = ShopItem::where('name', 'Galaxy')->first();
-
-        Livewire::test(Shop::class)->call('buy', $galaxy->id)->assertSet('success', true);
     }
 
     public function test_can_go_back_to_the_default_background(): void

@@ -124,7 +124,7 @@ class InfoTest extends TestCase
 
         $this->get('/profile')->assertOk()->assertSee(route('profile.settings'))->assertSee(route('profile.premium'))->assertSee(route('profile.data'));
         $this->get('/profile/settings')->assertOk()->assertSee(__('profile.language_title'));
-        $this->get('/profile/premium')->assertOk()->assertSee(__('profile.premium_inactive'))->assertSee(__('profile.premium_server_title'));
+        $this->get('/profile/premium')->assertOk()->assertSee(__('home.premium_server_t'))->assertSee(__('profile.premium_servers_title'));
         $this->get('/profile/data')->assertOk()->assertSee(__('data.account_title'));
         $this->get('/shop')->assertOk()->assertSee(route('profile.premium'));
     }

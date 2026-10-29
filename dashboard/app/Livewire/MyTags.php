@@ -5,11 +5,12 @@ namespace App\Livewire;
 use App\Models\BlacklistEntry;
 use App\Models\BotUser;
 use App\Models\Tag;
-use App\Services\Premium;
+use App\Services\Economy;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
+use RuntimeException;
 
 class MyTags extends Component
 {
@@ -27,6 +28,12 @@ class MyTags extends Component
     public string $embedColor = '';
 
     public string $embedImage = '';
+
+    #[Locked]
+    public ?string $slotMessage = null;
+
+    #[Locked]
+    public bool $slotSuccess = false;
 
     public function create(): void
     {
@@ -53,10 +60,9 @@ class MyTags extends Component
         $this->resetForm();
     }
 
-    public function save(Premium $premium): void
+    public function save(Economy $economy): void
     {
         $userId = (string) auth()->id();
-        $isPremium = $premium->isPremium($userId);
         $creating = $this->editingId === null;
 
         if ($creating) {
@@ -87,18 +93,18 @@ class MyTags extends Component
             throw ValidationException::withMessages(['embedImage' => __('tags.image_invalid', ['hosts' => implode(', ', config('toxbot.tags.image_hosts'))])]);
         }
 
-        $embedFields = $isPremium ? [
+        $embedFields = [
             'embed' => $this->embed,
             'embed_color' => $this->embedColor !== '' ? strtolower($this->embedColor) : null,
             'embed_image' => $this->embedImage !== '' ? $this->embedImage : null,
-        ] : [];
+        ];
 
         if ($creating) {
             if (BlacklistEntry::query()->where('user', $userId)->exists()) {
                 throw ValidationException::withMessages(['name' => __('tags.blacklisted')]);
             }
 
-            $limit = $this->limit($isPremium);
+            $limit = $economy->tagLimit($userId);
             if (Tag::query()->where('owner', $userId)->count() >= $limit) {
                 throw ValidationException::withMessages(['name' => __('tags.limit', ['limit' => $limit])]);
             }
@@ -126,25 +132,38 @@ class MyTags extends Component
         return Tag::query()->where('owner', (string) auth()->id())->findOrFail($id);
     }
 
-    private function limit(bool $premium): int
-    {
-        return $premium ? config('toxbot.tags.premium_limit') : config('toxbot.tags.free_limit');
-    }
-
     private function resetForm(): void
     {
         $this->reset(['editingId', 'formOpen', 'name', 'content', 'embed', 'embedColor', 'embedImage']);
         $this->resetValidation();
     }
 
-    public function render(Premium $premium)
+    public function buySlots(Economy $economy): void
     {
-        $isPremium = $premium->isPremium((string) auth()->id());
+        $this->slotMessage = null;
+
+        try {
+            $economy->buyTagSlots((string) auth()->id());
+            $this->slotMessage = __('tags.slots_bought', ['count' => config('toxbot.tags.slot_size')]);
+            $this->slotSuccess = true;
+        } catch (RuntimeException $e) {
+            $this->slotMessage = __($e->getMessage());
+            $this->slotSuccess = false;
+        }
+    }
+
+    public function render(Economy $economy)
+    {
+        $userId = (string) auth()->id();
+        $limit = $economy->tagLimit($userId);
 
         return view('livewire.my-tags', [
-            'tags' => Tag::query()->where('owner', (string) auth()->id())->orderBy('name')->get(),
-            'limit' => $this->limit($isPremium),
-            'premium' => $isPremium,
+            'tags' => Tag::query()->where('owner', $userId)->orderBy('name')->get(),
+            'limit' => $limit,
+            'canBuySlots' => $limit < (int) config('toxbot.tags.max_limit'),
+            'slotPrice' => (int) config('toxbot.tags.slot_price'),
+            'slotSize' => (int) config('toxbot.tags.slot_size'),
+            'credits' => (int) BotUser::query()->find($userId)?->credits,
         ]);
     }
 }

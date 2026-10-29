@@ -61,6 +61,6 @@
     </dl>
 
     <p class="text-sm text-dc-faint">
-        {{ $premium ? __('levels.premium_active') : __('levels.earn_hint') }}
+        {{ __('levels.earn_hint') }}
     </p>
 </section>

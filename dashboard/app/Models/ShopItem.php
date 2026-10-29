@@ -27,7 +27,7 @@ class ShopItem extends Model
 
     protected $table = 'backgrounds';
 
-    protected $fillable = ['name', 'type', 'file', 'animated', 'price', 'premium_only', 'active', 'sort'];
+    protected $fillable = ['name', 'type', 'file', 'animated', 'price', 'sku_id', 'active', 'sort'];
 
     protected $attributes = [
         'type' => self::BACKGROUND,
@@ -38,7 +38,6 @@ class ShopItem extends Model
     {
         return [
             'price' => 'integer',
-            'premium_only' => 'boolean',
             'active' => 'boolean',
             'animated' => 'boolean',
             'sort' => 'integer',
@@ -70,7 +69,12 @@ class ShopItem extends Model
 
     public function isFree(): bool
     {
-        return $this->price === 0 && ! $this->premium_only;
+        return $this->price === 0 && ! $this->forMoney();
+    }
+
+    public function forMoney(): bool
+    {
+        return $this->sku_id !== null && $this->sku_id !== '';
     }
 
     public function scopeInShop($query)

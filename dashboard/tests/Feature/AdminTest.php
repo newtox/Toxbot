@@ -86,7 +86,7 @@ class AdminTest extends TestCase
 
         $component = Livewire::test(AdminBackgrounds::class)
             ->set("rows.{$item->id}.price", '750')
-            ->set("rows.{$item->id}.premium_only", true)
+            ->set("rows.{$item->id}.sku_id", '1300000000000000001')
             ->set("rows.{$item->id}.active", false)
             ->set("rows.{$item->id}.name", 'Deep Ocean')
             ->assertHasNoErrors()
@@ -95,10 +95,12 @@ class AdminTest extends TestCase
         $item->refresh();
         $this->assertSame('Deep Ocean', $item->name);
         $this->assertSame(750, $item->price);
-        $this->assertTrue($item->premium_only);
+        $this->assertSame('1300000000000000001', $item->sku_id);
+        $this->assertTrue($item->forMoney());
         $this->assertFalse($item->active);
 
         $component->set("rows.{$item->id}.name", 'Forest')->assertHasErrors("rows.{$item->id}.name");
+        $component->set("rows.{$item->id}.name", 'Deep Ocean')->set("rows.{$item->id}.sku_id", 'abc')->assertHasErrors("rows.{$item->id}.sku_id");
         $this->assertSame('Deep Ocean', $item->fresh()->name);
     }
 

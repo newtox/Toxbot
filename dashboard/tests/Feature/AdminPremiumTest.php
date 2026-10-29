@@ -23,7 +23,7 @@ class AdminPremiumTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        config(['toxbot.owner_id' => self::OWNER, 'toxbot.premium_user_skus' => [], 'toxbot.premium_users' => [], 'toxbot.premium_guilds' => []]);
+        config(['toxbot.owner_id' => self::OWNER, 'toxbot.premium_guilds' => []]);
         $this->actingAs(DashboardUser::create(['id' => (int) self::OWNER, 'username' => 'newtox']));
     }
 
@@ -46,17 +46,17 @@ class AdminPremiumTest extends TestCase
 
     public function test_grant_without_end_date_lasts(): void
     {
-        $this->assertFalse(app(Premium::class)->isPremium(self::USER));
+        $this->assertFalse(app(Premium::class)->isGuildPremium(self::GUILD));
 
         Livewire::test(AdminPremium::class)
-            ->set('target', self::USER)
+            ->set('target', self::GUILD)
             ->set('note', 'Tester')
             ->call('grant')
             ->assertHasNoErrors()
             ->assertSee(__('admin.premium_forever'));
 
         $this->travel(5)->years();
-        $this->assertTrue((new Premium)->isPremium(self::USER));
+        $this->assertTrue((new Premium)->isGuildPremium(self::GUILD));
     }
 
     public function test_grant_with_end_date_runs_out_after_that_day(): void
@@ -64,7 +64,6 @@ class AdminPremiumTest extends TestCase
         $this->travelTo(now()->setDate(2026, 11, 1)->setTime(12, 0));
 
         Livewire::test(AdminPremium::class)
-            ->set('type', 'guild')
             ->set('target', self::GUILD)
             ->set('until', '2026-11-30')
             ->call('grant')
@@ -89,15 +88,15 @@ class AdminPremiumTest extends TestCase
     public function test_granting_again_replaces_the_end_date_and_revoking_removes_it(): void
     {
         $component = Livewire::test(AdminPremium::class)
-            ->set('target', self::USER)->set('until', now()->addMonth()->toDateString())->call('grant')
-            ->set('target', self::USER)->set('until', '')->call('grant');
+            ->set('target', self::GUILD)->set('until', now()->addMonth()->toDateString())->call('grant')
+            ->set('target', self::GUILD)->set('until', '')->call('grant');
 
         $grant = PremiumGrant::query()->sole();
         $this->assertNull($grant->ends_at);
 
         $component->call('revoke', $grant->id);
         $this->assertSame(0, PremiumGrant::query()->count());
-        $this->assertFalse((new Premium)->isPremium(self::USER));
+        $this->assertFalse((new Premium)->isGuildPremium(self::GUILD));
     }
 
     public function test_others_cannot_grant(): void

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:toxbot/models/server_tag.dart';
@@ -79,6 +81,44 @@ Future<int> countTags(Snowflake owner) => withConnection((connection) async {
         [owner.toString()],
       );
       return results.first['count'] as int;
+    });
+
+Future<int> tagLimit(Snowflake owner) => withConnection((connection) async {
+      final results = await connection.query(
+        'SELECT `tag_slots` FROM `users` WHERE `id` = ? LIMIT 1;',
+        [owner.toString()],
+      );
+      final slots =
+          results.isEmpty ? 0 : (results.first['tag_slots'] as int? ?? 0);
+      return min(maxTagLimit, freeTagLimit + slots * tagSlotSize);
+    });
+
+Future<String?> buyTagSlots(Snowflake owner) =>
+    withConnection((connection) async {
+      final userId = owner.toString();
+      await connection.query(
+        'INSERT IGNORE INTO `users` (`id`, `language`, `color`) VALUES (?, ?, ?);',
+        [userId, 'en_us', '#7289da'],
+      );
+      final current = await connection.query(
+        'SELECT `tag_slots` FROM `users` WHERE `id` = ?;',
+        [userId],
+      );
+      final slots = current.first['tag_slots'] as int? ?? 0;
+      if (freeTagLimit + slots * tagSlotSize >= maxTagLimit) {
+        return 'tag_slots_max';
+      }
+      final paid = await connection.query(
+        'UPDATE `users` SET `credits` = `credits` - ?, `tag_slots` = `tag_slots` + 1 '
+        'WHERE `id` = ? AND `credits` >= ? AND `tag_slots` = ?;',
+        [tagSlotPrice, userId, tagSlotPrice, slots],
+      );
+      if ((paid.affectedRows ?? 0) == 0) return 'tag_slots_not_enough';
+      await connection.query(
+        'INSERT INTO `credit_transactions` (`user`, `amount`, `reason`, `created_at`) VALUES (?, ?, ?, UTC_TIMESTAMP());',
+        [userId, -tagSlotPrice, 'tag_slots'],
+      );
+      return null;
     });
 
 Future<bool> isTagAllowedInGuild(Tag tag, Snowflake? guild) async {

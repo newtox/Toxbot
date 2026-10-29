@@ -25,7 +25,7 @@ class AdminBackgrounds extends Component
 
     public int $newPrice = 500;
 
-    public bool $newPremium = false;
+    public string $newSku = '';
 
     public array $rows = [];
 
@@ -41,7 +41,7 @@ class AdminBackgrounds extends Component
             ->mapWithKeys(fn (ShopItem $bg) => [$bg->id => [
                 'name' => $bg->name,
                 'price' => $bg->price,
-                'premium_only' => $bg->premium_only,
+                'sku_id' => (string) $bg->sku_id,
                 'active' => $bg->active,
                 'sort' => $bg->sort,
             ]])->all();
@@ -56,7 +56,8 @@ class AdminBackgrounds extends Component
             'upload' => ['required', 'image', 'mimes:jpg,jpeg,png,webp,gif', 'max:8192'],
             'newName' => ['required', 'string', 'max:64', Rule::unique('backgrounds', 'name')],
             'newPrice' => ['required', 'integer', 'min:0', 'max:100000000'],
-        ]);
+            'newSku' => ['nullable', 'regex:/^\d{15,22}$/', Rule::unique('backgrounds', 'sku_id')],
+        ], ['newSku.regex' => __('admin.sku_invalid'), 'newSku.unique' => __('admin.sku_taken')]);
 
         $file = Str::random(24).'.'.$this->upload->extension();
         Storage::disk('local')->putFileAs('backgrounds', $this->upload, $file);
@@ -67,12 +68,12 @@ class AdminBackgrounds extends Component
             'file' => $file,
             'animated' => $this->isAnimated(ShopItem::pathFor($file)),
             'price' => $this->newPrice,
-            'premium_only' => $this->newPremium,
+            'sku_id' => trim($this->newSku) ?: null,
             'active' => true,
             'sort' => (int) ShopItem::query()->ofType($this->newType)->max('sort') + 1,
         ]);
 
-        $this->reset(['upload', 'newName', 'newPrice', 'newPremium']);
+        $this->reset(['upload', 'newName', 'newPrice', 'newSku']);
         $this->loadRows();
         $this->dispatch('saved');
     }
@@ -108,12 +109,13 @@ class AdminBackgrounds extends Component
             "rows.$id.name" => ['required', 'string', 'max:64', Rule::unique('backgrounds', 'name')->ignore($id)],
             "rows.$id.price" => ['required', 'integer', 'min:0', 'max:100000000'],
             "rows.$id.sort" => ['required', 'integer'],
-        ]);
+            "rows.$id.sku_id" => ['nullable', 'regex:/^\d{15,22}$/', Rule::unique('backgrounds', 'sku_id')->ignore($id)],
+        ], ["rows.$id.sku_id.regex" => __('admin.sku_invalid'), "rows.$id.sku_id.unique" => __('admin.sku_taken')]);
 
         ShopItem::findOrFail($id)->update([
             'name' => trim($this->rows[$id]['name']),
             'price' => (int) $this->rows[$id]['price'],
-            'premium_only' => (bool) $this->rows[$id]['premium_only'],
+            'sku_id' => trim((string) $this->rows[$id]['sku_id']) ?: null,
             'active' => (bool) $this->rows[$id]['active'],
             'sort' => (int) $this->rows[$id]['sort'],
         ]);

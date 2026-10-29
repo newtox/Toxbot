@@ -5,7 +5,6 @@ namespace App\Livewire;
 use App\Models\BotUser;
 use App\Models\ShopItem;
 use App\Services\Economy;
-use App\Services\Premium;
 use App\Support\Level;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
@@ -75,12 +74,11 @@ class ProfileOverview extends Component
     {
         $userId = (string) auth()->id();
         $bot = BotUser::forDiscordId($userId);
-        $premium = app(Premium::class)->isPremium($userId);
+        app(Economy::class)->syncPurchases($userId);
         $owned = $bot->exists ? $bot->items()->pluck('backgrounds.id')->all() : [];
 
         $usable = ShopItem::query()
-            ->where(fn ($q) => $q->whereIn('id', $owned)->orWhere(fn ($free) => $free->where('active', true)->where('price', 0)->where('premium_only', false)))
-            ->when(! $premium, fn ($q) => $q->where('premium_only', false))
+            ->where(fn ($q) => $q->whereIn('id', $owned)->orWhere(fn ($free) => $free->where('active', true)->where('price', 0)->whereNull('sku_id')))
             ->orderBy('sort')->orderBy('id')
             ->get(['id', 'name', 'type'])
             ->groupBy('type');
@@ -91,7 +89,6 @@ class ProfileOverview extends Component
             'credits' => (int) $bot->credits,
             'rank' => $bot->exists ? $bot->globalRank() : null,
             'commands' => (int) $bot->commands_used,
-            'premium' => $premium,
             'usable' => $usable,
         ]);
     }

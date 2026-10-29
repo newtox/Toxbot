@@ -8,16 +8,9 @@
         <p class="rounded-lg border-l-4 border-accent bg-dc-900 px-4 py-3 text-sm" role="status">{{ $notice }}</p>
     @endif
 
-    <form novalidate wire:submit="grant" class="grid gap-3 rounded-lg bg-dc-900 p-4 sm:grid-cols-[13rem_1fr_11rem]">
-        <div>
-            <label class="label" for="premium-type">{{ __('admin.blacklist_type') }}</label>
-            <select id="premium-type" wire:model="type" class="input">
-                <option value="user">{{ __('admin.premium_type_user') }}</option>
-                <option value="guild">{{ __('admin.premium_type_guild') }}</option>
-            </select>
-        </div>
+    <form novalidate wire:submit="grant" class="grid gap-3 rounded-lg bg-dc-900 p-4 sm:grid-cols-[1fr_11rem]">
         <div class="min-w-0">
-            <label class="label" for="premium-target">{{ __('admin.blacklist_id') }}</label>
+            <label class="label" for="premium-target">{{ __('admin.premium_server_id') }}</label>
             <input id="premium-target" type="text" inputmode="numeric" wire:model="target" placeholder="123456789012345678" class="input font-mono">
             @error('target') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
         </div>
@@ -26,11 +19,11 @@
             <input id="premium-until" type="date" wire:model="until" min="{{ now(\App\Support\Timezone::current())->toDateString() }}" class="input">
             @error('until') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
         </div>
-        <div class="min-w-0 sm:col-span-3">
+        <div class="min-w-0 sm:col-span-2">
             <label class="label" for="premium-note">{{ __('admin.premium_note') }}</label>
             <input id="premium-note" type="text" wire:model="note" maxlength="200" class="input">
         </div>
-        <div class="flex flex-wrap items-center justify-end gap-3 sm:col-span-3">
+        <div class="flex flex-wrap items-center justify-end gap-3 sm:col-span-2">
             <p class="mr-auto text-sm text-dc-faint">{{ __('admin.premium_hint') }}</p>
             <button type="submit" class="btn-primary max-sm:w-full">{{ __('admin.premium_grant') }}</button>
         </div>
@@ -42,9 +35,7 @@
         <ul class="divide-y divide-white/5 rounded-lg bg-dc-900">
             @foreach ($grants as $grant)
                 <li wire:key="grant-{{ $grant->id }}" @class(['flex flex-wrap items-center gap-x-3 gap-y-1 px-3 py-2.5', 'opacity-60' => ! $grant->active()])>
-                    <span class="rounded-full bg-dc-700 px-2 py-0.5 text-xs font-semibold text-dc-muted">{{ $grant->type === 'guild' ? __('admin.blacklist_guild') : __('admin.blacklist_user') }}</span>
                     <span class="font-mono text-sm text-dc-header">{{ $grant->target_id }}</span>
-                    @isset($names[$grant->target_id])<span class="text-sm text-dc-text">{{ $names[$grant->target_id] }}</span>@endisset
                     @if ($grant->note)<span class="min-w-0 truncate text-sm text-dc-muted">{{ $grant->note }}</span>@endif
                     <span @class([
                         'ml-auto rounded-full px-2 py-0.5 text-xs font-semibold',
@@ -66,15 +57,12 @@
         </ul>
     @endif
 
-    @if ($configUsers !== [] || $configGuilds !== [])
+    @if ($configGuilds !== [])
         <div class="space-y-2 text-sm">
             <p class="text-dc-faint">{{ __('admin.premium_config') }}</p>
             <div class="flex flex-wrap gap-2">
-                @foreach ($configUsers as $id)
-                    <span class="rounded-full bg-dc-900 px-2.5 py-1 font-mono text-xs text-dc-muted">{{ __('admin.blacklist_user') }} · {{ $id }}</span>
-                @endforeach
                 @foreach ($configGuilds as $id)
-                    <span class="rounded-full bg-dc-900 px-2.5 py-1 font-mono text-xs text-dc-muted">{{ __('admin.blacklist_guild') }} · {{ $id }}</span>
+                    <span class="rounded-full bg-dc-900 px-2.5 py-1 font-mono text-xs text-dc-muted">{{ $id }}</span>
                 @endforeach
             </div>
         </div>

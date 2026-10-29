@@ -9,7 +9,6 @@ return [
     'rank' => 'Глобальный ранг',
     'credits' => 'Кредиты',
     'commands' => 'Команды',
-    'premium_active' => 'Premium активен: двойной XP, двойная ежедневная награда и Premium-фоны.',
     'earn_hint' => 'XP даётся за сообщения и команды, кредиты — за /daily, голоса и новые уровни.',
     'equip_background' => 'Фон',
     'equip_frame' => 'Рамка аватара',

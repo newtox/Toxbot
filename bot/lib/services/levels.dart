@@ -6,7 +6,6 @@ import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:toxbot/services/blacklist.dart';
 import 'package:toxbot/services/economy.dart' as economy;
-import 'package:toxbot/services/premium.dart';
 import 'package:toxbot/utils/config.dart';
 import 'package:toxbot/utils/database.dart';
 import 'package:toxbot/utils/reply.dart';
@@ -111,18 +110,13 @@ Future<void> giveXp(
   required User user,
   Snowflake? guildId,
   Snowflake? channelId,
-  CommandContext? context,
 }) async {
   if (user.isBot) return;
 
   try {
-    final premium = await isUserPremium(user.id, context: context);
-
     await withConnection((connection) async {
       final userId = user.id.toString();
-      final boosted = await economy.hasXpBoost(connection, userId);
-      final base = xpMin + _random.nextInt(max(1, xpMax - xpMin + 1));
-      final amount = base * (premium ? 2 : 1) + (boosted ? base : 0);
+      final amount = xpMin + _random.nextInt(max(1, xpMax - xpMin + 1));
 
       final result = await economy.applyXp(
         connection,
@@ -165,7 +159,6 @@ Future<void> countCommand(NyxxGateway client, CommandContext context) async {
     user: context.user,
     guildId: context.guild?.id,
     channelId: context.channel.id,
-    context: context,
   );
 }
 
@@ -227,7 +220,6 @@ Future<void> equipItem(ChatContext context, String type, String name) async {
       return;
     }
 
-    final premium = await isUserPremium(user.id, context: context);
     final error = await withConnection((connection) async {
       final found = await economy.shopItems(
         connection,
@@ -240,7 +232,6 @@ Future<void> equipItem(ChatContext context, String type, String name) async {
         connection,
         user.id.toString(),
         found.first,
-        premium: premium,
         allowBuy: false,
       );
     });

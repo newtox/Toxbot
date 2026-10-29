@@ -33,7 +33,7 @@ return [
     'notify_videos' => '새 영상',
     'notify_live' => '라이브 방송',
     'premium_title' => '고급 설정',
-    'premium_locked' => '이 설정은 Server Premium에 포함됩니다. Toxbot Premium이 있는 사람은 사용자 설정의 프리미엄에서 이 서버에 활성화할 수 있습니다.',
+    'premium_locked' => '이 설정은 Server Premium으로 사용할 수 있습니다. 사용자 설정의 Premium에서 구매할 수 있습니다.',
     'paused' => '일시 중지됨',
     'paused_hint' => 'Server Premium이 없으면 처음 :limit명의 크리에이터만 알림이 갑니다.',
     'own_message' => '라이브 방송용 메시지',

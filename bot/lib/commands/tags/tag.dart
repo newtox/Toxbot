@@ -1,7 +1,7 @@
 import 'package:mysql1/mysql1.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:toxbot/services/premium.dart';
+import 'package:toxbot/services/levels.dart' show formatCredits;
 import 'package:toxbot/services/tags.dart';
 import 'package:toxbot/utils/config.dart';
 import 'package:toxbot/utils/database.dart';
@@ -52,12 +52,11 @@ final _create = ChatCommand(
         return;
       }
 
-      final premium = await isUserPremium(user.id, context: context);
-      final limit = premium ? premiumTagLimit : freeTagLimit;
+      final limit = await tagLimit(user.id);
       if (await countTags(user.id) >= limit) {
         await replyError(
           context,
-          premium ? 'tag_limit_premium' : 'tag_limit_free',
+          limit >= maxTagLimit ? 'tag_limit_max' : 'tag_limit',
           replace: {'&limit': limit.toString()},
         );
         return;
@@ -314,8 +313,7 @@ final _show = ChatCommand(
         return;
       }
 
-      final asEmbed =
-          tag.embed && await isUserPremium(tag.owner, context: context);
+      final asEmbed = tag.embed;
 
       if (asEmbed) {
         final color = tag.embedColor != null
@@ -471,9 +469,7 @@ final _list = ChatCommand(
         return results.map((row) => row['name'] as String).toList();
       });
 
-      final premium = target.id == user.id
-          ? await isUserPremium(user.id, context: context)
-          : null;
+      final limit = target.id == user.id ? await tagLimit(user.id) : null;
 
       var description = names.isEmpty
           ? await getString(user, 'tag_list_empty')
@@ -494,16 +490,12 @@ final _list = ChatCommand(
               ))
                   .replaceAll('&user', target.globalName ?? target.username),
               description: description,
-              footer: premium == null
+              footer: limit == null
                   ? null
                   : EmbedFooterBuilder(
                       text: (await getString(user, 'tag_list_footer'))
                           .replaceAll('&count', names.length.toString())
-                          .replaceAll(
-                            '&limit',
-                            (premium ? premiumTagLimit : freeTagLimit)
-                                .toString(),
-                          ),
+                          .replaceAll('&limit', limit.toString()),
                     ),
             ),
           ],
@@ -576,8 +568,7 @@ final _transfer = ChatCommand(
         return;
       }
 
-      final targetLimit =
-          await isUserPremium(target.id) ? premiumTagLimit : freeTagLimit;
+      final targetLimit = await tagLimit(target.id);
       if (await countTags(target.id) >= targetLimit) {
         await replyError(
           context,
@@ -609,18 +600,18 @@ final _transfer = ChatCommand(
 
 final _embed = ChatCommand(
   'embed',
-  'Show a tag as an embed (Premium).',
+  'Show a tag as an embed.',
   localizedDescriptions: {
-    Locale.de: 'Einen Tag als Embed anzeigen (Premium).',
-    Locale.enUs: 'Show a tag as an embed (Premium).',
-    Locale.da: 'Vis et tag som embed (Premium).',
-    Locale.esEs: 'Mostrar un tag como embed (Premium).',
-    Locale.fr: 'Afficher un tag en embed (Premium).',
-    Locale.ru: 'Показать тег как эмбед (Премиум).',
-    Locale.hi: 'टैग को एम्बेड के रूप में दिखाएँ (प्रीमियम)।',
-    Locale.zhCn: '以嵌入形式显示标签（高级版）。',
-    Locale.ja: 'タグを埋め込みで表示します（プレミアム）。',
-    Locale.ko: '태그를 임베드로 표시합니다(프리미엄).',
+    Locale.de: 'Einen Tag als Embed anzeigen.',
+    Locale.enUs: 'Show a tag as an embed.',
+    Locale.da: 'Vis et tag som embed.',
+    Locale.esEs: 'Mostrar un tag como embed.',
+    Locale.fr: 'Afficher un tag en embed.',
+    Locale.ru: 'Показать тег как эмбед.',
+    Locale.hi: 'टैग को एम्बेड के रूप में दिखाएँ।',
+    Locale.zhCn: '以嵌入形式显示标签。',
+    Locale.ja: 'タグを埋め込みで表示します。',
+    Locale.ko: '태그를 임베드로 표시합니다.',
   },
   (
     ChatContext context,
@@ -687,10 +678,6 @@ final _embed = ChatCommand(
       }
       if (!isTagOwnerOrBotOwner(tag, user)) {
         await replyError(context, 'tag_not_owner');
-        return;
-      }
-      if (!await isUserPremium(user.id, context: context)) {
-        await replyError(context, 'tag_premium_only');
         return;
       }
       if (color != null &&
@@ -1016,6 +1003,84 @@ final _toggle = ChatCommand(
   },
 );
 
+final _slots = ChatCommand(
+  'slots',
+  'Buy more room for your tags with credits.',
+  localizedDescriptions: {
+    Locale.da: 'Køb mere plads til dine tags med credits.',
+    Locale.de: 'Mit Credits mehr Platz für deine Tags kaufen.',
+    Locale.enUs: 'Buy more room for your tags with credits.',
+    Locale.esEs: 'Compra más espacio para tus tags con créditos.',
+    Locale.fr: 'Acheter plus de place pour tes tags avec des crédits.',
+    Locale.ru: 'Купить больше места для тегов за кредиты.',
+    Locale.hi: 'क्रेडिट से अपने टैग के लिए और जगह खरीदें।',
+    Locale.zhCn: '用积分购买更多标签位置。',
+    Locale.ja: 'クレジットでタグの枠を増やします。',
+    Locale.ko: '크레딧으로 태그 슬롯을 더 구매합니다.',
+  },
+  (ChatContext context) async {
+    final user = context.user;
+    try {
+      final limit = await tagLimit(user.id);
+      final used = await countTags(user.id);
+      final status = await localized(user, 'tag_slots_status', {
+        '&count': '$used',
+        '&limit': '$limit',
+      });
+
+      if (limit >= maxTagLimit) {
+        await replyError(context, 'tag_slots_max',
+            replace: {'&limit': '$limit'});
+        return;
+      }
+
+      final confirmed = await context.getConfirmation(
+        MessageBuilder(
+          allowedMentions: noMentions,
+          embeds: [
+            EmbedBuilder(
+              color: await getUserColorFromDatabase(user.id),
+              title: await getString(user, 'tag_slots_title'),
+              description:
+                  '$status\n\n${await localized(user, 'tag_slots_question', {
+                    '&count': '$tagSlotSize',
+                    '&price': formatCredits(tagSlotPrice),
+                  })}',
+            ),
+          ],
+        ),
+        values: {
+          true: await getString(user, 'shop_buy'),
+          false: await getString(user, 'shop_cancel'),
+        },
+        styles: {true: ButtonStyle.success, false: ButtonStyle.secondary},
+        level: ResponseLevel.hint,
+        timeout: const Duration(minutes: 2),
+      );
+      if (!confirmed) {
+        await context.respond(
+          MessageBuilder(content: await getString(user, 'shop_cancelled')),
+          level: ResponseLevel.hint,
+        );
+        return;
+      }
+
+      final error = await buyTagSlots(user.id);
+      if (error != null) {
+        await replyError(context, error, replace: {'&limit': '$limit'});
+        return;
+      }
+      await replySuccess(context, 'tag_slots_bought',
+          replace: {'&limit': '${await tagLimit(user.id)}'},
+          level: ResponseLevel.hint);
+    } on InteractionTimeoutException {
+      return;
+    } catch (e) {
+      await replyCommandError(context, 'tag_error', 'slots', e);
+    }
+  },
+);
+
 final tag = ChatGroup(
   'tag',
   'Create and use tags, your own commands.',
@@ -1033,6 +1098,7 @@ final tag = ChatGroup(
   },
   children: [
     _create,
+    _slots,
     _edit,
     _delete,
     _show,

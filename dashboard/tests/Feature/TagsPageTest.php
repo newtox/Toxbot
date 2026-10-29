@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Livewire\MyTags;
+use App\Models\BotUser;
 use App\Models\DashboardUser;
 use App\Models\Tag;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -80,15 +81,9 @@ class TagsPageTest extends TestCase
         $this->assertNull($own->fresh());
     }
 
-    public function test_embed_settings_need_premium(): void
+    public function test_everyone_can_use_embeds(): void
     {
         $tag = Tag::create(['name' => 'mine', 'owner' => self::USER, 'content' => 'x']);
-
-        Livewire::test(MyTags::class)->call('edit', $tag->id)->set('embed', true)->set('embedColor', '#abc123')->call('save');
-        $this->assertFalse($tag->fresh()->embed);
-
-        config(['toxbot.premium_user_skus' => ['900']]);
-        \App\Models\Entitlement::create(['id' => '1', 'sku_id' => '900', 'user_id' => self::USER, 'type' => 8, 'deleted' => false, 'consumed' => false]);
 
         Livewire::test(MyTags::class)->call('edit', $tag->id)->set('embed', true)->set('embedColor', '#ABC123')
             ->set('embedImage', 'https://evil.example.com/x.png')->call('save')->assertHasErrors('embedImage');
@@ -99,5 +94,28 @@ class TagsPageTest extends TestCase
         $this->assertTrue($tag->embed);
         $this->assertSame('#abc123', $tag->embed_color);
         $this->assertSame('https://i.imgur.com/x.png', $tag->embed_image);
+    }
+
+    public function test_extra_tag_slots_are_bought_with_credits(): void
+    {
+        config(['toxbot.tags.free_limit' => 2, 'toxbot.tags.slot_size' => 5, 'toxbot.tags.slot_price' => 1000, 'toxbot.tags.max_limit' => 10]);
+        $user = BotUser::forDiscordId(self::USER);
+        $user->credits = 2500;
+        $user->save();
+
+        Livewire::test(MyTags::class)->assertSee(__('tags.count', ['count' => 0, 'limit' => 2]))
+            ->call('buySlots')->assertSet('slotSuccess', true)
+            ->assertSee(__('tags.count', ['count' => 0, 'limit' => 7]))
+            ->call('buySlots')->assertSet('slotSuccess', true)
+            ->assertSee(__('tags.count', ['count' => 0, 'limit' => 10]))
+            ->call('buySlots')->assertSet('slotSuccess', false)->assertSet('slotMessage', __('tags.slots_max'));
+
+        $user->refresh();
+        $this->assertSame(500, $user->credits);
+        $this->assertSame(2, $user->tag_slots);
+        $this->assertDatabaseHas('credit_transactions', ['user' => self::USER, 'amount' => -1000, 'reason' => 'tag_slots']);
+
+        config(['toxbot.tags.max_limit' => 50]);
+        Livewire::test(MyTags::class)->call('buySlots')->assertSet('slotSuccess', false)->assertSet('slotMessage', __('shop.not_enough'));
     }
 }

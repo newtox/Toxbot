@@ -1,6 +1,6 @@
 # Terms of Service for Toxbot Discord Bot
 
-Last Updated: 24.10.2026
+Last Updated: 29.10.2026
 
 ## Acceptance of Terms
 
@@ -8,7 +8,7 @@ By using Toxbot ("the bot") or its dashboard, you agree to these Terms of Servic
 
 ## Description of Service
 
-Toxbot is a Discord bot created using Dart, providing community engagement, moderation, and entertainment features through Discord's slash command system, together with a web dashboard to configure it. Features include levels, credits, a shop for profile backgrounds, custom tags, Twitch and YouTube stream notifications and optional paid Premium features for users and servers.
+Toxbot is a Discord bot created using Dart, providing community engagement, moderation, and entertainment features through Discord's slash command system, together with a web dashboard to configure it. Features include levels, credits, a shop for profile backgrounds, custom tags, Twitch and YouTube stream notifications, optional paid Server Premium for servers and optional paid cosmetic items.
 
 ## User Conduct
 
@@ -37,12 +37,12 @@ Tags are custom commands that you create and that can be used on every server To
 
 ## Premium and Purchases
 
-- Premium subscriptions and other paid items (such as the 24 hour XP boost) are sold and billed by Discord. Discord's [Paid Services Terms](https://discord.com/terms/paid-services-terms) also apply to these purchases.
-- Payments, cancellations and refunds are handled by Discord. You can cancel a subscription at any time in your Discord settings; Premium stays active until the end of the paid period.
-- Premium features are described in the store. We may change, improve or replace individual Premium features, as long as Premium as a whole remains comparable.
-- When a subscription ends, Premium-only features stop working. Things you created while you had Premium, such as tags, are kept, but may fall back to the free version (for example, embed tags are shown as text).
-- Premium includes Server Premium for one server you manage, which you choose in the dashboard and can change at any time. Server Premium applies to everyone on that server. When it ends, stream notifications keep working with the free settings: only as many streamers as the free limit allows are announced, the others are paused until Server Premium is active again or the list is shortened.
-- A consumable item such as the XP boost is used up when you redeem it.
+- Server Premium and exclusive shop items are sold and billed by Discord. Discord's [Paid Services Terms](https://discord.com/terms/paid-services-terms) also apply to these purchases.
+- Payments, cancellations and refunds are handled by Discord. You can cancel a subscription at any time in your Discord settings; Server Premium stays active until the end of the paid period.
+- Server Premium is a subscription for one server, chosen when you buy it in Discord, and applies to everyone on that server. Its features are described in the store and on the dashboard. We may change, improve or replace individual features, as long as Server Premium as a whole remains comparable.
+- When Server Premium ends, stream notifications keep working with the free settings: only as many streamers as the free limit allows are announced, the others are paused until Server Premium is active again or the list is shortened. Server tags above the free limit are kept but no new ones can be added.
+- Exclusive shop items are cosmetic items for your profile card. Once bought they stay yours, even if the item is later taken out of the shop.
+- Credits cannot be bought with real money and have no monetary value. Extra tag slots are bought with credits only.
 
 ## Stream Notifications
 

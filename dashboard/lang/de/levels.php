@@ -9,7 +9,6 @@ return [
     'rank' => 'Globaler Rang',
     'credits' => 'Credits',
     'commands' => 'Befehle',
-    'premium_active' => 'Premium ist aktiv: doppelte XP, doppelte tägliche Belohnung und Premium-Hintergründe.',
     'earn_hint' => 'XP gibt es für Nachrichten und Befehle, Credits für /daily, Votes und Level-ups.',
     'equip_background' => 'Hintergrund',
     'equip_frame' => 'Avatar-Rahmen',

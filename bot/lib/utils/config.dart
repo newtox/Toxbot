@@ -45,11 +45,13 @@ int get dailyReward => _int('daily_reward', 100);
 
 int get dailyStreakBonus => _int('daily_streak_bonus', 10);
 
-String? get xpBoostSku => _string('xp_boost_sku');
-
 int get freeTagLimit => _int('tag_free_limit', 10);
 
-int get premiumTagLimit => _int('tag_premium_limit', 250);
+int get tagSlotSize => _int('tag_slot_size', 5);
+
+int get tagSlotPrice => _int('tag_slot_price', 1000);
+
+int get maxTagLimit => _int('tag_max_limit', 250);
 
 Set<String> get allowedImageHosts => _list('tag_image_hosts',
         'cdn.discordapp.com,media.discordapp.net,i.imgur.com')
@@ -59,7 +61,3 @@ Set<String> get allowedImageHosts => _list('tag_image_hosts',
 Snowflake get logChannel => Snowflake(_int('log_channel', 1288846653704376462));
 
 int? get tagReportChannel => int.tryParse(_string('tag_report_channel') ?? '');
-
-Set<String> get premiumUserSkus => _list('premium_user_skus');
-
-Set<String> get premiumUserIds => _list('premium_users');

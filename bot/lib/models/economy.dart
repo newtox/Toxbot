@@ -43,7 +43,7 @@ class ShopItem {
   final String type;
   final bool animated;
   final int price;
-  final bool premiumOnly;
+  final String? skuId;
   final bool active;
 
   ShopItem.fromRow(ResultRow row)
@@ -52,10 +52,12 @@ class ShopItem {
         type = row['type'] as String? ?? 'background',
         animated = row['animated'] == 1,
         price = row['price'] as int,
-        premiumOnly = row['premium_only'] == 1,
+        skuId = row['sku_id']?.toString(),
         active = row['active'] != 0;
 
-  bool get isFree => price == 0 && !premiumOnly;
+  bool get forMoney => skuId != null && skuId!.isNotEmpty;
+
+  bool get isFree => price == 0 && !forMoney;
 
   String get column => shopItemColumn(type);
 }

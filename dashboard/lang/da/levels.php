@@ -9,7 +9,6 @@ return [
     'rank' => 'Global rang',
     'credits' => 'Credits',
     'commands' => 'Kommandoer',
-    'premium_active' => 'Premium er aktiv: dobbelt XP, dobbelt daglig belønning og Premium-baggrunde.',
     'earn_hint' => 'Du får XP for beskeder og kommandoer, credits for /daily, stemmer og level-ups.',
     'equip_background' => 'Baggrund',
     'equip_frame' => 'Avatarramme',
