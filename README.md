@@ -28,7 +28,7 @@ Both share the same MySQL database. Whatever you change in the dashboard (welcom
 - **Automatic setup** in the dashboard: creates the channels, roles and permissions for tickets, moderation, protection and verification in one go
 - **Data control**: server admins can reset all settings, the server owner can delete all data and remove Toxbot, and users can delete their own data
 - **Levels**: XP for messages and commands, with a global level and a separate level per server, plus `/leaderboard`
-- **Credits and shop**: `/daily`, `/credits` for the balance, streak and recent activity, credits for level-ups and Top.gg votes, backgrounds, avatar frames and progress bars for the profile card to buy with `/shop` and switch with `/background`, `/frame` and `/bar` or on the dashboard profile, some of them animated; `/pay` sends credits to another member
+- **Credits and shop**: `/daily`, `/credits` for the balance, streak and recent activity, credits for level-ups and Top.gg votes, backgrounds, avatar frames and progress bars for the profile card to buy with `/shop` and switch with `/background`, `/frame` and `/bar` or on the dashboard profile, some of them animated; `/pay` sends credits to another member; `/slots` is a slot machine for credits
 - **Profile cards**: `/profile` shows level, rank and credits as an image with the chosen background, avatar frame and progress bar; with an animated item or an animated Discord avatar the card is a GIF
 - **Tags**: global custom commands with `/tag`, reportable and blockable per server, plus server tags that admins create in the dashboard and that `/tag show` prefers on their server
 - **Starboard**: messages with enough reactions of a chosen emoji are reposted to a starboard channel, and every member can browse them in the dashboard
@@ -106,6 +106,10 @@ Messages for the whole server (ticket and verify buttons, ticket logs, raid alar
 - Every settings page can also be reset on its own with the button at the bottom of the page.
 - Only the server owner can delete all data of the server (settings, levels, cases, tickets with transcripts, appeals, verifications, starboard posts and its Server Premium slot). Toxbot then leaves the server.
 - Users can delete their own data on the Data page of their user settings. Their starboard posts are removed, their ticket messages are kept without name, ID and avatar; moderation cases and purchase records stay.
+
+### Slots
+
+`/slots bet` spins three reels for 10 to 10,000 credits, `/slots` alone shows the payout table. Three of a kind pay 8× (🍒) up to 500× (7️⃣), two of a kind return the bet. On average about 93 % of the bets come back, so slots slowly take credits out of the economy. Every member can spin once every five seconds. Credits cannot be bought with real money, so slots are play money only. Server admins who do not want slots can turn the command off under **Server Settings → Integrations → Toxbot**.
 
 ### Blacklist
 

@@ -90,5 +90,6 @@ return [
     'reason_purchase' => 'Shop purchase',
     'reason_transfer_in' => 'Received from a member',
     'reason_transfer_out' => 'Sent to a member',
+    'reason_slots' => 'Slots',
     'reason_admin' => 'Changed by the Toxbot team',
 ];

@@ -90,5 +90,6 @@ return [
     'reason_purchase' => 'Køb i butikken',
     'reason_transfer_in' => 'Modtaget fra et medlem',
     'reason_transfer_out' => 'Sendt til et medlem',
+    'reason_slots' => 'Slots',
     'reason_admin' => 'Ændret af Toxbot-teamet',
 ];

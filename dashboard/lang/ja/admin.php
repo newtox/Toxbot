@@ -90,5 +90,6 @@ return [
     'reason_purchase' => 'ショップで購入',
     'reason_transfer_in' => 'メンバーから受け取り',
     'reason_transfer_out' => 'メンバーに送信',
+    'reason_slots' => 'スロット',
     'reason_admin' => 'Toxbot チームが変更',
 ];

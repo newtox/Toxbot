@@ -90,5 +90,6 @@ return [
     'reason_purchase' => '商店购买',
     'reason_transfer_in' => '来自成员的转账',
     'reason_transfer_out' => '转给成员',
+    'reason_slots' => '老虎机',
     'reason_admin' => 'Toxbot 团队调整',
 ];

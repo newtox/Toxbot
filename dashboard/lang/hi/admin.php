@@ -90,5 +90,6 @@ return [
     'reason_purchase' => 'दुकान से ख़रीदारी',
     'reason_transfer_in' => 'किसी सदस्य से मिले',
     'reason_transfer_out' => 'किसी सदस्य को भेजे',
+    'reason_slots' => 'स्लॉट',
     'reason_admin' => 'Toxbot टीम ने बदला',
 ];
