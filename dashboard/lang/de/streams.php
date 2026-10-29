@@ -25,7 +25,7 @@ return [
     'youtube_placeholder' => '@Handle, Kanal-ID oder Link',
     'youtube_id_placeholder' => 'Kanal-ID (UC…) oder Kanal-Link',
     'add' => 'Hinzufügen',
-    'input_required' => 'Bitte einen Namen oder Link eingeben.',
+    'input_required' => 'Gib einen Namen oder Link ein.',
     'empty' => 'Noch keine Creator eingetragen.',
     'settings' => 'Einstellungen',
     'confirm_remove' => ':name wirklich entfernen?',

@@ -6,8 +6,8 @@ return [
     'button' => 'Mit Discord anmelden',
     'privacy' => 'Wir sehen nur deinen Namen, Avatar und deine Serverliste.',
     'cancelled' => 'Anmeldung abgebrochen.',
-    'invalid' => 'Ungültige Anmeldung. Bitte versuch es noch einmal.',
-    'rejected' => 'Discord hat die Anmeldung abgelehnt. Bitte versuch es noch einmal.',
-    'expired' => 'Deine Discord-Sitzung ist abgelaufen. Bitte melde dich neu an.',
+    'invalid' => 'Die Anmeldung hat nicht geklappt. Versuch es einfach noch mal.',
+    'rejected' => 'Discord hat die Anmeldung abgelehnt. Versuch es einfach noch mal.',
+    'expired' => 'Deine Discord-Sitzung ist abgelaufen. Melde dich einfach neu an.',
     'blacklisted' => 'Dein Account ist für Toxbot gesperrt.',
 ];

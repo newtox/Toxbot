@@ -3,7 +3,7 @@
 return [
     'intro' => 'Änderungen landen direkt in Toxbots Datenbank, kein Neustart nötig.',
     'reload' => 'Kanäle & Rollen neu laden',
-    'load_error' => 'Discord hat die Kanäle oder Rollen nicht herausgegeben (HTTP :status). Ist Toxbot noch auf dem Server?',
+    'load_error' => 'Discord hat die Kanäle oder Rollen nicht geliefert (HTTP :status). Ist Toxbot noch auf dem Server?',
     'welcome_title' => 'Willkommensnachricht',
     'welcome_description' => 'Toxbot schreibt diese Nachricht, sobald jemand dem Server beitritt.',
     'welcome_example' => 'Hey &mention, willkommen auf **&server**! Schau dir die Regeln an.',
@@ -32,7 +32,7 @@ return [
     'no_autorole' => 'Keine Autorole',
     'above_bot' => 'liegt über Toxbots Rolle',
     'autorole_hint' => 'Ausgegraute Rollen stehen über Toxbots höchster Rolle. Zieh Toxbots Rolle in den Server-Einstellungen weiter nach oben, um sie freizuschalten.',
-    'channel_required' => 'Bitte wähle einen Kanal.',
+    'channel_required' => 'Wähle einen Kanal aus.',
     'message_required' => 'Die Nachricht darf nicht leer sein.',
     'message_max' => 'Discord erlaubt höchstens :max Zeichen.',
     'channel_invalid' => 'Diesen Kanal gibt es nicht mehr oder Toxbot kann nicht hineinschreiben.',

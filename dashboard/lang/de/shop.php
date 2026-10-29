@@ -19,7 +19,7 @@ return [
     'bought' => 'Gekauft! Es ist jetzt auf deiner Profilkarte.',
     'equipped' => 'Es ist jetzt auf deiner Profilkarte.',
     'not_available' => 'Diesen Artikel gibt es nicht mehr.',
-    'premium_only' => 'Dieser Artikel ist nur mit Premium verfügbar.',
+    'premium_only' => 'Diesen Artikel gibt es nur mit Premium.',
     'already_owned' => 'Den Artikel hast du schon.',
     'not_enough' => 'Dafür hast du nicht genug Credits.',
     'not_owned' => 'Diesen Artikel musst du erst kaufen.',
