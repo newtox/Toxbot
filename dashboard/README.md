@@ -5,7 +5,7 @@ Web dashboard for [Toxbot](../README.md), built with Laravel, Livewire and Tailw
 - **Discord login** via OAuth2 (scopes `identify guilds`)
 - **Server list** with every server with Toxbot you are on. Servers where you are owner, administrator or have "Manage Server" can be configured; on the others you see the member list and the starboard, plus the modlog with Kick Members, Ban Members, Timeout Members or View Audit Log, the unban appeals with Ban Members, and the tickets of the ticket types whose team roles you have. Servers you manage without Toxbot get an invite button.
 - **Landing page** with features, Premium and invite link, plus live numbers for servers, members with XP and tags
-- **Server overview** with member count, streamers, Server Premium status and every module at a glance; every setting has its own page, grouped into General (welcome, goodbye, autorole, language, data), Community (levels, streams, live role, tags) and Moderation & safety (moderation, verification, link filter, anti-raid, tickets). The groups fold in the sidebar and remember their state, and each page can be reset on its own. Members, starboard, modlog, ticket history and appeals sit above them under Server.
+- **Server overview** with member count, streamers, Server Premium status and every module at a glance; every setting has its own page, grouped into General (welcome, goodbye, autorole, language, data), Community (levels, streams, live role, tags) and Moderation & safety (moderation, verification, link filter, AutoMod, anti-raid, tickets). The groups fold in the sidebar and remember their state, and each page can be reset on its own. Members, starboard, modlog, ticket history and appeals sit above them under Server.
 - **Welcome and goodbye messages** with channel picker, placeholders (`&mention`, `&user`, `&server`) and a live preview that looks like Discord
 - **Autorole**, limited to roles below Toxbot's highest role, same rule as `/autorole`
 - **Server language** for everything posted to the whole server, such as ticket and verify buttons, ticket logs and raid alarms
@@ -18,6 +18,7 @@ Web dashboard for [Toxbot](../README.md), built with Laravel, Livewire and Tailw
 - **Top.gg webhook** under `/webhooks/topgg` that pays credits for votes
 - **Stream notifications**: add Twitch and YouTube channels per server, pick the channel, ping role and message. Twitch uses EventSub webhooks (`/webhooks/twitch`), YouTube uses WebSub (`/webhooks/youtube`). Servers with Server Premium get more streamers, a message and ping role per streamer, filters and an action for when the stream ends.
 - **Premium page** in the user settings: what Server Premium includes, the Discord store link and which of your servers have it
+- **AutoMod**: blocked domains from the link filter, a word filter and a mention spam limit become Discord AutoMod rules, created, updated and removed whenever the page is saved or reset
 - **Live role** settings, the role itself is given by the bot
 - **Starboard**: channel, the emojis that count (⭐ by default, plus any Unicode emoji or the server's own) and the number of reactions needed, plus the list of posts sorted by date or reactions. Expired Discord image links are refreshed when the list is shown. Members without "Manage Server" see the list too.
 - **Moderation**: member list with search and filters, member profiles with level, roles and cases (members without moderation permissions see the list and profiles without cases, timeouts and actions; moderators only get the actions their permissions allow), actions (warn, timeout, kick, ban, unban) that the bot carries out, the modlog with filters, and settings for the modlog channel, DMs and warning levels
@@ -41,7 +42,7 @@ The dashboard keeps its own logins in `dashboard_users`, because `users` belongs
 
 ## Translations
 
-One PHP file per area and language under `lang/{locale}/` (`menu`, `login`, `home`, `servers`, `overview`, `guild`, `profile`, `common`, `levels`, `shop`, `tags`, `admin`, `streams`, `moderation`, `protection`, `tickets`, `setup`, `data`, `starboard`, `info`), used as `__('guild.welcome_title')`.
+One PHP file per area and language under `lang/{locale}/` (`menu`, `login`, `home`, `servers`, `overview`, `guild`, `profile`, `common`, `levels`, `shop`, `tags`, `admin`, `streams`, `moderation`, `protection`, `tickets`, `setup`, `data`, `starboard`, `info`, `automod`), used as `__('guild.welcome_title')`.
 
 The list of languages lives in `config/app.php` under `locales`, together with the matching bot language code. To add a language, add it there, copy `lang/en/` to `lang/{code}/` and translate it. `LocaleTest` checks that every language has every key.
 

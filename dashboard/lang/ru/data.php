@@ -31,4 +31,6 @@ return [
     'section_extra_tickets' => 'Типы тикетов и сообщение с кнопками удаляются.',
     'section_extra_verification' => 'Сообщение верификации удаляется.',
     'section_extra_starboard' => 'Уже опубликованные посты на доске звёзд сохраняются.',
+    'section_extra_automod' => 'Правила AutoMod от Toxbot удаляются из Discord.',
+    'section_extra_links' => 'Правило AutoMod для запрещённых доменов удаляется из Discord.',
 ];

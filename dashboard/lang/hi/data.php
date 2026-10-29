@@ -31,4 +31,6 @@ return [
     'section_extra_tickets' => 'टिकट प्रकार और बटन वाला संदेश हटा दिए जाते हैं।',
     'section_extra_verification' => 'वेरिफ़िकेशन संदेश हटा दिया जाता है।',
     'section_extra_starboard' => 'स्टारबोर्ड की मौजूदा पोस्ट बनी रहती हैं।',
+    'section_extra_automod' => 'Toxbot के AutoMod नियम Discord से हटा दिए जाते हैं।',
+    'section_extra_links' => 'प्रतिबंधित डोमेन का AutoMod नियम Discord से हटा दिया जाता है।',
 ];

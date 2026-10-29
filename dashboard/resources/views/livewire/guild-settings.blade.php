@@ -519,6 +519,9 @@
             <h2 class="text-lg font-semibold text-dc-header">{{ __('protection.links_title') }}</h2>
             <p class="text-sm text-dc-muted">{{ __('protection.links_description') }}</p>
         </div>
+        @if ($automodNotice)
+            <p class="rounded-lg border-l-4 border-dc-red bg-dc-900 px-4 py-3 text-sm" role="alert">{{ $automodNotice }}</p>
+        @endif
 
         <div class="grid gap-3 sm:grid-cols-2">
             <label class="flex items-start gap-3 rounded-lg bg-dc-900 p-3">
@@ -541,6 +544,7 @@
             <div>
                 <label class="label" for="link-blocklist">{{ __('protection.links_blocklist') }}</label>
                 <textarea id="link-blocklist" wire:model="linkBlocklist" rows="4" placeholder="example.com" class="input resize-y font-mono text-sm"></textarea>
+                <p class="mt-2 text-xs text-dc-faint">{{ __('automod.blocklist_hint') }}</p>
                 @error('linkBlocklist') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
             </div>
             <div>
@@ -595,6 +599,57 @@
                 <p class="mt-2 text-sm text-dc-header" role="status">{{ $scamCheckResult }}</p>
             @endif
         </div>
+    </section>
+
+    @endif
+
+    @if ($section === 'automod')
+    <section id="automod" class="card scroll-mt-20 space-y-5">
+        <div>
+            <h2 class="text-lg font-semibold text-dc-header">{{ __('automod.title') }}</h2>
+            <p class="text-sm text-dc-muted">{{ __('automod.description') }}</p>
+        </div>
+        @if ($automodNotice)
+            <p class="rounded-lg border-l-4 border-dc-red bg-dc-900 px-4 py-3 text-sm" role="alert">{{ $automodNotice }}</p>
+        @endif
+
+        <div>
+            <label class="label" for="automod-words">{{ __('automod.words') }}</label>
+            <textarea id="automod-words" wire:model="automodWords" rows="6" placeholder="{{ __('automod.words_placeholder') }}" class="input resize-y font-mono text-sm"></textarea>
+            <p class="mt-2 text-xs text-dc-faint">{{ __('automod.words_hint', ['max' => \App\Services\AutoMod::MAX_KEYWORD_LENGTH]) }}</p>
+            @error('automodWords') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+        </div>
+
+        <div class="max-w-md">
+            <label class="label" for="automod-mentions">{{ __('automod.mentions') }}</label>
+            <select id="automod-mentions" wire:model="automodMentions" class="input">
+                <option value="0">{{ __('automod.mentions_off') }}</option>
+                @foreach ([3, 5, 8, 10, 15, 20, 30, 50] as $limit)
+                    <option value="{{ $limit }}">{{ __('automod.mentions_limit', ['count' => $limit]) }}</option>
+                @endforeach
+            </select>
+            <p class="mt-2 text-xs text-dc-faint">{{ __('automod.mentions_hint') }}</p>
+            @error('automodMentions') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+        </div>
+
+        <div>
+            <h3 class="label">{{ __('automod.exempt_roles') }}</h3>
+            <div class="flex flex-wrap gap-2">
+                @foreach ($roles as $role)
+                    <label wire:key="automod-exempt-{{ $role['id'] }}" class="cursor-pointer">
+                        <input type="checkbox" wire:model="automodExemptRoles" value="{{ $role['id'] }}" class="peer sr-only">
+                        <span class="inline-flex items-center gap-1.5 rounded-full bg-dc-900 px-3 py-1 text-sm text-dc-muted ring-1 ring-white/10 transition peer-checked:bg-accent/15 peer-checked:text-dc-header peer-checked:ring-accent peer-focus-visible:ring-accent-fg">
+                            <span class="size-2 rounded-full" style="background: {{ $role['color'] ?? '#99aab5' }}"></span>{{ $role['name'] }}
+                        </span>
+                    </label>
+                @endforeach
+            </div>
+            @error('automodExemptRoles') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+            @error('automodExemptRoles.*') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+            <p class="mt-2 text-sm text-dc-faint">{{ __('automod.exempt_hint') }}</p>
+        </div>
+
+        <p class="rounded-lg bg-dc-900 px-4 py-3 text-sm text-dc-muted">{{ __('automod.alert_hint') }}</p>
     </section>
 
     @endif

@@ -31,4 +31,6 @@ return [
     'section_extra_tickets' => 'Ticket types and the button message are deleted.',
     'section_extra_verification' => 'The verify message is deleted.',
     'section_extra_starboard' => 'Existing starboard posts are kept.',
+    'section_extra_automod' => 'Toxbot\'s AutoMod rules are removed from Discord.',
+    'section_extra_links' => 'The AutoMod rule for blocked domains is removed from Discord.',
 ];

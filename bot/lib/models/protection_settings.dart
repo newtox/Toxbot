@@ -31,7 +31,9 @@ class ProtectionSettings {
         linkScam = _flag(row['link_scam']),
         allowlistEnabled = _flag(row['link_allowlist_enabled']),
         allowlist = _domains(row['link_allowlist']),
-        blocklist = _domains(row['link_blocklist']),
+        blocklist = row['automod_rule_domains'] == null
+            ? _domains(row['link_blocklist'])
+            : const {},
         linkAction = textOrNull(row['link_action']) ?? 'delete',
         exemptRoles = _snowflakes(row['link_exempt_roles']),
         raidEnabled = _flag(row['raid_enabled']),

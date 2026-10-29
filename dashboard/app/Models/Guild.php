@@ -34,6 +34,7 @@ class Guild extends Model
         'ticket_category', 'ticket_log_channel', 'ticket_limit', 'ticket_panel_channel', 'ticket_panel_message_id',
         'unban_enabled', 'language', 'stream_end_action', 'levelup_dm', 'slots_enabled',
         'starboard_channel', 'starboard_emoji', 'starboard_threshold',
+        'automod_words', 'automod_mentions', 'automod_exempt_roles', 'automod_rule_domains', 'automod_rule_mentions', 'automod_rule_words',
     ];
 
     public const LINK_ACTIONS = ['delete', 'warn', 'timeout'];
@@ -87,6 +88,7 @@ class Guild extends Model
             'levelup_enabled' => 'boolean',
             'levelup_dm' => 'boolean',
             'slots_enabled' => 'boolean',
+            'automod_mentions' => 'integer',
             'mod_dm' => 'boolean',
             'verify_enabled' => 'boolean',
             'link_invites' => 'boolean',

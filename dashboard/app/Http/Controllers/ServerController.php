@@ -122,6 +122,13 @@ class ServerController extends Controller
                     'extra' => trans_choice('moderation.cases_count', ModCase::query()->forGuild($guild)->count()),
                 ],
                 [
+                    'section' => 'automod',
+                    'icon' => 'filter',
+                    'title' => __('automod.title'),
+                    'description' => __('automod.description'),
+                    'active' => $row->automod_rule_domains !== null || $row->automod_rule_mentions !== null || $row->automod_rule_words !== null,
+                ],
+                [
                     'section' => 'tickets',
                     'icon' => 'ticket',
                     'title' => __('tickets.title'),

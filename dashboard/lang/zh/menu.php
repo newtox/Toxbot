@@ -37,4 +37,5 @@ return [
     'premium' => '高级版',
     'info' => '信息',
     'section_data' => '数据',
+    'section_automod' => 'AutoMod',
 ];

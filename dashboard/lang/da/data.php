@@ -31,4 +31,6 @@ return [
     'section_extra_tickets' => 'Ticket-typer og knapbeskeden slettes.',
     'section_extra_verification' => 'Verificeringsbeskeden slettes.',
     'section_extra_starboard' => 'Eksisterende opslag på starboardet bevares.',
+    'section_extra_automod' => 'Toxbots AutoMod-regler fjernes fra Discord.',
+    'section_extra_links' => 'AutoMod-reglen for blokerede domæner fjernes fra Discord.',
 ];

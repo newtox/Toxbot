@@ -37,4 +37,5 @@ return [
     'premium' => 'Премиум',
     'info' => 'Инфо',
     'section_data' => 'Данные',
+    'section_automod' => 'AutoMod',
 ];

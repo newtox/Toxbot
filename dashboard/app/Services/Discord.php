@@ -298,6 +298,37 @@ class Discord
             ])->throw();
     }
 
+    public function autoModRules(string $guildId): array
+    {
+        $rules = $this->asBot()->get("/guilds/{$guildId}/auto-moderation/rules")->throw()->json();
+
+        return is_array($rules) && array_is_list($rules) ? array_values(array_filter($rules, 'is_array')) : [];
+    }
+
+    public function createAutoModRule(string $guildId, array $rule): string
+    {
+        return (string) $this->asBot()->post("/guilds/{$guildId}/auto-moderation/rules", $rule)->throw()->json('id');
+    }
+
+    public function updateAutoModRule(string $guildId, string $ruleId, array $rule): bool
+    {
+        $response = $this->asBot()->patch("/guilds/{$guildId}/auto-moderation/rules/{$ruleId}", $rule);
+        if ($response->status() === 404) {
+            return false;
+        }
+        $response->throw();
+
+        return true;
+    }
+
+    public function deleteAutoModRule(string $guildId, string $ruleId): void
+    {
+        $response = $this->asBot()->delete("/guilds/{$guildId}/auto-moderation/rules/{$ruleId}");
+        if ($response->status() !== 404) {
+            $response->throw();
+        }
+    }
+
     public function leaveGuild(string $guildId): void
     {
         $response = $this->asBot()->delete("/users/@me/guilds/{$guildId}");

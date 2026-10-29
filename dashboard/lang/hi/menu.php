@@ -37,4 +37,5 @@ return [
     'premium' => 'प्रीमियम',
     'info' => 'जानकारी',
     'section_data' => 'डेटा',
+    'section_automod' => 'AutoMod',
 ];

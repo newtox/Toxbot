@@ -37,4 +37,5 @@ return [
     'premium' => '프리미엄',
     'info' => '정보',
     'section_data' => '데이터',
+    'section_automod' => 'AutoMod',
 ];

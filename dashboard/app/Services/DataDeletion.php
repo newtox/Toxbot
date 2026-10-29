@@ -39,6 +39,7 @@ class DataDeletion
         'moderation' => ['modlog_channel', 'mod_dm'],
         'verification' => ['verify_enabled', 'verify_role', 'verify_channel', 'verify_message_id'],
         'links' => ['link_invites', 'link_scam', 'link_allowlist_enabled', 'link_allowlist', 'link_blocklist', 'link_action', 'link_exempt_roles'],
+        'automod' => ['automod_words', 'automod_mentions', 'automod_exempt_roles'],
         'raid' => ['raid_enabled', 'raid_joins', 'raid_seconds', 'raid_minutes', 'raid_kick', 'raid_level', 'raid_until', 'min_account_age'],
         'tickets' => ['ticket_category', 'ticket_log_channel', 'ticket_limit', 'ticket_panel_channel', 'ticket_panel_message_id'],
         'starboard' => ['starboard_channel', 'starboard_emoji', 'starboard_threshold'],
@@ -46,10 +47,16 @@ class DataDeletion
 
     public function __construct(private Discord $discord) {}
 
+    private function autoMod(): AutoMod
+    {
+        return app(AutoMod::class);
+    }
+
     public function resetGuild(string $guildId): void
     {
         $row = Guild::query()->find($guildId);
         if ($row) {
+            $this->autoMod()->removeAll($row);
             foreach ([[$row->ticket_panel_channel, $row->ticket_panel_message_id], [$row->verify_channel, $row->verify_message_id]] as [$channel, $message]) {
                 if ($channel && $message) {
                     rescue(fn () => $this->discord->deleteMessage($channel, $message), report: false);
@@ -87,6 +94,10 @@ class DataDeletion
                 $row->{$column} = $defaults[$column] ?? null;
             }
             $row->save();
+
+            if (in_array($section, ['links', 'automod'], true)) {
+                $this->autoMod()->sync($row);
+            }
         }
 
         match ($section) {
