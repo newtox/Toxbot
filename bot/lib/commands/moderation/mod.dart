@@ -3,6 +3,8 @@ import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:toxbot/services/moderation.dart';
 import 'package:toxbot/utils/reply.dart';
 
+const _bulkDeleteLimit = Duration(days: 14);
+
 final _warn = ChatCommand(
   'warn',
   'Warn a member.',
@@ -463,23 +465,134 @@ final _case = ChatCommand(
   },
 );
 
+final _clear = ChatCommand(
+  'clear',
+  'Delete messages in this channel.',
+  localizedDescriptions: {
+    Locale.da: 'Slet beskeder i denne kanal.',
+    Locale.de: 'Nachrichten in diesem Kanal löschen.',
+    Locale.enUs: 'Delete messages in this channel.',
+    Locale.esEs: 'Borrar mensajes en este canal.',
+    Locale.fr: 'Supprimer des messages dans ce salon.',
+    Locale.ru: 'Удалить сообщения в этом канале.',
+    Locale.hi: 'इस चैनल में संदेश हटाएँ।',
+    Locale.zhCn: '删除此频道中的消息。',
+    Locale.ja: 'このチャンネルのメッセージを削除します。',
+    Locale.ko: '이 채널의 메시지를 삭제합니다.',
+  },
+  checks: [GuildCheck.all(), PermissionsCheck(Permissions.manageMessages)],
+  (
+    ChatContext context,
+    @UseConverter(IntConverter(min: 1, max: 500))
+    @Description('How many messages you want to delete (1-500).', {
+      Locale.da: 'Hvor mange beskeder du vil slette (1-500).',
+      Locale.de: 'Wie viele Nachrichten du löschen willst (1-500).',
+      Locale.enUs: 'How many messages you want to delete (1-500).',
+      Locale.esEs: 'Cuántos mensajes quieres borrar (1-500).',
+      Locale.fr: 'Combien de messages tu veux supprimer (1-500).',
+      Locale.ru: 'Сколько сообщений хочешь удалить (1-500).',
+      Locale.hi: 'आप कितने संदेश हटाना चाहते हैं (1-500)।',
+      Locale.zhCn: '你想删除的消息数量（1-500）。',
+      Locale.ja: '削除したいメッセージの数（1〜500）。',
+      Locale.ko: '삭제할 메시지 수 (1-500).',
+    })
+    int amount, [
+    @Description('Only delete messages from this user.', {
+      Locale.da: 'Slet kun beskeder fra denne bruger.',
+      Locale.de: 'Nur Nachrichten von diesem Nutzer löschen.',
+      Locale.enUs: 'Only delete messages from this user.',
+      Locale.esEs: 'Borrar solo los mensajes de este usuario.',
+      Locale.fr: 'Supprimer seulement les messages de cet utilisateur.',
+      Locale.ru: 'Удалять только сообщения этого пользователя.',
+      Locale.hi: 'सिर्फ़ इस उपयोगकर्ता के संदेश हटाएँ।',
+      Locale.zhCn: '只删除此用户的消息。',
+      Locale.ja: 'このユーザーのメッセージだけを削除します。',
+      Locale.ko: '이 사용자의 메시지만 삭제합니다.',
+    })
+    User? user,
+  ]) async {
+    if (context is InteractionChatContext) {
+      await context.acknowledge(level: ResponseLevel.hint);
+    }
+
+    final cutoff = DateTime.now().toUtc().subtract(_bulkDeleteLimit);
+    var deleted = 0;
+    var tooOld = false;
+    Snowflake? before;
+
+    try {
+      while (deleted < amount && !tooOld) {
+        final batch = await context.channel.messages
+            .fetchMany(limit: 100, before: before);
+        if (batch.isEmpty) break;
+        before = batch.last.id;
+
+        final ids = <Snowflake>[];
+        for (final message in batch) {
+          if (deleted + ids.length >= amount) break;
+          if (message.timestamp.toUtc().isBefore(cutoff)) {
+            tooOld = true;
+            break;
+          }
+          if (user == null || message.author.id == user.id) {
+            ids.add(message.id);
+          }
+        }
+
+        if (ids.length == 1) {
+          await context.channel.messages.delete(ids.first);
+        } else if (ids.length > 1) {
+          await context.channel.messages.bulkDelete(ids);
+        }
+        deleted += ids.length;
+        if (batch.length < 100) break;
+      }
+    } on HttpResponseError {
+      await replyError(context, 'clear_failed',
+          replace: {'&count': '$deleted'});
+      return;
+    }
+
+    await replySuccess(
+      context,
+      tooOld && deleted < amount ? 'clear_cleared_old' : 'clear_cleared',
+      replace: {'&count': '$deleted'},
+      level: ResponseLevel.hint,
+    );
+  },
+);
+
 final mod = ChatGroup(
   'mod',
-  'Warn, time out, kick and ban members and look up cases.',
+  'Warn, time out, kick and ban members, clear messages and look up cases.',
   localizedDescriptions: {
-    Locale.da: 'Advar, giv timeout, smid ud og udeluk medlemmer og se sager.',
+    Locale.da:
+        'Advar, giv timeout, smid ud og udeluk medlemmer, slet beskeder og se sager.',
     Locale.de:
-        'Mitglieder verwarnen, timeouten, kicken, bannen und Fälle ansehen.',
-    Locale.enUs: 'Warn, time out, kick and ban members and look up cases.',
-    Locale.esEs: 'Advertir, aislar, expulsar y banear miembros y ver casos.',
+        'Mitglieder verwarnen, timeouten, kicken und bannen, Nachrichten löschen und Fälle ansehen.',
+    Locale.enUs:
+        'Warn, time out, kick and ban members, clear messages and look up cases.',
+    Locale.esEs:
+        'Advertir, aislar, expulsar y banear miembros, borrar mensajes y ver casos.',
     Locale.fr:
-        'Avertir, exclure, expulser et bannir des membres et consulter les cas.',
+        'Avertir, exclure, expulser et bannir des membres, supprimer des messages et consulter les cas.',
     Locale.ru:
-        'Предупреждать, мьютить, выгонять и банить участников и смотреть случаи.',
-    Locale.hi: 'सदस्यों को चेतावनी, टाइमआउट, किक और बैन दें और केस देखें।',
-    Locale.zhCn: '警告、禁言、踢出和封禁成员，并查看案例。',
-    Locale.ja: 'メンバーへの警告、タイムアウト、キック、BAN とケースの確認を行います。',
-    Locale.ko: '멤버 경고, 타임아웃, 추방, 차단 및 기록 조회를 합니다.',
+        'Предупреждать, мьютить, выгонять и банить участников, удалять сообщения и смотреть случаи.',
+    Locale.hi:
+        'सदस्यों को चेतावनी, टाइमआउट, किक और बैन दें, संदेश हटाएँ और केस देखें।',
+    Locale.zhCn: '警告、禁言、踢出和封禁成员，删除消息并查看案例。',
+    Locale.ja: 'メンバーへの警告、タイムアウト、キック、BAN、メッセージ削除とケースの確認を行います。',
+    Locale.ko: '멤버 경고, 타임아웃, 추방, 차단, 메시지 삭제 및 기록 조회를 합니다.',
   },
-  children: [_warn, _timeout, _untimeout, _kick, _ban, _unban, _cases, _case],
+  children: [
+    _warn,
+    _timeout,
+    _untimeout,
+    _kick,
+    _ban,
+    _unban,
+    _clear,
+    _cases,
+    _case,
+  ],
 );
