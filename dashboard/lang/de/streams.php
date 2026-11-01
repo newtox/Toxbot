@@ -39,6 +39,8 @@ return [
     'own_message' => 'Eigene Nachricht bei Livestreams',
     'own_video_message' => 'Eigene Nachricht bei neuen Videos',
     'own_message_hint' => 'Leer lassen für die Server-Nachricht',
+    'own_channel' => 'Eigener Kanal für diesen Creator',
+    'own_channel_default' => 'Kanal des Servers',
     'own_role' => 'Eigene Ping-Rolle für diesen Creator',
     'own_role_default' => 'Ping-Rolle des Servers',
     'filter_games' => 'Nur bei diesen Spielen',

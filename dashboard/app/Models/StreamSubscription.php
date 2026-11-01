@@ -12,7 +12,7 @@ class StreamSubscription extends Model
 
     protected $fillable = [
         'guild', 'stream_source_id', 'message', 'video_message', 'role', 'filter_games', 'filter_title',
-        'end_action', 'notify_videos', 'notify_live',
+        'end_action', 'notify_videos', 'notify_live', 'channel',
     ];
 
     protected $attributes = [

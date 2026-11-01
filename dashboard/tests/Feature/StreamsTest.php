@@ -29,6 +29,8 @@ class StreamsTest extends TestCase
 
     private array $discordPosts = [];
 
+    private array $discordPostUrls = [];
+
     private ?array $liveStreams = null;
 
     private array $youtubeVideos = [];
@@ -66,6 +68,11 @@ class StreamsTest extends TestCase
                 str_contains($url, 'youtube.com/feeds/videos.xml') => Http::response('<feed xmlns="http://www.w3.org/2005/Atom"><title>Kanal</title><author><name>Mein Kanal</name></author></feed>'),
                 str_contains($url, 'discord.com/api/v10/channels') && $request->method() === 'POST' => $this->recordPost($request),
                 str_contains($url, 'discord.com/api/v10/channels') => Http::response(['id' => '900']),
+                str_contains($url, 'discord.com/api/v10/guilds/'.self::GUILD.'/channels') => Http::response([
+                    ['id' => '555', 'name' => 'streams', 'type' => 0, 'position' => 1],
+                    ['id' => '556', 'name' => 'valheim', 'type' => 0, 'position' => 2],
+                    ['id' => '557', 'name' => 'Voice', 'type' => 2, 'position' => 3],
+                ]),
                 str_contains($url, 'discord.com/api/v10/guilds/'.self::GUILD.'/roles') => Http::response([
                     ['id' => self::GUILD, 'name' => '@everyone', 'position' => 0, 'color' => 0],
                     ['id' => '888', 'name' => 'Valheim Fans', 'position' => 2, 'color' => 0],
@@ -79,6 +86,7 @@ class StreamsTest extends TestCase
     private function recordPost(Request $request)
     {
         $this->discordPosts[] = $request->data();
+        $this->discordPostUrls[] = $request->url();
 
         return Http::response(['id' => '900']);
     }
@@ -372,6 +380,37 @@ class StreamsTest extends TestCase
 
         $this->assertStringStartsWith('<@&888>', $this->discordPosts[0]['content']);
         $this->assertSame(['parse' => [], 'roles' => ['888']], $this->discordPosts[0]['allowed_mentions']);
+    }
+
+    public function test_premium_servers_can_announce_a_streamer_in_an_own_channel(): void
+    {
+        $this->login();
+        $this->guild();
+        $source = $this->twitchSource();
+        $subscription = StreamSubscription::create(['guild' => self::GUILD, 'stream_source_id' => $source->id]);
+
+        Livewire::test(StreamList::class, ['guildId' => self::GUILD])
+            ->call('edit', $subscription->id)->set('notifyChannel', '556')->call('saveSubscription');
+        $this->assertNull($subscription->fresh()->channel);
+
+        config(['toxbot.premium_guilds' => [self::GUILD]]);
+        Livewire::test(StreamList::class, ['guildId' => self::GUILD])
+            ->call('edit', $subscription->id)->assertSee('# valheim')->assertDontSee('# Voice')
+            ->set('notifyChannel', '557')->call('saveSubscription')->assertHasErrors('notifyChannel')
+            ->set('notifyChannel', '556')->call('saveSubscription')->assertHasNoErrors();
+        $this->assertSame('556', $subscription->fresh()->channel);
+
+        $payload = ['subscription' => ['type' => 'stream.online'], 'event' => ['id' => 'stream-3', 'broadcaster_user_id' => '42', 'started_at' => now()->toIso8601String()]];
+        $this->twitchRequest('notification', $payload)->assertNoContent();
+
+        $this->assertStringContainsString('/channels/556/messages', $this->discordPostUrls[0]);
+        $this->assertSame('556', StreamAnnouncement::first()->channel_id);
+
+        config(['toxbot.premium_guilds' => []]);
+        StreamAnnouncement::query()->delete();
+        $payload['event']['id'] = 'stream-4';
+        $this->twitchRequest('notification', $payload)->assertNoContent();
+        $this->assertStringContainsString('/channels/555/messages', end($this->discordPostUrls));
     }
 
     public function test_server_subscription_unlocks_server_premium(): void

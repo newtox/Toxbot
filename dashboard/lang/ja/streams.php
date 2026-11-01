@@ -39,6 +39,8 @@ return [
     'own_message' => 'ライブ配信用の独自メッセージ',
     'own_video_message' => '新しい動画用の独自メッセージ',
     'own_message_hint' => '空欄ならサーバーのメッセージを使います',
+    'own_channel' => 'このクリエイター専用のチャンネル',
+    'own_channel_default' => 'サーバーのチャンネル',
     'own_role' => 'このクリエイター専用の通知ロール',
     'own_role_default' => 'サーバーの通知ロール',
     'filter_games' => 'これらのゲームのみ',

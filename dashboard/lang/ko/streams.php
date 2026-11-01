@@ -39,6 +39,8 @@ return [
     'own_message' => '라이브 방송용 메시지',
     'own_video_message' => '새 영상용 메시지',
     'own_message_hint' => '비워 두면 서버 메시지를 사용합니다',
+    'own_channel' => '이 크리에이터 전용 채널',
+    'own_channel_default' => '서버 채널',
     'own_role' => '이 크리에이터 전용 알림 역할',
     'own_role_default' => '서버 알림 역할',
     'filter_games' => '이 게임만',

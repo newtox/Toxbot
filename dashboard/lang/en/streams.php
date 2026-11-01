@@ -39,6 +39,8 @@ return [
     'own_message' => 'Own message for livestreams',
     'own_video_message' => 'Own message for new videos',
     'own_message_hint' => 'Leave empty to use the server message',
+    'own_channel' => 'Own channel for this creator',
+    'own_channel_default' => 'The server\'s channel',
     'own_role' => 'Own role to ping for this creator',
     'own_role_default' => 'The server\'s ping role',
     'filter_games' => 'Only for these games',

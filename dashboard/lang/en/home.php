@@ -42,7 +42,7 @@ return [
     'premium_server_t' => 'Server Premium',
     'premium_server_s' => 'For a whole server',
     'premium_server_1' => 'Up to 50 creators instead of 5',
-    'premium_server_2' => 'Own message and ping role per creator',
+    'premium_server_2' => 'Own channel, message and ping role per creator',
     'premium_server_3' => 'Game and title filters',
     'premium_server_4' => 'Choose per creator what happens to the notification when the stream ends',
     'premium_server_5' => 'Up to 100 server tags instead of 20',

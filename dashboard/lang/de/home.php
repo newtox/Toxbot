@@ -42,7 +42,7 @@ return [
     'premium_server_t' => 'Server Premium',
     'premium_server_s' => 'Für einen ganzen Server',
     'premium_server_1' => 'Bis zu 50 statt 5 Creator',
-    'premium_server_2' => 'Eigene Nachricht und Ping-Rolle pro Creator',
+    'premium_server_2' => 'Eigener Kanal, eigene Nachricht und Ping-Rolle pro Creator',
     'premium_server_3' => 'Spiel- und Titelfilter',
     'premium_server_4' => 'Pro Creator wählen, was nach Streamende mit der Benachrichtigung passiert',
     'premium_server_5' => 'Bis zu 100 statt 20 Server-Tags',

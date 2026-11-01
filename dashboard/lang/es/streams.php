@@ -39,6 +39,8 @@ return [
     'own_message' => 'Mensaje propio para directos',
     'own_video_message' => 'Mensaje propio para nuevos vídeos',
     'own_message_hint' => 'Déjalo vacío para usar el mensaje del servidor',
+    'own_channel' => 'Canal propio para este creador',
+    'own_channel_default' => 'El canal del servidor',
     'own_role' => 'Rol propio a mencionar para este creador',
     'own_role_default' => 'El rol de mención del servidor',
     'filter_games' => 'Solo con estos juegos',

@@ -88,15 +88,27 @@
                                     @endif
                                 </div>
 
-                                <div>
-                                    <label class="label" for="stream-role-{{ $subscription->id }}">{{ __('streams.own_role') }}</label>
-                                    <select id="stream-role-{{ $subscription->id }}" wire:model="pingRole" class="input max-w-sm">
-                                        <option value="">{{ __('streams.own_role_default') }}</option>
-                                        @foreach ($roles as $role)
-                                            <option value="{{ $role['id'] }}">@ {{ $role['name'] }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('pingRole') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+                                <div class="grid gap-4 sm:grid-cols-2">
+                                    <div>
+                                        <label class="label" for="stream-channel-{{ $subscription->id }}">{{ __('streams.own_channel') }}</label>
+                                        <select id="stream-channel-{{ $subscription->id }}" wire:model="notifyChannel" class="input">
+                                            <option value="">{{ __('streams.own_channel_default') }}</option>
+                                            @foreach ($channels as $channel)
+                                                <option value="{{ $channel['id'] }}"># {{ $channel['name'] }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('notifyChannel') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+                                    </div>
+                                    <div>
+                                        <label class="label" for="stream-role-{{ $subscription->id }}">{{ __('streams.own_role') }}</label>
+                                        <select id="stream-role-{{ $subscription->id }}" wire:model="pingRole" class="input">
+                                            <option value="">{{ __('streams.own_role_default') }}</option>
+                                            @foreach ($roles as $role)
+                                                <option value="{{ $role['id'] }}">@ {{ $role['name'] }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('pingRole') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+                                    </div>
                                 </div>
 
                                 <div class="grid gap-4 sm:grid-cols-2">

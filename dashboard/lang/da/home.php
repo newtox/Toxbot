@@ -42,7 +42,7 @@ return [
     'premium_server_t' => 'Server Premium',
     'premium_server_s' => 'Til en hel server',
     'premium_server_1' => 'Op til 50 skabere i stedet for 5',
-    'premium_server_2' => 'Egen besked og ping-rolle pr. skaber',
+    'premium_server_2' => 'Egen kanal, besked og ping-rolle pr. skaber',
     'premium_server_3' => 'Spil- og titelfiltre',
     'premium_server_4' => 'Pr. skaber vælge, hvad der sker med notifikationen efter streamen',
     'premium_server_5' => 'Op til 100 server-tags i stedet for 20',

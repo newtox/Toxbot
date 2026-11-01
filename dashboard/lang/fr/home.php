@@ -42,7 +42,7 @@ return [
     'premium_server_t' => 'Server Premium',
     'premium_server_s' => 'Pour tout un serveur',
     'premium_server_1' => 'Jusqu\'à 50 créateurs au lieu de 5',
-    'premium_server_2' => 'Message et rôle à mentionner par créateur',
+    'premium_server_2' => 'Salon, message et rôle à mentionner par créateur',
     'premium_server_3' => 'Filtres par jeu et par titre',
     'premium_server_4' => 'Choisir par créateur ce que devient la notification à la fin du stream',
     'premium_server_5' => 'Jusqu\'à 100 tags du serveur au lieu de 20',

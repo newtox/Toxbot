@@ -39,6 +39,8 @@ return [
     'own_message' => 'Egen besked ved livestreams',
     'own_video_message' => 'Egen besked ved nye videoer',
     'own_message_hint' => 'Lad være tom for at bruge serverbeskeden',
+    'own_channel' => 'Egen kanal for denne skaber',
+    'own_channel_default' => 'Serverens kanal',
     'own_role' => 'Egen rolle at pinge for denne skaber',
     'own_role_default' => 'Serverens ping-rolle',
     'filter_games' => 'Kun for disse spil',

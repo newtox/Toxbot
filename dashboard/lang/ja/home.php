@@ -42,7 +42,7 @@ return [
     'premium_server_t' => 'Server Premium',
     'premium_server_s' => 'サーバー全体に',
     'premium_server_1' => 'クリエイターは 5 人ではなく最大 50 人',
-    'premium_server_2' => 'クリエイターごとのメッセージと通知ロール',
+    'premium_server_2' => 'クリエイターごとのチャンネル、メッセージ、通知ロール',
     'premium_server_3' => 'ゲームとタイトルのフィルター',
     'premium_server_4' => 'クリエイターごとに配信終了後の通知の扱いを選択',
     'premium_server_5' => 'サーバータグを 20 個から最大 100 個に',

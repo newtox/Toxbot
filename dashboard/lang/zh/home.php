@@ -42,7 +42,7 @@ return [
     'premium_server_t' => 'Server Premium',
     'premium_server_s' => '为整个服务器',
     'premium_server_1' => '最多 50 位创作者，而不是 5 位',
-    'premium_server_2' => '每位创作者专属的消息和提及身份组',
+    'premium_server_2' => '每位创作者专属的频道、消息和提及身份组',
     'premium_server_3' => '游戏和标题过滤',
     'premium_server_4' => '为每位创作者单独选择直播结束后如何处理通知',
     'premium_server_5' => '最多 100 个服务器标签，而不是 20 个',

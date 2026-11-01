@@ -39,6 +39,8 @@ return [
     'own_message' => '直播的专属消息',
     'own_video_message' => '新视频的专属消息',
     'own_message_hint' => '留空则使用服务器消息',
+    'own_channel' => '此创作者专用的频道',
+    'own_channel_default' => '服务器的频道',
     'own_role' => '此创作者专用的提及身份组',
     'own_role_default' => '服务器的提及身份组',
     'filter_games' => '仅限这些游戏',

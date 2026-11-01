@@ -42,7 +42,7 @@ return [
     'premium_server_t' => 'Server Premium',
     'premium_server_s' => '서버 전체를 위해',
     'premium_server_1' => '크리에이터 5명 대신 최대 50명',
-    'premium_server_2' => '크리에이터별 메시지와 알림 역할',
+    'premium_server_2' => '크리에이터별 채널, 메시지, 알림 역할',
     'premium_server_3' => '게임 및 제목 필터',
     'premium_server_4' => '크리에이터마다 방송 종료 후 알림 처리 방식 선택',
     'premium_server_5' => '서버 태그 20개 대신 최대 100개',

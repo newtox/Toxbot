@@ -42,7 +42,7 @@ return [
     'premium_server_t' => 'Server Premium',
     'premium_server_s' => 'पूरे सर्वर के लिए',
     'premium_server_1' => '5 की जगह 50 तक क्रिएटर',
-    'premium_server_2' => 'हर क्रिएटर के लिए अपना संदेश और पिंग रोल',
+    'premium_server_2' => 'हर क्रिएटर के लिए अपना चैनल, संदेश और पिंग रोल',
     'premium_server_3' => 'गेम और शीर्षक फ़िल्टर',
     'premium_server_4' => 'हर क्रिएटर के लिए चुनें कि स्ट्रीम ख़त्म होने पर सूचना का क्या हो',
     'premium_server_5' => '20 की जगह 100 तक सर्वर टैग',

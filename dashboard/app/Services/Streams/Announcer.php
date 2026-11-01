@@ -234,7 +234,8 @@ class Announcer
     private function announce(StreamSubscription $subscription, StreamSource $source, string $itemId, string $kind, array $details, bool $premium): void
     {
         $guild = Guild::find($subscription->guild);
-        if (! $guild || ! $guild->stream) {
+        $channel = ($premium && $subscription->channel) ? $subscription->channel : $guild?->stream;
+        if (! $guild || ! $channel) {
             return;
         }
 
@@ -262,7 +263,7 @@ class Announcer
         $content = trim(preg_replace('/ {2,}/', ' ', $content));
 
         try {
-            $messageId = $this->discord->sendMessage($guild->stream, [
+            $messageId = $this->discord->sendMessage($channel, [
                 'content' => mb_substr($content, 0, 2000),
                 'embeds' => [$this->embed($source, $details)],
                 'allowed_mentions' => ['parse' => [], 'roles' => $role ? [$role] : []],
@@ -275,7 +276,7 @@ class Announcer
 
         $announcement->update([
             'kind' => $kind,
-            'channel_id' => $guild->stream,
+            'channel_id' => $channel,
             'message_id' => $messageId,
             'started_at' => $details['started'],
         ]);

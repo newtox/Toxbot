@@ -34,6 +34,8 @@ class StreamList extends Component
 
     public string $pingRole = '';
 
+    public string $notifyChannel = '';
+
     public string $filterGames = '';
 
     public string $filterTitle = '';
@@ -92,6 +94,7 @@ class StreamList extends Component
         $this->customMessage = (string) $subscription->message;
         $this->videoMessage = (string) $subscription->video_message;
         $this->pingRole = (string) $subscription->role;
+        $this->notifyChannel = (string) $subscription->channel;
         $this->filterGames = (string) $subscription->filter_games;
         $this->filterTitle = (string) $subscription->filter_title;
         $this->endAction = $subscription->end_action;
@@ -114,10 +117,11 @@ class StreamList extends Component
             'customMessage' => ['nullable', 'string', 'max:2000'],
             'videoMessage' => ['nullable', 'string', 'max:2000'],
             'pingRole' => ['nullable', Rule::in(array_column($this->roles($discord), 'id'))],
+            'notifyChannel' => ['nullable', Rule::in(array_column($this->channels($discord), 'id'))],
             'filterGames' => ['nullable', 'string', 'max:500'],
             'filterTitle' => ['nullable', 'string', 'max:200'],
             'endAction' => ['required', Rule::in(StreamSubscription::END_ACTIONS)],
-        ], ['pingRole.in' => __('guild.role_invalid')]);
+        ], ['pingRole.in' => __('guild.role_invalid'), 'notifyChannel.in' => __('guild.channel_invalid')]);
 
         $fields = ['notify_videos' => $this->notifyVideos, 'notify_live' => $this->notifyLive];
 
@@ -126,6 +130,7 @@ class StreamList extends Component
                 'message' => $this->customMessage !== '' ? $this->customMessage : null,
                 'video_message' => $this->videoMessage !== '' ? $this->videoMessage : null,
                 'role' => $this->pingRole !== '' ? $this->pingRole : null,
+                'channel' => $this->notifyChannel !== '' ? $this->notifyChannel : null,
                 'filter_games' => $this->filterGames !== '' ? $this->filterGames : null,
                 'filter_title' => $this->filterTitle !== '' ? $this->filterTitle : null,
                 'end_action' => $this->endAction,
@@ -154,6 +159,18 @@ class StreamList extends Component
             ->all();
     }
 
+    private function channels(Discord $discord): array
+    {
+        $channels = rescue(fn () => $discord->guildChannels($this->guildId), [], report: false);
+
+        return collect($channels)
+            ->whereIn('type', [0, 5])
+            ->sortBy('position')
+            ->map(fn ($c) => ['id' => (string) $c['id'], 'name' => $c['name']])
+            ->values()
+            ->all();
+    }
+
     private function authorizeGuild(): void
     {
         abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
@@ -167,6 +184,7 @@ class StreamList extends Component
             'activeIds' => $isPremium ? null : StreamSubscription::freeIds($this->guildId),
             'limit' => $manager->limit($this->guildId),
             'roles' => $this->editingId ? $this->roles($discord) : [],
+            'channels' => $this->editingId ? $this->channels($discord) : [],
             'twitchReady' => $twitch->configured() && strlen((string) config('toxbot.streams.webhook_secret')) >= 10,
             'youtubeReady' => strlen((string) config('toxbot.streams.webhook_secret')) >= 10,
             'youtubeHandles' => $youtube->hasApiKey(),

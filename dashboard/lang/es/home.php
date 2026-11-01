@@ -42,7 +42,7 @@ return [
     'premium_server_t' => 'Server Premium',
     'premium_server_s' => 'Para todo un servidor',
     'premium_server_1' => 'Hasta 50 creadores en lugar de 5',
-    'premium_server_2' => 'Mensaje y rol de mención propios por creador',
+    'premium_server_2' => 'Canal, mensaje y rol de mención propios por creador',
     'premium_server_3' => 'Filtros de juego y título',
     'premium_server_4' => 'Elegir por creador qué pasa con el aviso cuando termina el directo',
     'premium_server_5' => 'Hasta 100 tags del servidor en lugar de 20',

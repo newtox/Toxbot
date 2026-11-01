@@ -39,6 +39,8 @@ return [
     'own_message' => 'Message personnalisé pour les lives',
     'own_video_message' => 'Message personnalisé pour les nouvelles vidéos',
     'own_message_hint' => 'Laisser vide pour utiliser le message du serveur',
+    'own_channel' => 'Salon pour ce créateur',
+    'own_channel_default' => 'Le salon du serveur',
     'own_role' => 'Rôle à mentionner pour ce créateur',
     'own_role_default' => 'Le rôle à mentionner du serveur',
     'filter_games' => 'Uniquement pour ces jeux',
