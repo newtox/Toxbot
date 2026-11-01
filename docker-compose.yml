@@ -43,6 +43,7 @@ services:
     environment:
       token: ${DISCORD_BOT_TOKEN}
       db_host: ${DB_HOST:-host.docker.internal}
+      db_port: ${DB_PORT:-3306}
       db_user: ${DB_USERNAME}
       db_password: ${DB_PASSWORD}
       db_name: ${DB_DATABASE:-toxbot}

@@ -150,6 +150,7 @@ Future<void> clearOldGuilds(NyxxGateway client) async {
 Future<MySqlConnection> getMySqlConnection() async {
   return MySqlConnection.connect(ConnectionSettings(
       host: env['db_host']!,
+      port: int.tryParse(env['db_port'] ?? '') ?? 3306,
       user: env['db_user'],
       password: env['db_password'],
       db: env['db_name'],
