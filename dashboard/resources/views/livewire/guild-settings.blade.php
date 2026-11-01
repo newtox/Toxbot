@@ -604,6 +604,7 @@
     @endif
 
     @if ($section === 'automod')
+    @php($automodChannels = collect($channelGroups)->flatMap(fn ($group) => $group['channels'])->values())
     <section id="automod" class="card scroll-mt-20 space-y-5">
         <div>
             <h2 class="text-lg font-semibold text-dc-header">{{ __('automod.title') }}</h2>
@@ -612,41 +613,158 @@
         @if ($automodNotice)
             <p class="rounded-lg border-l-4 border-dc-red bg-dc-900 px-4 py-3 text-sm" role="alert">{{ $automodNotice }}</p>
         @endif
+        @foreach ($automodConflicts as $key => $rule)
+            <div wire:key="automod-conflict-{{ $key }}" class="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-lg border-l-4 border-dc-yellow bg-dc-900 px-4 py-3">
+                <p class="min-w-0 flex-1 basis-64 text-sm text-dc-text">{{ __('automod.taken', ['name' => $rule['name'], 'rule' => __('automod.'.$key)]) }}</p>
+                <button type="button" wire:click="adoptRule('{{ $key }}')" data-confirm="{{ __('automod.take_over_confirm', ['name' => $rule['name']]) }}" data-confirm-tone="primary"
+                        class="btn-secondary whitespace-nowrap">{{ __('automod.take_over') }}</button>
+            </div>
+        @endforeach
 
-        <div>
-            <label class="label" for="automod-words">{{ __('automod.words') }}</label>
-            <textarea id="automod-words" wire:model="automodWords" rows="6" placeholder="{{ __('automod.words_placeholder') }}" class="input resize-y font-mono text-sm"></textarea>
-            <p class="mt-2 text-xs text-dc-faint">{{ __('automod.words_hint', ['max' => \App\Services\AutoMod::MAX_KEYWORD_LENGTH]) }}</p>
-            @error('automodWords') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+        <div class="space-y-4 rounded-lg bg-dc-900 p-4">
+            <div>
+                <h3 class="font-semibold text-dc-header">{{ __('automod.words') }}</h3>
+                <p class="text-sm text-dc-muted">{{ __('automod.words_description') }}</p>
+            </div>
+            <div class="grid gap-4 sm:grid-cols-2">
+                <div>
+                    <label class="label" for="automod-words">{{ __('automod.words_list') }}</label>
+                    <textarea id="automod-words" wire:model="automodWords" rows="5" placeholder="{{ __('automod.words_placeholder') }}" class="input resize-y font-mono text-sm"></textarea>
+                    @error('automodWords') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+                </div>
+                <div>
+                    <label class="label" for="automod-words-allow">{{ __('automod.allow') }}</label>
+                    <textarea id="automod-words-allow" wire:model="automodWordsAllow" rows="5" placeholder="{{ __('automod.words_placeholder') }}" class="input resize-y font-mono text-sm"></textarea>
+                    @error('automodWordsAllow') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+                </div>
+            </div>
+            <p class="text-xs text-dc-faint">{{ __('automod.words_hint', ['max' => \App\Services\AutoMod::MAX_KEYWORD_LENGTH]) }}</p>
+            <div class="max-w-xs">
+                <label class="label" for="automod-words-timeout">{{ __('automod.timeout') }}</label>
+                <select id="automod-words-timeout" wire:model="automodWordsTimeout" class="input">
+                        @foreach (\App\Services\AutoMod::TIMEOUTS as $seconds)
+                            <option value="{{ $seconds }}">{{ __('automod.timeout_'.$seconds) }}</option>
+                        @endforeach
+                    </select>
+            </div>
         </div>
 
-        <div class="max-w-md">
-            <label class="label" for="automod-mentions">{{ __('automod.mentions') }}</label>
-            <select id="automod-mentions" wire:model="automodMentions" class="input">
-                <option value="0">{{ __('automod.mentions_off') }}</option>
-                @foreach ([3, 5, 8, 10, 15, 20, 30, 50] as $limit)
-                    <option value="{{ $limit }}">{{ __('automod.mentions_limit', ['count' => $limit]) }}</option>
-                @endforeach
-            </select>
-            <p class="mt-2 text-xs text-dc-faint">{{ __('automod.mentions_hint') }}</p>
-            @error('automodMentions') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+        <div class="space-y-4 rounded-lg bg-dc-900 p-4">
+            <div>
+                <h3 class="font-semibold text-dc-header">{{ __('automod.mentions') }}</h3>
+                <p class="text-sm text-dc-muted">{{ __('automod.mentions_hint') }}</p>
+            </div>
+            <div class="grid gap-4 sm:grid-cols-2">
+                <div>
+                    <label class="label" for="automod-mentions">{{ __('automod.mentions_limit_label') }}</label>
+                    <select id="automod-mentions" wire:model="automodMentions" class="input">
+                        <option value="0">{{ __('automod.mentions_off') }}</option>
+                        @foreach (\App\Services\AutoMod::MENTION_LIMITS as $limit)
+                            <option value="{{ $limit }}">{{ __('automod.mentions_limit', ['count' => $limit]) }}</option>
+                        @endforeach
+                    </select>
+                    @error('automodMentions') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+                </div>
+                <div>
+                    <label class="label" for="automod-mentions-timeout">{{ __('automod.timeout') }}</label>
+                    <select id="automod-mentions-timeout" wire:model="automodMentionsTimeout" class="input">
+                        @foreach (\App\Services\AutoMod::TIMEOUTS as $seconds)
+                            <option value="{{ $seconds }}">{{ __('automod.timeout_'.$seconds) }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <label class="flex items-start gap-3 text-sm">
+                <input type="checkbox" wire:model="automodMentionRaid" class="mt-1 accent-[var(--color-accent)]">
+                <span>
+                    <span class="block font-medium text-dc-header">{{ __('automod.mentions_raid') }}</span>
+                    <span class="block text-dc-muted">{{ __('automod.mentions_raid_hint') }}</span>
+                </span>
+            </label>
         </div>
 
-        <div>
-            <h3 class="label">{{ __('automod.exempt_roles') }}</h3>
-            <div class="flex flex-wrap gap-2">
-                @foreach ($roles as $role)
-                    <label wire:key="automod-exempt-{{ $role['id'] }}" class="cursor-pointer">
-                        <input type="checkbox" wire:model="automodExemptRoles" value="{{ $role['id'] }}" class="peer sr-only">
-                        <span class="inline-flex items-center gap-1.5 rounded-full bg-dc-900 px-3 py-1 text-sm text-dc-muted ring-1 ring-white/10 transition peer-checked:bg-accent/15 peer-checked:text-dc-header peer-checked:ring-accent peer-focus-visible:ring-accent-fg">
-                            <span class="size-2 rounded-full" style="background: {{ $role['color'] ?? '#99aab5' }}"></span>{{ $role['name'] }}
-                        </span>
+        <label class="flex cursor-pointer items-start gap-3 rounded-lg bg-dc-900 p-4">
+            <input type="checkbox" wire:model="automodSpam" class="mt-1 accent-[var(--color-accent)]">
+            <span>
+                <span class="block font-semibold text-dc-header">{{ __('automod.spam') }}</span>
+                <span class="block text-sm text-dc-muted">{{ __('automod.spam_hint') }}</span>
+            </span>
+        </label>
+
+        <div class="space-y-4 rounded-lg bg-dc-900 p-4">
+            <div>
+                <h3 class="font-semibold text-dc-header">{{ __('automod.presets') }}</h3>
+                <p class="text-sm text-dc-muted">{{ __('automod.presets_hint') }}</p>
+            </div>
+            <div class="flex flex-wrap gap-x-6 gap-y-2">
+                @foreach (\App\Services\AutoMod::PRESETS as $preset)
+                    <label wire:key="automod-preset-{{ $preset }}" class="flex items-center gap-2 text-sm text-dc-text">
+                        <input type="checkbox" wire:model="automodPresets" value="{{ $preset }}" class="accent-[var(--color-accent)]">
+                        {{ __('automod.preset_'.$preset) }}
                     </label>
                 @endforeach
             </div>
-            @error('automodExemptRoles') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
-            @error('automodExemptRoles.*') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
-            <p class="mt-2 text-sm text-dc-faint">{{ __('automod.exempt_hint') }}</p>
+            <div>
+                <label class="label" for="automod-presets-allow">{{ __('automod.allow') }}</label>
+                <textarea id="automod-presets-allow" wire:model="automodPresetsAllow" rows="3" placeholder="{{ __('automod.words_placeholder') }}" class="input resize-y font-mono text-sm"></textarea>
+                @error('automodPresetsAllow') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+            </div>
+        </div>
+
+        <div class="space-y-4 rounded-lg bg-dc-900 p-4">
+            <div>
+                <h3 class="font-semibold text-dc-header">{{ __('automod.profile') }}</h3>
+                <p class="text-sm text-dc-muted">{{ __('automod.profile_hint') }}</p>
+            </div>
+            <div>
+                <label class="label" for="automod-profile">{{ __('automod.words_list') }}</label>
+                <textarea id="automod-profile" wire:model="automodProfileWords" rows="3" placeholder="{{ __('automod.words_placeholder') }}" class="input resize-y font-mono text-sm"></textarea>
+                @error('automodProfileWords') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+            </div>
+        </div>
+
+        <div class="space-y-4 rounded-lg bg-dc-900 p-4">
+            <div>
+                <h3 class="font-semibold text-dc-header">{{ __('automod.exempt') }}</h3>
+                <p class="text-sm text-dc-muted">{{ __('automod.exempt_hint') }}</p>
+            </div>
+            <div>
+                <h4 class="label">{{ __('automod.exempt_roles') }}</h4>
+                <div class="flex flex-wrap gap-2">
+                    @foreach ($roles as $role)
+                    <label wire:key="automod-exempt-{{ $role['id'] }}" class="cursor-pointer">
+                        <input type="checkbox" wire:model="automodExemptRoles" value="{{ $role['id'] }}" class="peer sr-only">
+                        <span class="inline-flex items-center gap-1.5 rounded-full bg-dc-800 px-3 py-1 text-sm text-dc-muted ring-1 ring-white/10 transition peer-checked:bg-accent/15 peer-checked:text-dc-header peer-checked:ring-accent peer-focus-visible:ring-accent-fg">
+                            <span class="size-2 rounded-full" style="background: {{ $role['color'] ?? '#99aab5' }}"></span>{{ $role['name'] }}
+                        </span>
+                    </label>
+                    @endforeach
+                </div>
+                @error('automodExemptRoles') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+                @error('automodExemptRoles.*') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+            </div>
+            <div>
+                <h4 class="label">{{ __('automod.exempt_channels') }}</h4>
+                <div class="flex flex-wrap gap-2">
+                    @foreach ($automodChannels as $channel)
+                    <label wire:key="automod-channel-{{ $channel['id'] }}" class="cursor-pointer">
+                        <input type="checkbox" wire:model="automodExemptChannels" value="{{ $channel['id'] }}" class="peer sr-only">
+                        <span class="inline-flex items-center gap-1.5 rounded-full bg-dc-800 px-3 py-1 text-sm text-dc-muted ring-1 ring-white/10 transition peer-checked:bg-accent/15 peer-checked:text-dc-header peer-checked:ring-accent peer-focus-visible:ring-accent-fg">
+                            # {{ $channel['name'] }}
+                        </span>
+                    </label>
+                    @endforeach
+                </div>
+                @error('automodExemptChannels') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+                @error('automodExemptChannels.*') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+            </div>
+        </div>
+
+        <div>
+            <label class="label" for="automod-message">{{ __('automod.message') }}</label>
+            <input id="automod-message" type="text" wire:model="automodMessage" maxlength="{{ \App\Services\AutoMod::MAX_MESSAGE }}" placeholder="{{ __('automod.message_placeholder') }}" class="input">
+            <p class="mt-2 text-xs text-dc-faint">{{ __('automod.message_hint') }}</p>
+            @error('automodMessage') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
         </div>
 
         <p class="rounded-lg bg-dc-900 px-4 py-3 text-sm text-dc-muted">{{ __('automod.alert_hint') }}</p>

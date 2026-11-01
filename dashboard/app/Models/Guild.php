@@ -35,6 +35,9 @@ class Guild extends Model
         'unban_enabled', 'language', 'stream_end_action', 'levelup_dm', 'slots_enabled',
         'starboard_channel', 'starboard_emoji', 'starboard_threshold',
         'automod_words', 'automod_mentions', 'automod_exempt_roles', 'automod_rule_domains', 'automod_rule_mentions', 'automod_rule_words',
+        'automod_words_allow', 'automod_words_timeout', 'automod_mention_raid', 'automod_mentions_timeout', 'automod_spam',
+        'automod_presets', 'automod_presets_allow', 'automod_profile_words', 'automod_message', 'automod_exempt_channels',
+        'automod_rule_spam', 'automod_rule_presets', 'automod_rule_profile',
     ];
 
     public const LINK_ACTIONS = ['delete', 'warn', 'timeout'];
@@ -62,6 +65,8 @@ class Guild extends Model
         'levelup_enabled' => false,
         'levelup_dm' => false,
         'slots_enabled' => true,
+        'automod_mention_raid' => true,
+        'automod_spam' => false,
         'stream_end_action' => 'keep',
         'mod_dm' => true,
         'verify_enabled' => false,
@@ -89,6 +94,10 @@ class Guild extends Model
             'levelup_dm' => 'boolean',
             'slots_enabled' => 'boolean',
             'automod_mentions' => 'integer',
+            'automod_words_timeout' => 'integer',
+            'automod_mentions_timeout' => 'integer',
+            'automod_mention_raid' => 'boolean',
+            'automod_spam' => 'boolean',
             'mod_dm' => 'boolean',
             'verify_enabled' => 'boolean',
             'link_invites' => 'boolean',

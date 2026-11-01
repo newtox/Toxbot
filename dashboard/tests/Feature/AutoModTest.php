@@ -74,13 +74,13 @@ class AutoModTest extends TestCase
             'GET' => Http::response(array_values(array_map(fn ($rule, $id) => ['id' => (string) $id] + $rule, $this->rules, array_keys($this->rules)))),
             'POST' => (function () use ($request) {
                 $id = (string) $this->nextId++;
-                $this->rules[$id] = $request->data() + ['creator_id' => 'client'];
+                $this->rules[$id] = json_decode($request->body(), true) + ['creator_id' => 'client'];
 
-                return Http::response(['id' => $id] + $request->data());
+                return Http::response(['id' => $id] + json_decode($request->body(), true));
             })(),
             'PATCH' => isset($this->rules[$id])
                 ? (function () use ($id, $request) {
-                    $this->rules[$id] = $request->data() + $this->rules[$id];
+                    $this->rules[$id] = json_decode($request->body(), true) + $this->rules[$id];
 
                     return Http::response(['id' => $id] + $this->rules[$id]);
                 })()
@@ -210,7 +210,7 @@ class AutoModTest extends TestCase
         $this->existing('Server mention filter', 5, '42');
 
         $this->settings('automod')->set('automodMentions', 10)->call('save')
-            ->assertSet('automodNotice', __('automod.failed_mention_taken', ['rules' => __('automod.rule_mentions')]));
+            ->assertSet('automodNotice', __('automod.failed_taken', ['rules' => __('automod.rule_mentions')]));
 
         $this->assertNull(Guild::find(self::GUILD)->automod_rule_mentions);
         $this->assertCount(1, $this->rules);
@@ -225,5 +225,90 @@ class AutoModTest extends TestCase
         app(DataDeletion::class)->resetGuild(self::GUILD);
 
         $this->assertSame([$foreign], array_map('strval', array_keys($this->rules)));
+    }
+
+    public function test_every_discord_rule_type_and_action_can_be_set(): void
+    {
+        Guild::forDiscordId(self::GUILD)->fill(['modlog_channel' => '11'])->save();
+
+        $this->settings('automod')
+            ->set('automodWords', 'bad')
+            ->set('automodWordsAllow', 'badminton')
+            ->set('automodWordsTimeout', 600)
+            ->set('automodMentions', 10)
+            ->set('automodMentionRaid', false)
+            ->set('automodMentionsTimeout', 3600)
+            ->set('automodSpam', true)
+            ->set('automodPresets', ['1', '3'])
+            ->set('automodPresetsAllow', 'heck')
+            ->set('automodProfileWords', 'admin')
+            ->set('automodExemptChannels', ['11'])
+            ->set('automodMessage', 'Bitte nicht.')
+            ->call('save')
+            ->assertHasNoErrors()
+            ->assertSet('automodNotice', null);
+
+        $row = Guild::find(self::GUILD);
+        $words = $this->rules[$row->automod_rule_words];
+        $this->assertSame(['badminton'], $words['trigger_metadata']['allow_list']);
+        $this->assertSame(['11'], $words['exempt_channels']);
+        $this->assertSame('Bitte nicht.', $words['actions'][0]['metadata']['custom_message']);
+        $this->assertSame(600, collect($words['actions'])->firstWhere('type', 3)['metadata']['duration_seconds']);
+
+        $mentions = $this->rules[$row->automod_rule_mentions];
+        $this->assertFalse($mentions['trigger_metadata']['mention_raid_protection_enabled']);
+        $this->assertSame(3600, collect($mentions['actions'])->firstWhere('type', 3)['metadata']['duration_seconds']);
+
+        $spam = $this->rules[$row->automod_rule_spam];
+        $this->assertSame(3, $spam['trigger_type']);
+        $this->assertNull(collect($spam['actions'])->firstWhere('type', 3));
+
+        $presets = $this->rules[$row->automod_rule_presets];
+        $this->assertSame(4, $presets['trigger_type']);
+        $this->assertSame([1, 3], $presets['trigger_metadata']['presets']);
+        $this->assertSame(['heck'], $presets['trigger_metadata']['allow_list']);
+
+        $profile = $this->rules[$row->automod_rule_profile];
+        $this->assertSame(6, $profile['trigger_type']);
+        $this->assertSame(2, $profile['event_type']);
+        $this->assertSame([4, 2], array_column($profile['actions'], 'type'));
+        $this->assertSame([], $profile['exempt_channels']);
+
+        $this->settings('automod')->set('automodSpam', false)->set('automodPresets', [])->set('automodProfileWords', '')->call('save');
+        $this->assertCount(2, $this->rules);
+    }
+
+    public function test_an_existing_rule_can_be_taken_over(): void
+    {
+        $id = (string) $this->nextId++;
+        $this->rules[$id] = [
+            'name' => 'Spam-Erwähnungen blockieren', 'trigger_type' => 5, 'creator_id' => '42',
+            'trigger_metadata' => ['mention_total_limit' => 12, 'mention_raid_protection_enabled' => false],
+            'actions' => [['type' => 1], ['type' => 3, 'metadata' => ['duration_seconds' => 60]]],
+        ];
+
+        $this->settings('automod')
+            ->assertSee('Spam-Erwähnungen blockieren')
+            ->call('adoptRule', 'mentions')
+            ->assertSet('automodNotice', null)
+            ->assertSet('automodMentions', 12)
+            ->assertSet('automodMentionRaid', false)
+            ->assertSet('automodMentionsTimeout', 60);
+
+        $this->assertSame($id, Guild::find(self::GUILD)->automod_rule_mentions);
+        $this->assertCount(1, $this->rules);
+        $this->assertSame(__('automod.rule_mentions'), $this->rules[$id]['name']);
+        $this->assertSame(12, $this->rules[$id]['trigger_metadata']['mention_total_limit']);
+    }
+
+    public function test_new_settings_are_validated(): void
+    {
+        $this->settings('automod')
+            ->set('automodWordsTimeout', 42)->call('save')->assertHasErrors('automodWordsTimeout')
+            ->set('automodWordsTimeout', 0)->set('automodPresets', ['9'])->call('save')->assertHasErrors('automodPresets.0')
+            ->set('automodPresets', [])->set('automodExemptChannels', ['99'])->call('save')->assertHasErrors('automodExemptChannels.0')
+            ->set('automodExemptChannels', [])->set('automodMessage', str_repeat('x', 151))->call('save')->assertHasErrors('automodMessage');
+
+        $this->assertSame([], $this->rules);
     }
 }

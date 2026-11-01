@@ -130,6 +130,26 @@ class GuildSettings extends Component
 
     public array $automodExemptRoles = [];
 
+    public string $automodWordsAllow = '';
+
+    public int $automodWordsTimeout = 0;
+
+    public bool $automodMentionRaid = true;
+
+    public int $automodMentionsTimeout = 0;
+
+    public bool $automodSpam = false;
+
+    public array $automodPresets = [];
+
+    public string $automodPresetsAllow = '';
+
+    public string $automodProfileWords = '';
+
+    public string $automodMessage = '';
+
+    public array $automodExemptChannels = [];
+
     #[Locked]
     public ?string $automodNotice = null;
 
@@ -229,7 +249,17 @@ class GuildSettings extends Component
         $this->linkExemptRoles = array_values(array_filter(explode(',', (string) $row->link_exempt_roles)));
         $this->automodWords = implode("\n", AutoMod::words($row->automod_words));
         $this->automodMentions = (int) $row->automod_mentions;
-        $this->automodExemptRoles = array_values(array_filter(explode(',', (string) $row->automod_exempt_roles)));
+        $this->automodExemptRoles = AutoMod::ids($row->automod_exempt_roles);
+        $this->automodWordsAllow = implode("\n", AutoMod::words($row->automod_words_allow));
+        $this->automodWordsTimeout = (int) $row->automod_words_timeout;
+        $this->automodMentionRaid = (bool) $row->automod_mention_raid;
+        $this->automodMentionsTimeout = (int) $row->automod_mentions_timeout;
+        $this->automodSpam = (bool) $row->automod_spam;
+        $this->automodPresets = AutoMod::ids($row->automod_presets);
+        $this->automodPresetsAllow = implode("\n", AutoMod::words($row->automod_presets_allow));
+        $this->automodProfileWords = implode("\n", AutoMod::words($row->automod_profile_words));
+        $this->automodMessage = (string) $row->automod_message;
+        $this->automodExemptChannels = AutoMod::ids($row->automod_exempt_channels);
         $this->raidEnabled = (bool) $row->raid_enabled;
         $this->raidJoins = (int) $row->raid_joins;
         $this->raidSeconds = (int) $row->raid_seconds;
@@ -356,6 +386,16 @@ class GuildSettings extends Component
                 }],
                 'automodExemptRoles' => ['array', 'max:'.AutoMod::MAX_EXEMPT_ROLES],
                 'automodExemptRoles.*' => [Rule::in($mentionableRoleIds)],
+                'automodWordsAllow' => ['nullable', 'string', 'max:20000', $this->keywordRule(AutoMod::MAX_ALLOWED)],
+                'automodWordsTimeout' => ['required', 'integer', Rule::in(AutoMod::TIMEOUTS)],
+                'automodMentionsTimeout' => ['required', 'integer', Rule::in(AutoMod::TIMEOUTS)],
+                'automodPresets' => ['array'],
+                'automodPresets.*' => [Rule::in(array_map('strval', AutoMod::PRESETS))],
+                'automodPresetsAllow' => ['nullable', 'string', 'max:60000', $this->keywordRule(AutoMod::MAX_PRESET_ALLOWED)],
+                'automodProfileWords' => ['nullable', 'string', 'max:60000', $this->keywordRule(AutoMod::MAX_KEYWORDS)],
+                'automodMessage' => ['nullable', 'string', 'max:'.AutoMod::MAX_MESSAGE],
+                'automodExemptChannels' => ['array', 'max:'.AutoMod::MAX_EXEMPT_CHANNELS],
+                'automodExemptChannels.*' => [Rule::in($channelIds)],
             ],
             'raid' => [
                 'raidJoins' => ['required', 'integer', 'min:3', 'max:100'],
@@ -397,6 +437,9 @@ class GuildSettings extends Component
                 'linkExemptRoles.*' => __('guild.role_invalid'),
                 'automodExemptRoles.max' => __('automod.exempt_max', ['max' => AutoMod::MAX_EXEMPT_ROLES]),
                 'automodExemptRoles.*' => __('guild.role_invalid'),
+                'automodExemptChannels.max' => __('automod.exempt_channels_max', ['max' => AutoMod::MAX_EXEMPT_CHANNELS]),
+                'automodExemptChannels.*' => __('guild.channel_invalid'),
+                'automodMessage.max' => __('automod.message_max', ['max' => AutoMod::MAX_MESSAGE]),
                 'automodMentions.integer' => __('automod.mentions_range', ['min' => AutoMod::MIN_MENTIONS, 'max' => AutoMod::MAX_MENTIONS]),
                 'raidJoins.*' => __('protection.number_range', ['min' => 3, 'max' => 100]),
                 'raidSeconds.*' => __('protection.number_range', ['min' => 5, 'max' => 300]),
@@ -471,6 +514,16 @@ class GuildSettings extends Component
                 'automod_words' => ($words = AutoMod::words($this->automodWords)) === [] ? null : implode("\n", $words),
                 'automod_mentions' => $this->automodMentions ?: null,
                 'automod_exempt_roles' => $this->automodExemptRoles === [] ? null : implode(',', array_unique($this->automodExemptRoles)),
+                'automod_words_allow' => ($allow = AutoMod::words($this->automodWordsAllow)) === [] ? null : implode("\n", $allow),
+                'automod_words_timeout' => $this->automodWordsTimeout ?: null,
+                'automod_mention_raid' => $this->automodMentionRaid,
+                'automod_mentions_timeout' => $this->automodMentionsTimeout ?: null,
+                'automod_spam' => $this->automodSpam,
+                'automod_presets' => $this->automodPresets === [] ? null : implode(',', array_values(array_intersect(array_map('strval', AutoMod::PRESETS), $this->automodPresets))),
+                'automod_presets_allow' => ($presetAllow = AutoMod::words($this->automodPresetsAllow)) === [] ? null : implode("\n", $presetAllow),
+                'automod_profile_words' => ($profile = AutoMod::words($this->automodProfileWords)) === [] ? null : implode("\n", $profile),
+                'automod_message' => trim($this->automodMessage) ?: null,
+                'automod_exempt_channels' => $this->automodExemptChannels === [] ? null : implode(',', array_unique($this->automodExemptChannels)),
             ],
             'raid' => [
                 'raid_enabled' => $this->raidEnabled,
@@ -497,7 +550,7 @@ class GuildSettings extends Component
         if (in_array($this->section, ['links', 'automod', 'moderation'], true)) {
             $failed = app(AutoMod::class)->sync($row);
             if ($failed !== []) {
-                $reason = in_array('permission', $failed, true) ? 'permission' : (in_array('mention_taken', $failed, true) ? 'mention_taken' : (in_array('keyword_limit', $failed, true) ? 'keyword_limit' : 'other'));
+                $reason = collect(['permission', 'taken', 'keyword_limit'])->first(fn (string $reason) => in_array($reason, $failed, true)) ?? 'other';
                 $this->automodNotice = __('automod.failed_'.$reason, [
                     'rules' => implode(', ', array_map(fn (string $key) => __('automod.rule_'.$key), array_keys($failed))),
                 ]);
@@ -614,6 +667,42 @@ class GuildSettings extends Component
         TagGuildBlock::query()->where('guild', $this->guildId)->where('tag_id', $tagId)->delete();
     }
 
+    private function keywordRule(int $max): \Closure
+    {
+        return function (string $attribute, mixed $value, \Closure $fail) use ($max) {
+            $words = AutoMod::words($value);
+            if (count($words) > $max) {
+                $fail(__('automod.words_too_many', ['max' => $max]));
+            }
+            $long = array_filter($words, fn (string $word) => mb_strlen($word) > AutoMod::MAX_KEYWORD_LENGTH);
+            if ($long !== []) {
+                $fail(__('automod.words_too_long', ['max' => AutoMod::MAX_KEYWORD_LENGTH, 'words' => implode(', ', array_slice($long, 0, 3))]));
+            }
+        };
+    }
+
+    public function adoptRule(string $key, AutoMod $autoMod): void
+    {
+        abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
+
+        $row = Guild::forDiscordId($this->guildId);
+        try {
+            $adopted = $autoMod->adopt($row, $key);
+        } catch (RequestException) {
+            $adopted = false;
+        }
+
+        $this->automodNotice = null;
+        if (! $adopted) {
+            $this->automodNotice = __('automod.adopt_failed');
+        } elseif (($failed = $autoMod->sync($row)) !== []) {
+            $this->automodNotice = __('automod.failed_other', ['rules' => implode(', ', array_map(fn (string $key) => __('automod.rule_'.$key), array_keys($failed)))]);
+        }
+
+        $this->loadFromDatabase();
+        $this->dispatch('saved');
+    }
+
     public function render()
     {
         $discord = app(Discord::class);
@@ -652,6 +741,7 @@ class GuildSettings extends Component
             'categories' => $categories,
             'roles' => $roles,
             'loadError' => $loadError,
+            'automodConflicts' => $this->section === 'automod' && $loadError === null ? app(AutoMod::class)->conflicts(Guild::forDiscordId($this->guildId)) : [],
             'serverEmojis' => $this->section === self::STARBOARD && $loadError === null
                 ? rescue(fn () => collect($discord->guildEmojis($this->guildId))
                     ->filter(fn ($e) => ($e['available'] ?? true) && isset($e['id']))
