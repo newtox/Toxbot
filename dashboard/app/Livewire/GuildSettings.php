@@ -150,6 +150,7 @@ class GuildSettings extends Component
 
     public array $automodExemptChannels = [];
 
+    #[Locked]
     public string $templateLanguage = 'en';
 
     #[Locked]
@@ -684,20 +685,6 @@ class GuildSettings extends Component
         };
     }
 
-    public function addTemplate(string $template): void
-    {
-        if (! in_array($template, AutoMod::TEMPLATES, true) || ! array_key_exists($this->templateLanguage, config('app.locales'))) {
-            return;
-        }
-
-        $words = AutoMod::template($template, $this->templateLanguage);
-        if ($template === 'staff') {
-            $this->automodProfileWords = AutoMod::merge($this->automodProfileWords, $words);
-        } else {
-            $this->automodWords = AutoMod::merge($this->automodWords, $words);
-        }
-    }
-
     public function adoptRule(string $key, AutoMod $autoMod): void
     {
         abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
@@ -758,6 +745,9 @@ class GuildSettings extends Component
             'categories' => $categories,
             'roles' => $roles,
             'loadError' => $loadError,
+            'automodTemplates' => $this->section === 'automod'
+                ? collect(array_keys(config('app.locales')))->mapWithKeys(fn (string $locale) => [$locale => collect(AutoMod::TEMPLATES)->mapWithKeys(fn (string $template) => [$template => AutoMod::template($template, $locale)])->all()])->all()
+                : [],
             'automodConflicts' => $this->section === 'automod' && $loadError === null ? app(AutoMod::class)->conflicts(Guild::forDiscordId($this->guildId)) : [],
             'serverEmojis' => $this->section === self::STARBOARD && $loadError === null
                 ? rescue(fn () => collect($discord->guildEmojis($this->guildId))

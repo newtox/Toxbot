@@ -621,21 +621,33 @@
             </div>
         @endforeach
 
-        <div class="flex flex-wrap items-end gap-3 rounded-lg bg-dc-900 p-4">
+        <div class="flex flex-wrap items-end gap-3 rounded-lg bg-dc-900 p-4"
+             x-data="{
+                 language: @js($templateLanguage),
+                 templates: @js($automodTemplates),
+                 add(template) {
+                     const field = template === 'staff' ? 'automodProfileWords' : 'automodWords';
+                     const words = (this.$wire[field] ?? '').split(/[\r\n,]+/).map(word => word.trim().toLowerCase()).filter(word => word !== '');
+                     for (const word of this.templates[this.language][template]) {
+                         if (! words.includes(word)) words.push(word);
+                     }
+                     this.$wire[field] = words.join('\n');
+                 },
+             }">
             <div class="min-w-0 flex-1 basis-full">
                 <h3 class="font-semibold text-dc-header">{{ __('automod.templates') }}</h3>
                 <p class="text-sm text-dc-muted">{{ __('automod.templates_hint') }}</p>
             </div>
             <div class="w-48 max-sm:w-full">
                 <label class="label" for="automod-template-language">{{ __('automod.templates_language') }}</label>
-                <select id="automod-template-language" wire:model="templateLanguage" class="input">
+                <select id="automod-template-language" x-model="language" class="input">
                     @foreach (config('app.locales') as $code => $locale)
                         <option value="{{ $code }}">{{ $locale['name'] }}</option>
                     @endforeach
                 </select>
             </div>
             @foreach (\App\Services\AutoMod::TEMPLATES as $template)
-                <button type="button" wire:click="addTemplate('{{ $template }}')" class="btn-secondary max-sm:flex-1">+ {{ __('automod.template_'.$template) }}</button>
+                <button type="button" x-on:click="add('{{ $template }}')" class="btn-secondary max-sm:flex-1">+ {{ __('automod.template_'.$template) }}</button>
             @endforeach
         </div>
 

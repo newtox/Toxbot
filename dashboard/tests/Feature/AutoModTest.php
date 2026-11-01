@@ -313,28 +313,20 @@ class AutoModTest extends TestCase
         $this->assertSame([], $this->rules);
     }
 
-    public function test_templates_fill_the_fields_in_the_chosen_language(): void
+    public function test_templates_are_offered_for_every_language(): void
     {
-        $component = $this->settings('automod')
-            ->set('automodWords', 'eigenes')
-            ->set('templateLanguage', 'de')
-            ->call('addTemplate', 'scam')
-            ->call('addTemplate', 'scam')
-            ->call('addTemplate', 'insults')
-            ->call('addTemplate', 'staff')
-            ->call('addTemplate', 'nope');
+        Guild::forDiscordId(self::GUILD)->fill(['language' => 'de_de'])->save();
 
-        $words = explode("\n", $component->get('automodWords'));
-        $this->assertSame('eigenes', $words[0]);
-        $this->assertContains('gratis nitro', $words);
-        $this->assertContains('free nitro', $words);
-        $this->assertContains('arschloch', $words);
-        $this->assertNotContains('asshole', $words);
-        $this->assertSame(count($words), count(array_unique($words)));
-        $this->assertContains('serverteam', explode("\n", $component->get('automodProfileWords')));
+        $component = $this->settings('automod')->assertSet('templateLanguage', 'de');
+        $templates = $component->viewData('automodTemplates');
 
-        $component->call('save')->assertHasNoErrors();
-        $this->assertContains('gratis nitro', $this->rules[Guild::find(self::GUILD)->automod_rule_words]['trigger_metadata']['keyword_filter']);
+        $this->assertSame(array_keys(config('app.locales')), array_keys($templates));
+        $this->assertContains('gratis nitro', $templates['de']['scam']);
+        $this->assertContains('free nitro', $templates['de']['scam']);
+        $this->assertContains('arschloch', $templates['de']['insults']);
+        $this->assertNotContains('asshole', $templates['de']['insults']);
+        $this->assertContains('serverteam', $templates['de']['staff']);
+        $component->assertSee("add('scam')", false);
     }
 
     public function test_every_template_fits_discord_limits(): void
