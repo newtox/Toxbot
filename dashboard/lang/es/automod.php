@@ -67,4 +67,11 @@ return [
     'rule_profile' => 'Toxbot: Nombres de perfil',
     'blocked_spam' => 'Este mensaje parece spam.',
     'blocked_presets' => 'Este mensaje contiene una palabra bloqueada.',
+    'templates' => 'Plantillas',
+    'templates_hint' => 'Añade listas listas para usar en los campos de abajo; las de estafas y suplantación del equipo, también en inglés. Revísalas y guarda.',
+    'templates_language' => 'Idioma',
+    'template_scam' => 'Estafas y fraude',
+    'template_insults' => 'Insultos',
+    'template_staff' => 'Suplantación del equipo (nombres de perfil)',
+    'taken_plain' => 'El servidor ya tiene la regla «:name». Discord solo permite una de ese tipo.',
 ];

@@ -67,4 +67,11 @@ return [
     'rule_profile' => 'Toxbot: 프로필 이름',
     'blocked_spam' => '이 메시지는 스팸 같습니다.',
     'blocked_presets' => '이 메시지에 금지어가 있습니다.',
+    'templates' => '템플릿',
+    'templates_hint' => '아래 칸에 준비된 목록을 추가합니다. 사기와 운영진 사칭은 영어 목록도 함께 들어갑니다. 확인한 뒤 저장하세요.',
+    'templates_language' => '언어',
+    'template_scam' => '사기·스캠',
+    'template_insults' => '욕설',
+    'template_staff' => '운영진 사칭 (프로필 이름)',
+    'taken_plain' => '서버에 이미 규칙 ":name"이(가) 있습니다. 이 종류는 Discord에서 하나만 만들 수 있습니다.',
 ];

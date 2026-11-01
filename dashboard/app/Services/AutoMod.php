@@ -64,6 +64,23 @@ class AutoMod
         return array_values(array_unique(array_filter(array_map(fn ($word) => mb_strtolower(trim($word)), $words), fn ($word) => $word !== '')));
     }
 
+    public const TEMPLATES = ['scam', 'insults', 'staff'];
+
+    public static function template(string $template, string $locale): array
+    {
+        $words = (array) trans('automod_templates.'.$template, [], $locale);
+        if ($template !== 'insults' && $locale !== 'en') {
+            $words = array_merge($words, (array) trans('automod_templates.'.$template, [], 'en'));
+        }
+
+        return array_values(array_unique(array_map('mb_strtolower', $words)));
+    }
+
+    public static function merge(?string $current, array $words): string
+    {
+        return implode("\n", array_values(array_unique(array_merge(self::words($current), $words))));
+    }
+
     public static function ids(?string $input): array
     {
         return array_values(array_filter(explode(',', (string) $input)));

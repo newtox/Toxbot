@@ -13,7 +13,7 @@ return [
     'area_moderation' => '관리',
     'area_moderation_text' => '팀 전용 비공개 #mod-log와 처벌 시 멤버에게 보내는 DM.',
     'area_protection' => '보호',
-    'area_protection_text' => '사기 링크와 다른 서버 초대를 걸러내고 안티 레이드를 켜며 팀 역할은 링크 필터에서 제외합니다.',
+    'area_protection_text' => '사기 링크와 다른 서버 초대를 걸러내고, 안티 레이드를 켜고, 팀 역할을 링크 필터에서 제외하며, 스팸·사기 메시지·프로필 이름의 운영진 사칭에 대한 AutoMod를 설정합니다.',
     'area_verification' => '인증',
     'area_verification_text' => '새 멤버용 "미인증" 역할, 버튼이 있는 #verify 채널을 만들고 다른 모든 채널을 이 역할에게서 숨깁니다.',
     'verification_warning' => '새 멤버는 캡차를 풀 때까지 #verify만 볼 수 있습니다. 이미 서버에 있는 멤버는 영향을 받지 않습니다.',
@@ -64,4 +64,6 @@ return [
     'step_verify_on' => '인증이 켜졌습니다.',
     'step_verify_message' => ':channel에 인증 버튼을 게시했습니다.',
     'step_verify_message_failed' => '인증 버튼을 게시할 수 없습니다.',
+    'step_automod' => 'AutoMod가 스팸, 사기 메시지, 운영진을 사칭하는 프로필 이름을 차단합니다.',
+    'step_automod_failed' => 'AutoMod를 완전히 설정하지 못했습니다. AutoMod 페이지를 확인하세요.',
 ];

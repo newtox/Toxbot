@@ -67,4 +67,11 @@ return [
     'rule_profile' => 'Toxbot: Profilnamen',
     'blocked_spam' => 'Diese Nachricht sieht nach Spam aus.',
     'blocked_presets' => 'Diese Nachricht enthält ein gesperrtes Wort.',
+    'templates' => 'Vorlagen',
+    'templates_hint' => 'Fügt fertige Listen in die Felder unten ein, Scam und Team-Imitation zusätzlich auf Englisch. Prüf sie kurz und speichere dann.',
+    'templates_language' => 'Sprache',
+    'template_scam' => 'Scam & Betrug',
+    'template_insults' => 'Beleidigungen',
+    'template_staff' => 'Team-Imitation (Profilnamen)',
+    'taken_plain' => 'Auf dem Server gibt es schon die Regel „:name“. Davon erlaubt Discord nur eine.',
 ];

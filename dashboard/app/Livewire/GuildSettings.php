@@ -150,6 +150,8 @@ class GuildSettings extends Component
 
     public array $automodExemptChannels = [];
 
+    public string $templateLanguage = 'en';
+
     #[Locked]
     public ?string $automodNotice = null;
 
@@ -260,6 +262,7 @@ class GuildSettings extends Component
         $this->automodProfileWords = implode("\n", AutoMod::words($row->automod_profile_words));
         $this->automodMessage = (string) $row->automod_message;
         $this->automodExemptChannels = AutoMod::ids($row->automod_exempt_channels);
+        $this->templateLanguage = $row->messageLocale();
         $this->raidEnabled = (bool) $row->raid_enabled;
         $this->raidJoins = (int) $row->raid_joins;
         $this->raidSeconds = (int) $row->raid_seconds;
@@ -679,6 +682,20 @@ class GuildSettings extends Component
                 $fail(__('automod.words_too_long', ['max' => AutoMod::MAX_KEYWORD_LENGTH, 'words' => implode(', ', array_slice($long, 0, 3))]));
             }
         };
+    }
+
+    public function addTemplate(string $template): void
+    {
+        if (! in_array($template, AutoMod::TEMPLATES, true) || ! array_key_exists($this->templateLanguage, config('app.locales'))) {
+            return;
+        }
+
+        $words = AutoMod::template($template, $this->templateLanguage);
+        if ($template === 'staff') {
+            $this->automodProfileWords = AutoMod::merge($this->automodProfileWords, $words);
+        } else {
+            $this->automodWords = AutoMod::merge($this->automodWords, $words);
+        }
     }
 
     public function adoptRule(string $key, AutoMod $autoMod): void

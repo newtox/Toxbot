@@ -615,11 +615,29 @@
         @endif
         @foreach ($automodConflicts as $key => $rule)
             <div wire:key="automod-conflict-{{ $key }}" class="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-lg border-l-4 border-dc-yellow bg-dc-900 px-4 py-3">
-                <p class="min-w-0 flex-1 basis-64 text-sm text-dc-text">{{ __('automod.taken', ['name' => $rule['name'], 'rule' => __('automod.'.$key)]) }}</p>
+                <p class="min-w-0 flex-1 basis-64 text-sm text-dc-text">{{ mb_strtolower($rule['name']) === mb_strtolower(__('automod.'.$key)) ? __('automod.taken_plain', ['name' => $rule['name']]) : __('automod.taken', ['name' => $rule['name'], 'rule' => __('automod.'.$key)]) }}</p>
                 <button type="button" wire:click="adoptRule('{{ $key }}')" data-confirm="{{ __('automod.take_over_confirm', ['name' => $rule['name']]) }}" data-confirm-tone="primary"
                         class="btn-secondary whitespace-nowrap">{{ __('automod.take_over') }}</button>
             </div>
         @endforeach
+
+        <div class="flex flex-wrap items-end gap-3 rounded-lg bg-dc-900 p-4">
+            <div class="min-w-0 flex-1 basis-full">
+                <h3 class="font-semibold text-dc-header">{{ __('automod.templates') }}</h3>
+                <p class="text-sm text-dc-muted">{{ __('automod.templates_hint') }}</p>
+            </div>
+            <div class="w-48 max-sm:w-full">
+                <label class="label" for="automod-template-language">{{ __('automod.templates_language') }}</label>
+                <select id="automod-template-language" wire:model="templateLanguage" class="input">
+                    @foreach (config('app.locales') as $code => $locale)
+                        <option value="{{ $code }}">{{ $locale['name'] }}</option>
+                    @endforeach
+                </select>
+            </div>
+            @foreach (\App\Services\AutoMod::TEMPLATES as $template)
+                <button type="button" wire:click="addTemplate('{{ $template }}')" class="btn-secondary max-sm:flex-1">+ {{ __('automod.template_'.$template) }}</button>
+            @endforeach
+        </div>
 
         <div class="space-y-4 rounded-lg bg-dc-900 p-4">
             <div>

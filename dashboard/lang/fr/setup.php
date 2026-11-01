@@ -13,7 +13,7 @@ return [
     'area_moderation' => 'Modération',
     'area_moderation_text' => 'Un #mod-log privé pour l\'équipe et des MP aux membres quand ils sont sanctionnés.',
     'area_protection' => 'Protection',
-    'area_protection_text' => 'Filtre les liens d\'arnaque et les invitations vers d\'autres serveurs, active l\'anti-raid et ignore tes rôles d\'équipe dans le filtre de liens.',
+    'area_protection_text' => 'Filtre les liens d\'arnaque et les invitations vers d\'autres serveurs, active l\'anti-raid, exempte tes rôles d\'équipe du filtre de liens et configure AutoMod contre le spam, les messages d\'arnaque et l\'usurpation de l\'équipe dans les noms de profil.',
     'area_verification' => 'Vérification',
     'area_verification_text' => 'Un rôle « Non vérifié » pour les nouveaux membres, un salon #verify avec le bouton, et tous les autres salons masqués pour ce rôle.',
     'verification_warning' => 'Les nouveaux membres ne voient alors que #verify jusqu\'à ce qu\'ils résolvent le captcha. Les membres déjà présents ne sont pas concernés.',
@@ -64,4 +64,6 @@ return [
     'step_verify_on' => 'La vérification est activée.',
     'step_verify_message' => 'Bouton de vérification publié dans :channel.',
     'step_verify_message_failed' => 'Impossible de publier le bouton de vérification.',
+    'step_automod' => 'AutoMod bloque le spam, les messages d\'arnaque et les noms de profil qui usurpent l\'équipe.',
+    'step_automod_failed' => 'AutoMod n\'a pas pu être entièrement configuré. Consulte la page AutoMod.',
 ];

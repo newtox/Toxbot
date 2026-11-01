@@ -67,4 +67,11 @@ return [
     'rule_profile' => 'Toxbot: プロフィール名',
     'blocked_spam' => 'このメッセージはスパムのようです。',
     'blocked_presets' => 'このメッセージには禁止ワードが含まれています。',
+    'templates' => 'テンプレート',
+    'templates_hint' => '下の欄に用意済みのリストを追加します。詐欺と運営なりすましは英語版も追加されます。内容を確認してから保存してください。',
+    'templates_language' => '言語',
+    'template_scam' => '詐欺・スキャム',
+    'template_insults' => '暴言',
+    'template_staff' => '運営なりすまし（プロフィール名）',
+    'taken_plain' => 'サーバーにはすでにルール「:name」があります。この種類は Discord で 1 つしか作れません。',
 ];

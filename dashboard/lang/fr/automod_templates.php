@@ -1,0 +1,42 @@
+<?php
+
+return [
+    'scam' => [
+        'nitro gratuit',
+        'nitro offert',
+        'cadeau nitro',
+        'concours nitro',
+        'steam gratuit',
+        'cadeau steam',
+        'skins gratuits',
+        'double ton argent',
+        'gagne de l\'argent rapidement',
+        'crypto gratuit',
+    ],
+    'insults' => [
+        'fils de pute',
+        'connard',
+        'connasse',
+        'salope',
+        'pute',
+        'enculé',
+        'ta gueule',
+        'nique ta mère',
+        'ntm',
+        'va te faire foutre',
+        'batard',
+        'abruti',
+        'crève',
+        'suicide-toi',
+    ],
+    'staff' => [
+        'admin',
+        'administrateur',
+        'modérateur',
+        'staff',
+        'équipe discord',
+        'support discord',
+        'équipe support',
+        'fondateur',
+    ],
+];

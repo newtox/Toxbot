@@ -67,4 +67,11 @@ return [
     'rule_profile' => 'Toxbot：资料名称',
     'blocked_spam' => '这条消息看起来像垃圾信息。',
     'blocked_presets' => '这条消息包含屏蔽词。',
+    'templates' => '模板',
+    'templates_hint' => '把现成的列表加入下方字段，诈骗和冒充管理团队也会加入英文版。检查后再保存。',
+    'templates_language' => '语言',
+    'template_scam' => '诈骗',
+    'template_insults' => '辱骂',
+    'template_staff' => '冒充管理团队（资料名称）',
+    'taken_plain' => '服务器已有规则“:name”。这类规则 Discord 只允许一条。',
 ];

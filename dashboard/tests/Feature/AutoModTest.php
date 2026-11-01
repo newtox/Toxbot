@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Livewire\GuildSettings;
 use App\Models\DashboardUser;
 use App\Models\Guild;
+use App\Services\AutoMod;
 use App\Services\DataDeletion;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Client\Request;
@@ -310,5 +311,42 @@ class AutoModTest extends TestCase
             ->set('automodExemptChannels', [])->set('automodMessage', str_repeat('x', 151))->call('save')->assertHasErrors('automodMessage');
 
         $this->assertSame([], $this->rules);
+    }
+
+    public function test_templates_fill_the_fields_in_the_chosen_language(): void
+    {
+        $component = $this->settings('automod')
+            ->set('automodWords', 'eigenes')
+            ->set('templateLanguage', 'de')
+            ->call('addTemplate', 'scam')
+            ->call('addTemplate', 'scam')
+            ->call('addTemplate', 'insults')
+            ->call('addTemplate', 'staff')
+            ->call('addTemplate', 'nope');
+
+        $words = explode("\n", $component->get('automodWords'));
+        $this->assertSame('eigenes', $words[0]);
+        $this->assertContains('gratis nitro', $words);
+        $this->assertContains('free nitro', $words);
+        $this->assertContains('arschloch', $words);
+        $this->assertNotContains('asshole', $words);
+        $this->assertSame(count($words), count(array_unique($words)));
+        $this->assertContains('serverteam', explode("\n", $component->get('automodProfileWords')));
+
+        $component->call('save')->assertHasNoErrors();
+        $this->assertContains('gratis nitro', $this->rules[Guild::find(self::GUILD)->automod_rule_words]['trigger_metadata']['keyword_filter']);
+    }
+
+    public function test_every_template_fits_discord_limits(): void
+    {
+        foreach (array_keys(config('app.locales')) as $locale) {
+            foreach (AutoMod::TEMPLATES as $template) {
+                $words = AutoMod::template($template, $locale);
+                $this->assertNotEmpty($words, "$locale.$template");
+                foreach ($words as $word) {
+                    $this->assertLessThanOrEqual(60, mb_strlen($word), "$locale.$template: $word");
+                }
+            }
+        }
     }
 }

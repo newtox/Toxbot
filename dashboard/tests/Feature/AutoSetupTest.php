@@ -17,6 +17,8 @@ class AutoSetupTest extends TestCase
 {
     use RefreshDatabase;
 
+    private array $automod = [];
+
     private const GUILD = '111111111111111111';
 
     private const BOT = '999999999999999999';
@@ -59,6 +61,9 @@ class AutoSetupTest extends TestCase
                 ]),
                 $isBot && str_contains($url, '/users/@me/guilds') => Http::response([['id' => self::GUILD]]),
                 $isBot && str_ends_with($url, '/users/@me') => Http::response(['id' => self::BOT, 'username' => 'Toxbot', 'avatar' => null]),
+                str_contains($url, '/auto-moderation/rules') => $method === 'POST'
+                    ? Http::response(['id' => (string) (900 + count($this->automod))] + ($this->automod[] = json_decode($request->body(), true)))
+                    : Http::response([]),
                 $method === 'POST' && str_ends_with($url, '/guilds/'.self::GUILD.'/channels') => Http::response($this->created($request->data())),
                 $method === 'POST' && str_ends_with($url, '/guilds/'.self::GUILD.'/roles') => Http::response($this->createdRole($request->data())),
                 $method === 'PUT' && str_contains($url, '/permissions/') => Http::response(null, 204),
@@ -150,6 +155,11 @@ class AutoSetupTest extends TestCase
         $this->assertTrue($row->link_invites);
         $this->assertTrue($row->raid_enabled);
         $this->assertSame('30', $row->link_exempt_roles);
+        $this->assertTrue($row->automod_spam);
+        $this->assertContains('free nitro', explode("\n", $row->automod_words));
+        $this->assertContains('admin', explode("\n", $row->automod_profile_words));
+        $this->assertSame([1, 3, 6], array_column($this->automod, 'trigger_type'));
+        $this->assertContains(['ok' => true, 'text' => __('setup.step_automod')], $steps);
 
         $type = TicketType::sole();
         $this->assertSame('Support', $type->name);

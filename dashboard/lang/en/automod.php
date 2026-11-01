@@ -67,4 +67,11 @@ return [
     'rule_profile' => 'Toxbot: Profile names',
     'blocked_spam' => 'This message looks like spam.',
     'blocked_presets' => 'This message contains a blocked word.',
+    'templates' => 'Templates',
+    'templates_hint' => 'Adds ready-made lists to the fields below, scam and staff impersonation in English as well. Check them and then save.',
+    'templates_language' => 'Language',
+    'template_scam' => 'Scam & fraud',
+    'template_insults' => 'Insults',
+    'template_staff' => 'Staff impersonation (profile names)',
+    'taken_plain' => 'The server already has the rule ":name". Discord allows only one of those.',
 ];

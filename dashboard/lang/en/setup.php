@@ -13,7 +13,7 @@ return [
     'area_moderation' => 'Moderation',
     'area_moderation_text' => 'A private #mod-log for the team and DMs to members when they are punished.',
     'area_protection' => 'Protection',
-    'area_protection_text' => 'Filters scam links and invites to other servers, turns on anti-raid and skips your team roles in the link filter.',
+    'area_protection_text' => 'Filters scam links and invites to other servers, turns on anti-raid, exempts your team roles from the link filter and sets up AutoMod against spam, scam messages and staff impersonation in profile names.',
     'area_verification' => 'Verification',
     'area_verification_text' => 'An "Unverified" role for new members, a #verify channel with the button, and every other channel hidden from that role.',
     'verification_warning' => 'New members then only see #verify until they solve the captcha. Members already on the server are not affected.',
@@ -64,4 +64,6 @@ return [
     'step_verify_on' => 'Verification is on.',
     'step_verify_message' => 'Verify button posted in :channel.',
     'step_verify_message_failed' => 'The verify button could not be posted.',
+    'step_automod' => 'AutoMod blocks spam, scam messages and profile names that impersonate the team.',
+    'step_automod_failed' => 'AutoMod could not be set up completely. Check the AutoMod page.',
 ];

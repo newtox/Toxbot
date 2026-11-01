@@ -67,4 +67,11 @@ return [
     'rule_profile' => 'Toxbot: Profilnavne',
     'blocked_spam' => 'Denne besked ligner spam.',
     'blocked_presets' => 'Denne besked indeholder et blokeret ord.',
+    'templates' => 'Skabeloner',
+    'templates_hint' => 'Tilføjer færdige lister til felterne nedenfor, svindel og team-efterligning også på engelsk. Tjek dem, og gem derefter.',
+    'templates_language' => 'Sprog',
+    'template_scam' => 'Svindel & scam',
+    'template_insults' => 'Fornærmelser',
+    'template_staff' => 'Team-efterligning (profilnavne)',
+    'taken_plain' => 'Serveren har allerede reglen „:name“. Discord tillader kun én af dem.',
 ];

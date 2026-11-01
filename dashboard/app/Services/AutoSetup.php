@@ -172,6 +172,9 @@ class AutoSetup
             'link_invites' => true,
             'link_exempt_roles' => $exempt === [] ? null : implode(',', array_slice($exempt, 0, 25)),
             'raid_enabled' => true,
+            'automod_spam' => true,
+            'automod_words' => AutoMod::merge($row->automod_words, AutoMod::template('scam', $this->locale)),
+            'automod_profile_words' => AutoMod::merge($row->automod_profile_words, AutoMod::template('staff', $this->locale)),
         ])->save();
 
         $this->done(__('setup.step_links'));
@@ -179,6 +182,13 @@ class AutoSetup
             $this->done(__('setup.step_links_exempt', ['roles' => $this->roleNames($this->teamRoles)]));
         }
         $this->done(__('setup.step_raid', ['joins' => $row->raid_joins, 'seconds' => $row->raid_seconds]));
+
+        $failed = app(AutoMod::class)->sync($row);
+        if (array_intersect(['spam', 'words', 'profile'], array_keys($failed)) === []) {
+            $this->done(__('setup.step_automod'));
+        } else {
+            $this->fail(__('setup.step_automod_failed'));
+        }
     }
 
     private function verification(string $guildName): void

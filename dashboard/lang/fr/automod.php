@@ -67,4 +67,11 @@ return [
     'rule_profile' => 'Toxbot : Noms de profil',
     'blocked_spam' => 'Ce message ressemble à du spam.',
     'blocked_presets' => 'Ce message contient un mot bloqué.',
+    'templates' => 'Modèles',
+    'templates_hint' => 'Ajoute des listes toutes prêtes dans les champs ci-dessous, arnaques et usurpation de l\'équipe aussi en anglais. Vérifie-les puis enregistre.',
+    'templates_language' => 'Langue',
+    'template_scam' => 'Arnaques et fraude',
+    'template_insults' => 'Insultes',
+    'template_staff' => 'Usurpation de l\'équipe (noms de profil)',
+    'taken_plain' => 'Le serveur a déjà la règle « :name ». Discord n\'en autorise qu\'une de ce type.',
 ];
