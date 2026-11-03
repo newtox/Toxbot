@@ -22,6 +22,7 @@ return [
     'section_goodbye' => 'Прощание',
     'section_autorole' => 'Автороль',
     'section_language' => 'Язык',
+    'section_botprofile' => 'Профиль бота',
     'section_levels' => 'Уровни',
     'section_streams' => 'Стримы',
     'section_liverole' => 'Роль стримера',

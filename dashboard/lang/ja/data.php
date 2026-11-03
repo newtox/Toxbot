@@ -33,4 +33,5 @@ return [
     'section_extra_starboard' => 'スターボードの既存の投稿は残ります。',
     'section_extra_automod' => 'Toxbot の AutoMod ルールは Discord から削除されます。',
     'section_extra_links' => '禁止ドメインの AutoMod ルールは Discord から削除されます。',
+    'section_extra_botprofile' => 'このサーバーでの Toxbot のプロフィールが元に戻ります。',
 ];

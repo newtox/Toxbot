@@ -6,7 +6,7 @@
         </div>
         <p class="text-sm text-dc-muted">{{ __('profile.premium_intro') }}</p>
         <ul class="space-y-2 text-sm text-dc-text">
-            @foreach (range(1, 5) as $i)
+            @foreach (range(1, 6) as $i)
                 <li class="flex gap-2"><x-icon name="check" class="mt-0.5 size-4 shrink-0 text-accent-fg" />{{ __('home.premium_server_'.$i) }}</li>
             @endforeach
         </ul>

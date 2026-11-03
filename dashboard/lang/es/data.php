@@ -33,4 +33,5 @@ return [
     'section_extra_starboard' => 'Las publicaciones del starboard se conservan.',
     'section_extra_automod' => 'Las reglas de AutoMod de Toxbot se eliminan de Discord.',
     'section_extra_links' => 'La regla de AutoMod de dominios bloqueados se elimina de Discord.',
+    'section_extra_botprofile' => 'Toxbot recupera su perfil normal en este servidor.',
 ];

@@ -210,6 +210,12 @@ class Discord
         return Cache::remember("discord:guild:{$guildId}:bot-member", 30, fn () => $this->asBot()->get("/guilds/{$guildId}/members/{$botId}")->throw()->json());
     }
 
+    public function updateBotMember(string $guildId, array $payload): void
+    {
+        $this->asBot()->patch("/guilds/{$guildId}/members/@me", $payload)->throw();
+        Cache::forget("discord:guild:{$guildId}:bot-member");
+    }
+
     public function guildInfo(string $guildId): array
     {
         return Cache::remember("discord:guild:{$guildId}:info", 300, fn () => $this->asBot()->get("/guilds/{$guildId}", ['with_counts' => 'true'])->throw()->json());

@@ -46,6 +46,7 @@ return [
     'premium_server_3' => 'ゲームとタイトルのフィルター',
     'premium_server_4' => 'クリエイターごとに配信終了後の通知の扱いを選択',
     'premium_server_5' => 'サーバータグを 20 個から最大 100 個に',
+    'premium_server_6' => 'Toxbot 専用のプロフィール画像、バナー、自己紹介',
     'premium_hint' => '購入は Discord 内の Toxbot のプロフィールまたはアプリディレクトリから行います。',
     'premium_buy' => 'Discord で購入',
     'cta_title' => '試してみませんか？',

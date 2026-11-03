@@ -46,6 +46,7 @@ return [
     'premium_server_3' => 'Game and title filters',
     'premium_server_4' => 'Choose per creator what happens to the notification when the stream ends',
     'premium_server_5' => 'Up to 100 server tags instead of 20',
+    'premium_server_6' => 'Own profile picture, banner and bio for Toxbot',
     'premium_hint' => 'Purchases happen directly in Discord, in Toxbot\'s profile or in the App Directory.',
     'premium_buy' => 'Buy in Discord',
     'cta_title' => 'Ready to try it?',

@@ -22,6 +22,7 @@ return [
     'section_goodbye' => 'Goodbye',
     'section_autorole' => 'Autorole',
     'section_language' => 'Language',
+    'section_botprofile' => 'Bot profile',
     'section_levels' => 'Levels',
     'section_streams' => 'Streams',
     'section_liverole' => 'Live role',

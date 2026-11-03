@@ -33,4 +33,5 @@ return [
     'section_extra_starboard' => '星标墙上已有的帖子会保留。',
     'section_extra_automod' => 'Toxbot 的 AutoMod 规则将从 Discord 中删除。',
     'section_extra_links' => '屏蔽域名的 AutoMod 规则将从 Discord 中删除。',
+    'section_extra_botprofile' => 'Toxbot 在此服务器上恢复默认资料。',
 ];

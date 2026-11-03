@@ -46,6 +46,7 @@ return [
     'premium_server_3' => 'Filtros de juego y título',
     'premium_server_4' => 'Elegir por creador qué pasa con el aviso cuando termina el directo',
     'premium_server_5' => 'Hasta 100 tags del servidor en lugar de 20',
+    'premium_server_6' => 'Foto de perfil, banner y biografía propios para Toxbot',
     'premium_hint' => 'Se compra directamente en Discord, en el perfil de Toxbot o en el directorio de aplicaciones.',
     'premium_buy' => 'Comprar en Discord',
     'cta_title' => '¿Listo para probarlo?',

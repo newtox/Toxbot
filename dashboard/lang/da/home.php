@@ -46,6 +46,7 @@ return [
     'premium_server_3' => 'Spil- og titelfiltre',
     'premium_server_4' => 'Pr. skaber vælge, hvad der sker med notifikationen efter streamen',
     'premium_server_5' => 'Op til 100 server-tags i stedet for 20',
+    'premium_server_6' => 'Eget profilbillede, banner og bio til Toxbot',
     'premium_hint' => 'Du køber direkte i Discord, i Toxbots profil eller i app-kataloget.',
     'premium_buy' => 'Køb i Discord',
     'cta_title' => 'Klar til at prøve?',

@@ -22,6 +22,7 @@ return [
     'section_goodbye' => 'Despedida',
     'section_autorole' => 'Autorol',
     'section_language' => 'Idioma',
+    'section_botprofile' => 'Perfil del bot',
     'section_levels' => 'Niveles',
     'section_streams' => 'Streams',
     'section_liverole' => 'Rol en directo',

@@ -46,6 +46,7 @@ return [
     'premium_server_3' => '게임 및 제목 필터',
     'premium_server_4' => '크리에이터마다 방송 종료 후 알림 처리 방식 선택',
     'premium_server_5' => '서버 태그 20개 대신 최대 100개',
+    'premium_server_6' => 'Toxbot 전용 프로필 사진, 배너, 소개',
     'premium_hint' => '구매는 Discord에서 Toxbot 프로필이나 앱 디렉터리를 통해 합니다.',
     'premium_buy' => 'Discord에서 구매',
     'cta_title' => '사용해 볼 준비가 되셨나요?',

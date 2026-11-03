@@ -46,6 +46,7 @@ return [
     'premium_server_3' => 'Spiel- und Titelfilter',
     'premium_server_4' => 'Pro Creator wählen, was nach Streamende mit der Benachrichtigung passiert',
     'premium_server_5' => 'Bis zu 100 statt 20 Server-Tags',
+    'premium_server_6' => 'Eigenes Profilbild, Banner und Bio für Toxbot',
     'premium_hint' => 'Gekauft wird direkt in Discord, im Profil von Toxbot oder im App-Verzeichnis.',
     'premium_buy' => 'In Discord kaufen',
     'cta_title' => 'Bereit zum Ausprobieren?',

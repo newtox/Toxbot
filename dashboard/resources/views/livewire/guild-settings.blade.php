@@ -78,6 +78,19 @@
 
     @endif
 
+    @if ($section === 'botprofile')
+    <section class="card space-y-6">
+        <div>
+            <h2 class="flex items-center gap-2 text-lg font-semibold text-dc-header">
+                {{ __('botprofile.title') }}
+                <span class="rounded-full bg-dc-yellow px-2 py-0.5 text-xs font-semibold text-dc-950">Premium</span>
+            </h2>
+            <p class="text-sm text-dc-muted">{{ __('botprofile.description') }}</p>
+        </div>
+        <livewire:bot-profile :guild-id="$guildId" :key="'bot-profile'" />
+    </section>
+    @endif
+
     @if ($section === 'levels')
     <section id="levels" class="card scroll-mt-20">
         <div class="flex items-start gap-4">

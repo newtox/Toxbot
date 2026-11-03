@@ -22,6 +22,7 @@ return [
     'section_goodbye' => '告别',
     'section_autorole' => '自动身份组',
     'section_language' => '语言',
+    'section_botprofile' => '机器人资料',
     'section_levels' => '等级',
     'section_streams' => '直播',
     'section_liverole' => '直播身份组',

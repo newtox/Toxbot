@@ -22,6 +22,7 @@ return [
     'section_goodbye' => '작별',
     'section_autorole' => '자동 역할',
     'section_language' => '언어',
+    'section_botprofile' => '봇 프로필',
     'section_levels' => '레벨',
     'section_streams' => '스트림',
     'section_liverole' => '라이브 역할',

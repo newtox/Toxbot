@@ -22,6 +22,7 @@ return [
     'section_goodbye' => 'विदाई',
     'section_autorole' => 'ऑटो-रोल',
     'section_language' => 'भाषा',
+    'section_botprofile' => 'बॉट प्रोफ़ाइल',
     'section_levels' => 'लेवल',
     'section_streams' => 'स्ट्रीम',
     'section_liverole' => 'लाइव रोल',

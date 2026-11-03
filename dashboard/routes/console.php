@@ -1,10 +1,13 @@
 <?php
 
 use App\Http\Controllers\CardController;
+use App\Models\Guild;
 use App\Models\StreamAnnouncement;
 use App\Models\StreamSource;
 use App\Models\WebhookDelivery;
+use App\Services\BotProfile;
 use App\Services\ItemFrames;
+use App\Services\Premium;
 use App\Services\ProfileCardData;
 use App\Services\Streams\Announcer;
 use App\Services\Streams\SourceManager;
@@ -102,7 +105,19 @@ Artisan::command('cards:prune', function () {
     $this->info("Deleted {$deleted} cached cards.");
 })->purpose('Delete cached animated profile cards and old prepared item frames');
 
+Artisan::command('premium:bot-profiles', function (BotProfile $profiles, Premium $premium) {
+    $reset = 0;
+    foreach (Guild::query()->where('bot_profile', true)->get() as $guild) {
+        if (! $premium->isGuildPremium($guild->id)) {
+            $profiles->reset($guild);
+            $reset++;
+        }
+    }
+    $this->info("Reset {$reset} bot profiles.");
+})->purpose('Give Toxbot its normal profile back on servers whose Server Premium ran out');
+
 Schedule::command('cards:prune')->hourly()->withoutOverlapping();
 Schedule::command('streams:maintain')->hourly()->withoutOverlapping();
+Schedule::command('premium:bot-profiles')->hourly()->withoutOverlapping();
 Schedule::command('streams:sync')->everyFiveMinutes()->withoutOverlapping();
 Schedule::command('streams:check-upcoming')->everyTwoMinutes()->withoutOverlapping();

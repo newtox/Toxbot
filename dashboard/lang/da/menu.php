@@ -22,6 +22,7 @@ return [
     'section_goodbye' => 'Farvel',
     'section_autorole' => 'Autorolle',
     'section_language' => 'Sprog',
+    'section_botprofile' => 'Botprofil',
     'section_levels' => 'Levels',
     'section_streams' => 'Streams',
     'section_liverole' => 'Live-rolle',

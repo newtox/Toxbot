@@ -32,6 +32,7 @@ class DataDeletion
         'goodbye' => ['bye_channel', 'bye_msg'],
         'autorole' => ['autorole'],
         'language' => ['language'],
+        'botprofile' => ['bot_bio', 'bot_profile'],
         'levels' => ['levelup_enabled', 'levelup_channel', 'levelup_dm', 'slots_enabled'],
         'streams' => ['stream', 'notify', 'stream_msg', 'stream_video_msg', 'stream_end_action'],
         'liverole' => ['live_role', 'live_role_required'],
@@ -57,6 +58,7 @@ class DataDeletion
         $row = Guild::query()->find($guildId);
         if ($row) {
             $this->autoMod()->removeAll($row);
+            app(BotProfile::class)->reset($row);
             foreach ([[$row->ticket_panel_channel, $row->ticket_panel_message_id], [$row->verify_channel, $row->verify_message_id]] as [$channel, $message]) {
                 if ($channel && $message) {
                     rescue(fn () => $this->discord->deleteMessage($channel, $message), report: false);
@@ -80,6 +82,9 @@ class DataDeletion
     {
         $row = Guild::query()->find($guildId);
         if ($row) {
+            if ($section === 'botprofile') {
+                app(BotProfile::class)->reset($row);
+            }
             $message = match ($section) {
                 'verification' => [$row->verify_channel, $row->verify_message_id],
                 'tickets' => [$row->ticket_panel_channel, $row->ticket_panel_message_id],

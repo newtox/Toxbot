@@ -22,6 +22,7 @@ return [
     'section_goodbye' => '退出メッセージ',
     'section_autorole' => '自動ロール',
     'section_language' => '言語',
+    'section_botprofile' => 'ボットのプロフィール',
     'section_levels' => 'レベル',
     'section_streams' => '配信',
     'section_liverole' => 'ライブロール',

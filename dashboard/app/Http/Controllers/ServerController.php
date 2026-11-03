@@ -77,6 +77,13 @@ class ServerController extends Controller
                     'active' => $row->autorole !== null,
                 ],
                 [
+                    'section' => 'botprofile',
+                    'icon' => 'sparkles',
+                    'title' => __('botprofile.title'),
+                    'description' => __('botprofile.description'),
+                    'active' => (bool) $row->bot_profile,
+                ],
+                [
                     'section' => 'levels',
                     'icon' => 'level',
                     'title' => __('guild.levelup_title'),

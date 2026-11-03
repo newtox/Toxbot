@@ -26,16 +26,16 @@ class GuildSettings extends Component
 
     public const STARBOARD = 'starboard';
 
-    public const SECTIONS = ['welcome', 'goodbye', 'autorole', 'language', 'levels', 'streams', 'liverole', 'tags', 'starboard', 'moderation', 'verification', 'links', 'automod', 'raid', 'tickets'];
+    public const SECTIONS = ['welcome', 'goodbye', 'autorole', 'language', 'botprofile', 'levels', 'streams', 'liverole', 'tags', 'starboard', 'moderation', 'verification', 'links', 'automod', 'raid', 'tickets'];
 
-    public const WITHOUT_DISCORD_DATA = ['language', 'tags', 'raid'];
+    public const WITHOUT_DISCORD_DATA = ['language', 'botprofile', 'tags', 'raid'];
 
     public const STARBOARD_EMOJIS = ['⭐', '🌟', '🔥', '💀', '😂', '❤️'];
 
     private const EMOJI_PATTERN = '/^(<a?:\w{2,32}:\d{15,22}>|[^\s<>:A-Za-z]{1,16})$/u';
 
     public const GROUPS = [
-        'general' => ['welcome' => 'welcome', 'goodbye' => 'bye', 'autorole' => 'autorole', 'language' => 'globe'],
+        'general' => ['welcome' => 'welcome', 'goodbye' => 'bye', 'autorole' => 'autorole', 'language' => 'globe', 'botprofile' => 'sparkles'],
         'community' => ['levels' => 'level', 'streams' => 'stream', 'liverole' => 'live', 'tags' => 'tag'],
         'safety' => ['moderation' => 'shield', 'verification' => 'lock', 'links' => 'link', 'automod' => 'filter', 'raid' => 'alert', 'tickets' => 'ticket'],
     ];
