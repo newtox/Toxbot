@@ -26,6 +26,10 @@ class BotProfile extends Component
 
     public string $bio = '';
 
+    public ?array $avatarCrop = null;
+
+    public ?array $bannerCrop = null;
+
     public function mount(string $guildId): void
     {
         $this->guildId = $guildId;
@@ -41,17 +45,22 @@ class BotProfile extends Component
             'avatar' => self::IMAGE_RULES,
             'banner' => self::IMAGE_RULES,
             'bio' => ['string', 'max:'.Profiles::BIO_MAX],
+            'avatarCrop' => ['nullable', 'array', 'size:4'],
+            'avatarCrop.*' => ['numeric', 'between:0,1'],
+            'bannerCrop' => ['nullable', 'array', 'size:4'],
+            'bannerCrop.*' => ['numeric', 'between:0,1'],
         ]);
 
         $changes = ['bio' => $this->bio];
         foreach (['avatar', 'banner'] as $key) {
             if ($this->{$key}) {
-                $changes[$key] = $this->{$key};
+                $changes[$key] = ['file' => $this->{$key}, 'crop' => $this->{$key.'Crop'} !== null ? array_map('floatval', array_values($this->{$key.'Crop'})) : null];
             }
         }
 
         if ($this->apply($profiles, $changes)) {
-            $this->reset('avatar', 'banner');
+            $this->reset('avatar', 'banner', 'avatarCrop', 'bannerCrop');
+            $this->dispatch('bot-profile-saved');
         }
     }
 

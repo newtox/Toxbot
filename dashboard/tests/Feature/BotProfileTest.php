@@ -11,6 +11,8 @@ use Illuminate\Http\Client\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
+use Imagick;
+use ImagickPixel;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -102,6 +104,76 @@ class BotProfileTest extends TestCase
             ->set('bio', str_repeat('a', 191))->call('save')->assertHasErrors('bio')
             ->set('bio', '')->set('avatar', UploadedFile::fake()->create('a.txt', 1, 'text/plain'))->call('save')->assertHasErrors('avatar');
         $this->assertCount(2, $this->patches);
+    }
+
+    public function test_images_are_cut_to_the_chosen_section(): void
+    {
+        config(['toxbot.premium_guilds' => [self::GUILD]]);
+
+        $source = new Imagick;
+        $source->newImage(300, 100, new ImagickPixel('red'));
+        $blue = new Imagick;
+        $blue->newImage(100, 100, new ImagickPixel('blue'));
+        $source->compositeImage($blue, Imagick::COMPOSITE_OVER, 200, 0);
+        $source->setImageFormat('png');
+        $path = tempnam(sys_get_temp_dir(), 'bp').'.png';
+        $source->writeImage($path);
+
+        Livewire::test(BotProfile::class, ['guildId' => self::GUILD])
+            ->set('avatar', UploadedFile::fake()->createWithContent('wide.png', file_get_contents($path)))
+            ->set('avatarCrop', [0.66667, 0, 0.33333, 1])
+            ->call('save')
+            ->assertHasNoErrors()
+            ->assertSet('avatarCrop', null)
+            ->assertDispatched('bot-profile-saved');
+
+        $result = $this->decode($this->patches[0]['avatar']);
+        $this->assertSame([512, 512], [$result->getImageWidth(), $result->getImageHeight()]);
+        $this->assertSame('blue', $this->colorName($result->getImagePixelColor(256, 256)));
+
+        Livewire::test(BotProfile::class, ['guildId' => self::GUILD])
+            ->set('avatar', UploadedFile::fake()->createWithContent('wide.png', file_get_contents($path)))
+            ->call('save');
+        $this->assertSame('red', $this->colorName($this->decode($this->patches[1]['avatar'])->getImagePixelColor(10, 256)));
+
+        Livewire::test(BotProfile::class, ['guildId' => self::GUILD])
+            ->set('avatarCrop', [0, 0, 2, 1])->call('save')->assertHasErrors('avatarCrop.2');
+
+        $gif = new Imagick;
+        foreach (['red', 'blue'] as $color) {
+            $frame = new Imagick;
+            $frame->newImage(200, 200, new ImagickPixel($color));
+            $frame->setImageFormat('gif');
+            $frame->setImageDelay(10);
+            $gif->addImage($frame);
+        }
+        $gifPath = tempnam(sys_get_temp_dir(), 'bp').'.gif';
+        $gif->writeImages($gifPath, true);
+
+        Livewire::test(BotProfile::class, ['guildId' => self::GUILD])
+            ->set('banner', UploadedFile::fake()->createWithContent('anim.gif', file_get_contents($gifPath)))
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $this->assertStringStartsWith('data:image/gif;base64,', $this->patches[2]['banner']);
+        $banner = $this->decode($this->patches[2]['banner']);
+        $this->assertSame(2, $banner->getNumberImages());
+        $this->assertSame([680, 240], [$banner->getImageWidth(), $banner->getImageHeight()]);
+    }
+
+    private function decode(string $dataUri): Imagick
+    {
+        $image = new Imagick;
+        $image->readImageBlob(base64_decode(substr($dataUri, strpos($dataUri, ',') + 1)));
+
+        return $image->coalesceImages();
+    }
+
+    private function colorName(ImagickPixel $pixel): string
+    {
+        $color = $pixel->getColor();
+
+        return $color['b'] > 200 && $color['r'] < 50 ? 'blue' : ($color['r'] > 200 && $color['b'] < 50 ? 'red' : 'other');
     }
 
     public function test_discord_errors_are_shown(): void

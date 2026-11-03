@@ -110,7 +110,110 @@ function rememberNavGroup(key, open) {
     } catch {}
 }
 
-window.toxbot = { renderDiscordMessage, insertAtCursor, discordTimestamp, setAccent, navGroupOpen, rememberNavGroup };
+function imageCropper(aspect) {
+    return {
+        aspect,
+        src: null,
+        ratio: 1,
+        zoom: 1,
+        x: 0.5,
+        y: 0.5,
+        drag: null,
+
+        pick(event) {
+            const file = event.target.files?.[0];
+            if (!file) {
+                return;
+            }
+            const url = URL.createObjectURL(file);
+            const image = new Image();
+            image.onload = () => {
+                if (this.src) {
+                    URL.revokeObjectURL(this.src);
+                }
+                this.ratio = image.naturalWidth / image.naturalHeight;
+                this.zoom = 1;
+                this.x = 0.5;
+                this.y = 0.5;
+                this.src = url;
+            };
+            image.src = url;
+        },
+
+        clear() {
+            if (this.src) {
+                URL.revokeObjectURL(this.src);
+            }
+            this.src = null;
+        },
+
+        size() {
+            const width = this.ratio > this.aspect ? this.aspect / this.ratio : 1;
+            const height = this.ratio > this.aspect ? 1 : this.ratio / this.aspect;
+
+            return [width / this.zoom, height / this.zoom];
+        },
+
+        rect() {
+            const [width, height] = this.size();
+            this.x = Math.min(Math.max(this.x, width / 2), 1 - width / 2);
+            this.y = Math.min(Math.max(this.y, height / 2), 1 - height / 2);
+
+            return [this.x - width / 2, this.y - height / 2, width, height];
+        },
+
+        style() {
+            if (!this.src) {
+                return '';
+            }
+            const [left, top, width, height] = this.rect();
+            const posX = width < 1 ? (left / (1 - width)) * 100 : 0;
+            const posY = height < 1 ? (top / (1 - height)) * 100 : 0;
+
+            return `background-image: url('${this.src}'); background-size: ${100 / width}% ${100 / height}%; background-position: ${posX}% ${posY}%;`;
+        },
+
+        crop() {
+            return this.src ? this.rect().map((value) => Math.round(value * 100000) / 100000) : null;
+        },
+
+        setZoom(value) {
+            this.zoom = Math.min(Math.max(Number(value), 1), 5);
+        },
+
+        start(event) {
+            if (!this.src) {
+                return;
+            }
+            event.currentTarget.setPointerCapture(event.pointerId);
+            this.drag = { x: event.clientX, y: event.clientY, width: event.currentTarget.clientWidth, height: event.currentTarget.clientHeight };
+        },
+
+        move(event) {
+            if (!this.drag) {
+                return;
+            }
+            const [width, height] = this.size();
+            this.x -= ((event.clientX - this.drag.x) / this.drag.width) * width;
+            this.y -= ((event.clientY - this.drag.y) / this.drag.height) * height;
+            this.drag.x = event.clientX;
+            this.drag.y = event.clientY;
+            this.rect();
+        },
+
+        stop() {
+            this.drag = null;
+        },
+
+        wheel(event) {
+            if (this.src) {
+                this.setZoom(this.zoom * (event.deltaY < 0 ? 1.1 : 1 / 1.1));
+            }
+        },
+    };
+}
+
+window.toxbot = { renderDiscordMessage, insertAtCursor, discordTimestamp, setAccent, navGroupOpen, rememberNavGroup, imageCropper };
 
 function rememberTimezone() {
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
