@@ -81,7 +81,7 @@
                     <div class="min-w-0 flex-1">
                         <div class="flex flex-wrap items-center gap-x-2">
                             <span class="font-medium text-dc-header" x-text="ctx.botName"></span>
-                            <span class="rounded-[3px] bg-blurple px-1 text-[10px] leading-4 font-semibold text-white">APP</span>
+                            <x-app-tag :verified="$botVerified" class="self-center" />
                             <span class="text-xs text-dc-muted" x-text="toxbot.discordTimestamp(ctx.todayAt)"></span>
                         </div>
                         <div x-show="$wire.{{ $msg }}" class="break-words whitespace-pre-wrap text-dc-text"

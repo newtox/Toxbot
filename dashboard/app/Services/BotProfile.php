@@ -19,12 +19,22 @@ class BotProfile
         $member = rescue(fn () => $this->discord->botMember($guildId), [], report: false);
         $botId = (string) ($member['user']['id'] ?? '');
 
+        $user = rescue(fn () => $this->discord->botUser(), [], report: false);
+        $discriminator = (string) ($user['discriminator'] ?? '0');
+
         return [
+            'verified' => self::isVerified($user),
+            'tag' => ($user['username'] ?? 'Toxbot').($discriminator !== '0' ? '#'.$discriminator : ''),
             'avatar' => $this->image($guildId, $botId, 'avatars', $member['avatar'] ?? null),
             'banner' => $this->image($guildId, $botId, 'banners', $member['banner'] ?? null),
-            'default_avatar' => $this->discord->botAvatarUrl(),
+            'default_avatar' => $this->discord->botAvatarUrl() ?? 'https://cdn.discordapp.com/embed/avatars/0.png',
             'name' => $member['nick'] ?? $member['user']['global_name'] ?? $member['user']['username'] ?? 'Toxbot',
         ];
+    }
+
+    public static function isVerified(array $user): bool
+    {
+        return ((int) ($user['public_flags'] ?? $user['flags'] ?? 0) & (1 << 16)) !== 0;
     }
 
     public function update(Guild $guild, array $changes): void

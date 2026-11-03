@@ -29,7 +29,7 @@
                     <div class="flex items-center gap-2">
                         <span class="truncate font-medium text-dc-header">{{ $member['name'] }}</span>
                         @if ($member['bot'])
-                            <span class="rounded bg-blurple px-1.5 text-[0.65rem] font-bold text-white uppercase">Bot</span>
+                            <x-app-tag />
                         @endif
                         @if ($member['timeout_until'])
                             <span class="rounded-full bg-[#f57c00]/20 px-2 py-0.5 text-xs font-medium text-[#ffb366]">{{ __('moderation.timed_out') }}</span>

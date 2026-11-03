@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Guild;
 use App\Models\TagGuildBlock;
 use App\Services\AutoMod;
+use App\Services\BotProfile as BotProfiles;
 use App\Services\DataDeletion;
 use App\Services\Discord;
 use App\Services\GuildAccess;
@@ -725,6 +726,9 @@ class GuildSettings extends Component
         }
 
         $user = auth()->user();
+        $botMember = in_array($this->section, ['welcome', 'goodbye'], true) && $bot !== null
+            ? rescue(fn () => $discord->botMember($this->guildId), [], report: false)
+            : [];
 
         $channelNames = [];
         foreach ($channelGroups as $group) {
@@ -739,6 +743,7 @@ class GuildSettings extends Component
         }
 
         return view('livewire.guild-settings', [
+            'botVerified' => $bot !== null && BotProfiles::isVerified($bot),
             'blockedTags' => TagGuildBlock::query()->with('tag')->where('guild', $this->guildId)->get()
                 ->filter(fn ($block) => $block->tag !== null),
             'channelGroups' => $channelGroups,
@@ -771,10 +776,12 @@ class GuildSettings extends Component
                 'unknownUser' => __('guild.unknown_user'),
                 'channels' => (object) $channelNames,
                 'roles' => (object) $roleMap,
-                'botName' => $bot['global_name'] ?? $bot['username'] ?? 'Toxbot',
-                'botAvatar' => isset($bot['avatar'])
-                    ? "https://cdn.discordapp.com/avatars/{$bot['id']}/{$bot['avatar']}.png?size=80"
-                    : 'https://cdn.discordapp.com/embed/avatars/0.png',
+                'botName' => $botMember['nick'] ?? $bot['global_name'] ?? $bot['username'] ?? 'Toxbot',
+                'botAvatar' => match (true) {
+                    isset($botMember['avatar']) => "https://cdn.discordapp.com/guilds/{$this->guildId}/users/{$bot['id']}/avatars/{$botMember['avatar']}.png?size=80",
+                    isset($bot['avatar']) => "https://cdn.discordapp.com/avatars/{$bot['id']}/{$bot['avatar']}.png?size=80",
+                    default => 'https://cdn.discordapp.com/embed/avatars/0.png',
+                },
             ],
         ]);
     }

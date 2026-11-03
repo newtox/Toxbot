@@ -7,7 +7,7 @@
             <div class="flex flex-wrap items-center gap-2">
                 <h1 class="truncate text-2xl font-bold text-dc-header">{{ $member['name'] }}</h1>
                 @if ($member['bot'])
-                    <span class="rounded bg-blurple px-1.5 text-xs font-bold text-white uppercase">Bot</span>
+                    <x-app-tag />
                 @endif
                 @if ($ban)
                     <span class="rounded-full bg-dc-red/20 px-2 py-0.5 text-xs font-semibold text-dc-red">{{ __('moderation.banned') }}</span>

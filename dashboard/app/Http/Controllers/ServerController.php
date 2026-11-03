@@ -9,6 +9,7 @@ use App\Models\StarboardPost;
 use App\Models\StreamSubscription;
 use App\Models\TagGuildBlock;
 use App\Models\Ticket;
+use App\Services\BotProfile;
 use App\Services\Discord;
 use App\Services\GuildAccess;
 use App\Services\Premium;
@@ -217,13 +218,29 @@ class ServerController extends Controller
         [$found, $guilds] = $this->resolve($request, $guild, 'tickets');
         $types = $this->access->ticketTypeIds($request->user(), $found);
 
+        $ticket = Ticket::query()->forGuild($guild)
+            ->when($types !== null, fn ($query) => $query->whereIn('type_id', $types))
+            ->with('messages')
+            ->findOrFail($ticket);
+        $bot = rescue(fn () => $this->discord->botUser(), [], report: false);
+
         return view('servers.ticket', [
             'guild' => $found,
             'guilds' => $guilds,
-            'ticket' => Ticket::query()->forGuild($guild)
-                ->when($types !== null, fn ($query) => $query->whereIn('type_id', $types))
-                ->with('messages')
-                ->findOrFail($ticket),
+            'ticket' => $ticket,
+            'botId' => (string) ($bot['id'] ?? ''),
+            'botVerified' => BotProfile::isVerified($bot),
+            'context' => [
+                'unknownChannel' => __('guild.unknown_channel'),
+                'unknownRole' => __('guild.unknown_role'),
+                'unknownUser' => __('guild.unknown_user'),
+                'users' => (object) $ticket->messages->pluck('author_name', 'author_id')->all(),
+                'channels' => (object) collect(rescue(fn () => $this->discord->guildChannels($guild), [], report: false))
+                    ->pluck('name', 'id')->all(),
+                'roles' => (object) collect(rescue(fn () => $this->discord->guildRoles($guild), [], report: false))
+                    ->mapWithKeys(fn ($role) => [$role['id'] => ['name' => $role['name'], 'color' => $role['color'] ? sprintf('#%06x', $role['color']) : null]])
+                    ->all(),
+            ],
         ]);
     }
 

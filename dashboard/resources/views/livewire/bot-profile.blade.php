@@ -59,23 +59,27 @@
         </fieldset>
     </form>
 
-    <div class="order-1 lg:order-2">
+    <div class="order-1 w-full max-w-xs lg:order-2">
         <p class="label">{{ __('botprofile.preview') }}</p>
         <div class="overflow-hidden rounded-xl bg-dc-950 shadow-lg">
             <div class="relative aspect-[17/6] bg-accent bg-cover bg-center" @if ($current['banner']) style="background-image: url('{{ $current['banner'] }}')" @endif>
                 <div x-show="banner.src" x-cloak class="absolute inset-0 bg-no-repeat" :style="banner.style()"></div>
             </div>
             <div class="relative px-4 pb-4">
-                <div class="relative -mt-10 size-20 overflow-hidden rounded-full border-[6px] border-dc-950 bg-dc-700">
-                    @if ($current['avatar'] ?? $current['default_avatar'])
-                        <img src="{{ $current['avatar'] ?? $current['default_avatar'] }}" alt="" class="size-full object-cover">
-                    @endif
-                    <div x-show="avatar.src" x-cloak class="absolute inset-0 bg-no-repeat" :style="avatar.style()"></div>
+                <div class="relative -mt-10 size-20">
+                    <div class="relative size-full overflow-hidden rounded-full border-[6px] border-dc-950 bg-dc-700">
+                        @if ($current['avatar'] ?? $current['default_avatar'])
+                            <img src="{{ $current['avatar'] ?? $current['default_avatar'] }}" alt="" class="size-full object-cover">
+                        @endif
+                        <div x-show="avatar.src" x-cloak class="absolute inset-0 bg-no-repeat" :style="avatar.style()"></div>
+                    </div>
+                    <span class="absolute right-0.5 bottom-0.5 size-5 rounded-full border-4 border-dc-950 bg-[#23a55a]"></span>
                 </div>
                 <div class="mt-2 flex items-center gap-2">
                     <span class="truncate text-lg font-bold text-dc-header">{{ $current['name'] }}</span>
-                    <span class="rounded bg-[#5865f2] px-1.5 py-0.5 text-[10px] font-semibold text-white">APP</span>
+                    <x-app-tag :verified="$current['verified']" />
                 </div>
+                <p class="truncate text-sm text-dc-text">{{ $current['tag'] }}</p>
                 <p class="mt-3 whitespace-pre-line break-words text-sm text-dc-text" x-text="$wire.bio || @js(__('botprofile.bio_empty'))"></p>
             </div>
         </div>

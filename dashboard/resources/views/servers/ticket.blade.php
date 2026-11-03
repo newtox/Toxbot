@@ -29,20 +29,31 @@
             @if ($ticket->messages->isEmpty())
                 <p class="text-sm text-dc-faint">{{ $ticket->status === 'open' ? __('tickets.transcript_open') : __('tickets.transcript_empty') }}</p>
             @else
-                <ol class="space-y-4">
+                <ol x-data="{ ctx: @js($context) }">
                     @foreach ($ticket->messages as $message)
-                        <li class="flex gap-3">
-                            <img src="{{ $message->author_avatar ?? 'https://cdn.discordapp.com/embed/avatars/0.png' }}" alt="" class="size-9 shrink-0 rounded-full" loading="lazy">
+                        @php
+                            $previous = $loop->index > 0 ? $ticket->messages[$loop->index - 1] : null;
+                            $grouped = $previous && $previous->author_id === $message->author_id && $previous->sent_at && $message->sent_at
+                                && $message->sent_at->diffInMinutes($previous->sent_at, true) < 7;
+                        @endphp
+                        <li @class(['group relative flex gap-4 rounded px-2 hover:bg-black/[0.07]', 'mt-4 py-0.5' => ! $grouped && ! $loop->first, 'py-0.5' => $grouped || $loop->first])>
+                            @if ($grouped)
+                                <span class="w-10 shrink-0 pt-1 text-right text-[10px] text-dc-faint opacity-0 group-hover:opacity-100">{{ \App\Support\Timezone::format($message->sent_at, 'LT') }}</span>
+                            @else
+                                <img src="{{ $message->author_avatar ?? 'https://cdn.discordapp.com/embed/avatars/0.png' }}" alt="" class="mt-0.5 size-10 shrink-0 rounded-full" loading="lazy">
+                            @endif
                             <div class="min-w-0 flex-1">
-                                <div class="flex flex-wrap items-baseline gap-2">
-                                    <span class="font-medium text-dc-header">{{ $message->author_name }}</span>
-                                    @if ($message->author_bot)
-                                        <span class="rounded bg-blurple px-1.5 text-[0.65rem] font-bold text-white uppercase">Bot</span>
-                                    @endif
-                                    <span class="text-xs text-dc-faint">{{ \App\Support\Timezone::format($message->sent_at) }}</span>
-                                </div>
+                                @unless ($grouped)
+                                    <div class="flex flex-wrap items-center gap-x-1.5">
+                                        <span class="font-medium text-dc-header">{{ $message->author_name }}</span>
+                                        @if ($message->author_bot)
+                                            <x-app-tag :verified="$botVerified && $message->author_id === $botId" />
+                                        @endif
+                                        <span class="ml-0.5 text-xs text-dc-faint">{{ \App\Support\Timezone::format($message->sent_at) }}</span>
+                                    </div>
+                                @endunless
                                 @if ($message->content)
-                                    <p class="text-sm break-words whitespace-pre-wrap text-dc-text">{{ $message->content }}</p>
+                                    <div class="break-words whitespace-pre-wrap text-dc-text" x-html="toxbot.renderDiscordMessage(@js($message->content), ctx)">{{ $message->content }}</div>
                                 @endif
                                 @foreach ($message->attachments ?? [] as $attachment)
                                     <a href="{{ $attachment['url'] }}" target="_blank" rel="noopener" class="block truncate text-sm text-dc-link hover:underline">{{ $attachment['name'] }}</a>

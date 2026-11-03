@@ -4,10 +4,12 @@ const escapeHtml = (text) =>
 function renderDiscordMessage(text, ctx) {
     let html = escapeHtml(text ?? '');
 
-    html = html
-        .replaceAll('&amp;user', escapeHtml(`${ctx.username} (${ctx.displayName})`))
-        .replaceAll('&amp;server', escapeHtml(ctx.server))
-        .replaceAll('&amp;mention', `<span class="dc-mention">@${escapeHtml(ctx.displayName)}</span>`);
+    if (ctx.username !== undefined) {
+        html = html
+            .replaceAll('&amp;user', escapeHtml(`${ctx.username} (${ctx.displayName})`))
+            .replaceAll('&amp;server', escapeHtml(ctx.server))
+            .replaceAll('&amp;mention', `<span class="dc-mention">@${escapeHtml(ctx.displayName)}</span>`);
+    }
 
     html = html
         .replace(/&lt;#(\d+)&gt;/g, (_, id) =>
@@ -19,7 +21,7 @@ function renderDiscordMessage(text, ctx) {
             }
             return `<span class="dc-mention" style="color:${role.color};background:${role.color}26">@${escapeHtml(role.name)}</span>`;
         })
-        .replace(/&lt;@!?(\d+)&gt;/g, () => `<span class="dc-mention">@${escapeHtml(ctx.unknownUser)}</span>`)
+        .replace(/&lt;@!?(\d+)&gt;/g, (_, id) => `<span class="dc-mention">@${escapeHtml(ctx.users?.[id] ?? ctx.unknownUser)}</span>`)
         .replace(/&lt;(a?):\w+:(\d+)&gt;/g, (_, animated, id) =>
             `<img src="https://cdn.discordapp.com/emojis/${id}.${animated ? 'gif' : 'webp'}?size=48" alt="" class="inline size-[1.375em] -mt-1 align-middle">`);
 
@@ -43,8 +45,10 @@ function insertAtCursor(textarea, token) {
 }
 
 function discordTimestamp(template) {
-    const time = new Date().toLocaleTimeString(document.documentElement.lang || undefined, {
-        hour: '2-digit',
+    const locale = document.documentElement.lang || undefined;
+    const twelveHour = ['h11', 'h12'].includes(new Intl.DateTimeFormat(locale, { hour: 'numeric' }).resolvedOptions().hourCycle);
+    const time = new Date().toLocaleTimeString(locale, {
+        hour: twelveHour ? 'numeric' : '2-digit',
         minute: '2-digit',
     });
 
