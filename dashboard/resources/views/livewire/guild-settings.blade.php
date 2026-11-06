@@ -91,6 +91,16 @@
     </section>
     @endif
 
+    @if ($section === 'events')
+    <section class="card space-y-6">
+        <div>
+            <h2 class="text-lg font-semibold text-dc-header">{{ __('events.title') }}</h2>
+            <p class="text-sm text-dc-muted">{{ __('events.description') }}</p>
+        </div>
+        <livewire:event-list :guild-id="$guildId" :key="'event-list'" />
+    </section>
+    @endif
+
     @if ($section === 'levels')
     <section id="levels" class="card scroll-mt-20">
         <div class="flex items-start gap-4">
@@ -963,11 +973,13 @@
     </section>
     @endif
 
+    @unless (in_array($section, \App\Livewire\GuildSettings::WITHOUT_RESET, true))
     <div class="flex flex-wrap items-center gap-3 border-t border-white/[0.06] pt-5">
         <p class="min-w-0 flex-1 basis-64 text-sm text-dc-faint">{{ __('data.section_text', ['section' => __('menu.section_'.$section)]) }}@if (__('data.section_extra_'.$section) !== 'data.section_extra_'.$section) {{ __('data.section_extra_'.$section) }}@endif</p>
         <button type="button" wire:click="resetSection" data-confirm="{{ __('data.section_confirm', ['section' => __('menu.section_'.$section)]) }}"
                 class="btn text-dc-red ring-1 ring-dc-red/40 hover:bg-dc-red hover:text-white max-sm:w-full">{{ __('data.section_button') }}</button>
     </div>
+    @endunless
 
     <x-unsaved-bar />
 

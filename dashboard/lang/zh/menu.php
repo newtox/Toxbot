@@ -27,6 +27,7 @@ return [
     'section_streams' => '直播',
     'section_liverole' => '直播身份组',
     'section_tags' => '标签',
+    'section_events' => '活动',
     'section_moderation' => '管理',
     'section_verification' => '验证',
     'section_links' => '链接过滤',

@@ -27,6 +27,7 @@ return [
     'section_streams' => '配信',
     'section_liverole' => 'ライブロール',
     'section_tags' => 'タグ',
+    'section_events' => 'イベント',
     'section_moderation' => 'モデレーション',
     'section_verification' => '認証',
     'section_links' => 'リンクフィルター',

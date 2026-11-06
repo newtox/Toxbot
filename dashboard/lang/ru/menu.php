@@ -27,6 +27,7 @@ return [
     'section_streams' => 'Стримы',
     'section_liverole' => 'Роль стримера',
     'section_tags' => 'Теги',
+    'section_events' => 'События',
     'section_moderation' => 'Модерация',
     'section_verification' => 'Верификация',
     'section_links' => 'Фильтр ссылок',

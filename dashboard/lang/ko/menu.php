@@ -27,6 +27,7 @@ return [
     'section_streams' => '스트림',
     'section_liverole' => '라이브 역할',
     'section_tags' => '태그',
+    'section_events' => '이벤트',
     'section_moderation' => '관리',
     'section_verification' => '인증',
     'section_links' => '링크 필터',

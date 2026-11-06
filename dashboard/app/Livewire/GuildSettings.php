@@ -27,9 +27,11 @@ class GuildSettings extends Component
 
     public const STARBOARD = 'starboard';
 
-    public const SECTIONS = ['welcome', 'goodbye', 'autorole', 'language', 'botprofile', 'levels', 'streams', 'liverole', 'tags', 'starboard', 'moderation', 'verification', 'links', 'automod', 'raid', 'tickets'];
+    public const SECTIONS = ['welcome', 'goodbye', 'autorole', 'language', 'botprofile', 'levels', 'streams', 'liverole', 'tags', 'events', 'starboard', 'moderation', 'verification', 'links', 'automod', 'raid', 'tickets'];
 
-    public const WITHOUT_DISCORD_DATA = ['language', 'botprofile', 'tags', 'raid'];
+    public const WITHOUT_DISCORD_DATA = ['language', 'botprofile', 'tags', 'events', 'raid'];
+
+    public const WITHOUT_RESET = ['events'];
 
     public const STARBOARD_EMOJIS = ['⭐', '🌟', '🔥', '💀', '😂', '❤️'];
 
@@ -37,7 +39,7 @@ class GuildSettings extends Component
 
     public const GROUPS = [
         'general' => ['welcome' => 'welcome', 'goodbye' => 'bye', 'autorole' => 'autorole', 'language' => 'globe', 'botprofile' => 'sparkles'],
-        'community' => ['levels' => 'level', 'streams' => 'stream', 'liverole' => 'live', 'tags' => 'tag'],
+        'community' => ['levels' => 'level', 'streams' => 'stream', 'liverole' => 'live', 'tags' => 'tag', 'events' => 'calendar'],
         'safety' => ['moderation' => 'shield', 'verification' => 'lock', 'links' => 'link', 'automod' => 'filter', 'raid' => 'alert', 'tickets' => 'ticket'],
     ];
 
@@ -569,6 +571,7 @@ class GuildSettings extends Component
     public function resetSection(DataDeletion $deletion): void
     {
         abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
+        abort_if(in_array($this->section, self::WITHOUT_RESET, true), 404);
 
         $deletion->resetSection($this->guildId, $this->section);
         $this->loadFromDatabase();

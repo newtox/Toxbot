@@ -63,8 +63,22 @@ final _setup = ChatCommand(
       Locale.ja: 'イベント名。ロールとカテゴリーの名前にも使われます。',
       Locale.ko: '이벤트 이름. 역할과 카테고리 이름으로도 쓰입니다.',
     })
-    String name,
-  ) async {
+    String name, [
+    @Description('The team role that can write in the info channel.', {
+      Locale.da: 'Teamrollen, der kan skrive i infokanalen.',
+      Locale.de: 'Die Team-Rolle, die im Info-Kanal schreiben darf.',
+      Locale.enUs: 'The team role that can write in the info channel.',
+      Locale.esEs:
+          'El rol del equipo que puede escribir en el canal de información.',
+      Locale.fr: 'Le rôle de l’équipe qui peut écrire dans le salon d’infos.',
+      Locale.ru: 'Роль команды, которая может писать в инфоканал.',
+      Locale.hi: 'टीम रोल जो इन्फ़ो चैनल में लिख सकता है।',
+      Locale.zhCn: '可以在信息频道发言的团队身份组。',
+      Locale.ja: 'インフォチャンネルに書き込めるチームのロール。',
+      Locale.ko: '정보 채널에 글을 쓸 수 있는 팀 역할.',
+    })
+    Role? team,
+  ]) async {
     name = name.trim();
     if (name.isEmpty || name.length > maxEventName) {
       await replyError(context, 'event_invalid_name',
@@ -79,8 +93,9 @@ final _setup = ChatCommand(
       return;
     }
 
-    final event =
-        await createEvent(context.client, guild, name, context.member!);
+    final event = await createEvent(
+        context.client, guild, name, context.member!,
+        team: team);
     if (event == null) {
       await replyError(context, 'event_failed');
       return;
@@ -92,6 +107,7 @@ final _setup = ChatCommand(
           '&role': '<@&${event.roleId}>',
           '&channel': '<#${event.textChannelId}>',
           '&voice': '<#${event.voiceChannelId}>',
+          '&info': '<#${event.infoChannelId}>',
         },
         level: ResponseLevel.hint);
   },

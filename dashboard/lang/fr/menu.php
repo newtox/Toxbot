@@ -27,6 +27,7 @@ return [
     'section_streams' => 'Streams',
     'section_liverole' => 'Rôle live',
     'section_tags' => 'Tags',
+    'section_events' => 'Événements',
     'section_moderation' => 'Modération',
     'section_verification' => 'Vérification',
     'section_links' => 'Filtre de liens',

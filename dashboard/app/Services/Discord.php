@@ -294,6 +294,24 @@ class Discord
             ->post("/guilds/{$guildId}/roles", $payload)->throw()->json();
     }
 
+    public function deleteChannel(string $channelId, string $reason): void
+    {
+        $response = $this->asBot()->withHeaders(['X-Audit-Log-Reason' => rawurlencode($reason)])
+            ->delete("/channels/{$channelId}");
+        if ($response->status() !== 404) {
+            $response->throw();
+        }
+    }
+
+    public function deleteRole(string $guildId, string $roleId, string $reason): void
+    {
+        $response = $this->asBot()->withHeaders(['X-Audit-Log-Reason' => rawurlencode($reason)])
+            ->delete("/guilds/{$guildId}/roles/{$roleId}");
+        if ($response->status() !== 404) {
+            $response->throw();
+        }
+    }
+
     public function setChannelPermission(string $channelId, string $targetId, int $type, int $allow, int $deny, string $reason): void
     {
         $this->asBot()->withHeaders(['X-Audit-Log-Reason' => rawurlencode($reason)])

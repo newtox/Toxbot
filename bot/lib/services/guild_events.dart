@@ -44,24 +44,60 @@ final _memberAccess = _permissions([
   Permissions.useVad,
 ]);
 
+final _teamAccess = _permissions([
+  Permissions.viewChannel,
+  Permissions.sendMessages,
+  Permissions.readMessageHistory,
+  Permissions.embedLinks,
+  Permissions.attachFiles,
+  Permissions.addReactions,
+  Permissions.manageMessages,
+  Permissions.mentionEveryone,
+  Permissions.connect,
+  Permissions.speak,
+  Permissions.stream,
+  Permissions.useVad,
+]);
+
+final _readAccess = _permissions([
+  Permissions.viewChannel,
+  Permissions.readMessageHistory,
+  Permissions.addReactions,
+]);
+
+final _writeAccess = _permissions([
+  Permissions.sendMessages,
+  Permissions.sendMessagesInThreads,
+  Permissions.createPublicThreads,
+  Permissions.createPrivateThreads,
+]);
+
 final _hidden = _permissions([Permissions.viewChannel]);
 
 Flags<Permissions> _permissions(List<Flag<Permissions>> flags) =>
     Flags<Permissions>(flags.fold(0, (value, flag) => value | flag.value));
 
-List<PermissionOverwriteBuilder> _overwrites(
-        Guild guild, Snowflake botId, Snowflake roleId, Snowflake creatorId) =>
+List<PermissionOverwriteBuilder> _overwrites(Guild guild, Snowflake botId,
+        Snowflake roleId, Snowflake creatorId, Snowflake? teamId,
+        {bool readOnly = false}) =>
     [
       PermissionOverwriteBuilder(
           id: guild.id, type: PermissionOverwriteType.role, deny: _hidden),
       PermissionOverwriteBuilder(
           id: botId, type: PermissionOverwriteType.member, allow: _botAccess),
       PermissionOverwriteBuilder(
-          id: roleId, type: PermissionOverwriteType.role, allow: _memberAccess),
+        id: roleId,
+        type: PermissionOverwriteType.role,
+        allow: readOnly ? _readAccess : _memberAccess,
+        deny: readOnly ? _writeAccess : null,
+      ),
       PermissionOverwriteBuilder(
           id: creatorId,
           type: PermissionOverwriteType.member,
-          allow: _memberAccess),
+          allow: _teamAccess),
+      if (teamId != null && teamId != roleId)
+        PermissionOverwriteBuilder(
+            id: teamId, type: PermissionOverwriteType.role, allow: _teamAccess),
     ];
 
 Future<void> _quietly(Future<void> Function() action) async {
@@ -192,7 +228,8 @@ Future<Iterable<CommandOptionChoiceBuilder<String>>> eventChoices(
 }
 
 Future<GuildEvent?> createEvent(
-    NyxxGateway client, Guild guild, String name, Member creator) async {
+    NyxxGateway client, Guild guild, String name, Member creator,
+    {Role? team}) async {
   final reason = 'Toxbot event: $name';
   Role? role;
   final channels = <Snowflake>[];
@@ -206,7 +243,8 @@ Future<GuildEvent?> createEvent(
           isHoisted: false),
       auditLogReason: reason,
     );
-    final overwrites = _overwrites(guild, client.user.id, role.id, creator.id);
+    final overwrites =
+        _overwrites(guild, client.user.id, role.id, creator.id, team?.id);
 
     final category = await guild.createChannel(
       GuildChannelBuilder(
@@ -216,6 +254,18 @@ Future<GuildEvent?> createEvent(
       auditLogReason: reason,
     );
     channels.add(category.id);
+
+    final info = await guild.createChannel(
+      GuildTextChannelBuilder(
+        name: await guildLocalized(guild.id, 'event_info_channel'),
+        parentId: category.id,
+        permissionOverwrites: _overwrites(
+            guild, client.user.id, role.id, creator.id, team?.id,
+            readOnly: true),
+      ),
+      auditLogReason: reason,
+    );
+    channels.insert(0, info.id);
 
     final text = await guild.createChannel(
       GuildTextChannelBuilder(
@@ -239,13 +289,15 @@ Future<GuildEvent?> createEvent(
 
     final id = await withConnection((connection) async {
       final result = await connection.query(
-        'INSERT INTO `guild_events` (`guild`, `name`, `role_id`, `category_id`, `text_channel_id`, `voice_channel_id`, `created_by`, `created_at`, `updated_at`) '
-        'VALUES (?, ?, ?, ?, ?, ?, ?, UTC_TIMESTAMP(), UTC_TIMESTAMP());',
+        'INSERT INTO `guild_events` (`guild`, `name`, `role_id`, `team_role_id`, `category_id`, `info_channel_id`, `text_channel_id`, `voice_channel_id`, `created_by`, `created_at`, `updated_at`) '
+        'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, UTC_TIMESTAMP(), UTC_TIMESTAMP());',
         [
           guild.id.toString(),
           name,
           role!.id.toString(),
+          team?.id.toString(),
           category.id.toString(),
+          info.id.toString(),
           text.id.toString(),
           voice.id.toString(),
           creator.id.toString(),
@@ -270,7 +322,12 @@ Future<void> endEvent(NyxxGateway client, GuildEvent event) async {
     client,
     event.guild,
     roleId: event.roleId,
-    channels: [event.voiceChannelId, event.textChannelId, event.categoryId],
+    channels: [
+      event.voiceChannelId,
+      event.textChannelId,
+      event.infoChannelId,
+      event.categoryId,
+    ],
   );
   await withConnection((connection) => connection
       .query('DELETE FROM `guild_events` WHERE `id` = ?;', [event.id]));
@@ -361,9 +418,10 @@ void setupGuildEventHandlers(NyxxGateway client) {
       await withConnection((connection) => connection.query(
             'UPDATE `guild_events` SET `text_channel_id` = IF(`text_channel_id` = ?, NULL, `text_channel_id`), '
             '`voice_channel_id` = IF(`voice_channel_id` = ?, NULL, `voice_channel_id`), '
+            '`info_channel_id` = IF(`info_channel_id` = ?, NULL, `info_channel_id`), '
             '`category_id` = IF(`category_id` = ?, NULL, `category_id`) '
-            'WHERE ? IN (`text_channel_id`, `voice_channel_id`, `category_id`);',
-            List.filled(4, event.channel.id.toString()),
+            'WHERE ? IN (`text_channel_id`, `voice_channel_id`, `info_channel_id`, `category_id`);',
+            List.filled(5, event.channel.id.toString()),
           ));
     } catch (e) {
       print('Forgetting a deleted event channel failed: $e');

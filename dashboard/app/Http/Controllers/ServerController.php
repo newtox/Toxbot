@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Livewire\GuildSettings;
 use App\Models\Guild;
+use App\Models\GuildEvent;
 use App\Models\ModCase;
 use App\Models\StarboardPost;
 use App\Models\StreamSubscription;
@@ -112,6 +113,13 @@ class ServerController extends Controller
                     'description' => __('guild.tags_description'),
                     'active' => $row->exists ? (bool) $row->tags_enabled : true,
                     'extra' => trans_choice('overview.blocked_tags', TagGuildBlock::query()->where('guild', $guild)->count()),
+                ],
+                [
+                    'section' => 'events',
+                    'icon' => 'calendar',
+                    'title' => __('events.title'),
+                    'description' => __('events.description'),
+                    'active' => GuildEvent::query()->forGuild($guild)->exists(),
                 ],
                 [
                     'section' => 'starboard',
