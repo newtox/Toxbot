@@ -1,2 +1,4 @@
 dashboard/lang/** linguist-vendored
 dashboard/tests/** linguist-documentation
+dashboard/_ide_helper.php linguist-generated
+dashboard/_ide_helper_models.php linguist-generated
