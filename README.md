@@ -92,7 +92,7 @@ Actions in the dashboard are handed to the bot and carried out within a few seco
 
 ### Protection
 
-- Verification gives new members a role and a link to the dashboard's verification page. Set up the role in Discord so that it only sees one channel, or let the automatic setup create the role and the channel and hide everything else from it; the dashboard can post a message with a button there. After solving the captcha ([Cloudflare Turnstile](https://www.cloudflare.com/application-services/products/turnstile/)), the role is removed and the autorole is given instead.
+- Verification gives new members a role and sends them a link to the dashboard's verification page by DM. There they log in with Discord and solve a captcha. Set up the role in Discord so that it only sees one channel, or let the automatic setup create the role and the channel and hide everything else from it; the dashboard can post a message with a button there. The captcha is [Cloudflare Turnstile](https://www.cloudflare.com/application-services/products/turnstile/); after solving it, the role is removed and the autorole is given instead.
 - Toxbot needs **Manage Roles** for verification, **Manage Messages** for the link filter, **Kick Members** for anti-raid and the minimum account age, and **Manage Server** to raise the verification level during a raid. Its role has to be above the verification role.
 - Blocked domains and everything on the AutoMod page are Discord AutoMod rules that Toxbot creates when you save the Link filter or AutoMod page; Discord blocks those messages before they appear and reports them in the modlog channel. This needs **Manage Server**. If Discord refuses a rule, the dashboard says so, and Toxbot keeps deleting messages with blocked domains itself.
 - Scam links are checked against [DSP Scam Links](https://github.com/Discord-AntiScam/scam-links) and [discord-phishing-links](https://github.com/nikolaischunk/discord-phishing-links), reloaded every six hours. The dashboard can check a single domain against them. Roles can be excluded from the link filter.
@@ -121,7 +121,9 @@ Actions in the dashboard are handed to the bot and carried out within a few seco
 
 ### Stream notifications
 
-- Twitch and YouTube report new streams and videos to the dashboard right away. Every five minutes a scheduler also checks whether followed streamers are live and catches up on anything missed, every two minutes it posts scheduled YouTube streams when they start, and every hour it renews the subscriptions with Twitch and YouTube.
+- Twitch reports streams through EventSub and YouTube reports new videos and streams through WebSub, both right away and straight to the dashboard. Every message is signed, so the dashboard only accepts the ones that really come from Twitch or YouTube.
+- Every five minutes a scheduler also checks whether followed streamers are live and catches up on anything missed, every two minutes it posts scheduled YouTube streams when they start, and every hour it renews the YouTube subscriptions and repairs Twitch subscriptions that got lost.
+- YouTube channels can be added by link, `@handle` or channel ID, Twitch channels by name or link. Toxbot tells videos and live streams apart, and each followed creator can get live notifications, video notifications or both.
 - What happens to a Twitch notification when the stream ends (keep it, add the duration and VOD link, or delete it) is set for the whole server on the Streams page. With Server Premium, each streamer can have its own choice.
 - The live role uses Discord's presence updates to see who is streaming.
 
