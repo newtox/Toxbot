@@ -12,3 +12,6 @@ storage/framework/sessions/*
 storage/framework/views/*
 database/*.sqlite
 tests
+_ide_helper.php
+_ide_helper_models.php
+.phpstorm.meta.php
