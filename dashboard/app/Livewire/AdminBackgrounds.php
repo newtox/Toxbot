@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Http\Middleware\EnsureBotOwner;
 use App\Models\BotUser;
 use App\Models\ShopItem;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -140,7 +141,7 @@ class AdminBackgrounds extends Component
 
     private function authorizeOwner(): void
     {
-        abort_unless(EnsureBotOwner::check(auth()->id()), 403);
+        abort_unless(EnsureBotOwner::check(Auth::id()), 403);
     }
 
     public function render()

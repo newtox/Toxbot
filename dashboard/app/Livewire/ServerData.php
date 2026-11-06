@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Services\DataDeletion;
 use App\Services\GuildAccess;
 use Illuminate\Http\Client\RequestException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
@@ -66,7 +67,7 @@ class ServerData extends Component
 
     private function guild(): array
     {
-        $guild = app(GuildAccess::class)->find(auth()->user(), $this->guildId);
+        $guild = app(GuildAccess::class)->find(Auth::user(), $this->guildId);
         abort_if($guild === null, 403);
 
         return $guild;

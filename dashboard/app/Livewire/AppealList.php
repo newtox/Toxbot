@@ -9,6 +9,7 @@ use App\Services\Discord;
 use App\Services\GuildAccess;
 use App\Support\BotLocale;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -29,12 +30,12 @@ class AppealList extends Component
     public function mount(string $guildId): void
     {
         $this->guildId = $guildId;
-        $this->manage = app(GuildAccess::class)->find(auth()->user(), $guildId) !== null;
+        $this->manage = app(GuildAccess::class)->find(Auth::user(), $guildId) !== null;
     }
 
     public function toggleEnabled(): void
     {
-        abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
+        abort_if(app(GuildAccess::class)->find(Auth::user(), $this->guildId) === null, 403);
 
         $row = Guild::forDiscordId($this->guildId);
         $row->unban_enabled = ! $row->unban_enabled;
@@ -66,13 +67,13 @@ class AppealList extends Component
 
     private function handle(int $id, string $status): void
     {
-        abort_if(app(GuildAccess::class)->findWith(auth()->user(), $this->guildId, 'appeals') === null, 403);
+        abort_if(app(GuildAccess::class)->findWith(Auth::user(), $this->guildId, 'appeals') === null, 403);
 
         $this->validate(["responses.{$id}" => ['nullable', 'string', 'max:1000']]);
 
         $appeal = UnbanAppeal::query()->forGuild($this->guildId)->where('status', 'pending')->findOrFail($id);
         $response = trim((string) ($this->responses[$id] ?? '')) ?: null;
-        $user = auth()->user();
+        $user = Auth::user();
 
         $appeal->update([
             'status' => $status,

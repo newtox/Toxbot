@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 
 class LanguageController extends Controller
 {
@@ -16,7 +17,7 @@ class LanguageController extends Controller
 
         session()->put('locale', $locale);
 
-        if ($user = auth()->user()) {
+        if ($user = Auth::user()) {
             $settings = $user->botSettings();
             $settings->language = $locales[$locale]['bot'];
             $settings->save();

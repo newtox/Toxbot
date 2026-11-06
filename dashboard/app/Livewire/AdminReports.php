@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Http\Middleware\EnsureBotOwner;
 use App\Models\BlacklistEntry;
 use App\Models\TagReport;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class AdminReports extends Component
@@ -13,7 +14,7 @@ class AdminReports extends Component
 
     public function mount(): void
     {
-        abort_unless(EnsureBotOwner::check(auth()->id()), 403);
+        abort_unless(EnsureBotOwner::check(Auth::id()), 403);
     }
 
     public function dismiss(int $reportId): void
@@ -39,7 +40,7 @@ class AdminReports extends Component
 
     private function authorizeOwner(): void
     {
-        abort_unless(EnsureBotOwner::check(auth()->id()), 403);
+        abort_unless(EnsureBotOwner::check(Auth::id()), 403);
     }
 
     public function render()

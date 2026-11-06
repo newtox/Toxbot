@@ -4,6 +4,7 @@ namespace App\Support;
 
 use App\Http\Middleware\EnsureBotOwner;
 use App\Livewire\GuildSettings;
+use Illuminate\Support\Facades\Auth;
 
 class Navigation
 {
@@ -85,7 +86,7 @@ class Navigation
             self::item(route('servers.index'), 'servers', __('menu.servers'), request()->routeIs('servers.*')),
             self::item(route('profile'), 'profile', __('menu.account'), request()->routeIs(...self::USER_ROUTES)),
             self::item(route('info'), 'info', __('menu.info'), request()->routeIs(...self::INFO_ROUTES)),
-            EnsureBotOwner::check(auth()->id())
+            EnsureBotOwner::check(Auth::id())
                 ? self::item(route('admin'), 'shield', __('menu.admin'), request()->routeIs(...self::ADMIN_ROUTES))
                 : null,
         ]);

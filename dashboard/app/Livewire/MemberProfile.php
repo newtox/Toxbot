@@ -12,6 +12,7 @@ use App\Support\DiscordMember;
 use App\Support\Duration;
 use App\Support\Level;
 use Illuminate\Http\Client\RequestException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
@@ -42,7 +43,7 @@ class MemberProfile extends Component
     {
         $this->guildId = $guildId;
         $this->userId = $userId;
-        $this->moderator = app(GuildAccess::class)->findWith(auth()->user(), $guildId, 'moderate') !== null;
+        $this->moderator = app(GuildAccess::class)->findWith(Auth::user(), $guildId, 'moderate') !== null;
     }
 
     public function submit(): void
@@ -72,7 +73,7 @@ class MemberProfile extends Component
             return;
         }
 
-        $user = auth()->user();
+        $user = Auth::user();
         $action = ModAction::create([
             'guild' => $this->guildId,
             'type' => $this->actionType,
@@ -106,7 +107,7 @@ class MemberProfile extends Component
 
     private function allowedActions(): array
     {
-        return app(GuildAccess::class)->findMember(auth()->user(), $this->guildId)['actions'] ?? [];
+        return app(GuildAccess::class)->findMember(Auth::user(), $this->guildId)['actions'] ?? [];
     }
 
     private function authorizeAction(string $type): void

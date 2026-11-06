@@ -12,7 +12,7 @@ class DeleteAccount extends Component
 
     public function delete(DataDeletion $deletion): void
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if (trim($this->confirmName) !== $user->username) {
             $this->addError('confirmName', __('data.confirm_mismatch'));

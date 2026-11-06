@@ -6,6 +6,7 @@ use App\Models\ServerTag;
 use App\Models\Tag;
 use App\Services\GuildAccess;
 use App\Services\Premium;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
@@ -58,7 +59,7 @@ class ServerTags extends Component
 
                 return;
             }
-            ServerTag::create(['guild' => $this->guildId, 'created_by' => (string) auth()->id()] + $fields);
+            ServerTag::create(['guild' => $this->guildId, 'created_by' => (string) Auth::id()] + $fields);
         }
 
         $this->cancel();
@@ -110,6 +111,6 @@ class ServerTags extends Component
 
     private function authorizeGuild(): void
     {
-        abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
+        abort_if(app(GuildAccess::class)->find(Auth::user(), $this->guildId) === null, 403);
     }
 }

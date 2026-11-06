@@ -6,6 +6,7 @@ use App\Http\Middleware\EnsureBotOwner;
 use App\Models\BlacklistEntry;
 use App\Services\Discord;
 use Illuminate\Http\Client\RequestException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -82,6 +83,6 @@ class AdminBlacklist extends Component
 
     private function authorizeOwner(): void
     {
-        abort_unless(EnsureBotOwner::check(auth()->id()), 403);
+        abort_unless(EnsureBotOwner::check(Auth::id()), 403);
     }
 }

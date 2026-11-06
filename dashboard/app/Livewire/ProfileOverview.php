@@ -6,6 +6,7 @@ use App\Models\BotUser;
 use App\Models\ShopItem;
 use App\Services\Economy;
 use App\Support\Level;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -41,7 +42,7 @@ class ProfileOverview extends Component
             return;
         }
 
-        $userId = (string) auth()->id();
+        $userId = (string) Auth::id();
         $economy = app(Economy::class);
 
         try {
@@ -64,7 +65,7 @@ class ProfileOverview extends Component
 
     private function syncEquipped(): void
     {
-        $bot = BotUser::forDiscordId((string) auth()->id());
+        $bot = BotUser::forDiscordId((string) Auth::id());
         $this->equipped = collect(ShopItem::TYPES)
             ->mapWithKeys(fn (string $type) => [$type => (string) ($bot->equippedId($type) ?? '')])
             ->all();
@@ -72,7 +73,7 @@ class ProfileOverview extends Component
 
     public function render()
     {
-        $userId = (string) auth()->id();
+        $userId = (string) Auth::id();
         $bot = BotUser::forDiscordId($userId);
         app(Economy::class)->syncPurchases($userId);
         $owned = $bot->exists ? $bot->items()->pluck('backgrounds.id')->all() : [];

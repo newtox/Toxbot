@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\PremiumGrant;
 use App\Services\GuildAccess;
 use App\Services\Premium;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use RuntimeException;
 
@@ -14,7 +15,7 @@ class PremiumServers extends Component
     {
         try {
             $guilds = array_values(array_filter(
-                app(GuildAccess::class)->manageableGuilds(auth()->user()),
+                app(GuildAccess::class)->manageableGuilds(Auth::user()),
                 fn (array $guild) => $guild['has_bot'],
             ));
             $failed = false;

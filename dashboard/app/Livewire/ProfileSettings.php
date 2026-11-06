@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\BotUser;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 
@@ -19,7 +20,7 @@ class ProfileSettings extends Component
 
     public function loadFromDatabase(): void
     {
-        $settings = auth()->user()->botSettings();
+        $settings = Auth::user()->botSettings();
 
         $this->language = array_key_exists((string) $settings->language, BotUser::languages())
             ? $settings->language
@@ -43,7 +44,7 @@ class ProfileSettings extends Component
             'color.regex' => __('profile.color_invalid'),
         ]);
 
-        $settings = auth()->user()->botSettings();
+        $settings = Auth::user()->botSettings();
         $languageChanged = $settings->language !== $this->language;
 
         $color = strtolower($this->color);
@@ -68,7 +69,7 @@ class ProfileSettings extends Component
     {
         return view('livewire.profile-settings', [
             'languages' => BotUser::languages(),
-            'user' => auth()->user(),
+            'user' => Auth::user(),
         ]);
     }
 }

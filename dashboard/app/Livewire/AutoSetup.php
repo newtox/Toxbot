@@ -7,6 +7,7 @@ use App\Services\AutoSetup as AutoSetupService;
 use App\Services\Discord;
 use App\Services\GuildAccess;
 use Illuminate\Http\Client\RequestException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
@@ -44,7 +45,7 @@ class AutoSetup extends Component
 
     public function run(AutoSetupService $setup): void
     {
-        abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
+        abort_if(app(GuildAccess::class)->find(Auth::user(), $this->guildId) === null, 403);
 
         $this->validate([
             'selected' => ['required', 'array', 'min:1'],
@@ -60,7 +61,7 @@ class AutoSetup extends Component
             'teamRoles.*' => __('guild.role_invalid'),
         ]);
 
-        $user = auth()->user();
+        $user = Auth::user();
         $this->steps = $setup->run($this->guildId, $this->guildName, $this->selected, $this->teamRoles, $user->display_name);
         $this->dispatch('auto-setup-done');
     }

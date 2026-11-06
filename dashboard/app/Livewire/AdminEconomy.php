@@ -9,6 +9,7 @@ use App\Models\DashboardUser;
 use App\Models\ShopItem;
 use App\Services\Discord;
 use App\Services\Economy;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -81,7 +82,7 @@ class AdminEconomy extends Component
 
     private function authorizeOwner(): void
     {
-        abort_unless(EnsureBotOwner::check(auth()->id()), 403);
+        abort_unless(EnsureBotOwner::check(Auth::id()), 403);
     }
 
     public function render(Discord $discord)

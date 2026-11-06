@@ -6,6 +6,7 @@ use App\Http\Middleware\EnsureBotOwner;
 use App\Models\PremiumGrant;
 use App\Support\Timezone;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class AdminPremium extends Component
@@ -48,7 +49,7 @@ class AdminPremium extends Component
 
         PremiumGrant::updateOrCreate(
             ['type' => 'guild', 'target_id' => $this->target],
-            ['ends_at' => $endsAt, 'note' => trim($this->note) ?: null, 'granted_by' => (string) auth()->id()],
+            ['ends_at' => $endsAt, 'note' => trim($this->note) ?: null, 'granted_by' => (string) Auth::id()],
         );
 
         $this->notice = __('admin.premium_granted');
@@ -75,6 +76,6 @@ class AdminPremium extends Component
 
     private function authorizeOwner(): void
     {
-        abort_unless(EnsureBotOwner::check(auth()->id()), 403);
+        abort_unless(EnsureBotOwner::check(Auth::id()), 403);
     }
 }

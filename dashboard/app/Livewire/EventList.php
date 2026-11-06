@@ -6,6 +6,7 @@ use App\Models\GuildEvent;
 use App\Services\Discord;
 use App\Services\GuildAccess;
 use App\Services\GuildEvents;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
@@ -63,7 +64,7 @@ class EventList extends Component
         }
 
         try {
-            $event = $events->create($this->guildId, $this->name, (string) auth()->id(), $this->teamRole !== '' ? $this->teamRole : null, $this->voiceCount);
+            $event = $events->create($this->guildId, $this->name, (string) Auth::id(), $this->teamRole !== '' ? $this->teamRole : null, $this->voiceCount);
         } catch (Throwable $e) {
             report($e);
             $this->addError('name', __('events.create_failed'));
@@ -111,7 +112,7 @@ class EventList extends Component
 
         $targets = array_values(array_diff(
             $events->inviteTargets($this->guildId, array_keys($this->inviteUsers), $this->inviteRoles),
-            [(string) auth()->id()],
+            [(string) Auth::id()],
         ));
         if ($targets === []) {
             $this->addError('invite', __('events.no_members'));
@@ -124,7 +125,7 @@ class EventList extends Component
             return;
         }
 
-        $user = auth()->user();
+        $user = Auth::user();
         $guildName = (string) (rescue(fn () => $discord->guildInfo($this->guildId)['name'] ?? null, null, report: false) ?? '');
         $sent = $events->invite($event, $targets, $this->inviteMessage, $user->global_name ?? $user->username, $guildName);
         $failed = count($targets) - $sent;
@@ -213,6 +214,6 @@ class EventList extends Component
 
     private function authorizeGuild(): void
     {
-        abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
+        abort_if(app(GuildAccess::class)->find(Auth::user(), $this->guildId) === null, 403);
     }
 }

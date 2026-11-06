@@ -7,6 +7,7 @@ use App\Services\BotProfile as Profiles;
 use App\Services\GuildAccess;
 use App\Services\Premium;
 use Illuminate\Http\Client\RequestException;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -103,7 +104,7 @@ class BotProfile extends Component
 
     private function authorizePremium(): void
     {
-        abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
+        abort_if(app(GuildAccess::class)->find(Auth::user(), $this->guildId) === null, 403);
         abort_unless(app(Premium::class)->isGuildPremium($this->guildId), 403);
     }
 }

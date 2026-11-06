@@ -7,6 +7,7 @@ use App\Services\Discord;
 use App\Services\GuildAccess;
 use App\Support\DiscordMember;
 use Illuminate\Http\Client\RequestException;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -37,7 +38,7 @@ class MemberList extends Component
     public function mount(string $guildId): void
     {
         $this->guildId = $guildId;
-        $this->moderator = app(GuildAccess::class)->findWith(auth()->user(), $guildId, 'moderate') !== null;
+        $this->moderator = app(GuildAccess::class)->findWith(Auth::user(), $guildId, 'moderate') !== null;
     }
 
     public function updatedSearch(): void

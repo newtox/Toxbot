@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\ModCase;
 use App\Services\GuildAccess;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -26,7 +27,7 @@ class ModlogList extends Component
 
     public function mount(string $guildId): void
     {
-        abort_if(app(GuildAccess::class)->findWith(auth()->user(), $guildId, 'moderate') === null, 403);
+        abort_if(app(GuildAccess::class)->findWith(Auth::user(), $guildId, 'moderate') === null, 403);
 
         $this->guildId = $guildId;
     }

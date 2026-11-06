@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Services\Discord;
 use App\Services\GuildAccess;
 use App\Support\Accent;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -26,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
     {
         View::composer(['components.layouts.app', 'home'], function ($view) {
             $view->with([
-                'palette' => Accent::forUser(auth()->user()),
+                'palette' => Accent::forUser(Auth::user()),
                 'botAvatar' => app(Discord::class)->botAvatarUrl(),
             ]);
         });

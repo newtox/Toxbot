@@ -13,6 +13,7 @@ use App\Services\ScamList;
 use App\Services\SetupMessages;
 use App\Support\DomainList;
 use Illuminate\Http\Client\RequestException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Locked;
@@ -306,7 +307,7 @@ class GuildSettings extends Component
     {
         $discord = app(Discord::class);
 
-        abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
+        abort_if(app(GuildAccess::class)->find(Auth::user(), $this->guildId) === null, 403);
 
         $channelIds = collect($this->channelGroups($discord))->flatMap(fn ($g) => array_column($g['channels'], 'id'))->all();
         $categoryIds = array_column($this->categories($discord), 'id');
@@ -570,7 +571,7 @@ class GuildSettings extends Component
 
     public function resetSection(DataDeletion $deletion): void
     {
-        abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
+        abort_if(app(GuildAccess::class)->find(Auth::user(), $this->guildId) === null, 403);
         abort_if(in_array($this->section, self::WITHOUT_RESET, true), 404);
 
         $deletion->resetSection($this->guildId, $this->section);
@@ -581,7 +582,7 @@ class GuildSettings extends Component
 
     public function postVerifyMessage(SetupMessages $messages): void
     {
-        abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
+        abort_if(app(GuildAccess::class)->find(Auth::user(), $this->guildId) === null, 403);
 
         $row = Guild::forDiscordId($this->guildId);
         if (! $row->verify_enabled || ! $row->verify_channel) {
@@ -626,7 +627,7 @@ class GuildSettings extends Component
 
     public function postTicketPanel(SetupMessages $messages): void
     {
-        abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
+        abort_if(app(GuildAccess::class)->find(Auth::user(), $this->guildId) === null, 403);
 
         $this->save();
 
@@ -658,7 +659,7 @@ class GuildSettings extends Component
 
     public function endRaid(): void
     {
-        abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
+        abort_if(app(GuildAccess::class)->find(Auth::user(), $this->guildId) === null, 403);
 
         $row = Guild::forDiscordId($this->guildId);
         if ($row->raidActive()) {
@@ -670,7 +671,7 @@ class GuildSettings extends Component
 
     public function unblockTag(int $tagId): void
     {
-        abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
+        abort_if(app(GuildAccess::class)->find(Auth::user(), $this->guildId) === null, 403);
 
         TagGuildBlock::query()->where('guild', $this->guildId)->where('tag_id', $tagId)->delete();
     }
@@ -691,7 +692,7 @@ class GuildSettings extends Component
 
     public function adoptRule(string $key, AutoMod $autoMod): void
     {
-        abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
+        abort_if(app(GuildAccess::class)->find(Auth::user(), $this->guildId) === null, 403);
 
         $row = Guild::forDiscordId($this->guildId);
         try {
@@ -728,7 +729,7 @@ class GuildSettings extends Component
             $loadError = __('guild.load_error', ['status' => $e->response->status()]);
         }
 
-        $user = auth()->user();
+        $user = Auth::user();
         $botMember = in_array($this->section, ['welcome', 'goodbye'], true) && $bot !== null
             ? rescue(fn () => $discord->botMember($this->guildId), [], report: false)
             : [];

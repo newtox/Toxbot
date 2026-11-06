@@ -11,6 +11,7 @@ use App\Services\Streams\PlatformException;
 use App\Services\Streams\SourceManager;
 use App\Services\Streams\Twitch;
 use App\Services\Streams\YouTube;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
@@ -173,7 +174,7 @@ class StreamList extends Component
 
     private function authorizeGuild(): void
     {
-        abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
+        abort_if(app(GuildAccess::class)->find(Auth::user(), $this->guildId) === null, 403);
     }
 
     public function render(Premium $premium, SourceManager $manager, Twitch $twitch, YouTube $youtube, Discord $discord)

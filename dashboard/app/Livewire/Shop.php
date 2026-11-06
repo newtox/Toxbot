@@ -6,6 +6,7 @@ use App\Models\BotUser;
 use App\Models\ShopItem;
 use App\Services\Economy;
 use App\Services\Premium;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -69,7 +70,7 @@ class Shop extends Component
 
     private function userId(): string
     {
-        return (string) auth()->id();
+        return (string) Auth::id();
     }
 
     public function render()

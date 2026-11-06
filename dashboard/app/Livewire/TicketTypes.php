@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\TicketType;
 use App\Services\GuildAccess;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
@@ -114,6 +115,6 @@ class TicketTypes extends Component
 
     private function authorizeGuild(): void
     {
-        abort_if(app(GuildAccess::class)->find(auth()->user(), $this->guildId) === null, 403);
+        abort_if(app(GuildAccess::class)->find(Auth::user(), $this->guildId) === null, 403);
     }
 }

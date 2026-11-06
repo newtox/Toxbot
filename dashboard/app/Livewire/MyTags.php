@@ -6,6 +6,7 @@ use App\Models\BlacklistEntry;
 use App\Models\BotUser;
 use App\Models\Tag;
 use App\Services\Economy;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Locked;
@@ -62,7 +63,7 @@ class MyTags extends Component
 
     public function save(Economy $economy): void
     {
-        $userId = (string) auth()->id();
+        $userId = (string) Auth::id();
         $creating = $this->editingId === null;
 
         if ($creating) {
@@ -129,7 +130,7 @@ class MyTags extends Component
 
     private function ownTag(int $id): Tag
     {
-        return Tag::query()->where('owner', (string) auth()->id())->findOrFail($id);
+        return Tag::query()->where('owner', (string) Auth::id())->findOrFail($id);
     }
 
     private function resetForm(): void
@@ -143,7 +144,7 @@ class MyTags extends Component
         $this->slotMessage = null;
 
         try {
-            $economy->buyTagSlots((string) auth()->id());
+            $economy->buyTagSlots((string) Auth::id());
             $this->slotMessage = __('tags.slots_bought', ['count' => config('toxbot.tags.slot_size')]);
             $this->slotSuccess = true;
         } catch (RuntimeException $e) {
@@ -154,7 +155,7 @@ class MyTags extends Component
 
     public function render(Economy $economy)
     {
-        $userId = (string) auth()->id();
+        $userId = (string) Auth::id();
         $limit = $economy->tagLimit($userId);
 
         return view('livewire.my-tags', [
