@@ -17,6 +17,7 @@ return [
     'created' => ':name 已就绪。',
     'team' => '团队：:role',
     'team_role' => '团队身份组（可选）',
+    'voice_count' => '语音频道',
     'team_none' => '无，仅你自己',
     'invite' => '邀请',
     'end' => '结束',

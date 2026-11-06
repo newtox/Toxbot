@@ -18,6 +18,8 @@ const maxInvites = 50;
 
 const maxEventName = 50;
 
+const maxVoiceChannels = 5;
+
 final _mentionPattern = RegExp(r'<@!?(\d{15,22})>');
 
 final _roleMentionPattern = RegExp(r'<@&(\d{15,22})>');
@@ -229,7 +231,7 @@ Future<Iterable<CommandOptionChoiceBuilder<String>>> eventChoices(
 
 Future<GuildEvent?> createEvent(
     NyxxGateway client, Guild guild, String name, Member creator,
-    {Role? team}) async {
+    {Role? team, int voiceCount = 1}) async {
   final reason = 'Toxbot event: $name';
   Role? role;
   final channels = <Snowflake>[];
@@ -277,20 +279,26 @@ Future<GuildEvent?> createEvent(
     );
     channels.insert(0, text.id);
 
-    final voice = await guild.createChannel(
-      GuildVoiceChannelBuilder(
-        name: await guildLocalized(guild.id, 'event_voice_channel'),
-        parentId: category.id,
-        permissionOverwrites: overwrites,
-      ),
-      auditLogReason: reason,
-    );
-    channels.insert(0, voice.id);
+    final voiceName = await guildLocalized(guild.id, 'event_voice_channel');
+    final count = voiceCount.clamp(1, maxVoiceChannels);
+    final voices = <Snowflake>[];
+    for (var i = 1; i <= count; i++) {
+      final voice = await guild.createChannel(
+        GuildVoiceChannelBuilder(
+          name: count == 1 ? voiceName : '$voiceName $i',
+          parentId: category.id,
+          permissionOverwrites: overwrites,
+        ),
+        auditLogReason: reason,
+      );
+      voices.add(voice.id);
+      channels.insert(0, voice.id);
+    }
 
     final id = await withConnection((connection) async {
       final result = await connection.query(
-        'INSERT INTO `guild_events` (`guild`, `name`, `role_id`, `team_role_id`, `category_id`, `info_channel_id`, `text_channel_id`, `voice_channel_id`, `created_by`, `created_at`, `updated_at`) '
-        'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, UTC_TIMESTAMP(), UTC_TIMESTAMP());',
+        'INSERT INTO `guild_events` (`guild`, `name`, `role_id`, `team_role_id`, `category_id`, `info_channel_id`, `text_channel_id`, `voice_channel_id`, `extra_voice_channel_ids`, `created_by`, `created_at`, `updated_at`) '
+        'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, UTC_TIMESTAMP(), UTC_TIMESTAMP());',
         [
           guild.id.toString(),
           name,
@@ -299,7 +307,8 @@ Future<GuildEvent?> createEvent(
           category.id.toString(),
           info.id.toString(),
           text.id.toString(),
-          voice.id.toString(),
+          voices.first.toString(),
+          voices.length > 1 ? voices.skip(1).join(',') : null,
           creator.id.toString(),
         ],
       );
@@ -323,7 +332,7 @@ Future<void> endEvent(NyxxGateway client, GuildEvent event) async {
     event.guild,
     roleId: event.roleId,
     channels: [
-      event.voiceChannelId,
+      ...event.voiceChannelIds,
       event.textChannelId,
       event.infoChannelId,
       event.categoryId,

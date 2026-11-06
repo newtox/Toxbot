@@ -14,6 +14,8 @@ class GuildEvents
 
     public const MAX_NAME = 50;
 
+    public const MAX_VOICE = 5;
+
     public const JOIN_PREFIX = 'event_join:';
 
     public const LEAVE_PREFIX = 'event_leave:';
@@ -61,7 +63,7 @@ class GuildEvents
 
     public function __construct(private readonly Discord $discord) {}
 
-    public function create(string $guildId, string $name, string $creatorId, ?string $teamRoleId): GuildEvent
+    public function create(string $guildId, string $name, string $creatorId, ?string $teamRoleId, int $voiceCount = 1): GuildEvent
     {
         $reason = 'Toxbot event: '.$name;
         $botId = (string) $this->discord->botUser()['id'];
@@ -77,19 +79,25 @@ class GuildEvents
             $category = $this->discord->createChannel($guildId, ['name' => $name, 'type' => 4, 'permission_overwrites' => $overwrites], $reason);
             $created['channels'][] = $category['id'];
 
-            $channel = fn (string $key, int $type, array $overwrites) => $this->discord->createChannel($guildId, [
-                'name' => $this->text($guildId, $key),
+            $channel = fn (string $channelName, int $type, array $overwrites) => $this->discord->createChannel($guildId, [
+                'name' => $channelName,
                 'type' => $type,
                 'parent_id' => $category['id'],
                 'permission_overwrites' => $overwrites,
             ], $reason);
 
-            $info = $channel('channel_info', 0, $this->overwrites($guildId, $botId, $role['id'], $creatorId, $teamRoleId, true));
+            $info = $channel($this->text($guildId, 'channel_info'), 0, $this->overwrites($guildId, $botId, $role['id'], $creatorId, $teamRoleId, true));
             array_unshift($created['channels'], $info['id']);
-            $text = $channel('channel_chat', 0, $overwrites);
+            $text = $channel($this->text($guildId, 'channel_chat'), 0, $overwrites);
             array_unshift($created['channels'], $text['id']);
-            $voice = $channel('channel_voice', 2, $overwrites);
-            array_unshift($created['channels'], $voice['id']);
+            $voiceName = $this->text($guildId, 'channel_voice');
+            $count = max(1, min(self::MAX_VOICE, $voiceCount));
+            $voices = [];
+            for ($i = 1; $i <= $count; $i++) {
+                $voice = $channel($count === 1 ? $voiceName : "{$voiceName} {$i}", 2, $overwrites);
+                $voices[] = $voice['id'];
+                array_unshift($created['channels'], $voice['id']);
+            }
 
             $event = GuildEvent::query()->create([
                 'guild' => $guildId,
@@ -99,7 +107,8 @@ class GuildEvents
                 'category_id' => $category['id'],
                 'info_channel_id' => $info['id'],
                 'text_channel_id' => $text['id'],
-                'voice_channel_id' => $voice['id'],
+                'voice_channel_id' => $voices[0],
+                'extra_voice_channel_ids' => count($voices) > 1 ? implode(',', array_slice($voices, 1)) : null,
                 'created_by' => $creatorId,
             ]);
         } catch (Throwable $e) {
@@ -118,7 +127,7 @@ class GuildEvents
         $this->deleteParts(
             $event->guild,
             $event->role_id,
-            [$event->voice_channel_id, $event->text_channel_id, $event->info_channel_id, $event->category_id],
+            [...$event->voiceChannelIds(), $event->text_channel_id, $event->info_channel_id, $event->category_id],
             'Toxbot event ended',
         );
         $event->delete();

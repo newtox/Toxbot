@@ -17,6 +17,7 @@ return [
     'created' => ':name 준비 완료.',
     'team' => '팀: :role',
     'team_role' => '팀 역할 (선택)',
+    'voice_count' => '음성 채널',
     'team_none' => '없음, 당신만',
     'invite' => '초대',
     'end' => '끝내기',

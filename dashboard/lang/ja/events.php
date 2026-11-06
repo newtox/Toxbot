@@ -17,6 +17,7 @@ return [
     'created' => ':name を作成しました。',
     'team' => 'チーム: :role',
     'team_role' => 'チームのロール（任意）',
+    'voice_count' => 'ボイスチャンネル',
     'team_none' => 'なし（あなたのみ）',
     'invite' => '招待',
     'end' => '終了',

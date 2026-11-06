@@ -22,9 +22,11 @@
                                         <span class="dc-mention"># {{ $channels[$event->{$column}] }}</span>
                                     @endif
                                 @endforeach
-                                @if ($event->voice_channel_id && isset($channels[$event->voice_channel_id]))
-                                    <span class="dc-mention inline-flex items-center gap-1"><x-icon name="volume" class="size-3" /> {{ $channels[$event->voice_channel_id] }}</span>
-                                @endif
+                                @foreach ($event->voiceChannelIds() as $voiceId)
+                                    @if (isset($channels[$voiceId]))
+                                        <span class="dc-mention inline-flex items-center gap-1"><x-icon name="volume" class="size-3" /> {{ $channels[$voiceId] }}</span>
+                                    @endif
+                                @endforeach
                             </div>
                             @if ($event->team_role_id)
                                 <div class="mt-1.5 text-xs text-dc-muted">{{ __('events.team', ['role' => $roleNames[$event->team_role_id] ?? '?']) }}</div>
@@ -123,7 +125,7 @@
 
     <form novalidate wire:submit="create" class="space-y-4 rounded-lg bg-dc-900 p-4">
         <h3 class="text-sm font-semibold text-dc-header">{{ __('events.new') }}</h3>
-        <div class="grid gap-4 sm:grid-cols-2">
+        <div class="grid gap-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_8rem]">
             <div>
                 <label class="label" for="event-name">{{ __('events.name') }}</label>
                 <input id="event-name" type="text" wire:model="name" maxlength="{{ $maxName }}" autocomplete="off" placeholder="{{ __('events.name_placeholder') }}" class="input">
@@ -138,6 +140,15 @@
                     @endforeach
                 </select>
                 @error('teamRole') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+            </div>
+            <div>
+                <label class="label" for="event-voice">{{ __('events.voice_count') }}</label>
+                <select id="event-voice" wire:model="voiceCount" class="input">
+                    @foreach (range(1, $maxVoice) as $count)
+                        <option value="{{ $count }}">{{ $count }}</option>
+                    @endforeach
+                </select>
+                @error('voiceCount') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
             </div>
         </div>
         <p class="text-xs text-dc-faint">{{ __('events.new_hint') }}</p>

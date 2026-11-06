@@ -78,6 +78,20 @@ final _setup = ChatCommand(
       Locale.ko: '정보 채널에 글을 쓸 수 있는 팀 역할.',
     })
     Role? team,
+    @Description('How many voice channels the event gets, 1 to 5.', {
+      Locale.da: 'Hvor mange stemmekanaler eventet får, 1 til 5.',
+      Locale.de: 'Wie viele Sprachkanäle das Event bekommt, 1 bis 5.',
+      Locale.enUs: 'How many voice channels the event gets, 1 to 5.',
+      Locale.esEs: 'Cuántos canales de voz tiene el evento, de 1 a 5.',
+      Locale.fr: 'Combien de salons vocaux l’événement reçoit, de 1 à 5.',
+      Locale.ru: 'Сколько голосовых каналов получит событие, от 1 до 5.',
+      Locale.hi: 'इवेंट को कितने वॉइस चैनल मिलें, 1 से 5।',
+      Locale.zhCn: '活动的语音频道数量，1 到 5 个。',
+      Locale.ja: 'イベントのボイスチャンネル数（1〜5）。',
+      Locale.ko: '이벤트의 음성 채널 수, 1~5개.',
+    })
+    @UseConverter(IntConverter(min: 1, max: maxVoiceChannels))
+    int? voice,
   ]) async {
     name = name.trim();
     if (name.isEmpty || name.length > maxEventName) {
@@ -95,7 +109,7 @@ final _setup = ChatCommand(
 
     final event = await createEvent(
         context.client, guild, name, context.member!,
-        team: team);
+        team: team, voiceCount: voice ?? 1);
     if (event == null) {
       await replyError(context, 'event_failed');
       return;
@@ -106,7 +120,7 @@ final _setup = ChatCommand(
           '&name': event.name,
           '&role': '<@&${event.roleId}>',
           '&channel': '<#${event.textChannelId}>',
-          '&voice': '<#${event.voiceChannelId}>',
+          '&voice': event.voiceChannelIds.map((id) => '<#$id>').join(', '),
           '&info': '<#${event.infoChannelId}>',
         },
         level: ResponseLevel.hint);

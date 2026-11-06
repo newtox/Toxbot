@@ -124,6 +124,25 @@ class EventsTest extends TestCase
         $this->assertCount(1, $this->requests('PUT', '/members/'.self::USER.'/roles/'.$event->role_id));
     }
 
+    public function test_events_can_get_several_voice_channels(): void
+    {
+        Livewire::test(EventList::class, ['guildId' => self::GUILD])
+            ->set('name', 'Turnier')
+            ->set('voiceCount', 3)
+            ->call('create')
+            ->assertHasNoErrors();
+
+        $event = GuildEvent::query()->sole();
+        $voices = array_values(array_filter(array_column($this->requests('POST', '/guilds/'.self::GUILD.'/channels'), 'data'), fn ($c) => $c['type'] === 2));
+        $this->assertSame(['Voice 1', 'Voice 2', 'Voice 3'], array_column($voices, 'name'));
+        $this->assertCount(3, $event->voiceChannelIds());
+
+        Livewire::test(EventList::class, ['guildId' => self::GUILD])
+            ->set('name', 'Zu viel')->set('voiceCount', 6)->call('create')->assertHasErrors('voiceCount')
+            ->call('end', $event->id);
+        $this->assertCount(6, $this->requests('DELETE', '/channels/'));
+    }
+
     public function test_event_names_teams_and_limits_are_checked(): void
     {
         Livewire::test(EventList::class, ['guildId' => self::GUILD])

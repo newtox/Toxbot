@@ -20,6 +20,8 @@ class EventList extends Component
 
     public string $teamRole = '';
 
+    public int $voiceCount = 1;
+
     #[Locked]
     public ?int $invitingId = null;
 
@@ -46,6 +48,7 @@ class EventList extends Component
 
         $this->validate([
             'name' => ['required', 'string', 'max:'.GuildEvents::MAX_NAME],
+            'voiceCount' => ['required', 'integer', 'between:1,'.GuildEvents::MAX_VOICE],
             'teamRole' => ['nullable', Rule::in(array_column($this->pickableRoles($this->roles($discord), $this->eventRoleIds()), 'id'))],
         ], [
             'name.required' => __('events.name_required'),
@@ -60,7 +63,7 @@ class EventList extends Component
         }
 
         try {
-            $event = $events->create($this->guildId, $this->name, (string) auth()->id(), $this->teamRole !== '' ? $this->teamRole : null);
+            $event = $events->create($this->guildId, $this->name, (string) auth()->id(), $this->teamRole !== '' ? $this->teamRole : null, $this->voiceCount);
         } catch (Throwable $e) {
             report($e);
             $this->addError('name', __('events.create_failed'));
@@ -68,7 +71,7 @@ class EventList extends Component
             return;
         }
 
-        $this->reset('name', 'teamRole');
+        $this->reset('name', 'teamRole', 'voiceCount');
         $this->notice = __('events.created', ['name' => $event->name]);
         $this->dispatch('saved');
     }
@@ -179,6 +182,7 @@ class EventList extends Component
             'maxEvents' => GuildEvents::MAX_EVENTS,
             'maxInvites' => GuildEvents::MAX_INVITES,
             'maxName' => GuildEvents::MAX_NAME,
+            'maxVoice' => GuildEvents::MAX_VOICE,
         ]);
     }
 
