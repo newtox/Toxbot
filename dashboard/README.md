@@ -56,4 +56,4 @@ The Discord API is faked with `Http::fake()`, so the tests need no token and no 
 
 ## Production
 
-The `Dockerfile` builds a production image (PHP 8.4 with Nginx, GD and Imagick, assets compiled, migrations run on start). It is built by GitHub Actions and deployed together with the bot; see [Deployment](../README.md#deployment) in the main README.
+The `Dockerfile` builds a production image (PHP 8.4 with Nginx, GD and Imagick, assets compiled, migrations run on start). It is built by GitHub Actions and deployed together with the bot; see [How it works](../README.md#how-it-works) in the main README.
