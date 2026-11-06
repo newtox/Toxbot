@@ -130,6 +130,7 @@ class DataDeletion
             Verification::query()->where('guild', $guildId)->delete();
             MemberLevel::query()->where('guild', $guildId)->delete();
             StarboardPost::query()->where('guild', $guildId)->delete();
+            DB::table('guild_events')->where('guild', $guildId)->delete();
         });
 
         $this->discord->leaveGuild($guildId);
@@ -162,6 +163,7 @@ class DataDeletion
             ]);
             Ticket::query()->where('user_id', $userId)->update(['user_id' => '0', 'user_name' => self::DELETED_USER]);
             Ticket::query()->where('closed_by', $userId)->update(['closed_by' => '0', 'closed_by_name' => self::DELETED_USER]);
+            DB::table('guild_events')->where('created_by', $userId)->update(['created_by' => '0']);
             DB::table('sessions')->where('user_id', $userId)->delete();
             $user->delete();
         });

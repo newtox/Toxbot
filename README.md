@@ -25,7 +25,8 @@ Both share the same MySQL database. Whatever you change in the dashboard (welcom
 - **Roleplay, image and fun commands** like `/hug`, `/pat` or `/8ball`
 - **Generators**: `/generate password`, `/generate hex` (like `openssl rand -hex`) and `/generate color` with a preview
 - **Server setup** in Discord (`/announcements`, `/autorole`) and in the dashboard: welcome and goodbye messages, autorole, level-up messages in a channel and as a DM, and a server language for messages to the whole server; every setting has its own page in the dashboard
-- **Automatic setup** in the dashboard: creates the channels, roles and permissions for tickets, moderation, protection and verification in one go
+- **Automatic setup** in the dashboard or with `/setup` in Discord: creates the channels, roles and permissions for tickets, moderation, protection and verification in one go
+- **Events**: `/event setup` creates an event with its own role, category, text and voice channel, `/event invite` sends members a DM where they join or decline with a button and get the role, and `/event end` deletes everything again
 - **Data control**: server admins can reset all settings, the server owner can delete all data and remove Toxbot, and users can delete their own data
 - **Levels**: XP for messages and commands, with a global level and a separate level per server, plus `/leaderboard`
 - **Credits and shop**: `/daily`, `/credits` for the balance, streak and recent activity, credits for level-ups and Top.gg votes, backgrounds, avatar frames and progress bars for the profile card to buy with `/shop` and switch with `/background`, `/frame` and `/bar` or on the dashboard profile, some of them animated; `/pay` sends credits to another member; `/slots` is a slot machine for credits

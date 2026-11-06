@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:toxbot/services/events.dart';
+import 'package:toxbot/services/guild_events.dart';
 import 'package:toxbot/services/levels.dart';
 import 'package:toxbot/services/live_role.dart';
 import 'package:toxbot/services/moderation.dart';
@@ -49,6 +50,7 @@ void main() async {
   setupModerationHandlers(client);
   setupProtectionHandlers(client);
   setupTicketHandlers(client);
+  setupGuildEventHandlers(client);
   setupStarboardHandlers(client);
   setupStatusHeartbeat(client);
 }

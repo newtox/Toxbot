@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BotSetupController;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\ShopItemImageController;
 use App\Http\Controllers\TopggWebhookController;
@@ -30,3 +31,7 @@ Route::get('/webhooks/youtube', [YouTubeWebhookController::class, 'verify'])
 
 Route::post('/webhooks/youtube', [YouTubeWebhookController::class, 'notify'])
     ->middleware('throttle:600,1');
+
+Route::post('/internal/setup', BotSetupController::class)
+    ->middleware('throttle:30,1')
+    ->name('internal.setup');

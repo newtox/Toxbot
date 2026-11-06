@@ -6,7 +6,9 @@ import 'package:toxbot/commands/configuration/announcements.dart';
 import 'package:toxbot/commands/configuration/autorole.dart';
 import 'package:toxbot/commands/configuration/color.dart';
 import 'package:toxbot/commands/configuration/language.dart';
+import 'package:toxbot/commands/configuration/setup.dart';
 import 'package:toxbot/commands/developer/system.dart';
+import 'package:toxbot/commands/events/event.dart';
 import 'package:toxbot/commands/fun/eightball.dart';
 import 'package:toxbot/commands/fun/someone.dart';
 import 'package:toxbot/commands/general/generate.dart';
@@ -127,6 +129,7 @@ CommandsPlugin setupCommandHandler(CommandsPlugin commands) {
   commands.addCommand(autorole);
   commands.addCommand(color);
   commands.addCommand(language);
+  commands.addCommand(setup);
 
   commands.addCommand(system);
 
@@ -155,6 +158,8 @@ CommandsPlugin setupCommandHandler(CommandsPlugin commands) {
   commands.addCommand(slots);
 
   commands.addCommand(mod);
+
+  commands.addCommand(event);
 
   commands.addCommand(tag);
   commands.addCommand(ticket);
