@@ -13,6 +13,28 @@ const _scopeConverter = SimpleConverter.fixed(
   stringify: stringifyOption,
 );
 
+Future<String> _leaderboardName(
+    ChatContext context, String userId, bool global) async {
+  final id = Snowflake.parse(userId);
+  String? name;
+  try {
+    if (!global) {
+      final member = await context.guild!.members.get(id);
+      name = member.nick ?? member.user?.globalName ?? member.user?.username;
+    }
+  } catch (_) {}
+  try {
+    if (name == null) {
+      final user = await context.client.users.get(id);
+      name = user.globalName ?? user.username;
+    }
+  } catch (_) {}
+  if (name == null) return '<@$userId>';
+  final escaped = name.replaceAllMapped(
+      RegExp(r'[\\*_~`|>\[\]()]'), (match) => '\\${match[0]}');
+  return '**$escaped**';
+}
+
 final profile = ChatCommand(
   'profile',
   'Show your profile card or someone else\'s.',
@@ -729,11 +751,14 @@ final leaderboard = ChatCommand(
       );
 
       final medals = ['🥇', '🥈', '🥉'];
+      final names = await Future.wait(
+          rows.map((row) => _leaderboardName(context, row.$1, global)));
       final lines = <String>[];
       for (final (place, (userId, xp)) in rows.indexed) {
         final prefix = place < 3 ? medals[place] : '`#${place + 1}`';
+        final you = userId == user.id.toString() ? ' ←' : '';
         lines.add(
-          '$prefix <@$userId> · Level ${levelFromXp(xp).level} · ${formatNumber(xp)} XP',
+          '$prefix ${names[place]} · Level ${levelFromXp(xp).level} · ${formatNumber(xp)}\u00a0XP$you',
         );
       }
 

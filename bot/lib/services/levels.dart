@@ -97,13 +97,13 @@ String formatNumber(int value) {
   final digits = value.abs().toString();
   final buffer = StringBuffer(value < 0 ? '-' : '');
   for (var i = 0; i < digits.length; i++) {
-    if (i > 0 && (digits.length - i) % 3 == 0) buffer.write(' ');
+    if (i > 0 && (digits.length - i) % 3 == 0) buffer.write('\u00a0');
     buffer.write(digits[i]);
   }
   return buffer.toString();
 }
 
-String formatCredits(int value) => '${formatNumber(value)} $currency';
+String formatCredits(int value) => '${formatNumber(value)}\u00a0$currency';
 
 Future<void> giveXp(
   NyxxGateway client, {
