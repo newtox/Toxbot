@@ -148,18 +148,20 @@ final _invite = ChatCommand(
     @Description('The event.', _eventDescription)
     String event,
     @Description(
-        'Mention the members or roles to invite, e.g. @Anna @Ben @Team.', {
-      Locale.da: 'Nævn medlemmerne eller rollerne, f.eks. @Anna @Ben @Team.',
-      Locale.de: 'Erwähne die Mitglieder oder Rollen, z. B. @Anna @Ben @Team.',
+        'Members or roles to invite, e.g. @Anna @Ben @Team or Anna, Ben.', {
+      Locale.da:
+          'Medlemmer eller roller, f.eks. @Anna @Ben @Team eller Anna, Ben.',
+      Locale.de:
+          'Mitglieder oder Rollen, z. B. @Anna @Ben @Team oder Anna, Ben.',
       Locale.enUs:
-          'Mention the members or roles to invite, e.g. @Anna @Ben @Team.',
-      Locale.esEs: 'Menciona a los miembros o roles, p. ej. @Anna @Ben @Team.',
-      Locale.fr: 'Mentionne les membres ou rôles, p. ex. @Anna @Ben @Team.',
-      Locale.ru: 'Упомяни участников или роли, например @Anna @Ben @Team.',
-      Locale.hi: 'सदस्यों या रोल का ज़िक्र करें, जैसे @Anna @Ben @Team।',
-      Locale.zhCn: '提及要邀请的成员或身份组，例如 @Anna @Ben @Team。',
-      Locale.ja: '招待するメンバーやロールをメンションします（例：@Anna @Ben @Team）。',
-      Locale.ko: '초대할 멤버나 역할을 멘션하세요. 예: @Anna @Ben @Team',
+          'Members or roles to invite, e.g. @Anna @Ben @Team or Anna, Ben.',
+      Locale.esEs: 'Miembros o roles, p. ej. @Anna @Ben @Team o Anna, Ben.',
+      Locale.fr: 'Membres ou rôles, p. ex. @Anna @Ben @Team ou Anna, Ben.',
+      Locale.ru: 'Участники или роли, например @Anna @Ben @Team или Anna, Ben.',
+      Locale.hi: 'सदस्य या रोल, जैसे @Anna @Ben @Team या Anna, Ben।',
+      Locale.zhCn: '要邀请的成员或身份组，例如 @Anna @Ben @Team 或 Anna, Ben。',
+      Locale.ja: '招待するメンバーやロール（例：@Anna @Ben @Team や Anna, Ben）。',
+      Locale.ko: '초대할 멤버나 역할. 예: @Anna @Ben @Team 또는 Anna, Ben',
     })
     String members, [
     @Description('Your message to the invited members.', {
@@ -180,10 +182,23 @@ final _invite = ChatCommand(
     if (found == null) return;
 
     final guild = await context.client.guilds.get(context.guild!.id);
-    final targets = await inviteTargets(guild, members);
-    targets.remove(context.user.id);
+    final resolved = await inviteTargets(guild, members);
+    final onlySelf = resolved.ids.length == 1 &&
+        resolved.ids.contains(context.user.id) &&
+        resolved.unknown.isEmpty;
+    final targets = resolved.ids..remove(context.user.id);
+    if (onlySelf) {
+      await replyError(context, 'event_self_only');
+      return;
+    }
+    final unknown = resolved.unknown.map((name) => '`$name`').join(', ');
     if (targets.isEmpty) {
-      await replyError(context, 'event_no_members');
+      if (resolved.unknown.isEmpty) {
+        await replyError(context, 'event_no_members');
+      } else {
+        await replyError(context, 'event_unknown_names',
+            replace: {'&names': unknown});
+      }
       return;
     }
     if (targets.length > maxInvites) {
@@ -203,6 +218,11 @@ final _invite = ChatCommand(
 
     var text = await localized(context.user, 'event_invited',
         {'&count': '$sent', '&name': found.name});
+    if (resolved.unknown.isNotEmpty) {
+      text += '\n${await localized(context.user, 'event_unknown_names', {
+            '&names': unknown
+          })}';
+    }
     if (failed > 0) {
       text += '\n${await localized(context.user, 'event_invite_failed', {
             '&count': '$failed'

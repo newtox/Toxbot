@@ -24,6 +24,8 @@ final _mentionPattern = RegExp(r'<@!?(\d{15,22})>');
 
 final _roleMentionPattern = RegExp(r'<@&(\d{15,22})>');
 
+final _anyMentionPattern = RegExp(r'<(?:@[!&]?|#)\d{15,22}>');
+
 final _botAccess = _permissions([
   Permissions.viewChannel,
   Permissions.sendMessages,
@@ -101,6 +103,9 @@ List<PermissionOverwriteBuilder> _overwrites(Guild guild, Snowflake botId,
         PermissionOverwriteBuilder(
             id: teamId, type: PermissionOverwriteType.role, allow: _teamAccess),
     ];
+
+String _normalize(String name) =>
+    name.trim().toLowerCase().replaceAll(RegExp(r'\s+'), ' ');
 
 Future<void> _quietly(Future<void> Function() action) async {
   try {
@@ -342,7 +347,8 @@ Future<void> endEvent(NyxxGateway client, GuildEvent event) async {
       .query('DELETE FROM `guild_events` WHERE `id` = ?;', [event.id]));
 }
 
-Future<Set<Snowflake>> inviteTargets(Guild guild, String text) async {
+Future<({Set<Snowflake> ids, List<String> unknown})> inviteTargets(
+    Guild guild, String text) async {
   final ids = {
     for (final match in _mentionPattern.allMatches(text))
       Snowflake.parse(match.group(1)!),
@@ -351,13 +357,75 @@ Future<Set<Snowflake>> inviteTargets(Guild guild, String text) async {
     for (final match in _roleMentionPattern.allMatches(text))
       Snowflake.parse(match.group(1)!),
   };
-  if (roles.isNotEmpty) {
-    final members = await guild.members.list(limit: 1000);
+  final chunks = text
+      .replaceAll(_anyMentionPattern, ',')
+      .split(RegExp(r'[@,]'))
+      .map((chunk) => chunk.trim())
+      .where(
+          (chunk) => chunk.isNotEmpty && chunk != 'everyone' && chunk != 'here')
+      .toList();
+  final unknown = <String>[];
+
+  if (roles.isEmpty && chunks.isEmpty) return (ids: ids, unknown: unknown);
+
+  final members = await guild.members.list(limit: 1000);
+  final roleNames = <String, Snowflake>{};
+  final memberNames = <String, Set<Snowflake>>{};
+
+  if (chunks.isNotEmpty) {
+    for (final role in await guild.roles.list()) {
+      if (role.id != guild.id) roleNames[_normalize(role.name)] = role.id;
+    }
     for (final member in members) {
-      if (member.roleIds.any(roles.contains)) ids.add(member.id);
+      final user = member.user;
+      if (user == null || user.isBot) continue;
+      for (final name in {member.nick, user.globalName, user.username}) {
+        if (name != null && name.trim().isNotEmpty) {
+          memberNames.putIfAbsent(_normalize(name), () => {}).add(member.id);
+        }
+      }
     }
   }
-  return ids;
+
+  for (final chunk in chunks) {
+    final words = chunk.split(RegExp(r'\s+'));
+    final missing = <String>[];
+    var i = 0;
+    while (i < words.length) {
+      var matched = false;
+      for (var j = words.length; j > i; j--) {
+        final candidate = _normalize(words.sublist(i, j).join(' '));
+        final role = roleNames[candidate];
+        final people = memberNames[candidate];
+        if (role != null || people != null) {
+          if (role != null) roles.add(role);
+          if (people != null) ids.addAll(people);
+          if (missing.isNotEmpty) {
+            unknown.add(missing.join(' '));
+            missing.clear();
+          }
+          i = j;
+          matched = true;
+          break;
+        }
+      }
+      if (!matched) {
+        missing.add(words[i]);
+        i++;
+      }
+    }
+    if (missing.isNotEmpty) unknown.add(missing.join(' '));
+  }
+
+  if (roles.isNotEmpty) {
+    for (final member in members) {
+      if (member.roleIds.any(roles.contains) && member.user?.isBot != true) {
+        ids.add(member.id);
+      }
+    }
+  }
+
+  return (ids: ids, unknown: unknown);
 }
 
 Future<bool> sendInvite(NyxxGateway client, GuildEvent event, Guild guild,
