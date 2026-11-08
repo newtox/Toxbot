@@ -25,6 +25,24 @@ Future<GuildEvent?> _event(ChatContext context, String value) async {
   return event;
 }
 
+Future<String> _mentionList(User user, List<Snowflake> ids) async {
+  if (ids.isEmpty) return await localized(user, 'event_info_nobody');
+  final shown = <String>[];
+  var length = 0;
+  for (final id in ids) {
+    final mention = '<@$id>';
+    if (length + mention.length + 2 > 960) break;
+    shown.add(mention);
+    length += mention.length + 2;
+  }
+  final rest = ids.length - shown.length;
+  return rest == 0
+      ? shown.join(', ')
+      : '${shown.join(', ')} ${await localized(user, 'event_info_more', {
+              '&count': '$rest'
+            })}';
+}
+
 final _setup = ChatCommand(
   'setup',
   'Create an event with its own role, category, text and voice channel.',
@@ -191,9 +209,14 @@ final _invite = ChatCommand(
       await replyError(context, 'event_self_only');
       return;
     }
+    final participants = (await eventParticipants(guild, found)).toSet();
+    final skipped = targets.where(participants.contains).length;
+    targets.removeWhere(participants.contains);
     final unknown = resolved.unknown.map((name) => '`$name`').join(', ');
     if (targets.isEmpty) {
-      if (resolved.unknown.isEmpty) {
+      if (skipped > 0 && resolved.unknown.isEmpty) {
+        await replyError(context, 'event_all_joined');
+      } else if (resolved.unknown.isEmpty) {
         await replyError(context, 'event_no_members');
       } else {
         await replyError(context, 'event_unknown_names',
@@ -223,6 +246,11 @@ final _invite = ChatCommand(
             '&names': unknown
           })}';
     }
+    if (skipped > 0) {
+      text += '\n${await localized(context.user, 'event_already_joined', {
+            '&count': '$skipped'
+          })}';
+    }
     if (failed > 0) {
       text += '\n${await localized(context.user, 'event_invite_failed', {
             '&count': '$failed'
@@ -234,6 +262,95 @@ final _invite = ChatCommand(
           color: DiscordColor.parseHexString(
               sent == 0 ? errorColor : successColor),
           description: text,
+        ),
+      ]),
+      level: ResponseLevel.hint,
+    );
+  },
+);
+
+final _info = ChatCommand(
+  'info',
+  'Show who joined an event, who has not answered yet and who declined.',
+  localizedDescriptions: {
+    Locale.da:
+        'Vis hvem der er med, hvem der ikke har svaret og hvem der har afslået.',
+    Locale.de:
+        'Zeigen, wer bei einem Event dabei ist, wer noch nicht geantwortet und wer abgesagt hat.',
+    Locale.enUs:
+        'Show who joined an event, who has not answered yet and who declined.',
+    Locale.esEs:
+        'Ver quién se ha unido a un evento, quién no ha respondido y quién ha rechazado.',
+    Locale.fr:
+        'Voir qui participe à un événement, qui n’a pas encore répondu et qui a refusé.',
+    Locale.ru:
+        'Показать, кто участвует в событии, кто ещё не ответил и кто отказался.',
+    Locale.hi:
+        'देखें कि इवेंट में कौन शामिल है, किसने अभी जवाब नहीं दिया और किसने मना किया।',
+    Locale.zhCn: '查看谁加入了活动、谁还没回复、谁拒绝了。',
+    Locale.ja: 'イベントの参加者、未回答の人、辞退した人を表示します。',
+    Locale.ko: '이벤트 참가자, 아직 답하지 않은 사람, 거절한 사람을 보여 줍니다.',
+  },
+  (
+    ChatContext context,
+    @Autocomplete(eventChoices)
+    @Description('The event.', _eventDescription)
+    String event,
+  ) async {
+    final found = await _event(context, event);
+    if (found == null) return;
+    final user = context.user;
+
+    final guild = await context.client.guilds.get(context.guild!.id);
+    final joined = await eventParticipants(guild, found);
+    final invites = await eventInvites(found.id);
+    List<Snowflake> withStatus(String status) => [
+          for (final entry in invites.entries)
+            if (entry.value == status && !joined.contains(entry.key)) entry.key,
+        ];
+    final pending = withStatus(invitePending);
+    final declined = withStatus(inviteDeclined);
+
+    final channels = [
+      found.infoChannelId,
+      found.textChannelId,
+      ...found.voiceChannelIds,
+    ].whereType<Snowflake>().map((id) => '<#$id>').join(' ');
+    final description = [
+      [if (found.roleId != null) '<@&${found.roleId}>', channels]
+          .where((part) => part.isNotEmpty)
+          .join(' · '),
+      if (found.teamRoleId != null)
+        await localized(
+            user, 'event_info_team', {'&role': '<@&${found.teamRoleId}>'}),
+    ].where((line) => line.isNotEmpty).join('\n');
+
+    await context.respond(
+      MessageBuilder(allowedMentions: noMentions, embeds: [
+        EmbedBuilder(
+          color: DiscordColor.parseHexString(eventColor),
+          title: found.name,
+          description: description.isEmpty ? null : description,
+          fields: [
+            EmbedFieldBuilder(
+              name: await localized(user, 'event_info_participants',
+                  {'&count': '${joined.length}'}),
+              value: await _mentionList(user, joined),
+              isInline: false,
+            ),
+            EmbedFieldBuilder(
+              name: await localized(
+                  user, 'event_info_pending', {'&count': '${pending.length}'}),
+              value: await _mentionList(user, pending),
+              isInline: false,
+            ),
+            EmbedFieldBuilder(
+              name: await localized(user, 'event_info_declined',
+                  {'&count': '${declined.length}'}),
+              value: await _mentionList(user, declined),
+              isInline: false,
+            ),
+          ],
         ),
       ]),
       level: ResponseLevel.hint,
@@ -325,5 +442,5 @@ final event = ChatGroup(
     GuildCheck.all(),
     PermissionsCheck(Permissions.manageEvents, allowsOverrides: false),
   ],
-  children: [_setup, _invite, _end],
+  children: [_setup, _invite, _info, _end],
 );

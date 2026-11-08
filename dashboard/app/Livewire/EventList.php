@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\GuildEvent;
+use App\Models\GuildEventInvite;
 use App\Services\Discord;
 use App\Services\GuildAccess;
 use App\Services\GuildEvents;
@@ -91,7 +92,8 @@ class EventList extends Component
         $this->authorizeGuild();
         if (count($this->inviteUsers) < GuildEvents::MAX_INVITES && preg_match('/^\d{15,22}$/', $id)) {
             $member = rescue(fn () => $events->member($this->guildId, $id), null, report: false);
-            if ($member) {
+            $roleId = $this->invitingId === null ? null : GuildEvent::query()->forGuild($this->guildId)->find($this->invitingId)?->role_id;
+            if ($member && ! ($roleId && in_array($roleId, $member['roles'], true))) {
                 $this->inviteUsers[$id] = ['name' => $member['name'], 'avatar' => $member['avatar']];
             }
         }
@@ -126,6 +128,14 @@ class EventList extends Component
 
             return;
         }
+        $participantIds = array_column(rescue(fn () => $events->participants($event), [], report: false), 'id');
+        $skipped = count(array_intersect($targets, $participantIds));
+        $targets = array_values(array_diff($targets, $participantIds));
+        if ($targets === []) {
+            $this->addError('invite', __('events.all_joined'));
+
+            return;
+        }
         if (count($targets) > GuildEvents::MAX_INVITES) {
             $this->addError('invite', __('events.too_many', ['max' => GuildEvents::MAX_INVITES, 'count' => count($targets)]));
 
@@ -134,11 +144,12 @@ class EventList extends Component
 
         $user = Auth::user();
         $guildName = (string) (rescue(fn () => $discord->guildInfo($this->guildId)['name'] ?? null, null, report: false) ?? '');
-        $sent = $events->invite($event, $targets, $this->inviteMessage, $user->global_name ?? $user->username, $guildName);
+        $sent = $events->invite($event, $targets, $this->inviteMessage, (string) $user->id, $user->global_name ?? $user->username, $guildName);
         $failed = count($targets) - $sent;
 
         $this->reset('search', 'inviteUsers', 'inviteRoles', 'inviteMessage', 'invitingId');
         $this->notice = __('events.invited', ['count' => $sent, 'name' => $event->name])
+            .($skipped > 0 ? ' '.__('events.already_joined', ['count' => $skipped]) : '')
             .($failed > 0 ? ' '.__('events.invite_failed', ['count' => $failed]) : '');
     }
 
@@ -161,18 +172,29 @@ class EventList extends Component
         $eventRole = $list->firstWhere('id', $this->invitingId)?->role_id;
         $channels = collect(rescue(fn () => $discord->guildChannels($this->guildId), [], report: false))->pluck('name', 'id');
 
+        $participants = $list->mapWithKeys(fn ($event) => [
+            $event->id => rescue(fn () => $events->participants($event), [], report: false),
+        ]);
+        $invitations = $list->mapWithKeys(fn ($event) => [
+            $event->id => rescue(
+                fn () => $events->invitations($event, array_column($participants[$event->id], 'id')),
+                [GuildEventInvite::PENDING => [], GuildEventInvite::DECLINED => []],
+                report: false,
+            ),
+        ]);
+
         $matches = $this->invitingId === null ? [] : rescue(fn () => $events->searchMembers(
             $this->guildId,
             $this->search,
             array_map('strval', array_keys($this->inviteUsers)),
             $eventRole,
+            GuildEventInvite::query()->where('event_id', $this->invitingId)->pluck('status', 'user_id')->all(),
         ), [], report: false);
 
         return view('livewire.event-list', [
             'events' => $list,
-            'participants' => $list->mapWithKeys(fn ($event) => [
-                $event->id => rescue(fn () => $events->participants($event), [], report: false),
-            ]),
+            'participants' => $participants,
+            'invitations' => $invitations,
             'roles' => $pickable,
             'roleNames' => collect($roles)->pluck('name', 'id'),
             'channels' => $channels,

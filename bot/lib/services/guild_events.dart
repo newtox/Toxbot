@@ -12,6 +12,10 @@ const eventLeavePrefix = 'event_leave:';
 
 const eventColor = '#5865f2';
 
+const invitePending = 'pending';
+
+const inviteDeclined = 'declined';
+
 const maxEvents = 10;
 
 const maxInvites = 50;
@@ -127,6 +131,24 @@ Future<void> _deleteParts(NyxxRest client, Snowflake guildId,
   }
 }
 
+Future<void> _setInvite(int eventId, Snowflake userId, String? status,
+    {Snowflake? invitedBy}) async {
+  try {
+    await withConnection((connection) => status == null
+        ? connection.query(
+            'DELETE FROM `guild_event_invites` WHERE `event_id` = ? AND `user_id` = ?;',
+            [eventId, userId.toString()])
+        : connection.query(
+            'INSERT INTO `guild_event_invites` (`event_id`, `user_id`, `status`, `invited_by`, `created_at`, `updated_at`) '
+            'VALUES (?, ?, ?, ?, UTC_TIMESTAMP(), UTC_TIMESTAMP()) '
+            'ON DUPLICATE KEY UPDATE `status` = VALUES(`status`), '
+            '`invited_by` = COALESCE(VALUES(`invited_by`), `invited_by`), `updated_at` = UTC_TIMESTAMP();',
+            [eventId, userId.toString(), status, invitedBy?.toString()]));
+  } catch (e) {
+    print('Saving the invite state failed for event $eventId: $e');
+  }
+}
+
 Future<void> _respondUpdate(
     MessageComponentInteraction interaction, String content) async {
   await interaction.respond(
@@ -188,6 +210,7 @@ Future<void> _answer(NyxxGateway client,
     return;
   }
 
+  await _setInvite(event.id, user.id, join ? null : inviteDeclined);
   await _respondUpdate(
     interaction,
     await guildLocalized(
@@ -214,6 +237,28 @@ Future<List<GuildEvent>> guildEvents(Snowflake guildId) =>
           'SELECT * FROM `guild_events` WHERE `guild` = ? ORDER BY `id`;',
           [guildId.toString()]);
       return rows.map(GuildEvent.fromRow).toList();
+    });
+
+Future<List<Snowflake>> eventParticipants(Guild guild, GuildEvent event) async {
+  final roleId = event.roleId;
+  if (roleId == null) return [];
+  final members = await guild.members.list(limit: 1000);
+  return [
+    for (final member in members)
+      if (member.roleIds.contains(roleId) && member.user?.isBot != true)
+        member.id,
+  ];
+}
+
+Future<Map<Snowflake, String>> eventInvites(int eventId) =>
+    withConnection((connection) async {
+      final rows = await connection.query(
+          'SELECT `user_id`, `status` FROM `guild_event_invites` WHERE `event_id` = ? ORDER BY `updated_at`;',
+          [eventId]);
+      return {
+        for (final row in rows)
+          Snowflake.parse(textValue(row['user_id'])): textValue(row['status']),
+      };
     });
 
 Future<Iterable<CommandOptionChoiceBuilder<String>>> eventChoices(
@@ -343,8 +388,12 @@ Future<void> endEvent(NyxxGateway client, GuildEvent event) async {
       event.categoryId,
     ],
   );
-  await withConnection((connection) => connection
-      .query('DELETE FROM `guild_events` WHERE `id` = ?;', [event.id]));
+  await withConnection((connection) async {
+    await connection.query(
+        'DELETE FROM `guild_event_invites` WHERE `event_id` = ?;', [event.id]);
+    await connection
+        .query('DELETE FROM `guild_events` WHERE `id` = ?;', [event.id]);
+  });
 }
 
 Future<({Set<Snowflake> ids, List<String> unknown})> inviteTargets(
@@ -466,6 +515,7 @@ Future<bool> sendInvite(NyxxGateway client, GuildEvent event, Guild guild,
         ]),
       ],
     ));
+    await _setInvite(event.id, userId, invitePending, invitedBy: inviter.id);
     return true;
   } catch (e) {
     print('Sending an event invite to $userId failed: $e');

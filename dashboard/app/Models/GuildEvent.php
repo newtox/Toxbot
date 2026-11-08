@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class GuildEvent extends Model
 {
@@ -10,6 +11,11 @@ class GuildEvent extends Model
         'guild', 'name', 'role_id', 'team_role_id', 'category_id',
         'info_channel_id', 'text_channel_id', 'voice_channel_id', 'extra_voice_channel_ids', 'created_by',
     ];
+
+    public function invites(): HasMany
+    {
+        return $this->hasMany(GuildEventInvite::class, 'event_id');
+    }
 
     public function voiceChannelIds(): array
     {

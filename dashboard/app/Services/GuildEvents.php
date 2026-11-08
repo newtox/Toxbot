@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Guild;
 use App\Models\GuildEvent;
+use App\Models\GuildEventInvite;
 use Illuminate\Support\Str;
 use Throwable;
 
@@ -131,6 +132,7 @@ class GuildEvents
             [...$event->voiceChannelIds(), $event->text_channel_id, $event->info_channel_id, $event->category_id],
             'Toxbot event ended',
         );
+        $event->invites()->delete();
         $event->delete();
     }
 
@@ -148,7 +150,21 @@ class GuildEvents
             ->all();
     }
 
-    public function searchMembers(string $guildId, string $query, array $exclude = [], ?string $roleId = null, int $limit = 8): array
+    public function invitations(GuildEvent $event, array $participantIds): array
+    {
+        $members = collect($this->discord->guildMembers($event->guild))->keyBy(fn ($member) => (string) $member['user']['id']);
+        $grouped = [GuildEventInvite::PENDING => [], GuildEventInvite::DECLINED => []];
+        foreach ($event->invites()->orderBy('updated_at')->get() as $invite) {
+            $member = $members->get($invite->user_id);
+            if ($member && ! in_array($invite->user_id, $participantIds, true) && isset($grouped[$invite->status])) {
+                $grouped[$invite->status][] = self::card($event->guild, $member);
+            }
+        }
+
+        return $grouped;
+    }
+
+    public function searchMembers(string $guildId, string $query, array $exclude = [], ?string $roleId = null, array $statuses = [], int $limit = 8): array
     {
         $needle = self::normalize($query);
         if (mb_strlen(str_replace(' ', '', $needle)) < 2) {
@@ -157,8 +173,7 @@ class GuildEvents
 
         return collect($this->discord->guildMembers($guildId))
             ->reject(fn ($member) => ($member['user']['bot'] ?? false)
-                || in_array((string) $member['user']['id'], $exclude, true)
-                || ($roleId && in_array($roleId, $member['roles'] ?? [], true)))
+                || in_array((string) $member['user']['id'], $exclude, true))
             ->map(function ($member) use ($needle) {
                 $names = array_filter([$member['nick'] ?? null, $member['user']['global_name'] ?? null, $member['user']['username']]);
                 $scores = array_filter(array_map(fn ($name) => self::matchScore(self::normalize($name), $needle), $names), fn ($score) => $score !== null);
@@ -168,7 +183,12 @@ class GuildEvents
             ->filter(fn ($entry) => $entry['rank'] !== null)
             ->sortBy([['rank', 'asc'], [fn ($a, $b) => strnatcasecmp(self::displayName($a['member']), self::displayName($b['member']))]])
             ->take($limit)
-            ->map(fn ($entry) => self::card($guildId, $entry['member']))
+            ->map(fn ($entry) => [
+                ...self::card($guildId, $entry['member']),
+                'status' => $roleId && in_array($roleId, $entry['member']['roles'] ?? [], true)
+                    ? 'joined'
+                    : ($statuses[(string) $entry['member']['user']['id']] ?? null),
+            ])
             ->values()
             ->all();
     }
@@ -250,7 +270,7 @@ class GuildEvents
         $member = collect($this->discord->guildMembers($guildId))
             ->first(fn ($member) => (string) $member['user']['id'] === $userId && ! ($member['user']['bot'] ?? false));
 
-        return $member ? self::card($guildId, $member) : null;
+        return $member ? [...self::card($guildId, $member), 'roles' => $member['roles'] ?? []] : null;
     }
 
     public static function card(string $guildId, array $member): array
@@ -288,16 +308,21 @@ class GuildEvents
         return array_keys($targets);
     }
 
-    public function invite(GuildEvent $event, array $userIds, ?string $message, string $inviterName, string $guildName): int
+    public function invite(GuildEvent $event, array $userIds, ?string $message, string $inviterId, string $inviterName, string $guildName): int
     {
         $payload = $this->invitePayload($event, $message, $inviterName, $guildName);
         $sent = 0;
         foreach ($userIds as $userId) {
             try {
                 $this->discord->sendDirectMessage((string) $userId, $payload);
-                $sent++;
             } catch (Throwable) {
+                continue;
             }
+            $sent++;
+            GuildEventInvite::query()->updateOrCreate(
+                ['event_id' => $event->id, 'user_id' => (string) $userId],
+                ['status' => GuildEventInvite::PENDING, 'invited_by' => $inviterId],
+            );
         }
 
         return $sent;

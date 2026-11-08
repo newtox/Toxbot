@@ -1,6 +1,6 @@
 <div class="space-y-4">
     @if ($notice)
-        <p class="rounded-lg border-l-4 border-dc-green bg-dc-900 px-4 py-3 text-sm">{{ $notice }}</p>
+        <p class="rounded-lg border-l-4 border-accent bg-dc-900 px-4 py-3 text-sm">{{ $notice }}</p>
     @endif
 
     @if ($events->isEmpty())
@@ -9,6 +9,7 @@
         <ul class="space-y-3">
             @foreach ($events as $event)
                 @php($members = $participants[$event->id] ?? [])
+                @php($invited = $invitations[$event->id] ?? [])
                 <li wire:key="event-{{ $event->id }}" class="rounded-lg bg-dc-900 p-4">
                     <div class="flex flex-wrap items-start gap-x-3 gap-y-3">
                         <div class="min-w-0 flex-1 basis-64">
@@ -53,6 +54,19 @@
                                 @endforeach
                             </ul>
                         @endif
+                        @foreach (['pending' => 'events.pending', 'declined' => 'events.declined'] as $status => $label)
+                            @if (($invited[$status] ?? []) !== [])
+                                <p class="mt-3 mb-2 text-xs font-semibold tracking-wide text-dc-muted uppercase">{{ __($label, ['count' => count($invited[$status])]) }}</p>
+                                <ul class="flex flex-wrap gap-2">
+                                    @foreach ($invited[$status] as $member)
+                                        <li @class(['flex items-center gap-1.5 rounded-full bg-dc-800 py-0.5 pr-2.5 pl-0.5 text-sm', 'opacity-70' => $status === 'pending', 'opacity-50 line-through decoration-dc-faint' => $status === 'declined'])>
+                                            <img src="{{ $member['avatar'] }}" alt="" class="size-6 rounded-full" loading="lazy">
+                                            <span class="max-w-40 truncate">{{ $member['name'] }}</span>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @endif
+                        @endforeach
                     </div>
 
                     @if ($invitingId === $event->id)
@@ -65,14 +79,29 @@
                                     <ul class="mt-2 max-w-md divide-y divide-white/5 overflow-hidden rounded-lg bg-dc-800">
                                         @foreach ($matches as $match)
                                             <li>
-                                                <button type="button" wire:click="addUser('{{ $match['id'] }}')"
-                                                        class="flex w-full items-center justify-between gap-3 px-3 py-2 text-left text-sm hover:bg-dc-700">
-                                                    <span class="flex min-w-0 items-center gap-2.5">
-                                                        <img src="{{ $match['avatar'] }}" alt="" class="size-7 shrink-0 rounded-full" loading="lazy">
-                                                        <span class="truncate">{{ $match['name'] }} <span class="text-dc-faint">{{ '@'.$match['username'] }}</span></span>
-                                                    </span>
-                                                    <x-icon name="plus" class="size-4 shrink-0 text-dc-muted" />
-                                                </button>
+                                                @if ($match['status'] === 'joined')
+                                                    <div class="flex w-full items-center justify-between gap-3 px-3 py-2 text-sm opacity-50">
+                                                        <span class="flex min-w-0 items-center gap-2.5">
+                                                            <img src="{{ $match['avatar'] }}" alt="" class="size-7 shrink-0 rounded-full" loading="lazy">
+                                                            <span class="truncate">{{ $match['name'] }} <span class="text-dc-faint">{{ '@'.$match['username'] }}</span></span>
+                                                        </span>
+                                                        <span class="shrink-0 rounded-full bg-accent/20 px-2 py-0.5 text-xs text-accent-fg">{{ __('events.status_joined') }}</span>
+                                                    </div>
+                                                @else
+                                                    <button type="button" wire:click="addUser('{{ $match['id'] }}')"
+                                                            class="flex w-full items-center justify-between gap-3 px-3 py-2 text-left text-sm hover:bg-dc-700">
+                                                        <span class="flex min-w-0 items-center gap-2.5">
+                                                            <img src="{{ $match['avatar'] }}" alt="" class="size-7 shrink-0 rounded-full" loading="lazy">
+                                                            <span class="truncate">{{ $match['name'] }} <span class="text-dc-faint">{{ '@'.$match['username'] }}</span></span>
+                                                        </span>
+                                                        <span class="flex shrink-0 items-center gap-2">
+                                                            @if ($match['status'])
+                                                                <span @class(['rounded-full px-2 py-0.5 text-xs', 'bg-white/10 text-dc-muted' => $match['status'] === 'pending', 'bg-dc-red/20 text-dc-red' => $match['status'] === 'declined'])>{{ __('events.status_'.$match['status']) }}</span>
+                                                            @endif
+                                                            <x-icon name="plus" class="size-4 text-dc-muted" />
+                                                        </span>
+                                                    </button>
+                                                @endif
                                             </li>
                                         @endforeach
                                     </ul>

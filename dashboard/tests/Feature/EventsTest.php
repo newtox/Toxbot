@@ -6,6 +6,7 @@ use App\Livewire\EventList;
 use App\Livewire\GuildSettings;
 use App\Models\DashboardUser;
 use App\Models\GuildEvent;
+use App\Models\GuildEventInvite;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Cache;
@@ -226,6 +227,62 @@ class EventsTest extends TestCase
             ->call('sendInvites')
             ->assertHasErrors('invite')
             ->assertSee(__('events.self_only'));
+
+        $this->assertSame([], $this->requests('POST', '/users/@me/channels'));
+    }
+
+    public function test_invites_are_tracked_and_shown_until_answered(): void
+    {
+        $event = $this->createEvent(null);
+
+        Livewire::test(EventList::class, ['guildId' => self::GUILD])
+            ->call('startInvite', $event->id)
+            ->call('addUser', '800000000000000001')
+            ->call('sendInvites')
+            ->assertHasNoErrors()
+            ->assertSee(__('events.pending', ['count' => 1]))
+            ->call('startInvite', $event->id)
+            ->set('search', 'anna')
+            ->assertSee(__('events.status_pending'));
+
+        $invite = GuildEventInvite::query()->sole();
+        $this->assertSame(['800000000000000001', GuildEventInvite::PENDING, self::USER],
+            [$invite->user_id, $invite->status, $invite->invited_by]);
+
+        $invite->update(['status' => GuildEventInvite::DECLINED]);
+        Livewire::test(EventList::class, ['guildId' => self::GUILD])
+            ->assertSee(__('events.declined', ['count' => 1]))
+            ->assertDontSee(__('events.pending', ['count' => 1]))
+            ->call('startInvite', $event->id)
+            ->set('search', 'anna')
+            ->assertSee(__('events.status_declined'));
+
+        GuildEvent::query()->whereKey($event->id)->update(['role_id' => '700000000000000002']);
+        GuildEventInvite::query()->update(['user_id' => '800000000000000002']);
+        Livewire::test(EventList::class, ['guildId' => self::GUILD])
+            ->assertDontSee(__('events.declined', ['count' => 1]));
+
+        Livewire::test(EventList::class, ['guildId' => self::GUILD])->call('end', $event->id);
+        $this->assertSame(0, GuildEventInvite::query()->count());
+    }
+
+    public function test_participants_are_shown_but_cannot_be_invited_again(): void
+    {
+        $event = $this->createEvent(null);
+        GuildEvent::query()->whereKey($event->id)->update(['role_id' => '700000000000000002']);
+
+        Livewire::test(EventList::class, ['guildId' => self::GUILD])
+            ->call('startInvite', $event->id)
+            ->set('search', 'benny')
+            ->assertSee('Benny')
+            ->assertSee(__('events.status_joined'))
+            ->assertDontSee('addUser(\'800000000000000002\')', false)
+            ->call('addUser', '800000000000000002')
+            ->assertSet('inviteUsers', [])
+            ->set('inviteUsers', ['800000000000000002' => ['name' => 'Benny', 'avatar' => '']])
+            ->call('sendInvites')
+            ->assertHasErrors('invite')
+            ->assertSee(__('events.all_joined'));
 
         $this->assertSame([], $this->requests('POST', '/users/@me/channels'));
     }
