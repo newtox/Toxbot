@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Guild;
 use App\Models\GuildEvent;
+use Illuminate\Support\Str;
 use Throwable;
 
 class GuildEvents
@@ -149,8 +150,8 @@ class GuildEvents
 
     public function searchMembers(string $guildId, string $query, array $exclude = [], ?string $roleId = null, int $limit = 8): array
     {
-        $needle = mb_strtolower(trim($query));
-        if (mb_strlen($needle) < 2) {
+        $needle = self::normalize($query);
+        if (mb_strlen(str_replace(' ', '', $needle)) < 2) {
             return [];
         }
 
@@ -160,15 +161,9 @@ class GuildEvents
                 || ($roleId && in_array($roleId, $member['roles'] ?? [], true)))
             ->map(function ($member) use ($needle) {
                 $names = array_filter([$member['nick'] ?? null, $member['user']['global_name'] ?? null, $member['user']['username']]);
-                $rank = null;
-                foreach ($names as $name) {
-                    $position = mb_strpos(mb_strtolower($name), $needle);
-                    if ($position !== false) {
-                        $rank = min($rank ?? PHP_INT_MAX, $position === 0 ? 0 : 1);
-                    }
-                }
+                $scores = array_filter(array_map(fn ($name) => self::matchScore(self::normalize($name), $needle), $names), fn ($score) => $score !== null);
 
-                return ['member' => $member, 'rank' => $rank];
+                return ['member' => $member, 'rank' => $scores === [] ? null : min($scores)];
             })
             ->filter(fn ($entry) => $entry['rank'] !== null)
             ->sortBy([['rank', 'asc'], [fn ($a, $b) => strnatcasecmp(self::displayName($a['member']), self::displayName($b['member']))]])
@@ -176,6 +171,78 @@ class GuildEvents
             ->map(fn ($entry) => self::card($guildId, $entry['member']))
             ->values()
             ->all();
+    }
+
+    private static function normalize(string $text): string
+    {
+        return trim(preg_replace('/[^a-z0-9]+/', ' ', strtolower(Str::ascii($text))));
+    }
+
+    private static function matchScore(string $name, string $query): ?int
+    {
+        if ($name === '') {
+            return null;
+        }
+        if (str_starts_with($name, $query)) {
+            return 0;
+        }
+        if (str_contains($name, $query)) {
+            return 1;
+        }
+
+        $words = explode(' ', $name);
+        $words[] = str_replace(' ', '', $name);
+        $total = 10;
+        foreach (explode(' ', $query) as $token) {
+            $best = null;
+            foreach ($words as $word) {
+                $score = self::tokenScore($word, $token);
+                if ($score !== null && ($best === null || $score < $best)) {
+                    $best = $score;
+                }
+            }
+            if ($best === null) {
+                return null;
+            }
+            $total += $best;
+        }
+
+        return $total;
+    }
+
+    private static function tokenScore(string $word, string $token): ?int
+    {
+        $length = strlen($token);
+        if (str_starts_with($word, $token)) {
+            return 0;
+        }
+        if (str_contains($word, $token)) {
+            return 1;
+        }
+        if ($length >= 2 && $word[0] === $token[0] && $length >= strlen($word) * 0.6 && self::isSubsequence($token, $word)) {
+            return 2;
+        }
+
+        $allowed = $length >= 6 ? 2 : ($length >= 4 ? 1 : 0);
+        if ($allowed > 0 && min(levenshtein($token, $word), levenshtein($token, substr($word, 0, $length))) <= $allowed) {
+            return 3;
+        }
+
+        return null;
+    }
+
+    private static function isSubsequence(string $needle, string $haystack): bool
+    {
+        $position = 0;
+        foreach (str_split($needle) as $char) {
+            $position = strpos($haystack, $char, $position);
+            if ($position === false) {
+                return false;
+            }
+            $position++;
+        }
+
+        return true;
     }
 
     public function member(string $guildId, string $userId): ?array
