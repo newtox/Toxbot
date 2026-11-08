@@ -75,7 +75,8 @@ final autorole = ChatGroup('autorole', 'Manage the role new members get.',
                     [role.id.toString(), context.guild?.id.toString()]);
 
                 await replySuccess(context, 'autorole_set',
-                    replace: {'&autorole': '<@&${role.id}>'});
+                    replace: {'&autorole': '<@&${role.id}>'},
+                    level: ResponseLevel.hint);
                 return;
               } else {
                 await replyError(context, 'autorole_highest');
@@ -119,7 +120,8 @@ final autorole = ChatGroup('autorole', 'Manage the role new members get.',
                 await context.guild?.roles.get(autoroleIdAsSnowflake);
 
             await replySuccess(context, 'autorole_current',
-                replace: {'&autorole': '<@&${autorole?.id}>'});
+                replace: {'&autorole': '<@&${autorole?.id}>'},
+                level: ResponseLevel.hint);
             return;
           }
         }
@@ -151,7 +153,8 @@ final autorole = ChatGroup('autorole', 'Manage the role new members get.',
                 'UPDATE `guilds` SET `autorole` = ? WHERE `id` = ? LIMIT 1;',
                 [null, context.guild?.id.toString()]);
 
-            await replySuccess(context, 'autorole_reset');
+            await replySuccess(context, 'autorole_reset',
+                level: ResponseLevel.hint);
             return;
           } catch (e) {
             print('Error in autorole command: $e');

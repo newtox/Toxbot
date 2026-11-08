@@ -102,7 +102,8 @@ final _create = ChatCommand(
         rethrow;
       }
 
-      await replySuccess(modal, 'tag_created', replace: {'&tag': name});
+      await replySuccess(modal, 'tag_created',
+          replace: {'&tag': name}, level: ResponseLevel.hint);
     } catch (e) {
       await replyCommandError(context, 'tag_error', 'create', e);
     }
@@ -885,7 +886,8 @@ final _block = ChatCommand(
           [context.guild!.id.toString(), tag.id],
         ),
       );
-      await replySuccess(context, 'tag_blocked', replace: {'&tag': tag.name});
+      await replySuccess(context, 'tag_blocked',
+          replace: {'&tag': tag.name}, level: ResponseLevel.hint);
     } catch (e) {
       await replyCommandError(context, 'tag_error', 'block', e);
     }
@@ -940,11 +942,8 @@ final _unblock = ChatCommand(
           [context.guild!.id.toString(), tag.id],
         ),
       );
-      await replySuccess(
-        context,
-        'tag_unblocked',
-        replace: {'&tag': tag.name},
-      );
+      await replySuccess(context, 'tag_unblocked',
+          replace: {'&tag': tag.name}, level: ResponseLevel.hint);
     } catch (e) {
       await replyCommandError(context, 'tag_error', 'unblock', e);
     }
@@ -993,10 +992,8 @@ final _toggle = ChatCommand(
           [enabled ? 1 : 0, context.guild!.id.toString()],
         ),
       );
-      await replySuccess(
-        context,
-        enabled ? 'tag_toggle_on' : 'tag_toggle_off',
-      );
+      await replySuccess(context, enabled ? 'tag_toggle_on' : 'tag_toggle_off',
+          level: ResponseLevel.hint);
     } catch (e) {
       await replyCommandError(context, 'tag_error', 'toggle', e);
     }

@@ -108,10 +108,12 @@ final announcements = ChatGroup(
               'UPDATE `guilds` SET `$channelColumn` = ?, `$messageColumn` = ? WHERE `id` = ? LIMIT 1;',
               [channel.id.toString(), message, context.guild?.id.toString()]);
 
-          await replySuccess(context, 'announcements_set', replace: {
-            '&type': await getString(
-                context.user, 'announcements_${type.toLowerCase()}')
-          });
+          await replySuccess(context, 'announcements_set',
+              replace: {
+                '&type': await getString(
+                    context.user, 'announcements_${type.toLowerCase()}')
+              },
+              level: ResponseLevel.hint);
           return;
         } catch (e) {
           print('Error while setting announcements: $e');
@@ -172,23 +174,25 @@ final announcements = ChatGroup(
                 ? channels?.firstWhereOrNull((c) => c.id == byeId)
                 : null;
 
-            await context.respond(MessageBuilder(embeds: [
-              EmbedBuilder(
-                color: DiscordColor.parseHexString(successColor),
-                fields: [
-                  EmbedFieldBuilder(
-                    name: ' ',
-                    value: '''
+            await context.respond(
+                MessageBuilder(embeds: [
+                  EmbedBuilder(
+                    color: DiscordColor.parseHexString(successColor),
+                    fields: [
+                      EmbedFieldBuilder(
+                        name: ' ',
+                        value: '''
                       ${welcomeChannel?.mention ?? italic('N/A')}
                       ${welcomeMsg != null ? codeBlock(welcomeMsg) : italic('N/A')}
                       ${byeChannel?.mention ?? italic('N/A')}
                       ${byeMsg != null ? codeBlock(byeMsg) : italic('N/A')}
                     ''',
-                    isInline: false,
+                        isInline: false,
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ]));
+                ]),
+                level: ResponseLevel.hint);
           } catch (e) {
             print('Error while showing announcements: $e');
             await replyError(context, 'announcements_error',
@@ -242,10 +246,12 @@ final announcements = ChatGroup(
               'UPDATE `guilds` SET `$channelColumn` = ?, `$messageColumn` = ? WHERE `id` = ? LIMIT 1;',
               [null, null, context.guild?.id.toString()]);
 
-          await replySuccess(context, 'announcements_reset', replace: {
-            '&type': await getString(
-                context.user, 'announcements_${type.toLowerCase()}')
-          });
+          await replySuccess(context, 'announcements_reset',
+              replace: {
+                '&type': await getString(
+                    context.user, 'announcements_${type.toLowerCase()}')
+              },
+              level: ResponseLevel.hint);
         } catch (e) {
           print('Error while resetting announcements: $e');
           await replyError(context, 'announcements_error',

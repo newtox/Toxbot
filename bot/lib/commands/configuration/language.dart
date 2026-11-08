@@ -96,7 +96,7 @@ final language = ChatCommand(
     }
 
     await replySuccess(context, 'language_changed',
-        replace: {'&language': selectedLanguage});
+        replace: {'&language': selectedLanguage}, level: ResponseLevel.hint);
     return;
   } catch (e) {
     print('Error updating language: $e');

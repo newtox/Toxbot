@@ -42,7 +42,7 @@ final color = ChatCommand('color', 'Set the color of your embeds.',
     await connection.query(
         'UPDATE `users` SET `color` = ? WHERE `id` = ? LIMIT 1;',
         [color, context.user.id.toString()]);
-    await replySuccess(context, 'color_updated');
+    await replySuccess(context, 'color_updated', level: ResponseLevel.hint);
     return;
   } catch (e) {
     print('Error in color command: $e');

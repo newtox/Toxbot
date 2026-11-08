@@ -389,7 +389,7 @@ final _cases = ChatCommand(
   ) async {
     final cases = await casesFor(context.guild!.id, userId: user.id);
     if (cases.isEmpty) {
-      await replySuccess(context, 'mod_cases_none');
+      await replySuccess(context, 'mod_cases_none', level: ResponseLevel.hint);
       return;
     }
 
