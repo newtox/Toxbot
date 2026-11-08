@@ -34,6 +34,7 @@ return [
     'message_placeholder' => '금요일 저녁 8시, 마리오 카트!',
     'send' => '초대 보내기',
     'no_members' => '멤버나 역할을 하나 이상 고르세요.',
+    'self_only' => '자신을 초대할 필요는 없습니다. 주최자로서 이미 참여 중입니다.',
     'too_many' => ':count명이 됩니다. 한 번에 최대 :max명까지 가능합니다.',
     'invited' => ':name 초대를 :count건 보냈습니다.',
     'invite_failed' => ':count명에게는 메시지를 보내지 못했습니다. 보통 DM을 꺼 두었기 때문입니다.',

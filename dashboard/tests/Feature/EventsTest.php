@@ -8,6 +8,7 @@ use App\Models\DashboardUser;
 use App\Models\GuildEvent;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -25,6 +26,8 @@ class EventsTest extends TestCase
     private int $nextId = 500000000000000000;
 
     private array $failingDms = [];
+
+    private array $extraMembers = [];
 
     protected function setUp(): void
     {
@@ -60,12 +63,10 @@ class EventsTest extends TestCase
                     ['id' => '700000000000000003', 'name' => 'Toxbot', 'position' => 4, 'color' => 0, 'tags' => ['bot_id' => '999']],
                 ]),
                 str_contains($url, '/guilds/'.self::GUILD.'/channels') => Http::response([]),
-                str_contains($url, '/members/search') => Http::response([
-                    ['user' => ['id' => '800000000000000002', 'username' => 'bennyboy', 'global_name' => 'Benny'], 'roles' => ['700000000000000002']],
-                    ['user' => ['id' => '800000000000000001', 'username' => 'anna', 'global_name' => 'Anna'], 'roles' => []],
-                    ['user' => ['id' => '800000000000000009', 'username' => 'somebot', 'bot' => true], 'roles' => []],
-                ]),
                 str_contains($url, '/guilds/'.self::GUILD.'/members') => Http::response([
+                    ...$this->extraMembers,
+                    ['user' => ['id' => self::USER, 'username' => 'newtox', 'global_name' => 'Newtox'], 'roles' => []],
+                    ['user' => ['id' => '800000000000000004', 'username' => 'cedric', 'global_name' => 'Graf Cedric', 'avatar' => 'def'], 'nick' => 'Graf Cedric', 'avatar' => 'ghi', 'roles' => []],
                     ['user' => ['id' => '800000000000000001', 'username' => 'anna', 'global_name' => 'Anna'], 'roles' => []],
                     ['user' => ['id' => '800000000000000002', 'username' => 'ben', 'avatar' => 'abc'], 'nick' => 'Benny', 'roles' => ['700000000000000002']],
                     ['user' => ['id' => '800000000000000003', 'username' => 'cleo'], 'roles' => ['700000000000000002']],
@@ -169,8 +170,8 @@ class EventsTest extends TestCase
             ->set('search', 'an')
             ->assertSee('Anna')
             ->assertDontSee('somebot')
-            ->call('addUser', '800000000000000001', 'Anna')
-            ->assertSet('inviteUsers', ['800000000000000001' => 'Anna'])
+            ->call('addUser', '800000000000000001')
+            ->assertSet('inviteUsers', ['800000000000000001' => ['name' => 'Anna', 'avatar' => 'https://cdn.discordapp.com/embed/avatars/'.((800000000000000001 >> 22) % 6).'.png']])
             ->set('inviteRoles', ['700000000000000002'])
             ->set('inviteMessage', 'Freitag 20 Uhr')
             ->call('sendInvites')
@@ -185,6 +186,43 @@ class EventsTest extends TestCase
         $payload = $dms[0]['data'];
         $this->assertSame('Freitag 20 Uhr', $payload['embeds'][0]['description']);
         $this->assertSame(['event_join:'.$event->id, 'event_leave:'.$event->id], array_column($payload['components'][0]['components'], 'custom_id'));
+    }
+
+    public function test_member_search_matches_anywhere_in_the_name_and_shows_avatars(): void
+    {
+        $event = $this->createEvent(null);
+
+        Livewire::test(EventList::class, ['guildId' => self::GUILD])
+            ->call('startInvite', $event->id)
+            ->set('search', 'cedric')
+            ->assertSee('Graf Cedric')
+            ->assertSee('@cedric')
+            ->assertSee('https://cdn.discordapp.com/guilds/'.self::GUILD.'/users/800000000000000004/avatars/ghi.png?size=64', false)
+            ->set('search', 'nny')
+            ->assertSee('Benny')
+            ->assertSee('https://cdn.discordapp.com/avatars/800000000000000002/abc.png?size=64', false)
+            ->assertDontSee('Graf Cedric')
+            ->call('addUser', '800000000000000004')
+            ->assertSee('ghi.png', false)
+            ->set('search', 'graf')
+            ->assertDontSee('@cedric')
+            ->call('addUser', '800000000000000009')
+            ->call('addUser', '800000000000000555')
+            ->assertCount('inviteUsers', 1);
+    }
+
+    public function test_inviting_only_yourself_explains_why(): void
+    {
+        $event = $this->createEvent(null);
+
+        Livewire::test(EventList::class, ['guildId' => self::GUILD])
+            ->call('startInvite', $event->id)
+            ->call('addUser', self::USER)
+            ->call('sendInvites')
+            ->assertHasErrors('invite')
+            ->assertSee(__('events.self_only'));
+
+        $this->assertSame([], $this->requests('POST', '/users/@me/channels'));
     }
 
     public function test_participants_and_event_roles_are_not_offered_again(): void
@@ -210,9 +248,11 @@ class EventsTest extends TestCase
             ->call('sendInvites')
             ->assertHasErrors('invite');
 
+        $this->extraMembers = array_map(fn ($i) => ['user' => ['id' => (string) (800000000000000100 + $i), 'username' => "user{$i}"], 'roles' => []], range(1, 51));
+        Cache::flush();
         $component = Livewire::test(EventList::class, ['guildId' => self::GUILD])->call('startInvite', $event->id);
         foreach (range(1, 51) as $i) {
-            $component->call('addUser', (string) (800000000000000100 + $i), "User {$i}");
+            $component->call('addUser', (string) (800000000000000100 + $i));
         }
         $this->assertCount(50, $component->get('inviteUsers'));
         $this->assertSame([], $this->requests('POST', '/users/@me/channels'));

@@ -34,6 +34,7 @@ return [
     'message_placeholder' => '周五晚上 8 点，马里奥赛车！',
     'send' => '发送邀请',
     'no_members' => '请至少选择一个成员或身份组。',
+    'self_only' => '不需要邀请自己，你作为组织者已经在活动中了。',
     'too_many' => '这将是 :count 人，一次最多 :max 人。',
     'invited' => '已发送 :count 份 :name 的邀请。',
     'invite_failed' => '有 :count 人无法收到消息，通常是因为他们关闭了私信。',

@@ -86,10 +86,14 @@ class EventList extends Component
         $this->invitingId = $this->invitingId === $id ? null : $id;
     }
 
-    public function addUser(string $id, string $name): void
+    public function addUser(string $id, GuildEvents $events): void
     {
+        $this->authorizeGuild();
         if (count($this->inviteUsers) < GuildEvents::MAX_INVITES && preg_match('/^\d{15,22}$/', $id)) {
-            $this->inviteUsers[$id] = mb_substr($name, 0, 80);
+            $member = rescue(fn () => $events->member($this->guildId, $id), null, report: false);
+            if ($member) {
+                $this->inviteUsers[$id] = ['name' => $member['name'], 'avatar' => $member['avatar']];
+            }
         }
         $this->search = '';
     }
@@ -110,10 +114,13 @@ class EventList extends Component
             'inviteMessage' => ['nullable', 'string', 'max:2000'],
         ]);
 
-        $targets = array_values(array_diff(
-            $events->inviteTargets($this->guildId, array_keys($this->inviteUsers), $this->inviteRoles),
-            [(string) Auth::id()],
-        ));
+        $everyone = $events->inviteTargets($this->guildId, array_keys($this->inviteUsers), $this->inviteRoles);
+        $targets = array_values(array_diff($everyone, [(string) Auth::id()]));
+        if ($targets === [] && $everyone !== []) {
+            $this->addError('invite', __('events.self_only'));
+
+            return;
+        }
         if ($targets === []) {
             $this->addError('invite', __('events.no_members'));
 
@@ -154,22 +161,12 @@ class EventList extends Component
         $eventRole = $list->firstWhere('id', $this->invitingId)?->role_id;
         $channels = collect(rescue(fn () => $discord->guildChannels($this->guildId), [], report: false))->pluck('name', 'id');
 
-        $matches = [];
-        $query = trim($this->search);
-        if ($this->invitingId !== null && mb_strlen($query) >= 2) {
-            $matches = collect(rescue(fn () => $discord->searchGuildMembers($this->guildId, $query), [], report: false))
-                ->reject(fn ($member) => ($member['user']['bot'] ?? false)
-                    || isset($this->inviteUsers[$member['user']['id']])
-                    || ($eventRole && in_array($eventRole, $member['roles'] ?? [], true)))
-                ->take(8)
-                ->map(fn ($member) => [
-                    'id' => (string) $member['user']['id'],
-                    'name' => $member['nick'] ?? $member['user']['global_name'] ?? $member['user']['username'],
-                    'username' => $member['user']['username'],
-                ])
-                ->values()
-                ->all();
-        }
+        $matches = $this->invitingId === null ? [] : rescue(fn () => $events->searchMembers(
+            $this->guildId,
+            $this->search,
+            array_map('strval', array_keys($this->inviteUsers)),
+            $eventRole,
+        ), [], report: false);
 
         return view('livewire.event-list', [
             'events' => $list,

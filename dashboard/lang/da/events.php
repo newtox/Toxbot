@@ -34,6 +34,7 @@ return [
     'message_placeholder' => 'Fredag kl. 20, Mario Kart!',
     'send' => 'Send invitationer',
     'no_members' => 'Vælg mindst ét medlem eller én rolle.',
+    'self_only' => 'Du behøver ikke invitere dig selv, du er allerede med som arrangør.',
     'too_many' => 'Det ville være :count personer, højst :max ad gangen.',
     'invited' => 'Sendte :count invitationer til :name.',
     'invite_failed' => ':count kunne ikke få en besked, som regel fordi de har slået private beskeder fra.',

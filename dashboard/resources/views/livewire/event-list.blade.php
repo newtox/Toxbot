@@ -65,9 +65,12 @@
                                     <ul class="mt-2 max-w-md divide-y divide-white/5 overflow-hidden rounded-lg bg-dc-800">
                                         @foreach ($matches as $match)
                                             <li>
-                                                <button type="button" wire:click="addUser('{{ $match['id'] }}', @js($match['name']))"
+                                                <button type="button" wire:click="addUser('{{ $match['id'] }}')"
                                                         class="flex w-full items-center justify-between gap-3 px-3 py-2 text-left text-sm hover:bg-dc-700">
-                                                    <span class="truncate">{{ $match['name'] }} <span class="text-dc-faint">{{ '@'.$match['username'] }}</span></span>
+                                                    <span class="flex min-w-0 items-center gap-2.5">
+                                                        <img src="{{ $match['avatar'] }}" alt="" class="size-7 shrink-0 rounded-full" loading="lazy">
+                                                        <span class="truncate">{{ $match['name'] }} <span class="text-dc-faint">{{ '@'.$match['username'] }}</span></span>
+                                                    </span>
                                                     <x-icon name="plus" class="size-4 shrink-0 text-dc-muted" />
                                                 </button>
                                             </li>
@@ -76,9 +79,10 @@
                                 @endif
                                 @if ($inviteUsers !== [])
                                     <div class="mt-3 flex flex-wrap gap-2">
-                                        @foreach ($inviteUsers as $id => $userName)
-                                            <span wire:key="invite-user-{{ $id }}" class="inline-flex items-center gap-1 rounded-full bg-accent/20 py-1 pr-1 pl-3 text-sm text-dc-header">
-                                                {{ $userName }}
+                                        @foreach ($inviteUsers as $id => $invitee)
+                                            <span wire:key="invite-user-{{ $id }}" class="inline-flex items-center gap-1.5 rounded-full bg-accent/20 py-0.5 pr-1 pl-0.5 text-sm text-dc-header">
+                                                <img src="{{ $invitee['avatar'] }}" alt="" class="size-6 rounded-full" loading="lazy">
+                                                <span class="max-w-40 truncate">{{ $invitee['name'] }}</span>
                                                 <button type="button" wire:click="removeUser('{{ $id }}')" class="rounded-full p-0.5 hover:bg-white/10" aria-label="{{ __('events.remove') }}">
                                                     <x-icon name="close" class="size-3.5" />
                                                 </button>

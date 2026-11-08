@@ -34,6 +34,7 @@ return [
     'message_placeholder' => 'Friday 8 pm, Mario Kart!',
     'send' => 'Send invites',
     'no_members' => 'Pick at least one member or role.',
+    'self_only' => 'You don\'t need to invite yourself, you\'re already in as the organizer.',
     'too_many' => 'That would be :count people, at most :max at once.',
     'invited' => 'Sent :count invites to :name.',
     'invite_failed' => ':count couldn\'t get a message, usually because they turned off direct messages.',

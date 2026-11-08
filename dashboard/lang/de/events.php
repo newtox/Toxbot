@@ -34,6 +34,7 @@ return [
     'message_placeholder' => 'Freitag 20 Uhr, Mario Kart!',
     'send' => 'Einladungen senden',
     'no_members' => 'Wähl mindestens ein Mitglied oder eine Rolle aus.',
+    'self_only' => 'Dich selbst musst du nicht einladen, du bist als Ersteller schon dabei.',
     'too_many' => 'Das wären :count Leute, höchstens :max gehen auf einmal.',
     'invited' => ':count Einladungen zu :name verschickt.',
     'invite_failed' => ':count konnten keine Nachricht bekommen, meist weil sie Direktnachrichten ausgeschaltet haben.',

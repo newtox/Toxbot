@@ -34,6 +34,7 @@ return [
     'message_placeholder' => 'Vendredi 20 h, Mario Kart !',
     'send' => 'Envoyer les invitations',
     'no_members' => 'Choisis au moins un membre ou un rôle.',
+    'self_only' => 'Pas besoin de t’inviter, tu es déjà dedans en tant qu’organisateur.',
     'too_many' => 'Ça ferait :count personnes, au maximum :max à la fois.',
     'invited' => ':count invitations envoyées pour :name.',
     'invite_failed' => ':count n’ont pas pu recevoir le message, souvent parce qu’ils ont désactivé les messages privés.',
