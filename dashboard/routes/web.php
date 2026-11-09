@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AppealController;
 use App\Http\Controllers\DiscordAuthController;
 use App\Http\Controllers\HomeController;
@@ -86,7 +87,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/info/system', [InfoController::class, 'system'])->name('info.system');
 
     Route::middleware(EnsureBotOwner::class)->group(function () {
-        Route::view('/admin', 'admin.reports')->name('admin');
+        Route::get('/admin', [AdminController::class, 'overview'])->name('admin');
+        Route::view('/admin/reports', 'admin.reports')->name('admin.reports');
         Route::view('/admin/backgrounds', 'admin.backgrounds')->name('admin.backgrounds');
         Route::view('/admin/blacklist', 'admin.blacklist')->name('admin.blacklist');
         Route::view('/admin/premium', 'admin.premium')->name('admin.premium');

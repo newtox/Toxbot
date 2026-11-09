@@ -73,7 +73,8 @@ class Navigation
     public static function forAdmin(): array
     {
         return [self::group('admin', __('menu.admin'), [
-            self::item(route('admin'), 'alert', __('admin.reports_title'), request()->routeIs('admin')),
+            self::item(route('admin'), 'servers', __('menu.overview'), request()->routeIs('admin')),
+            self::item(route('admin.reports'), 'alert', __('admin.reports_title'), request()->routeIs('admin.reports')),
             self::item(route('admin.backgrounds'), 'card', __('admin.backgrounds_title'), request()->routeIs('admin.backgrounds')),
             self::item(route('admin.users'), 'users', __('admin.users_page_title'), request()->routeIs('admin.users', 'admin.user')),
             self::item(route('admin.blacklist'), 'lock', __('admin.blacklist_title'), request()->routeIs('admin.blacklist')),

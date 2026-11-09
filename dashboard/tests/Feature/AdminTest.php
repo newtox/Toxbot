@@ -12,6 +12,7 @@ use App\Models\Tag;
 use App\Models\TagReport;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -143,5 +144,24 @@ class AdminTest extends TestCase
     {
         $this->actingAs(DashboardUser::create(['id' => 1234567890123456, 'username' => 'someone']));
         Livewire::test(AdminReports::class)->assertForbidden();
+    }
+
+    public function test_overview_shows_the_numbers_and_links_every_section(): void
+    {
+        config(['services.discord.bot_token' => 'test']);
+        Http::fake(['*/users/@me/guilds*' => Http::response([['id' => '1'], ['id' => '2']])]);
+        $this->actingAs(DashboardUser::create(['id' => (int) self::OWNER, 'username' => 'newtox']));
+        $tag = Tag::create(['name' => 'spam', 'owner' => '77', 'content' => 'x']);
+        TagReport::create(['tag_id' => $tag->id, 'reporter' => '88', 'reason' => 'spam']);
+        BotUser::forDiscordId('77')->forceFill(['commands_used' => 1500])->save();
+
+        $response = $this->get('/admin')->assertOk()
+            ->assertSee(__('admin.overview_open', ['count' => 1]))
+            ->assertSee("1\u{00A0}500", false);
+        foreach (['admin.reports', 'admin.users', 'admin.backgrounds', 'admin.blacklist', 'admin.premium'] as $route) {
+            $response->assertSee(route($route));
+        }
+
+        $this->get('/admin/reports')->assertOk()->assertSee('spam');
     }
 }
