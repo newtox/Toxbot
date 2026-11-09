@@ -2,7 +2,7 @@
 
 return [
     'title' => 'Administration',
-    'intro' => 'Only visible to you as the bot owner.',
+    'intro' => 'Reports, users, shop, blocks and Premium for all of Toxbot.',
     'reports_title' => 'Reported tags',
     'reports_description' => 'Reports from /tag report. Deleted tags disappear on every server.',
     'show_resolved' => 'Show resolved',

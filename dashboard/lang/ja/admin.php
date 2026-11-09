@@ -2,7 +2,7 @@
 
 return [
     'title' => '管理',
-    'intro' => 'ボットのオーナーであるあなたにだけ表示されます。',
+    'intro' => 'Toxbot 全体の報告、ユーザー、ショップ、ブロック、プレミアム。',
     'reports_title' => '報告されたタグ',
     'reports_description' => '/tag report からの報告です。削除したタグは全サーバーから消えます。',
     'show_resolved' => '処理済みを表示',

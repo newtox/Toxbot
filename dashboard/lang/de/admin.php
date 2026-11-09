@@ -2,7 +2,7 @@
 
 return [
     'title' => 'Verwaltung',
-    'intro' => 'Nur für dich als Besitzer des Bots sichtbar.',
+    'intro' => 'Meldungen, Nutzer, Shop, Sperren und Premium für ganz Toxbot.',
     'reports_title' => 'Gemeldete Tags',
     'reports_description' => 'Meldungen über /tag report. Gelöschte Tags verschwinden auf allen Servern.',
     'show_resolved' => 'Erledigte anzeigen',

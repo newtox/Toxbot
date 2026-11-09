@@ -2,7 +2,7 @@
 
 return [
     'title' => '管理',
-    'intro' => '仅机器人所有者可见。',
+    'intro' => '整个 Toxbot 的举报、用户、商店、封禁和高级版。',
     'reports_title' => '被举报的标签',
     'reports_description' => '来自 /tag report 的举报。删除的标签会从所有服务器消失。',
     'show_resolved' => '显示已处理',

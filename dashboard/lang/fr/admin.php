@@ -2,7 +2,7 @@
 
 return [
     'title' => 'Administration',
-    'intro' => 'Visible uniquement par toi, en tant que propriétaire du bot.',
+    'intro' => 'Signalements, utilisateurs, boutique, blocages et Premium pour tout Toxbot.',
     'reports_title' => 'Tags signalés',
     'reports_description' => 'Signalements via /tag report. Les tags supprimés disparaissent partout.',
     'show_resolved' => 'Afficher les traités',

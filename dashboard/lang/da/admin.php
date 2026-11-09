@@ -2,7 +2,7 @@
 
 return [
     'title' => 'Administration',
-    'intro' => 'Kun synlig for dig som bot-ejer.',
+    'intro' => 'Meldinger, brugere, butik, spærringer og premium for hele Toxbot.',
     'reports_title' => 'Rapporterede tags',
     'reports_description' => 'Rapporter fra /tag report. Slettede tags forsvinder på alle servere.',
     'show_resolved' => 'Vis afsluttede',

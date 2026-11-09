@@ -2,7 +2,7 @@
 
 return [
     'title' => '관리',
-    'intro' => '봇 소유자인 나에게만 보입니다.',
+    'intro' => 'Toxbot 전체의 신고, 사용자, 상점, 차단, 프리미엄.',
     'reports_title' => '신고된 태그',
     'reports_description' => '/tag report로 들어온 신고입니다. 삭제한 태그는 모든 서버에서 사라집니다.',
     'show_resolved' => '처리된 항목 표시',
