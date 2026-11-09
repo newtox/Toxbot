@@ -15,6 +15,8 @@ use Illuminate\Support\Str;
 
 class DiscordAuthController extends Controller
 {
+    public const LOGIN_TARGETS = ['profile', 'shop', 'tags', 'leaderboard', 'servers.index'];
+
     public function __construct(
         private readonly Discord $discord,
         private readonly DiscordTokens $tokens,
@@ -24,6 +26,10 @@ class DiscordAuthController extends Controller
     {
         $state = Str::random(40);
         $request->session()->put('discord.oauth_state', $state);
+
+        if (in_array($request->query('to'), self::LOGIN_TARGETS, true)) {
+            $request->session()->put('url.intended', route($request->query('to')));
+        }
 
         return redirect()->away($this->discord->authorizeUrl($state));
     }
@@ -74,11 +80,7 @@ class DiscordAuthController extends Controller
 
     public function logout(Request $request): RedirectResponse
     {
-        if ($user = $request->user()) {
-            $this->tokens->forget($user);
-        }
-
-        Auth::logout();
+        Auth::logoutCurrentDevice();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 

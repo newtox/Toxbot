@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\DashboardUser;
 use Illuminate\Http\Client\RequestException;
+use Illuminate\Support\Facades\Cache;
 
 class DiscordTokens
 {
@@ -28,22 +29,29 @@ class DiscordTokens
             return $user->discord_access_token;
         }
 
-        if (! $user->discord_refresh_token) {
-            $this->forget($user);
-            throw new MissingDiscordToken;
-        }
+        return Cache::lock("discord:user:{$user->id}:refresh", 15)->block(10, function () use ($user) {
+            $user->refresh();
+            if ($user->discord_access_token && $user->discord_token_expires_at?->greaterThan(now()->addHour())) {
+                return $user->discord_access_token;
+            }
 
-        try {
-            $this->store($user, $this->discord->refreshToken($user->discord_refresh_token));
-        } catch (RequestException $e) {
-            if ($e->response->clientError()) {
+            if (! $user->discord_refresh_token) {
                 $this->forget($user);
                 throw new MissingDiscordToken;
             }
-            throw $e;
-        }
 
-        return $user->discord_access_token;
+            try {
+                $this->store($user, $this->discord->refreshToken($user->discord_refresh_token));
+            } catch (RequestException $e) {
+                if ($e->response->clientError()) {
+                    $this->forget($user);
+                    throw new MissingDiscordToken;
+                }
+                throw $e;
+            }
+
+            return $user->discord_access_token;
+        });
     }
 
     public function forget(DashboardUser $user): void

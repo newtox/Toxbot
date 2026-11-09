@@ -125,7 +125,7 @@
                                 {{ __('home.premium_buy') }} <x-icon name="external" class="size-4" />
                             </a>
                         @elseif ($plan === 'items')
-                            <a href="{{ route('shop') }}" class="btn-secondary mt-6">
+                            <a href="{{ Auth::check() ? route('shop') : route('login', ['to' => 'shop']) }}" @guest rel="nofollow" @endguest class="btn-secondary mt-6">
                                 <x-icon name="shop" class="size-4" />{{ __('home.premium_items_link') }}
                             </a>
                         @endif
