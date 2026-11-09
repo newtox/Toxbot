@@ -208,6 +208,7 @@ class CreditsTest extends TestCase
         config(['toxbot.owner_id' => self::USER]);
         $this->get(route('admin.users'))->assertOk()
             ->assertSee(__('admin.active_title'))
+            ->assertSee(route('admin.user', self::ANNA))
             ->assertSeeInOrder(['Anna', "1\u{00A0}234", 'Newtox'])
             ->assertSee(__('admin.active_total', ['count' => "1\u{00A0}241", 'users' => 2]));
     }

@@ -9,18 +9,15 @@ use App\Models\DashboardUser;
 use App\Models\ShopItem;
 use App\Services\Discord;
 use App\Services\Economy;
+use App\Services\GuildMembers;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Locked;
-use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class AdminEconomy extends Component
 {
-    #[Url(as: 'user', except: '')]
-    public string $lookup = '';
-
     #[Locked]
-    public ?string $userId = null;
+    public string $userId;
 
     public string $amount = '';
 
@@ -28,29 +25,16 @@ class AdminEconomy extends Component
 
     public ?string $notice = null;
 
-    public function mount(): void
+    public function mount(string $userId): void
     {
         $this->authorizeOwner();
-        if ($this->lookup !== '') {
-            $this->load();
-        }
-    }
-
-    public function load(): void
-    {
-        $this->authorizeOwner();
-        $this->lookup = trim($this->lookup);
-        $this->validate(['lookup' => ['required', 'regex:/^\d{15,22}$/']], ['lookup.*' => __('admin.blacklist_invalid_id')]);
-
-        $this->userId = $this->lookup;
-        $this->notice = null;
-        $this->reset('amount', 'giveId');
+        abort_unless(preg_match('/^\d{15,22}$/', $userId) === 1, 404);
+        $this->userId = $userId;
     }
 
     public function adjust(Economy $economy): void
     {
         $this->authorizeOwner();
-        abort_if($this->userId === null, 404);
         $this->validate(['amount' => ['required', 'integer', 'not_in:0', 'min:-1000000000', 'max:1000000000']], ['amount.*' => __('admin.users_amount_invalid')]);
 
         $balance = $economy->adjustCredits($this->userId, (int) $this->amount);
@@ -61,7 +45,6 @@ class AdminEconomy extends Component
     public function give(Economy $economy): void
     {
         $this->authorizeOwner();
-        abort_if($this->userId === null, 404);
         $this->validate(['giveId' => ['required', 'integer', 'exists:backgrounds,id']], ['giveId.*' => __('admin.users_pick_item')]);
 
         $item = ShopItem::findOrFail((int) $this->giveId);
@@ -73,7 +56,6 @@ class AdminEconomy extends Component
     public function take(int $id, Economy $economy): void
     {
         $this->authorizeOwner();
-        abort_if($this->userId === null, 404);
 
         $item = ShopItem::findOrFail($id);
         $economy->takeItem($this->userId, $item);
@@ -87,22 +69,24 @@ class AdminEconomy extends Component
 
     public function render(Discord $discord)
     {
-        $data = null;
-        if ($this->userId !== null) {
-            $user = BotUser::query()->find($this->userId);
-            $owned = $user ? $user->items()->orderBy('type')->orderBy('sort')->get() : collect();
-            $dashboard = DashboardUser::query()->find($this->userId);
-            $profile = $dashboard ? null : rescue(fn () => $discord->user($this->userId), null, report: false);
+        $user = BotUser::query()->find($this->userId);
+        $owned = $user ? $user->items()->orderBy('type')->orderBy('sort')->get() : collect();
+        $dashboard = DashboardUser::query()->find($this->userId);
+        $profile = $dashboard ? null : rescue(fn () => $discord->user($this->userId), null, report: false);
 
-            $data = [
-                'name' => $dashboard?->global_name ?: $dashboard?->username ?: ($profile['global_name'] ?? $profile['username'] ?? null),
-                'credits' => (int) $user?->credits,
-                'owned' => $owned,
-                'equipped' => collect(ShopItem::TYPES)->map(fn (string $type) => $user?->equippedId($type))->filter()->all(),
-                'available' => ShopItem::query()->whereNotIn('id', $owned->pluck('id'))->orderBy('type')->orderBy('sort')->get()->groupBy('type'),
-                'history' => CreditTransaction::query()->where('user', $this->userId)->latest('id')->limit(10)->get(),
-            ];
-        }
+        $card = GuildMembers::userCard($dashboard
+            ? ['id' => $this->userId, 'username' => $dashboard->username, 'global_name' => $dashboard->global_name, 'avatar' => $dashboard->avatar]
+            : ['id' => $this->userId, 'username' => $profile['username'] ?? '', 'global_name' => $profile['global_name'] ?? null, 'avatar' => $profile['avatar'] ?? null]);
+
+        $data = [
+            'avatar' => $card['avatar'],
+            'name' => $dashboard?->global_name ?: $dashboard?->username ?: ($profile['global_name'] ?? $profile['username'] ?? null),
+            'credits' => (int) $user?->credits,
+            'owned' => $owned,
+            'equipped' => collect(ShopItem::TYPES)->map(fn (string $type) => $user?->equippedId($type))->filter()->all(),
+            'available' => ShopItem::query()->whereNotIn('id', $owned->pluck('id'))->orderBy('type')->orderBy('sort')->get()->groupBy('type'),
+            'history' => CreditTransaction::query()->where('user', $this->userId)->latest('id')->limit(10)->get(),
+        ];
 
         return view('livewire.admin-economy', ['data' => $data]);
     }
