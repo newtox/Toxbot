@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Navigation
 {
-    public const USER_ROUTES = ['profile', 'profile.*', 'shop', 'tags'];
+    public const USER_ROUTES = ['profile', 'profile.*', 'shop', 'tags', 'leaderboard'];
 
     public const INFO_ROUTES = ['info', 'info.*'];
 
@@ -56,6 +56,7 @@ class Navigation
             self::item(route('profile.premium'), 'heart', __('menu.premium'), request()->routeIs('profile.premium')),
             self::item(route('shop'), 'shop', __('menu.shop'), request()->routeIs('shop')),
             self::item(route('tags'), 'tag', __('menu.tags'), request()->routeIs('tags')),
+            self::item(route('leaderboard'), 'level', __('menu.leaderboard'), request()->routeIs('leaderboard')),
             self::item(route('profile.data'), 'database', __('menu.section_data'), request()->routeIs('profile.data')),
         ], collapsible: false)];
     }

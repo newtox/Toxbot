@@ -33,4 +33,9 @@ return [
     'slots_buy' => '+:count pladser',
     'slots_bought' => 'Købt! Du har nu :count tag-pladser mere.',
     'slots_max' => 'Du har allerede det højeste antal tag-pladser.',
+    'transfer' => 'Overdrag',
+    'transfer_hint' => 'Hvem skal have :name? Personen bliver ny ejer og kan redigere og slette tagget.',
+    'transfer_confirm' => 'Vil du virkelig give :name væk? Du kan ikke få det tilbage selv.',
+    'transfer_full' => ':user har ikke flere ledige tag-pladser.',
+    'transferred' => ':name tilhører nu :user.',
 ];

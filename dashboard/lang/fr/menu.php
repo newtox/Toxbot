@@ -40,4 +40,5 @@ return [
     'info' => 'Infos',
     'section_data' => 'Données',
     'section_automod' => 'AutoMod',
+    'leaderboard' => 'Classement',
 ];

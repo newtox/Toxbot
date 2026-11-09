@@ -40,4 +40,5 @@ return [
     'info' => '信息',
     'section_data' => '数据',
     'section_automod' => 'AutoMod',
+    'leaderboard' => '排行榜',
 ];

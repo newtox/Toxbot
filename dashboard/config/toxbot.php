@@ -19,6 +19,11 @@ return [
 
     'currency' => env('TOXBOT_CURRENCY', 'Credits'),
 
+    'daily' => [
+        'reward' => (int) env('TOXBOT_DAILY_REWARD', 100),
+        'streak_bonus' => (int) env('TOXBOT_DAILY_STREAK_BONUS', 10),
+    ],
+
     'tags' => [
         'free_limit' => (int) env('TOXBOT_TAG_FREE_LIMIT', 10),
         'slot_size' => (int) env('TOXBOT_TAG_SLOT_SIZE', 5),

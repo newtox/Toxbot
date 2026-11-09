@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\Guild;
 use App\Models\GuildEvent;
 use App\Models\GuildEventInvite;
-use Illuminate\Support\Str;
 use Throwable;
 
 class GuildEvents
@@ -63,7 +62,10 @@ class GuildEvents
 
     private const READ_ACCESS = self::VIEW | self::HISTORY | self::REACT;
 
-    public function __construct(private readonly Discord $discord) {}
+    public function __construct(
+        private readonly Discord $discord,
+        private readonly GuildMembers $members,
+    ) {}
 
     public function create(string $guildId, string $name, string $creatorId, ?string $teamRoleId, int $voiceCount = 1): GuildEvent
     {
@@ -144,7 +146,7 @@ class GuildEvents
 
         return collect($this->discord->guildMembers($event->guild))
             ->filter(fn ($member) => in_array($event->role_id, $member['roles'] ?? [], true))
-            ->map(fn ($member) => self::card($event->guild, $member))
+            ->map(fn ($member) => GuildMembers::card($event->guild, $member))
             ->sortBy('name', SORT_NATURAL | SORT_FLAG_CASE)
             ->values()
             ->all();
@@ -157,7 +159,7 @@ class GuildEvents
         foreach ($event->invites()->orderBy('updated_at')->get() as $invite) {
             $member = $members->get($invite->user_id);
             if ($member && ! in_array($invite->user_id, $participantIds, true) && isset($grouped[$invite->status])) {
-                $grouped[$invite->status][] = self::card($event->guild, $member);
+                $grouped[$invite->status][] = GuildMembers::card($event->guild, $member);
             }
         }
 
@@ -166,132 +168,15 @@ class GuildEvents
 
     public function searchMembers(string $guildId, string $query, array $exclude = [], ?string $roleId = null, array $statuses = [], int $limit = 8): array
     {
-        $needle = self::normalize($query);
-        if (mb_strlen(str_replace(' ', '', $needle)) < 2) {
-            return [];
-        }
-
-        return collect($this->discord->guildMembers($guildId))
-            ->reject(fn ($member) => ($member['user']['bot'] ?? false)
-                || in_array((string) $member['user']['id'], $exclude, true))
-            ->map(function ($member) use ($needle) {
-                $names = array_filter([$member['nick'] ?? null, $member['user']['global_name'] ?? null, $member['user']['username']]);
-                $scores = array_filter(array_map(fn ($name) => self::matchScore(self::normalize($name), $needle), $names), fn ($score) => $score !== null);
-
-                return ['member' => $member, 'rank' => $scores === [] ? null : min($scores)];
-            })
-            ->filter(fn ($entry) => $entry['rank'] !== null)
-            ->sortBy([['rank', 'asc'], [fn ($a, $b) => strnatcasecmp(self::displayName($a['member']), self::displayName($b['member']))]])
-            ->take($limit)
-            ->map(fn ($entry) => [
-                ...self::card($guildId, $entry['member']),
-                'status' => $roleId && in_array($roleId, $entry['member']['roles'] ?? [], true)
-                    ? 'joined'
-                    : ($statuses[(string) $entry['member']['user']['id']] ?? null),
-            ])
-            ->values()
-            ->all();
-    }
-
-    private static function normalize(string $text): string
-    {
-        return trim(preg_replace('/[^a-z0-9]+/', ' ', strtolower(Str::ascii($text))));
-    }
-
-    private static function matchScore(string $name, string $query): ?int
-    {
-        if ($name === '') {
-            return null;
-        }
-        if (str_starts_with($name, $query)) {
-            return 0;
-        }
-        if (str_contains($name, $query)) {
-            return 1;
-        }
-
-        $words = explode(' ', $name);
-        $words[] = str_replace(' ', '', $name);
-        $total = 10;
-        foreach (explode(' ', $query) as $token) {
-            $best = null;
-            foreach ($words as $word) {
-                $score = self::tokenScore($word, $token);
-                if ($score !== null && ($best === null || $score < $best)) {
-                    $best = $score;
-                }
-            }
-            if ($best === null) {
-                return null;
-            }
-            $total += $best;
-        }
-
-        return $total;
-    }
-
-    private static function tokenScore(string $word, string $token): ?int
-    {
-        $length = strlen($token);
-        if (str_starts_with($word, $token)) {
-            return 0;
-        }
-        if (str_contains($word, $token)) {
-            return 1;
-        }
-        if ($length >= 2 && $word[0] === $token[0] && $length >= strlen($word) * 0.6 && self::isSubsequence($token, $word)) {
-            return 2;
-        }
-
-        $allowed = $length >= 6 ? 2 : ($length >= 4 ? 1 : 0);
-        if ($allowed > 0 && min(levenshtein($token, $word), levenshtein($token, substr($word, 0, $length))) <= $allowed) {
-            return 3;
-        }
-
-        return null;
-    }
-
-    private static function isSubsequence(string $needle, string $haystack): bool
-    {
-        $position = 0;
-        foreach (str_split($needle) as $char) {
-            $position = strpos($haystack, $char, $position);
-            if ($position === false) {
-                return false;
-            }
-            $position++;
-        }
-
-        return true;
+        return array_map(fn ($member) => [
+            ...$member,
+            'status' => $roleId && in_array($roleId, $member['roles'], true) ? 'joined' : ($statuses[$member['id']] ?? null),
+        ], $this->members->search($guildId, $query, $exclude, $limit));
     }
 
     public function member(string $guildId, string $userId): ?array
     {
-        $member = collect($this->discord->guildMembers($guildId))
-            ->first(fn ($member) => (string) $member['user']['id'] === $userId && ! ($member['user']['bot'] ?? false));
-
-        return $member ? [...self::card($guildId, $member), 'roles' => $member['roles'] ?? []] : null;
-    }
-
-    public static function card(string $guildId, array $member): array
-    {
-        $user = $member['user'];
-
-        return [
-            'id' => (string) $user['id'],
-            'name' => self::displayName($member),
-            'username' => $user['username'],
-            'avatar' => match (true) {
-                isset($member['avatar']) => "https://cdn.discordapp.com/guilds/{$guildId}/users/{$user['id']}/avatars/{$member['avatar']}.png?size=64",
-                isset($user['avatar']) => "https://cdn.discordapp.com/avatars/{$user['id']}/{$user['avatar']}.png?size=64",
-                default => 'https://cdn.discordapp.com/embed/avatars/'.(((int) $user['id'] >> 22) % 6).'.png',
-            },
-        ];
-    }
-
-    private static function displayName(array $member): string
-    {
-        return $member['nick'] ?? $member['user']['global_name'] ?? $member['user']['username'];
+        return $this->members->member($guildId, $userId);
     }
 
     public function inviteTargets(string $guildId, array $userIds, array $roleIds): array

@@ -33,4 +33,9 @@ return [
     'slots_buy' => '+:count emplacements',
     'slots_bought' => 'Acheté ! Tu as maintenant :count emplacements de tags de plus.',
     'slots_max' => 'Tu as déjà le nombre maximal d\'emplacements de tags.',
+    'transfer' => 'Transférer',
+    'transfer_hint' => 'Qui doit recevoir :name ? Cette personne en devient propriétaire et peut le modifier ou le supprimer.',
+    'transfer_confirm' => 'Vraiment donner :name ? Tu ne pourras pas le récupérer toi-même.',
+    'transfer_full' => ':user n’a plus d’emplacement de tag libre.',
+    'transferred' => ':name appartient maintenant à :user.',
 ];

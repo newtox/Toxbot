@@ -40,4 +40,5 @@ return [
     'info' => 'Info',
     'section_data' => 'Data',
     'section_automod' => 'AutoMod',
+    'leaderboard' => 'Leaderboard',
 ];

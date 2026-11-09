@@ -33,4 +33,9 @@ return [
     'slots_buy' => '+:count espacios',
     'slots_bought' => '¡Comprado! Ahora tienes :count espacios de tags más.',
     'slots_max' => 'Ya tienes el número máximo de espacios de tags.',
+    'transfer' => 'Transferir',
+    'transfer_hint' => '¿Quién recibe :name? Será el nuevo dueño y podrá editar y borrar el tag.',
+    'transfer_confirm' => '¿Seguro que quieres dar :name? No podrás recuperarlo tú mismo.',
+    'transfer_full' => ':user no tiene huecos de tag libres.',
+    'transferred' => ':name ahora es de :user.',
 ];

@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Livewire\Concerns\PicksMember;
 use App\Models\BlacklistEntry;
 use App\Models\BotUser;
 use App\Models\Tag;
@@ -15,6 +16,14 @@ use RuntimeException;
 
 class MyTags extends Component
 {
+    use PicksMember;
+
+    #[Locked]
+    public ?int $transferringId = null;
+
+    #[Locked]
+    public ?string $transferMessage = null;
+
     #[Locked]
     public ?int $editingId = null;
 
@@ -128,6 +137,44 @@ class MyTags extends Component
         }
     }
 
+    public function startTransfer(int $id): void
+    {
+        $this->resetForm();
+        $this->transferringId = $this->ownTag($id)->id;
+        $this->transferMessage = null;
+        $this->resetPick();
+    }
+
+    public function cancelTransfer(): void
+    {
+        $this->transferringId = null;
+        $this->resetPick();
+        $this->resetValidation();
+    }
+
+    public function transfer(Economy $economy): void
+    {
+        $tag = $this->ownTag((int) $this->transferringId);
+        $targetId = $this->pickedMemberId();
+        if ($targetId === null) {
+            $this->addError('picked', __('credits.pick_recipient'));
+
+            return;
+        }
+
+        $name = $this->picked['name'];
+        if (Tag::query()->where('owner', $targetId)->count() >= $economy->tagLimit($targetId)) {
+            $this->addError('picked', __('tags.transfer_full', ['user' => $name]));
+
+            return;
+        }
+
+        $tag->update(['owner' => $targetId]);
+        $this->transferMessage = __('tags.transferred', ['name' => $tag->name, 'user' => $name]);
+        $this->transferringId = null;
+        $this->resetPick();
+    }
+
     private function ownTag(int $id): Tag
     {
         return Tag::query()->where('owner', (string) Auth::id())->findOrFail($id);
@@ -135,7 +182,7 @@ class MyTags extends Component
 
     private function resetForm(): void
     {
-        $this->reset(['editingId', 'formOpen', 'name', 'content', 'embed', 'embedColor', 'embedImage']);
+        $this->reset(['editingId', 'formOpen', 'name', 'content', 'embed', 'embedColor', 'embedImage', 'transferringId']);
         $this->resetValidation();
     }
 
@@ -159,6 +206,7 @@ class MyTags extends Component
         $limit = $economy->tagLimit($userId);
 
         return view('livewire.my-tags', [
+            ...($this->transferringId !== null ? $this->pickerData() : ['pickGuilds' => [], 'pickMatches' => []]),
             'tags' => Tag::query()->where('owner', $userId)->orderBy('name')->get(),
             'limit' => $limit,
             'canBuySlots' => $limit < (int) config('toxbot.tags.max_limit'),

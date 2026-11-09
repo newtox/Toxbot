@@ -28,6 +28,8 @@ x-dashboard-env: &dashboard-env
   TOXBOT_SUPPORT_INVITE: ${SUPPORT_INVITE:-}
   TOPGG_WEBHOOK_SECRET: ${TOPGG_WEBHOOK_SECRET:-}
   TOPGG_VOTE_REWARD: ${TOPGG_VOTE_REWARD:-200}
+  TOXBOT_DAILY_REWARD: ${DAILY_REWARD:-100}
+  TOXBOT_DAILY_STREAK_BONUS: ${DAILY_STREAK_BONUS:-10}
   STREAM_WEBHOOK_SECRET: ${STREAM_WEBHOOK_SECRET:-}
   TWITCH_CLIENT_ID: ${TWITCH_CLIENT_ID:-}
   TWITCH_CLIENT_SECRET: ${TWITCH_CLIENT_SECRET:-}
@@ -53,6 +55,8 @@ services:
       currency: ${CURRENCY:-Credits}
       support_invite: ${SUPPORT_INVITE:-}
       vote_reward: ${TOPGG_VOTE_REWARD:-200}
+      daily_reward: ${DAILY_REWARD:-100}
+      daily_streak_bonus: ${DAILY_STREAK_BONUS:-10}
       tag_report_channel: ${TAG_REPORT_CHANNEL:-}
       log_channel: ${LOG_CHANNEL:-}
     extra_hosts:

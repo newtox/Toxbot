@@ -40,4 +40,5 @@ return [
     'info' => 'जानकारी',
     'section_data' => 'डेटा',
     'section_automod' => 'AutoMod',
+    'leaderboard' => 'लीडरबोर्ड',
 ];

@@ -33,4 +33,9 @@ return [
     'slots_buy' => '+:count slots',
     'slots_bought' => 'Bought! You now have :count more tag slots.',
     'slots_max' => 'You already have the maximum number of tag slots.',
+    'transfer' => 'Transfer',
+    'transfer_hint' => 'Who should get :name? They become the new owner and can edit and delete the tag.',
+    'transfer_confirm' => 'Really give :name away? You can’t take it back yourself.',
+    'transfer_full' => ':user has no free tag slots left.',
+    'transferred' => ':name now belongs to :user.',
 ];

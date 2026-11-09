@@ -40,4 +40,5 @@ return [
     'info' => 'Инфо',
     'section_data' => 'Данные',
     'section_automod' => 'AutoMod',
+    'leaderboard' => 'Рейтинг',
 ];

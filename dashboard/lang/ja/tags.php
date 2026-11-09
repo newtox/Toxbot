@@ -33,4 +33,9 @@ return [
     'slots_buy' => '+:count 枠',
     'slots_bought' => '購入しました！タグ枠が :count 個増えました。',
     'slots_max' => 'タグ枠はすでに最大です。',
+    'transfer' => '譲渡',
+    'transfer_hint' => ':name を誰に渡しますか？新しい所有者はタグを編集・削除できます。',
+    'transfer_confirm' => '本当に :name を譲りますか？自分では取り戻せません。',
+    'transfer_full' => ':user の空きタグ枠がありません。',
+    'transferred' => ':name は :user のものになりました。',
 ];

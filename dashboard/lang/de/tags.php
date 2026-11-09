@@ -33,4 +33,9 @@ return [
     'slots_buy' => '+:count Plätze',
     'slots_bought' => 'Gekauft! Du hast jetzt :count Tag-Plätze mehr.',
     'slots_max' => 'Du hast schon die höchste Anzahl an Tag-Plätzen.',
+    'transfer' => 'Übergeben',
+    'transfer_hint' => 'Wer soll :name bekommen? Die Person wird neuer Besitzer und kann den Tag bearbeiten und löschen.',
+    'transfer_confirm' => ':name wirklich abgeben? Zurückholen kannst du ihn nicht selbst.',
+    'transfer_full' => ':user hat keine freien Tag-Plätze mehr.',
+    'transferred' => ':name gehört jetzt :user.',
 ];

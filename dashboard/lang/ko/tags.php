@@ -33,4 +33,9 @@ return [
     'slots_buy' => '+:count 슬롯',
     'slots_bought' => '구매했습니다! 태그 슬롯이 :count개 늘었습니다.',
     'slots_max' => '태그 슬롯이 이미 최대입니다.',
+    'transfer' => '넘기기',
+    'transfer_hint' => ':name을(를) 누구에게 줄까요? 새 소유자가 태그를 수정하고 삭제할 수 있습니다.',
+    'transfer_confirm' => '정말 :name을(를) 넘길까요? 직접 되돌릴 수 없습니다.',
+    'transfer_full' => ':user님은 남은 태그 슬롯이 없습니다.',
+    'transferred' => ':name은(는) 이제 :user님의 것입니다.',
 ];

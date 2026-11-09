@@ -40,4 +40,5 @@ return [
     'info' => '情報',
     'section_data' => 'データ',
     'section_automod' => 'AutoMod',
+    'leaderboard' => 'ランキング',
 ];

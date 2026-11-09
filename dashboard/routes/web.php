@@ -77,6 +77,7 @@ Route::middleware('auth')->group(function () {
     Route::view('/profile/data', 'profile.data')->name('profile.data');
     Route::view('/shop', 'shop')->name('shop');
     Route::view('/tags', 'tags')->name('tags');
+    Route::view('/leaderboard', 'leaderboard')->name('leaderboard');
 
     Route::get('/info', [InfoController::class, 'general'])->name('info');
     Route::get('/info/commands', [InfoController::class, 'commands'])->name('info.commands');

@@ -29,6 +29,10 @@
         </div>
     @endif
 
+    @if ($transferMessage)
+        <div role="status" class="rounded-lg border-l-4 border-accent bg-dc-800 px-4 py-3 text-sm">{{ $transferMessage }}</div>
+    @endif
+
     @if ($formOpen)
         <form novalidate wire:submit="save" class="card space-y-5">
             <h2 class="text-lg font-semibold text-dc-header">
@@ -108,9 +112,21 @@
                         <div class="text-sm text-dc-faint tabular-nums">{{ __('tags.uses', ['count' => number_format($tag->uses, 0, '', ' ')]) }}</div>
                         <div class="ml-auto flex shrink-0 gap-2">
                             <button type="button" wire:click="edit({{ $tag->id }})" class="btn-secondary px-3 py-1.5">{{ __('tags.edit') }}</button>
+                            <button type="button" wire:click="startTransfer({{ $tag->id }})" class="btn-secondary px-3 py-1.5">{{ __('tags.transfer') }}</button>
                             <button type="button" wire:click="delete({{ $tag->id }})" data-confirm="{{ __('tags.confirm_delete', ['name' => $tag->name]) }}"
                                     class="btn px-3 py-1.5 text-dc-red hover:bg-dc-red hover:text-white">{{ __('tags.delete') }}</button>
                         </div>
+                        @if ($transferringId === $tag->id)
+                            <form novalidate wire:submit="transfer" class="w-full space-y-3 rounded-lg bg-dc-900 p-4">
+                                <p class="text-sm text-dc-muted">{{ __('tags.transfer_hint', ['name' => $tag->name]) }}</p>
+                                @include('livewire.partials.member-picker', ['pickerId' => 'transfer'])
+                                <div class="flex justify-end gap-2">
+                                    <button type="button" wire:click="cancelTransfer" class="btn-ghost">{{ __('tags.cancel') }}</button>
+                                    <button type="submit" class="btn-primary" @disabled($picked === [])
+                                            data-confirm="{{ __('tags.transfer_confirm', ['name' => $tag->name]) }}" data-confirm-tone="primary">{{ __('tags.transfer') }}</button>
+                                </div>
+                            </form>
+                        @endif
                     </li>
                 @endforeach
             </ul>

@@ -40,4 +40,5 @@ return [
     'info' => '정보',
     'section_data' => '데이터',
     'section_automod' => 'AutoMod',
+    'leaderboard' => '순위표',
 ];

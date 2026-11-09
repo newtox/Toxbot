@@ -12,6 +12,8 @@ use RuntimeException;
 
 class Economy
 {
+    private const DAY = 86400;
+
     public function addCredits(string $userId, int $amount, string $reason, ?string $reference = null): bool
     {
         try {
@@ -116,6 +118,80 @@ class Economy
 
             return $balance + $change;
         });
+    }
+
+    public function claimDaily(string $userId): array
+    {
+        return DB::transaction(function () use ($userId) {
+            $user = $this->lockedUser($userId);
+            $since = $user->daily_at ? (int) $user->daily_at->diffInSeconds(now(), true) : null;
+
+            if ($since !== null && $since < self::DAY) {
+                return ['claimed' => false, 'wait' => self::DAY - $since];
+            }
+
+            $streak = $since !== null && $since < 2 * self::DAY ? (int) $user->daily_streak + 1 : 1;
+            $amount = (int) config('toxbot.daily.reward') + min(max($streak - 1, 0), 10) * (int) config('toxbot.daily.streak_bonus');
+
+            $user->daily_at = now();
+            $user->daily_streak = $streak;
+            $user->credits = (int) $user->credits + $amount;
+            $user->save();
+            CreditTransaction::create(['user' => $userId, 'amount' => $amount, 'reason' => 'daily']);
+
+            return ['claimed' => true, 'amount' => $amount, 'streak' => $streak];
+        });
+    }
+
+    public function creditsOverview(string $userId, int $history = 15): array
+    {
+        $user = BotUser::query()->find($userId);
+        $since = $user?->daily_at ? (int) $user->daily_at->diffInSeconds(now(), true) : null;
+
+        return [
+            'credits' => (int) $user?->credits,
+            'streak' => $since !== null && $since < 2 * self::DAY ? (int) $user->daily_streak : 0,
+            'next_daily' => $since !== null && $since < self::DAY ? $user->daily_at->copy()->addSeconds(self::DAY) : null,
+            'history' => CreditTransaction::query()->where('user', $userId)->orderByDesc('id')->limit($history)->get(),
+        ];
+    }
+
+    public function transferCredits(string $fromId, string $toId, int $amount): int
+    {
+        if ($amount < 1) {
+            throw new RuntimeException('credits.amount_invalid');
+        }
+        if ($fromId === $toId) {
+            throw new RuntimeException('credits.pay_self');
+        }
+
+        return DB::transaction(function () use ($fromId, $toId, $amount) {
+            $locked = collect([$fromId, $toId])->sort(SORT_STRING)->mapWithKeys(fn ($id) => [$id => $this->lockedUser($id)]);
+            $sender = $locked[$fromId];
+            $receiver = $locked[$toId];
+            if ((int) $sender->credits < $amount) {
+                throw new RuntimeException('shop.not_enough');
+            }
+
+            $sender->credits = (int) $sender->credits - $amount;
+            $sender->save();
+            $receiver->credits = (int) $receiver->credits + $amount;
+            $receiver->save();
+            CreditTransaction::create(['user' => $fromId, 'amount' => -$amount, 'reason' => 'transfer_out', 'reference' => null]);
+            CreditTransaction::create(['user' => $toId, 'amount' => $amount, 'reason' => 'transfer_in', 'reference' => null]);
+
+            return (int) $sender->credits;
+        });
+    }
+
+    private function lockedUser(string $userId): BotUser
+    {
+        $user = BotUser::forDiscordId($userId);
+        if (! $user->exists) {
+            $user->save();
+        }
+
+        return BotUser::query()->whereKey($userId)->lockForUpdate()->first();
     }
 
     public function giveItem(string $userId, ShopItem $item): bool

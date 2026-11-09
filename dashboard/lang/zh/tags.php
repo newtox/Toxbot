@@ -33,4 +33,9 @@ return [
     'slots_buy' => '+:count 个位置',
     'slots_bought' => '购买成功！你的标签位置增加了 :count 个。',
     'slots_max' => '你的标签位置已达上限。',
+    'transfer' => '转让',
+    'transfer_hint' => '要把 :name 转给谁？对方将成为新所有者，可以编辑和删除该标签。',
+    'transfer_confirm' => '确定要转让 :name 吗？你无法自行收回。',
+    'transfer_full' => ':user 已没有空余的标签位。',
+    'transferred' => ':name 现在归 :user 所有。',
 ];
