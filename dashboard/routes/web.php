@@ -91,6 +91,5 @@ Route::middleware('auth')->group(function () {
         Route::view('/admin/blacklist', 'admin.blacklist')->name('admin.blacklist');
         Route::view('/admin/premium', 'admin.premium')->name('admin.premium');
         Route::view('/admin/users', 'admin.users')->name('admin.users');
-        Route::view('/admin/commands', 'admin.commands')->name('admin.commands');
     });
 });

@@ -203,12 +203,13 @@ class CreditsTest extends TestCase
         BotUser::forDiscordId(self::ANNA)->forceFill(['commands_used' => 1234])->save();
         BotUser::forDiscordId(self::USER)->forceFill(['commands_used' => 7])->save();
 
-        $this->get(route('admin.commands'))->assertForbidden();
+        $this->get(route('admin.users'))->assertForbidden();
 
         config(['toxbot.owner_id' => self::USER]);
-        $this->get(route('admin.commands'))->assertOk()
+        $this->get(route('admin.users'))->assertOk()
+            ->assertSee(__('admin.active_title'))
             ->assertSeeInOrder(['Anna', "1\u{00A0}234", 'Newtox'])
-            ->assertSee(__('admin.commands_total', ['count' => "1\u{00A0}241", 'users' => 2]));
+            ->assertSee(__('admin.active_total', ['count' => "1\u{00A0}241", 'users' => 2]));
     }
 
     public function test_guests_from_the_start_page_return_to_the_shop_after_login(): void

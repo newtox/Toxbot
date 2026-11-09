@@ -10,7 +10,7 @@ use App\Services\GuildMembers;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-class AdminCommands extends Component
+class AdminActiveUsers extends Component
 {
     public const SIZE = 50;
 
@@ -50,7 +50,7 @@ class AdminCommands extends Component
             ];
         });
 
-        return view('livewire.admin-commands', [
+        return view('livewire.admin-active-users', [
             'entries' => $entries,
             'total' => (int) BotUser::query()->sum('commands_used'),
             'users' => BotUser::query()->where('commands_used', '>', 0)->count(),

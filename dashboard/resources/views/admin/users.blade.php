@@ -5,5 +5,6 @@
             <p class="mt-1 text-dc-muted">{{ __('admin.intro') }}</p>
         </div>
         <livewire:admin-economy />
+        <livewire:admin-active-users />
     </div>
 </x-layouts.app>
