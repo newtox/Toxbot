@@ -2,11 +2,11 @@
 
 return [
     'title' => 'Clasificación',
-    'description' => '¿Quién tiene más XP en tus servidores? Solo cuentan los servidores con niveles activados.',
-    'scope' => 'Servidor',
+    'description' => 'Los miembros de este servidor con más XP.',
     'empty' => 'Aquí nadie ha ganado XP todavía.',
     'level' => 'Nivel :level',
     'own_rank' => 'Estás en el puesto :rank con :xp XP.',
     'unranked' => 'Aún no tienes XP aquí.',
-    'no_servers' => 'Ninguno de tus servidores tiene los niveles activados. Un admin puede activarlos en el dashboard, en Niveles.',
+    'disabled' => 'Los niveles están desactivados en este servidor, así que no hay clasificación.',
+    'enable' => 'Activar niveles',
 ];

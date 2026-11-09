@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Navigation
 {
-    public const USER_ROUTES = ['profile', 'profile.*', 'shop', 'tags', 'leaderboard'];
+    public const USER_ROUTES = ['profile', 'profile.*', 'shop', 'tags'];
 
     public const INFO_ROUTES = ['info', 'info.*'];
 
@@ -22,6 +22,7 @@ class Navigation
         $server = array_filter([
             $manage ? self::item(route('servers.show', $id), 'servers', __('menu.overview'), request()->routeIs('servers.show')) : null,
             self::item(route('servers.members', $id), 'users', __('moderation.members_title'), request()->routeIs('servers.members', 'servers.member')),
+            self::item(route('servers.leaderboard', $id), 'level', __('menu.leaderboard'), request()->routeIs('servers.leaderboard')),
             self::item(route('servers.settings', [$id, GuildSettings::STARBOARD]), 'star', __('menu.section_starboard'), self::isSection(GuildSettings::STARBOARD)),
             ($guild['moderate'] ?? $manage) ? self::item(route('servers.modlog', $id), 'list', __('moderation.modlog_title'), request()->routeIs('servers.modlog')) : null,
             ($guild['tickets'] ?? $manage) ? self::item(route('servers.tickets', $id), 'history', __('tickets.history_title'), request()->routeIs('servers.tickets', 'servers.ticket')) : null,
@@ -56,7 +57,6 @@ class Navigation
             self::item(route('profile.premium'), 'heart', __('menu.premium'), request()->routeIs('profile.premium')),
             self::item(route('shop'), 'shop', __('menu.shop'), request()->routeIs('shop')),
             self::item(route('tags'), 'tag', __('menu.tags'), request()->routeIs('tags')),
-            self::item(route('leaderboard'), 'level', __('menu.leaderboard'), request()->routeIs('leaderboard')),
             self::item(route('profile.data'), 'database', __('menu.section_data'), request()->routeIs('profile.data')),
         ], collapsible: false)];
     }

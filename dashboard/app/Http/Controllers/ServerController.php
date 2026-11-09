@@ -273,6 +273,13 @@ class ServerController extends Controller
         return view('servers.members', ['guild' => $found, 'guilds' => $guilds]);
     }
 
+    public function leaderboard(Request $request, string $guild): View
+    {
+        [$found, $guilds] = $this->resolve($request, $guild, null);
+
+        return view('servers.leaderboard', ['guild' => $found, 'guilds' => $guilds]);
+    }
+
     public function member(Request $request, string $guild, string $user): View
     {
         [$found, $guilds] = $this->resolve($request, $guild, null);

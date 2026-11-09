@@ -174,31 +174,28 @@ class CreditsTest extends TestCase
         $this->assertSame(self::USER, $tag->fresh()->owner);
     }
 
-    public function test_leaderboard_only_shows_servers_with_levels_turned_on(): void
+    public function test_server_leaderboard_needs_levels_and_lives_in_the_server_menu(): void
     {
-        Livewire::test(Leaderboard::class)->assertSee(__('leaderboard.no_servers'));
+        $this->get(route('servers.leaderboard', self::GUILD))->assertOk()->assertSee(__('leaderboard.disabled'));
+        Livewire::test(Leaderboard::class, ['guildId' => self::GUILD])
+            ->assertSee(__('leaderboard.disabled'))
+            ->assertDontSee(__('leaderboard.enable'));
 
         Guild::create(['id' => self::GUILD, 'levels_enabled' => true]);
         MemberLevel::query()->insert([
             ['guild' => self::GUILD, 'user' => self::ANNA, 'xp' => 900],
             ['guild' => self::GUILD, 'user' => '900000000000000001', 'xp' => 500],
             ['guild' => self::GUILD, 'user' => self::USER, 'xp' => 50],
-            ['guild' => '222222222222222222', 'user' => self::ANNA, 'xp' => 70],
+            ['guild' => '222222222222222222', 'user' => '700000000000000001', 'xp' => 70],
         ]);
 
-        $this->get(route('leaderboard'))->assertOk()->assertSee(__('leaderboard.title'));
-
-        Livewire::test(Leaderboard::class)
-            ->assertSet('scope', self::GUILD)
+        $this->get(route('servers.leaderboard', self::GUILD))->assertOk()
+            ->assertSee(route('servers.leaderboard', self::GUILD))
             ->assertSeeInOrder(['Anna', 'Fremder', 'Newtox'])
-            ->assertSee('https://cdn.discordapp.com/avatars/'.self::ANNA.'/abc.png?size=64', false)
-            ->set('scope', '222222222222222222')
-            ->assertSet('scope', self::GUILD);
-
-        Guild::query()->whereKey(self::GUILD)->update(['levels_enabled' => false]);
-        Livewire::test(Leaderboard::class)
-            ->assertSee(__('leaderboard.no_servers'))
-            ->assertDontSee('Anna');
+            ->assertSee('https://cdn.discordapp.com/avatars/'.self::ANNA.'/abc.png?size=64', false);
+        $this->get(route('profile'))->assertDontSee(route('servers.leaderboard', self::GUILD));
+        $this->get('/servers/222222222222222222/leaderboard')->assertForbidden();
+        $this->get('/leaderboard')->assertNotFound();
     }
 
     public function test_bot_owner_sees_who_runs_the_most_commands(): void

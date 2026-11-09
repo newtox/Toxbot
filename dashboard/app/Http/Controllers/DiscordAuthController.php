@@ -15,7 +15,7 @@ use Illuminate\Support\Str;
 
 class DiscordAuthController extends Controller
 {
-    public const LOGIN_TARGETS = ['profile', 'shop', 'tags', 'leaderboard', 'servers.index'];
+    public const LOGIN_TARGETS = ['profile', 'shop', 'tags', 'servers.index'];
 
     public function __construct(
         private readonly Discord $discord,
