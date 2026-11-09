@@ -143,6 +143,20 @@ class CreditsTest extends TestCase
         $this->assertSame(self::ANNA, $tag->fresh()->owner);
     }
 
+    public function test_editing_and_handing_over_are_never_open_at_the_same_time(): void
+    {
+        $tag = Tag::create(['name' => 'faq', 'owner' => self::USER, 'content' => 'Hallo']);
+
+        Livewire::test(MyTags::class)
+            ->call('startTransfer', $tag->id)
+            ->call('edit', $tag->id)
+            ->assertSet('transferringId', null)
+            ->assertSet('formOpen', true)
+            ->call('startTransfer', $tag->id)
+            ->assertSet('formOpen', false)
+            ->assertSet('transferringId', $tag->id);
+    }
+
     public function test_tags_are_not_handed_to_someone_without_free_slots(): void
     {
         config(['toxbot.tags.free_limit' => 1]);

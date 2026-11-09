@@ -2,7 +2,7 @@
     @if ($pickGuilds === [])
         <p class="text-sm text-dc-muted">{{ __('credits.no_servers') }}</p>
     @else
-        <div class="grid gap-3 sm:grid-cols-[minmax(0,14rem)_1fr]">
+        <div class="grid gap-3 sm:grid-cols-3">
             <div>
                 <label class="label" for="{{ $pickerId }}-guild">{{ __('credits.server') }}</label>
                 <select id="{{ $pickerId }}-guild" wire:model.live="pickGuild" class="input">
@@ -11,7 +11,7 @@
                     @endforeach
                 </select>
             </div>
-            <div>
+            <div class="sm:col-span-2">
                 <label class="label" for="{{ $pickerId }}-search">{{ __('credits.recipient') }}</label>
                 @if ($picked !== [])
                     <div class="flex items-center gap-2.5 rounded-lg bg-dc-900 px-3 py-2">

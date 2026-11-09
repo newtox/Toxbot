@@ -56,6 +56,7 @@ class MyTags extends Component
         $tag = $this->ownTag($id);
 
         $this->resetValidation();
+        $this->cancelTransfer();
         $this->editingId = $tag->id;
         $this->name = $tag->name;
         $this->content = $tag->content;
