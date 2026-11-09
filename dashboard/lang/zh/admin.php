@@ -96,4 +96,9 @@ return [
     'sku_invalid' => 'SKU ID 由 15 到 22 位数字组成。',
     'sku_taken' => '这个 SKU 已属于另一个物品。',
     'reason_tag_slots' => '标签位置',
+    'commands_title' => '命令',
+    'commands_intro' => '谁最常用 Toxbot？按执行的命令数排序。',
+    'commands_total' => '共 :users 位用户执行了 :count 条命令。',
+    'commands_count' => ':count 条',
+    'commands_empty' => '还没有人使用过命令。',
 ];

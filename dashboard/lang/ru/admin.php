@@ -96,4 +96,9 @@ return [
     'sku_invalid' => 'ID SKU состоит из 15–22 цифр.',
     'sku_taken' => 'Эта SKU уже принадлежит другому предмету.',
     'reason_tag_slots' => 'Места для тегов',
+    'commands_title' => 'Команды',
+    'commands_intro' => 'Кто больше всех пользуется Toxbot? По числу выполненных команд.',
+    'commands_total' => 'Всего :count команд от :users пользователей.',
+    'commands_count' => ':count команд',
+    'commands_empty' => 'Ещё никто не использовал команды.',
 ];

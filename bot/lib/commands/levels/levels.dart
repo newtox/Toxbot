@@ -8,20 +8,12 @@ import 'package:toxbot/utils/database.dart';
 import 'package:toxbot/utils/functions.dart';
 import 'package:toxbot/utils/reply.dart';
 
-const _scopeConverter = SimpleConverter.fixed(
-  elements: ['Global', 'Server'],
-  stringify: stringifyOption,
-);
-
-Future<String> _leaderboardName(
-    ChatContext context, String userId, bool global) async {
+Future<String> _leaderboardName(ChatContext context, String userId) async {
   final id = Snowflake.parse(userId);
   String? name;
   try {
-    if (!global) {
-      final member = await context.guild!.members.get(id);
-      name = member.nick ?? member.user?.globalName ?? member.user?.username;
-    }
+    final member = await context.guild!.members.get(id);
+    name = member.nick ?? member.user?.globalName ?? member.user?.username;
   } catch (_) {}
   try {
     if (name == null) {
@@ -713,60 +705,41 @@ final bar = ChatCommand(
 
 final leaderboard = ChatCommand(
   'leaderboard',
-  'Show the members with the most XP.',
+  'Show the members of this server with the most XP.',
   localizedDescriptions: {
-    Locale.de: 'Die Mitglieder mit den meisten XP anzeigen.',
-    Locale.enUs: 'Show the members with the most XP.',
-    Locale.da: 'Vis medlemmerne med mest XP.',
-    Locale.esEs: 'Mostrar los miembros con más XP.',
-    Locale.fr: 'Afficher les membres avec le plus d\'XP.',
-    Locale.ru: 'Показать участников с наибольшим XP.',
-    Locale.hi: 'सबसे ज़्यादा XP वाले सदस्य दिखाएँ।',
-    Locale.zhCn: '显示经验值最多的成员。',
-    Locale.ja: 'XP が最も多いメンバーを表示します。',
-    Locale.ko: 'XP가 가장 많은 멤버를 표시합니다.',
+    Locale.de: 'Die Mitglieder dieses Servers mit den meisten XP anzeigen.',
+    Locale.enUs: 'Show the members of this server with the most XP.',
+    Locale.da: 'Vis medlemmerne på denne server med mest XP.',
+    Locale.esEs: 'Mostrar los miembros de este servidor con más XP.',
+    Locale.fr: 'Afficher les membres de ce serveur avec le plus d\'XP.',
+    Locale.ru: 'Показать участников этого сервера с наибольшим XP.',
+    Locale.hi: 'इस सर्वर के सबसे ज़्यादा XP वाले सदस्य दिखाएँ।',
+    Locale.zhCn: '显示此服务器经验值最多的成员。',
+    Locale.ja: 'このサーバーで XP が最も多いメンバーを表示します。',
+    Locale.ko: '이 서버에서 XP가 가장 많은 멤버를 표시합니다.',
   },
-  (
-    ChatContext context, [
-    @Description('Global or only this server. Defaults to this server.', {
-      Locale.de: 'Global oder nur dieser Server. Standardmäßig dieser Server.',
-      Locale.enUs: 'Global or only this server. Defaults to this server.',
-      Locale.da: 'Global eller kun denne server. Standard er denne server.',
-      Locale.esEs: 'Global o solo este servidor. Por defecto, este servidor.',
-      Locale.fr: 'Global ou seulement ce serveur. Par défaut, ce serveur.',
-      Locale.ru: 'Глобально или только этот сервер. По умолчанию этот сервер.',
-      Locale.hi: 'ग्लोबल या सिर्फ़ यह सर्वर। डिफ़ॉल्ट रूप से यह सर्वर।',
-      Locale.zhCn: '全局或仅此服务器。默认是此服务器。',
-      Locale.ja: '全体かこのサーバーのみ。既定はこのサーバー。',
-      Locale.ko: '전체 또는 이 서버만. 기본값은 이 서버.',
-    })
-    @UseConverter(_scopeConverter)
-    String? scope,
-  ]) async {
+  (ChatContext context) async {
     final user = context.user;
     try {
-      final enabled = context.guild != null &&
-          await withConnection((connection) => economy.serverLevelsEnabled(
-              connection, context.guild!.id.toString()));
-      if (scope == 'Server' && !enabled) {
-        await replyError(
-            context,
-            context.guild == null
-                ? 'leaderboard_no_server'
-                : 'leaderboard_disabled');
+      final guild = context.guild;
+      if (guild == null) {
+        await replyError(context, 'leaderboard_no_server');
         return;
       }
-      final global = scope == 'Global' || !enabled;
+      final guildId = guild.id.toString();
+      final enabled = await withConnection(
+          (connection) => economy.serverLevelsEnabled(connection, guildId));
+      if (!enabled) {
+        await replyError(context, 'leaderboard_disabled');
+        return;
+      }
       final rows = await withConnection(
-        (connection) => economy.leaderboard(
-          connection,
-          guildId: global ? null : context.guild!.id.toString(),
-        ),
+        (connection) => economy.leaderboard(connection, guildId: guildId),
       );
 
       final medals = ['🥇', '🥈', '🥉'];
       final names = await Future.wait(
-          rows.map((row) => _leaderboardName(context, row.$1, global)));
+          rows.map((row) => _leaderboardName(context, row.$1)));
       final lines = <String>[];
       for (final (place, (userId, xp)) in rows.indexed) {
         final prefix = place < 3 ? medals[place] : '`#${place + 1}`';
@@ -782,10 +755,7 @@ final leaderboard = ChatCommand(
           embeds: [
             EmbedBuilder(
               color: await getUserColorFromDatabase(user.id),
-              title: await getString(
-                user,
-                global ? 'leaderboard_global' : 'leaderboard_server',
-              ),
+              title: await getString(user, 'leaderboard_server'),
               description: lines.isEmpty
                   ? await getString(user, 'leaderboard_empty')
                   : lines.join('\n'),

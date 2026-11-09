@@ -4,18 +4,21 @@
             <h1 class="text-2xl font-bold text-dc-header">{{ __('leaderboard.title') }}</h1>
             <p class="mt-1 text-dc-muted">{{ __('leaderboard.description') }}</p>
         </div>
+        @if ($guilds !== [])
         <div class="w-full sm:w-64">
             <label class="label" for="leaderboard-scope">{{ __('leaderboard.scope') }}</label>
             <select id="leaderboard-scope" wire:model.live="scope" class="input">
-                <option value="">{{ __('leaderboard.global') }}</option>
                 @foreach ($guilds as $option)
                     <option value="{{ $option['id'] }}">{{ $option['name'] }}</option>
                 @endforeach
             </select>
         </div>
+        @endif
     </div>
 
-    @if ($entries->isEmpty())
+    @if (! $guild)
+        <div class="card text-center text-dc-muted">{{ __('leaderboard.no_servers') }}</div>
+    @elseif ($entries->isEmpty())
         <div class="card text-center text-dc-muted">{{ __('leaderboard.empty') }}</div>
     @else
         <ol class="divide-y divide-black/25 overflow-hidden rounded-xl bg-dc-800" wire:loading.class="opacity-60" wire:target="scope">
@@ -40,7 +43,8 @@
         </ol>
     @endif
 
-    @if ($ownRank && $ownRank > $entries->count())
+    @if (! $guild)
+    @elseif ($ownRank && $ownRank > $entries->count())
         <p class="text-sm text-dc-muted">{{ __('leaderboard.own_rank', ['rank' => $ownRank, 'xp' => number_format($ownXp, 0, '', "\u{00A0}")]) }}</p>
     @elseif (! $ownRank)
         <p class="text-sm text-dc-muted">{{ __('leaderboard.unranked') }}</p>

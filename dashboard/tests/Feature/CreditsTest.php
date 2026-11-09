@@ -174,34 +174,44 @@ class CreditsTest extends TestCase
         $this->assertSame(self::USER, $tag->fresh()->owner);
     }
 
-    public function test_leaderboard_shows_names_avatars_and_the_own_rank(): void
+    public function test_leaderboard_only_shows_servers_with_levels_turned_on(): void
     {
-        BotUser::forDiscordId(self::ANNA)->forceFill(['xp' => 900])->save();
-        BotUser::forDiscordId('900000000000000001')->forceFill(['xp' => 500])->save();
-        BotUser::forDiscordId(self::USER)->forceFill(['xp' => 100])->save();
+        Livewire::test(Leaderboard::class)->assertSee(__('leaderboard.no_servers'));
+
+        Guild::create(['id' => self::GUILD, 'levels_enabled' => true]);
         MemberLevel::query()->insert([
+            ['guild' => self::GUILD, 'user' => self::ANNA, 'xp' => 900],
+            ['guild' => self::GUILD, 'user' => '900000000000000001', 'xp' => 500],
             ['guild' => self::GUILD, 'user' => self::USER, 'xp' => 50],
             ['guild' => '222222222222222222', 'user' => self::ANNA, 'xp' => 70],
         ]);
 
-        Guild::create(['id' => self::GUILD, 'levels_enabled' => true]);
-        Guild::create(['id' => '333333333333333333', 'levels_enabled' => false]);
         $this->get(route('leaderboard'))->assertOk()->assertSee(__('leaderboard.title'));
 
         Livewire::test(Leaderboard::class)
+            ->assertSet('scope', self::GUILD)
             ->assertSeeInOrder(['Anna', 'Fremder', 'Newtox'])
             ->assertSee('https://cdn.discordapp.com/avatars/'.self::ANNA.'/abc.png?size=64', false)
-            ->set('scope', self::GUILD)
-            ->assertSee('Newtox')
-            ->assertDontSee('Anna')
             ->set('scope', '222222222222222222')
-            ->assertSet('scope', '');
+            ->assertSet('scope', self::GUILD);
 
         Guild::query()->whereKey(self::GUILD)->update(['levels_enabled' => false]);
         Livewire::test(Leaderboard::class)
-            ->assertDontSee('Toxic Lounge')
-            ->set('scope', self::GUILD)
-            ->assertSet('scope', '');
+            ->assertSee(__('leaderboard.no_servers'))
+            ->assertDontSee('Anna');
+    }
+
+    public function test_bot_owner_sees_who_runs_the_most_commands(): void
+    {
+        BotUser::forDiscordId(self::ANNA)->forceFill(['commands_used' => 1234])->save();
+        BotUser::forDiscordId(self::USER)->forceFill(['commands_used' => 7])->save();
+
+        $this->get(route('admin.commands'))->assertForbidden();
+
+        config(['toxbot.owner_id' => self::USER]);
+        $this->get(route('admin.commands'))->assertOk()
+            ->assertSeeInOrder(['Anna', "1\u{00A0}234", 'Newtox'])
+            ->assertSee(__('admin.commands_total', ['count' => "1\u{00A0}241", 'users' => 2]));
     }
 
     public function test_guests_from_the_start_page_return_to_the_shop_after_login(): void

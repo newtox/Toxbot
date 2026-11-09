@@ -336,16 +336,12 @@ Future<void> unequip(
 
 Future<List<(String, int)>> leaderboard(
   MySqlConnection connection, {
-  String? guildId,
+  required String guildId,
 }) async {
-  final rows = guildId == null
-      ? await connection.query(
-          'SELECT `id` AS `user`, `xp` FROM `users` WHERE `xp` > 0 ORDER BY `xp` DESC, `id` LIMIT 10;',
-        )
-      : await connection.query(
-          'SELECT `user`, `xp` FROM `member_levels` WHERE `guild` = ? AND `xp` > 0 ORDER BY `xp` DESC, `user` LIMIT 10;',
-          [guildId],
-        );
+  final rows = await connection.query(
+    'SELECT `user`, `xp` FROM `member_levels` WHERE `guild` = ? AND `xp` > 0 ORDER BY `xp` DESC, `user` LIMIT 10;',
+    [guildId],
+  );
   return rows.map((row) => (row['user'].toString(), row['xp'] as int)).toList();
 }
 

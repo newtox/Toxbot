@@ -96,4 +96,9 @@ return [
     'sku_invalid' => 'A SKU ID has 15 to 22 digits.',
     'sku_taken' => 'This SKU already belongs to another item.',
     'reason_tag_slots' => 'Tag slots',
+    'commands_title' => 'Commands',
+    'commands_intro' => 'Who uses Toxbot the most? Sorted by the number of commands run.',
+    'commands_total' => 'In total :count commands from :users users.',
+    'commands_count' => ':count commands',
+    'commands_empty' => 'Nobody has used a command yet.',
 ];

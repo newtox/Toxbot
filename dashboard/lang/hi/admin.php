@@ -96,4 +96,9 @@ return [
     'sku_invalid' => 'SKU ID में 15 से 22 अंक होते हैं।',
     'sku_taken' => 'यह SKU पहले से किसी दूसरे आइटम की है।',
     'reason_tag_slots' => 'टैग स्लॉट',
+    'commands_title' => 'कमांड',
+    'commands_intro' => 'Toxbot का सबसे ज़्यादा इस्तेमाल कौन करता है? चलाए गए कमांड की संख्या के हिसाब से।',
+    'commands_total' => 'कुल :users यूज़र्स से :count कमांड।',
+    'commands_count' => ':count कमांड',
+    'commands_empty' => 'अभी तक किसी ने कोई कमांड इस्तेमाल नहीं किया।',
 ];

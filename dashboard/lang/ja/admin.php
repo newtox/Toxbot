@@ -96,4 +96,9 @@ return [
     'sku_invalid' => 'SKU ID は 15〜22 桁の数字です。',
     'sku_taken' => 'この SKU はすでに別のアイテムに使われています。',
     'reason_tag_slots' => 'タグ枠',
+    'commands_title' => 'コマンド',
+    'commands_intro' => 'Toxbot を一番使っているのは誰？実行したコマンド数順です。',
+    'commands_total' => '合計 :users 人から :count 件のコマンド。',
+    'commands_count' => ':count 件',
+    'commands_empty' => 'まだ誰もコマンドを使っていません。',
 ];
