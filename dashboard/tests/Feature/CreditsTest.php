@@ -8,8 +8,10 @@ use App\Livewire\ProfileCredits;
 use App\Models\BotUser;
 use App\Models\CreditTransaction;
 use App\Models\DashboardUser;
+use App\Models\Guild;
 use App\Models\MemberLevel;
 use App\Models\Tag;
+use App\Services\ProfileCardData;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
@@ -182,6 +184,8 @@ class CreditsTest extends TestCase
             ['guild' => '222222222222222222', 'user' => self::ANNA, 'xp' => 70],
         ]);
 
+        Guild::create(['id' => self::GUILD, 'levels_enabled' => true]);
+        Guild::create(['id' => '333333333333333333', 'levels_enabled' => false]);
         $this->get(route('leaderboard'))->assertOk()->assertSee(__('leaderboard.title'));
 
         Livewire::test(Leaderboard::class)
@@ -191,6 +195,12 @@ class CreditsTest extends TestCase
             ->assertSee('Newtox')
             ->assertDontSee('Anna')
             ->set('scope', '222222222222222222')
+            ->assertSet('scope', '');
+
+        Guild::query()->whereKey(self::GUILD)->update(['levels_enabled' => false]);
+        Livewire::test(Leaderboard::class)
+            ->assertDontSee('Toxic Lounge')
+            ->set('scope', self::GUILD)
             ->assertSet('scope', '');
     }
 
@@ -217,5 +227,18 @@ class CreditsTest extends TestCase
         $this->assertSame('token', $user->discord_access_token);
         $this->assertSame($token, $user->remember_token);
         $this->assertGuest();
+    }
+
+    public function test_server_levels_switch_and_card_only_show_the_server_level_when_on(): void
+    {
+        BotUser::forDiscordId(self::USER)->forceFill(['xp' => 100])->save();
+        MemberLevel::query()->insert(['guild' => self::GUILD, 'user' => self::USER, 'xp' => 5000]);
+        Guild::create(['id' => self::GUILD]);
+
+        $data = app(ProfileCardData::class);
+        $this->assertArrayNotHasKey('Server Level', $data->build(self::USER, self::GUILD)['stats']);
+
+        Guild::query()->whereKey(self::GUILD)->update(['levels_enabled' => true]);
+        $this->assertSame('9', $data->build(self::USER, self::GUILD)['stats']['Server Level']);
     }
 }

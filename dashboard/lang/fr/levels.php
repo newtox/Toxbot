@@ -9,7 +9,7 @@ return [
     'rank' => 'Rang global',
     'credits' => 'Crédits',
     'commands' => 'Commandes',
-    'earn_hint' => 'Tu gagnes de l\'XP avec les messages et les commandes, et des crédits avec /daily, les votes et les montées de niveau.',
+    'earn_hint' => 'L’XP globale vient des commandes, l’XP du serveur des messages et commandes sur les serveurs où les niveaux sont activés. Les crédits viennent de /daily, des votes et des montées de niveau.',
     'equip_background' => 'Fond',
     'equip_frame' => 'Cadre d\'avatar',
     'equip_bar' => 'Barre de progression',

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\BotUser;
+use App\Models\Guild;
 use App\Models\MemberLevel;
 use App\Models\ShopItem;
 use App\Support\Level;
@@ -32,7 +33,7 @@ class ProfileCardData
 
         $stats = ['Global Rank' => '#'.$this->number($user->globalRank())];
 
-        if ($guildId) {
+        if ($guildId && Guild::query()->whereKey($guildId)->value('levels_enabled')) {
             $member = MemberLevel::query()->where('guild', $guildId)->where('user', $userId)->first();
             $stats['Server Level'] = $this->number(Level::fromXp((int) $member?->xp)['level']);
         }

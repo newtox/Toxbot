@@ -102,7 +102,22 @@
     @endif
 
     @if ($section === 'levels')
-    <section id="levels" class="card scroll-mt-20">
+    <section class="card">
+        <div class="flex items-start gap-4">
+            <div class="flex-1">
+                <h2 class="text-lg font-semibold text-dc-header">{{ __('guild.levels_title') }}</h2>
+                <p class="text-sm text-dc-muted">{{ __('guild.levels_description') }}</p>
+            </div>
+            <label class="relative mt-1 inline-flex cursor-pointer items-center">
+                <input type="checkbox" wire:model="levelsEnabled" class="peer sr-only">
+                <span class="h-6 w-10 rounded-full bg-dc-400 transition-colors peer-checked:bg-accent peer-focus-visible:ring-2 peer-focus-visible:ring-accent-fg peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-dc-800"></span>
+                <span class="absolute top-0.5 left-0.5 size-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-4"></span>
+                <span class="sr-only">{{ __('guild.enable', ['name' => __('guild.levels_title')]) }}</span>
+            </label>
+        </div>
+    </section>
+
+    <section id="levels" class="card scroll-mt-20" x-show="$wire.levelsEnabled" x-collapse.duration.200ms>
         <div class="flex items-start gap-4">
             <div class="flex-1">
                 <h2 class="text-lg font-semibold text-dc-header">{{ __('guild.levelup_title') }}</h2>
@@ -143,7 +158,10 @@
             </span>
         </label>
 
-        <label class="mt-3 flex cursor-pointer items-start gap-3 rounded-lg bg-dc-900 p-3">
+    </section>
+
+    <section class="card">
+        <label class="flex cursor-pointer items-start gap-3 rounded-lg bg-dc-900 p-3">
             <input type="checkbox" wire:model="slotsEnabled" class="mt-1 size-4 shrink-0 accent-[var(--color-accent)]">
             <span>
                 <span class="block font-medium text-dc-header">{{ __('guild.slots_title') }}</span>

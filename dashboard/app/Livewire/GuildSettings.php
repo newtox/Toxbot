@@ -76,6 +76,8 @@ class GuildSettings extends Component
 
     public bool $tagsEnabled = true;
 
+    public bool $levelsEnabled = false;
+
     public bool $levelupEnabled = false;
 
     public ?string $levelupChannel = null;
@@ -225,6 +227,7 @@ class GuildSettings extends Component
         $this->language = $row->language ?? config('app.locales.'.app()->getLocale().'.bot');
 
         $this->tagsEnabled = (bool) $row->tags_enabled;
+        $this->levelsEnabled = (bool) $row->levels_enabled;
         $this->levelupEnabled = (bool) $row->levelup_enabled;
         $this->levelupChannel = $row->levelup_channel;
         $this->levelupDm = (bool) $row->levelup_dm;
@@ -476,6 +479,7 @@ class GuildSettings extends Component
                 'language' => $this->language,
             ],
             'levels' => [
+                'levels_enabled' => $this->levelsEnabled,
                 'levelup_enabled' => $this->levelupEnabled,
                 'levelup_channel' => $this->levelupChannel ?: null,
                 'levelup_dm' => $this->levelupDm,

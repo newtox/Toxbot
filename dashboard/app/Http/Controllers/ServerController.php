@@ -88,9 +88,9 @@ class ServerController extends Controller
                 [
                     'section' => 'levels',
                     'icon' => 'level',
-                    'title' => __('guild.levelup_title'),
-                    'description' => __('guild.levelup_description'),
-                    'active' => (bool) $row->levelup_enabled || (bool) $row->levelup_dm,
+                    'title' => __('guild.levels_title'),
+                    'description' => __('guild.levels_description'),
+                    'active' => (bool) $row->levels_enabled,
                 ],
                 [
                     'section' => 'streams',

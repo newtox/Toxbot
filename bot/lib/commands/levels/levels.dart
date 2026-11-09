@@ -87,13 +87,16 @@ final profile = ChatCommand(
         return;
       }
 
-      final stats = await withConnection(
-        (connection) => economy.profileStats(
+      final stats = await withConnection((connection) async {
+        final guildId = context.guild?.id.toString();
+        final server = guildId != null &&
+            await economy.serverLevelsEnabled(connection, guildId);
+        return economy.profileStats(
           connection,
           who.id.toString(),
-          guildId: context.guild?.id.toString(),
-        ),
-      );
+          guildId: server ? guildId : null,
+        );
+      });
       final progress = levelFromXp(stats.xp);
       await context.respond(
         MessageBuilder(
@@ -110,7 +113,7 @@ final profile = ChatCommand(
                       '${progress.level} (${formatNumber(progress.current)} / ${formatNumber(progress.needed)} XP)',
                   isInline: true,
                 ),
-                if (context.guild != null)
+                if (stats.serverXp != null)
                   EmbedFieldBuilder(
                     name: await getString(user, 'profile_server_level'),
                     value: levelFromXp(stats.serverXp ?? 0).level.toString(),
@@ -742,7 +745,18 @@ final leaderboard = ChatCommand(
   ]) async {
     final user = context.user;
     try {
-      final global = scope == 'Global' || context.guild == null;
+      final enabled = context.guild != null &&
+          await withConnection((connection) => economy.serverLevelsEnabled(
+              connection, context.guild!.id.toString()));
+      if (scope == 'Server' && !enabled) {
+        await replyError(
+            context,
+            context.guild == null
+                ? 'leaderboard_no_server'
+                : 'leaderboard_disabled');
+        return;
+      }
+      final global = scope == 'Global' || !enabled;
       final rows = await withConnection(
         (connection) => economy.leaderboard(
           connection,

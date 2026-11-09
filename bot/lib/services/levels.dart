@@ -108,6 +108,7 @@ String formatCredits(int value) => '${formatNumber(value)}\u00a0$currency';
 Future<void> giveXp(
   NyxxGateway client, {
   required User user,
+  required bool global,
   Snowflake? guildId,
   Snowflake? channelId,
 }) async {
@@ -116,12 +117,16 @@ Future<void> giveXp(
   try {
     await withConnection((connection) async {
       final userId = user.id.toString();
+      final server = guildId != null &&
+          await economy.serverLevelsEnabled(connection, guildId.toString());
+      if (!global && !server) return;
       final amount = xpMin + _random.nextInt(max(1, xpMax - xpMin + 1));
 
       final result = await economy.applyXp(
         connection,
         userId,
-        guildId: guildId?.toString(),
+        guildId: server ? guildId.toString() : null,
+        global: global,
         amount: amount,
         cooldown: xpCooldown,
         levelUpReward: levelUpReward,
@@ -157,6 +162,7 @@ Future<void> countCommand(NyxxGateway client, CommandContext context) async {
   await giveXp(
     client,
     user: context.user,
+    global: true,
     guildId: context.guild?.id,
     channelId: context.channel.id,
   );
@@ -279,6 +285,7 @@ void setupMessageXpHandler(NyxxGateway client) {
     await giveXp(
       client,
       user: author,
+      global: false,
       guildId: event.guildId,
       channelId: event.message.channelId,
     );

@@ -9,7 +9,7 @@ return [
     'rank' => '글로벌 순위',
     'credits' => '크레딧',
     'commands' => '명령어',
-    'earn_hint' => '메시지와 명령어로 XP를, /daily·투표·레벨업으로 크레딧을 받습니다.',
+    'earn_hint' => '전체 XP는 명령어로, 서버 XP는 레벨이 켜진 서버에서 메시지와 명령어로 얻습니다. 크레딧은 /daily, 투표, 레벨업으로 받습니다.',
     'equip_background' => '배경',
     'equip_frame' => '아바타 테두리',
     'equip_bar' => '진행 막대',

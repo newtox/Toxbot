@@ -24,7 +24,7 @@ class Guild extends Model
 
     protected $fillable = [
         'id', 'welcome_channel', 'bye_channel', 'welcome_msg', 'bye_msg', 'autorole',
-        'tags_enabled', 'levelup_enabled', 'levelup_channel',
+        'tags_enabled', 'levels_enabled', 'levelup_enabled', 'levelup_channel',
         'notify', 'stream', 'stream_msg', 'stream_video_msg', 'live_role', 'live_role_required',
         'modlog_channel', 'mod_dm',
         'verify_enabled', 'verify_role', 'verify_channel', 'verify_message_id',
@@ -62,6 +62,7 @@ class Guild extends Model
 
     protected $attributes = [
         'tags_enabled' => true,
+        'levels_enabled' => false,
         'levelup_enabled' => false,
         'levelup_dm' => false,
         'slots_enabled' => true,
@@ -91,6 +92,7 @@ class Guild extends Model
     {
         return [
             'tags_enabled' => 'boolean',
+            'levels_enabled' => 'boolean',
             'levelup_enabled' => 'boolean',
             'levelup_dm' => 'boolean',
             'slots_enabled' => 'boolean',

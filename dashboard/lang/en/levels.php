@@ -9,7 +9,7 @@ return [
     'rank' => 'Global rank',
     'credits' => 'Credits',
     'commands' => 'Commands',
-    'earn_hint' => 'You get XP for messages and commands, credits for /daily, votes and level-ups.',
+    'earn_hint' => 'Global XP comes from commands, server XP from messages and commands on servers with levels turned on. Credits come from /daily, votes and level-ups.',
     'equip_background' => 'Background',
     'equip_frame' => 'Avatar frame',
     'equip_bar' => 'Progress bar',

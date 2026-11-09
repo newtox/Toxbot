@@ -37,6 +37,8 @@ return [
     'message_max' => 'Discord는 최대 :max자까지 허용합니다.',
     'channel_invalid' => '이 채널이 더 이상 없거나 Toxbot이 메시지를 쓸 수 없습니다.',
     'role_invalid' => 'Toxbot이 이 역할을 부여할 수 없습니다(Toxbot의 최고 역할보다 위에 있음).',
+    'levels_title' => '서버 레벨',
+    'levels_description' => '멤버는 여기서 메시지와 명령어로 XP를 얻고 서버 레벨과 서버 순위표를 갖게 됩니다. 전체 레벨은 이와 별개로 명령어로만 오릅니다.',
     'levelup_title' => '레벨업 메시지',
     'levelup_description' => '이 서버에서 누군가 레벨업하면 Toxbot이 축하합니다.',
     'levelup_same_channel' => '멤버가 작성한 채널',

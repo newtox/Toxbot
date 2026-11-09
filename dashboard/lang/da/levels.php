@@ -9,7 +9,7 @@ return [
     'rank' => 'Global rang',
     'credits' => 'Credits',
     'commands' => 'Kommandoer',
-    'earn_hint' => 'Du får XP for beskeder og kommandoer, credits for /daily, stemmer og level-ups.',
+    'earn_hint' => 'Globale XP får du for kommandoer, server-XP for beskeder og kommandoer på servere med level slået til. Credits får du for /daily, stemmer og level-ups.',
     'equip_background' => 'Baggrund',
     'equip_frame' => 'Avatarramme',
     'equip_bar' => 'Statuslinje',

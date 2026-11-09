@@ -14,7 +14,7 @@ return [
     'features_title' => 'Tout dans un seul bot',
     'features_text' => 'Toxbot couvre ce dont une communauté active a besoin tout en restant simple à configurer.',
     'f_levels_t' => 'Niveaux & classements',
-    'f_levels_d' => 'De l\'XP pour les messages et les commandes, un niveau global et un par serveur, plus /leaderboard et des messages de niveau.',
+    'f_levels_d' => 'Un niveau global pour les commandes et, si tu veux, un niveau par serveur pour les messages et commandes, avec /leaderboard et messages de montée de niveau.',
     'f_credits_t' => 'Crédits & boutique',
     'f_credits_d' => 'Récompenses quotidiennes, crédits pour les niveaux et les votes Top.gg, et fonds pour ta carte de profil.',
     'f_profile_t' => 'Cartes de profil',

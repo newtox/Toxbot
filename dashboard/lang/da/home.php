@@ -14,7 +14,7 @@ return [
     'features_title' => 'Alt i én bot',
     'features_text' => 'Toxbot dækker det, et aktivt fællesskab har brug for, og er nem at sætte op.',
     'f_levels_t' => 'Levels & ranglister',
-    'f_levels_d' => 'XP for beskeder og kommandoer, et globalt level og et pr. server, plus /leaderboard og level-up-beskeder.',
+    'f_levels_d' => 'Et globalt level for kommandoer og, hvis du vil, et eget level pr. server for beskeder og kommandoer, med /leaderboard og level-up-beskeder.',
     'f_credits_t' => 'Credits & butik',
     'f_credits_d' => 'Daglige belønninger, credits for level-ups og Top.gg-stemmer og baggrunde til dit profilkort.',
     'f_profile_t' => 'Profilkort',

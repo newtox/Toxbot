@@ -37,6 +37,8 @@ return [
     'message_max' => 'Discord erlaubt höchstens :max Zeichen.',
     'channel_invalid' => 'Diesen Kanal gibt es nicht mehr oder Toxbot kann nicht hineinschreiben.',
     'role_invalid' => 'Diese Rolle kann Toxbot nicht vergeben (liegt über Toxbots höchster Rolle).',
+    'levels_title' => 'Server-Level',
+    'levels_description' => 'Mitglieder sammeln hier XP für Nachrichten und Befehle und bekommen ein eigenes Level mit Server-Rangliste. Das globale Level wächst unabhängig davon nur durch Befehle.',
     'levelup_title' => 'Level-up-Nachrichten',
     'levelup_description' => 'Toxbot gratuliert, wenn jemand auf diesem Server ein neues Level erreicht.',
     'levelup_same_channel' => 'Kanal, in dem geschrieben wurde',

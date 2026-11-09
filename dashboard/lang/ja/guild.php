@@ -37,6 +37,8 @@ return [
     'message_max' => 'Discord では最大 :max 文字までです。',
     'channel_invalid' => 'このチャンネルは存在しないか、Toxbot が書き込めません。',
     'role_invalid' => 'Toxbot はこのロールを付与できません（Toxbot の最上位ロールより上にあります）。',
+    'levels_title' => 'サーバーレベル',
+    'levels_description' => 'メンバーはここでメッセージとコマンドで XP を獲得し、サーバー独自のレベルとランキングを持てます。グローバルレベルはこれとは別に、コマンドでのみ上がります。',
     'levelup_title' => 'レベルアップ通知',
     'levelup_description' => 'このサーバーで誰かがレベルアップするとToxbotがお祝いします。',
     'levelup_same_channel' => 'メンバーが書き込んだチャンネル',

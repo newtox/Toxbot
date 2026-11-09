@@ -81,12 +81,12 @@ class GuildSettingsTest extends TestCase
     public function test_overview_and_section_pages(): void
     {
         $this->login();
-        Guild::create(['id' => self::GUILD, 'levelup_enabled' => true]);
+        Guild::create(['id' => self::GUILD, 'levels_enabled' => true]);
 
         $this->get('/servers/'.self::GUILD)
             ->assertOk()
             ->assertSee(route('servers.settings', [self::GUILD, 'streams']))
-            ->assertSee(__('guild.levelup_title'));
+            ->assertSee(__('guild.levels_title'));
 
         $this->get('/servers/'.self::GUILD.'/liverole')->assertOk()->assertSee(__('streams.live_role_hint'));
         $this->get('/servers/'.self::GUILD.'/streams')->assertOk()->assertDontSee(__('streams.live_role_hint'));

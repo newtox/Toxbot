@@ -55,31 +55,44 @@ Future<XpResult> applyXp(
   MySqlConnection connection,
   String userId, {
   String? guildId,
+  required bool global,
   required int amount,
   required int cooldown,
   required int levelUpReward,
 }) async {
   await ensureUser(connection, userId);
 
-  final global = await connection.query(
-    'UPDATE `users` SET `xp` = `xp` + ?, `xp_at` = UTC_TIMESTAMP() '
-    'WHERE `id` = ? AND (`xp_at` IS NULL OR `xp_at` <= UTC_TIMESTAMP() - INTERVAL ? SECOND);',
-    [amount, userId, cooldown],
-  );
-
   final levelUps = <int>[];
-  final gotGlobal = (global.affectedRows ?? 0) > 0;
+  var gotGlobal = false;
+  if (global) {
+    final updated = await connection.query(
+      'UPDATE `users` SET `xp` = `xp` + ?, `xp_at` = UTC_TIMESTAMP() '
+      'WHERE `id` = ? AND (`xp_at` IS NULL OR `xp_at` <= UTC_TIMESTAMP() - INTERVAL ? SECOND);',
+      [amount, userId, cooldown],
+    );
+    gotGlobal = (updated.affectedRows ?? 0) > 0;
+  }
   if (gotGlobal) {
     final rows = await connection.query(
-      'SELECT `xp` FROM `users` WHERE `id` = ?;',
+      'SELECT `xp`, `level_rewarded` FROM `users` WHERE `id` = ?;',
       [userId],
     );
     final xp = rows.first['xp'] as int;
+    final rewarded = rows.first['level_rewarded'] as int? ?? 0;
     final before = levelFromXp(xp - amount).level;
     final after = levelFromXp(xp).level;
-    for (var level = before + 1; level <= after; level++) {
-      await addCredits(connection, userId, level * levelUpReward, 'level_up');
-      levelUps.add(level);
+    if (after > rewarded) {
+      final claimed = await connection.query(
+        'UPDATE `users` SET `level_rewarded` = ? WHERE `id` = ? AND `level_rewarded` < ?;',
+        [after, userId, after],
+      );
+      if ((claimed.affectedRows ?? 0) > 0) {
+        for (var level = max(before, rewarded) + 1; level <= after; level++) {
+          await addCredits(
+              connection, userId, level * levelUpReward, 'level_up');
+          levelUps.add(level);
+        }
+      }
     }
   }
 
@@ -116,6 +129,17 @@ Future<void> countCommand(MySqlConnection connection, String userId) async {
     'UPDATE `users` SET `commands_used` = `commands_used` + 1 WHERE `id` = ?;',
     [userId],
   );
+}
+
+Future<bool> serverLevelsEnabled(
+  MySqlConnection connection,
+  String guildId,
+) async {
+  final rows = await connection.query(
+    'SELECT `levels_enabled` FROM `guilds` WHERE `id` = ? LIMIT 1;',
+    [guildId],
+  );
+  return rows.isNotEmpty && rows.first['levels_enabled'] == 1;
 }
 
 Future<(bool, String?, bool)> levelUpSettings(

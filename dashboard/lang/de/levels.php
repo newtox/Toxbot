@@ -9,7 +9,7 @@ return [
     'rank' => 'Globaler Rang',
     'credits' => 'Credits',
     'commands' => 'Befehle',
-    'earn_hint' => 'XP gibt es für Nachrichten und Befehle, Credits für /daily, Votes und Level-ups.',
+    'earn_hint' => 'Globale XP gibt es für Befehle, Server-XP für Nachrichten und Befehle auf Servern mit eingeschalteten Leveln. Credits gibt es für /daily, Votes und Level-ups.',
     'equip_background' => 'Hintergrund',
     'equip_frame' => 'Avatar-Rahmen',
     'equip_bar' => 'Fortschrittsbalken',

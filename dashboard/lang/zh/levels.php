@@ -9,7 +9,7 @@ return [
     'rank' => '全球排名',
     'credits' => '积分',
     'commands' => '命令',
-    'earn_hint' => '发消息和使用命令可获得 XP，/daily、投票和升级可获得积分。',
+    'earn_hint' => '全局经验值来自命令，服务器经验值来自开启等级的服务器上的消息和命令。积分来自 /daily、投票和升级。',
     'equip_background' => '背景',
     'equip_frame' => '头像框',
     'equip_bar' => '进度条',

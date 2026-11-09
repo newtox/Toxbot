@@ -14,7 +14,7 @@ return [
     'features_title' => '하나의 봇에 모든 것',
     'features_text' => 'Toxbot은 활발한 커뮤니티에 필요한 것을 갖추면서도 설정이 쉽습니다.',
     'f_levels_t' => '레벨과 순위표',
-    'f_levels_d' => '메시지와 명령어로 XP를 얻고, 전체 레벨과 서버별 레벨, /leaderboard와 레벨업 메시지까지.',
+    'f_levels_d' => '명령어로 오르는 전체 레벨과, 원하면 메시지와 명령어로 오르는 서버별 레벨. /leaderboard와 레벨업 메시지 포함.',
     'f_credits_t' => '크레딧과 상점',
     'f_credits_d' => '매일 보상, 레벨업과 Top.gg 투표로 얻는 크레딧, 프로필 카드 배경.',
     'f_profile_t' => '프로필 카드',

@@ -37,6 +37,8 @@ return [
     'message_max' => 'Discord 最多允许 :max 个字符。',
     'channel_invalid' => '该频道已不存在，或 Toxbot 无法在其中发言。',
     'role_invalid' => 'Toxbot 无法分配此身份组（它高于 Toxbot 的最高身份组）。',
+    'levels_title' => '服务器等级',
+    'levels_description' => '成员在这里通过消息和命令获得经验值，拥有自己的服务器等级和排行榜。全局等级与此无关，只通过命令提升。',
     'levelup_title' => '升级消息',
     'levelup_description' => '当有人在本服务器升级时，Toxbot 会发送祝贺。',
     'levelup_same_channel' => '成员发言的频道',

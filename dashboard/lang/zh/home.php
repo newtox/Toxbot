@@ -14,7 +14,7 @@ return [
     'features_title' => '一个机器人，应有尽有',
     'features_text' => 'Toxbot 提供活跃社区所需的一切，同时设置简单。',
     'f_levels_t' => '等级与排行榜',
-    'f_levels_d' => '发送消息和使用命令获得经验，全局等级和各服务器等级，还有 /leaderboard 和升级消息。',
+    'f_levels_d' => '通过命令提升的全局等级，以及可选的按服务器计算的消息和命令等级，配有 /leaderboard 和升级消息。',
     'f_credits_t' => '积分与商店',
     'f_credits_d' => '每日奖励、升级和 Top.gg 投票获得积分，以及个人资料卡背景。',
     'f_profile_t' => '个人资料卡',

@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\BotUser;
 use App\Models\DashboardUser;
+use App\Models\Guild;
 use App\Models\MemberLevel;
 use App\Services\Discord;
 use App\Services\GuildAccess;
@@ -23,7 +24,11 @@ class Leaderboard extends Component
     public function render(Discord $discord, GuildMembers $members)
     {
         $userId = (string) Auth::id();
-        $guilds = rescue(fn () => app(GuildAccess::class)->dashboardGuilds(Auth::user()), [], report: false);
+        $enabled = Guild::query()->where('levels_enabled', true)->pluck('id')->map(fn ($id) => (string) $id)->all();
+        $guilds = collect(rescue(fn () => app(GuildAccess::class)->dashboardGuilds(Auth::user()), [], report: false))
+            ->filter(fn ($guild) => in_array($guild['id'], $enabled, true))
+            ->values()
+            ->all();
         $guild = collect($guilds)->firstWhere('id', $this->scope);
         if ($this->scope !== '' && ! $guild) {
             $this->scope = '';
