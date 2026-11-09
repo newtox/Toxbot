@@ -82,7 +82,7 @@ The bot owner manages the blacklist on the dashboard's administration page. Bloc
 
 ### Credits and items
 
-The bot owner can add or remove credits and give or take away shop items, in Discord with `/system credits`, `/system give-item` and `/system take-item` or on the dashboard's administration page under **Credits & items**. The balance never drops below 0; items that are taken away are unequipped. Retired and exclusive items can be given too. Every change shows up in the user's `/credits` history.
+The bot owner can add or remove credits and give or take away shop items, in Discord with `/system credits`, `/system give-item` and `/system take-item` or on the dashboard's administration page under **Credits & items**. The balance never drops below 0; items that are taken away are unequipped. Retired and exclusive items can be given too. Every change shows up in the user's `/credits` history. `/system active-users` and the same page list the users who run the most commands.
 
 ### Moderation
 

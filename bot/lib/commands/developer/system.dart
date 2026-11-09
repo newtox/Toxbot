@@ -11,6 +11,7 @@ import 'package:toxbot/services/levels.dart';
 import 'package:toxbot/services/structure.dart';
 import 'package:toxbot/utils/config.dart';
 import 'package:toxbot/utils/database.dart';
+import 'package:toxbot/utils/functions.dart';
 import 'package:toxbot/utils/reply.dart';
 
 final _clearCache = ChatCommand(
@@ -469,6 +470,68 @@ final _takeItem = ChatCommand(
   },
 );
 
+final _activeUsers = ChatCommand(
+  'active-users',
+  'Show the users who run the most commands.',
+  localizedDescriptions: {
+    Locale.da: 'Vis de brugere, der kører flest kommandoer.',
+    Locale.de: 'Die Nutzer mit den meisten ausgeführten Befehlen anzeigen.',
+    Locale.enUs: 'Show the users who run the most commands.',
+    Locale.esEs: 'Mostrar los usuarios que más comandos ejecutan.',
+    Locale.fr: 'Afficher les utilisateurs qui exécutent le plus de commandes.',
+    Locale.ru: 'Показать пользователей, которые выполняют больше всего команд.',
+    Locale.hi: 'सबसे ज़्यादा कमांड चलाने वाले यूज़र दिखाएँ।',
+    Locale.zhCn: '显示执行命令最多的用户。',
+    Locale.ja: 'コマンドを最も多く実行しているユーザーを表示します。',
+    Locale.ko: '명령어를 가장 많이 실행한 사용자를 표시합니다.',
+  },
+  (ChatContext context) async {
+    final user = context.user;
+    try {
+      final (rows, total, users) =
+          await withConnection((connection) => economy.activeUsers(connection));
+      final lines = <String>[];
+      for (final (place, (userId, commands, xp)) in rows.indexed) {
+        String name;
+        try {
+          final found = await context.client.users.get(Snowflake.parse(userId));
+          name =
+              '**${found.globalName ?? found.username}** (@${found.username})';
+        } catch (_) {
+          name = '`$userId`';
+        }
+        final count = await localized(
+            user, 'system_active_commands', {'&count': formatNumber(commands)});
+        lines.add(
+            '`#${place + 1}` $name · $count · Level ${levelFromXp(xp).level}');
+      }
+      await context.respond(
+        MessageBuilder(
+          allowedMentions: noMentions,
+          embeds: [
+            EmbedBuilder(
+              color: await getUserColorFromDatabase(user.id),
+              title: await getString(user, 'system_active_title'),
+              description: lines.isEmpty
+                  ? await getString(user, 'system_active_empty')
+                  : lines.join('\n'),
+              footer: EmbedFooterBuilder(
+                text: await localized(user, 'system_active_total', {
+                  '&count': formatNumber(total),
+                  '&users': formatNumber(users),
+                }),
+              ),
+            ),
+          ],
+        ),
+        level: ResponseLevel.hint,
+      );
+    } catch (e) {
+      await replyException(context, e);
+    }
+  },
+);
+
 final _eval = ChatCommand(
   'eval',
   'Run Dart code.',
@@ -570,6 +633,7 @@ final system = ChatGroup(
     _credits,
     _giveItem,
     _takeItem,
+    _activeUsers,
     _rustdeskIds,
     _sql,
     _eval,

@@ -345,6 +345,27 @@ Future<List<(String, int)>> leaderboard(
   return rows.map((row) => (row['user'].toString(), row['xp'] as int)).toList();
 }
 
+Future<(List<(String, int, int)>, int, int)> activeUsers(
+  MySqlConnection connection, {
+  int limit = 15,
+}) async {
+  final rows = await connection.query(
+    'SELECT `id`, `commands_used`, `xp` FROM `users` WHERE `commands_used` > 0 ORDER BY `commands_used` DESC, `id` LIMIT ?;',
+    [limit],
+  );
+  final totals = await connection.query(
+    'SELECT COALESCE(SUM(`commands_used`), 0) AS `total`, COUNT(*) AS `users` FROM `users` WHERE `commands_used` > 0;',
+  );
+  return (
+    [
+      for (final row in rows)
+        (row['id'].toString(), row['commands_used'] as int, row['xp'] as int),
+    ],
+    int.parse(totals.first['total'].toString()),
+    totals.first['users'] as int,
+  );
+}
+
 Future<ProfileStats> profileStats(
   MySqlConnection connection,
   String userId, {
