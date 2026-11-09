@@ -249,6 +249,8 @@ class CreditsTest extends TestCase
         $this->assertArrayNotHasKey('Server Level', $data->build(self::USER, self::GUILD)['stats']);
 
         Guild::query()->whereKey(self::GUILD)->update(['levels_enabled' => true]);
-        $this->assertSame('9', $data->build(self::USER, self::GUILD)['stats']['Server Level']);
+        MemberLevel::query()->insert(['guild' => self::GUILD, 'user' => self::ANNA, 'xp' => 9000]);
+        $this->assertSame(['Server Level' => '9', 'Server Rank' => '#2', 'Credits' => '0', 'Commands' => '0'], $data->build(self::USER, self::GUILD)['stats']);
+        $this->assertSame(['Credits', 'Commands'], array_keys($data->build(self::USER)['stats']));
     }
 }

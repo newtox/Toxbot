@@ -6,7 +6,6 @@ return [
     'to_shop' => 'Go to shop',
     'card_alt' => 'Your profile card',
     'level' => 'Level',
-    'rank' => 'Global rank',
     'credits' => 'Credits',
     'commands' => 'Commands',
     'earn_hint' => 'Global XP comes from commands, server XP from messages and commands on servers with levels turned on. Credits come from /daily, votes and level-ups.',

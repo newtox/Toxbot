@@ -351,27 +351,28 @@ Future<ProfileStats> profileStats(
   String? guildId,
 }) async {
   final rows = await connection.query(
-    'SELECT `xp`, `credits`, `commands_used`, '
-    '(SELECT COUNT(*) FROM `users` AS `u` WHERE `u`.`xp` > `users`.`xp`) + 1 AS `rank` '
-    'FROM `users` WHERE `id` = ?;',
+    'SELECT `xp`, `credits`, `commands_used` FROM `users` WHERE `id` = ?;',
     [userId],
   );
   int? serverXp;
+  int? serverRank;
   if (guildId != null) {
     final member = await connection.query(
-      'SELECT `xp` FROM `member_levels` WHERE `guild` = ? AND `user` = ?;',
-      [guildId, userId],
+      'SELECT `xp`, (SELECT COUNT(*) FROM `member_levels` AS `m` WHERE `m`.`guild` = ? AND `m`.`xp` > `member_levels`.`xp`) + 1 AS `rank` '
+      'FROM `member_levels` WHERE `guild` = ? AND `user` = ?;',
+      [guildId, guildId, userId],
     );
     serverXp = member.isEmpty ? 0 : member.first['xp'] as int;
+    serverRank = serverXp > 0 ? member.first['rank'] as int : null;
   }
-  if (rows.isEmpty) return ProfileStats(0, 0, 0, 1, serverXp);
+  if (rows.isEmpty) return ProfileStats(0, 0, 0, serverXp, serverRank);
   final row = rows.first;
   return ProfileStats(
     row['xp'] as int,
     row['credits'] as int,
     row['commands_used'] as int,
-    row['rank'] as int,
     serverXp,
+    serverRank,
   );
 }
 

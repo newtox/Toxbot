@@ -6,7 +6,6 @@ return [
     'to_shop' => 'Vers la boutique',
     'card_alt' => 'Ta carte de profil',
     'level' => 'Niveau',
-    'rank' => 'Rang global',
     'credits' => 'Crédits',
     'commands' => 'Commandes',
     'earn_hint' => 'L’XP globale vient des commandes, l’XP du serveur des messages et commandes sur les serveurs où les niveaux sont activés. Les crédits viennent de /daily, des votes et des montées de niveau.',

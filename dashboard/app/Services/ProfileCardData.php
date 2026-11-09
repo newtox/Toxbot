@@ -31,11 +31,14 @@ class ProfileCardData
             $items[$type] = $item && $item->type === $type ? ['path' => $item->path(), 'animated' => $item->animated] : null;
         }
 
-        $stats = ['Global Rank' => '#'.$this->number($user->globalRank())];
+        $stats = [];
 
         if ($guildId && Guild::query()->whereKey($guildId)->value('levels_enabled')) {
-            $member = MemberLevel::query()->where('guild', $guildId)->where('user', $userId)->first();
-            $stats['Server Level'] = $this->number(Level::fromXp((int) $member?->xp)['level']);
+            $xp = (int) MemberLevel::query()->where('guild', $guildId)->where('user', $userId)->value('xp');
+            $stats['Server Level'] = $this->number(Level::fromXp($xp)['level']);
+            $stats['Server Rank'] = $xp > 0
+                ? '#'.$this->number(MemberLevel::query()->where('guild', $guildId)->where('xp', '>', $xp)->count() + 1)
+                : '–';
         }
 
         $stats['Credits'] = $this->number((int) $user->credits);

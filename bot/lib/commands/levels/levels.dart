@@ -111,11 +111,14 @@ final profile = ChatCommand(
                     value: levelFromXp(stats.serverXp ?? 0).level.toString(),
                     isInline: true,
                   ),
-                EmbedFieldBuilder(
-                  name: await getString(user, 'profile_rank'),
-                  value: '#${formatNumber(stats.rank)}',
-                  isInline: true,
-                ),
+                if (stats.serverXp != null)
+                  EmbedFieldBuilder(
+                    name: await getString(user, 'profile_server_rank'),
+                    value: stats.serverRank == null
+                        ? '–'
+                        : '#${formatNumber(stats.serverRank!)}',
+                    isInline: true,
+                  ),
                 EmbedFieldBuilder(
                   name: await getString(user, 'profile_credits'),
                   value: formatNumber(stats.credits),

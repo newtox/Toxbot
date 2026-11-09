@@ -87,11 +87,6 @@ class BotUser extends Model
         return Level::fromXp((int) $this->xp);
     }
 
-    public function globalRank(): int
-    {
-        return static::query()->where('xp', '>', (int) $this->xp)->count() + 1;
-    }
-
     public function owns(ShopItem $item): bool
     {
         return ($item->isFree() && $item->active) || $this->items()->whereKey($item->id)->exists();

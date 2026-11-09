@@ -88,7 +88,6 @@ class ProfileOverview extends Component
             'cardUrl' => route('card', ['user' => $userId, 'v' => $this->version.'-'.time()]),
             'level' => Level::fromXp((int) $bot->xp),
             'credits' => (int) $bot->credits,
-            'rank' => $bot->exists ? $bot->globalRank() : null,
             'commands' => (int) $bot->commands_used,
             'usable' => $usable,
         ]);

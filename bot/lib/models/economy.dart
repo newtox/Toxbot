@@ -72,15 +72,15 @@ class ProfileStats {
   final int xp;
   final int credits;
   final int commands;
-  final int rank;
   final int? serverXp;
+  final int? serverRank;
 
   const ProfileStats(
     this.xp,
     this.credits,
     this.commands,
-    this.rank,
     this.serverXp,
+    this.serverRank,
   );
 }
 

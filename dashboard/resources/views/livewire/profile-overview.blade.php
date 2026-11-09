@@ -37,7 +37,7 @@
         <p class="text-sm text-dc-red" role="alert">{{ $error }}</p>
     @endif
 
-    <dl class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+    <dl class="grid grid-cols-2 gap-3 sm:grid-cols-3">
         <div class="rounded-lg bg-dc-900 p-3">
             <dt class="text-xs text-dc-muted">{{ __('levels.level') }}</dt>
             <dd class="mt-1 text-xl font-semibold text-dc-header tabular-nums">{{ $level['level'] }}</dd>
@@ -45,10 +45,6 @@
                 <div class="h-full rounded-full bg-accent" style="width: {{ round($level['current'] / $level['needed'] * 100, 1) }}%"></div>
             </div>
             <div class="mt-1 text-xs text-dc-faint tabular-nums">{{ number_format($level['current'], 0, '', ' ') }} / {{ number_format($level['needed'], 0, '', ' ') }} XP</div>
-        </div>
-        <div class="rounded-lg bg-dc-900 p-3">
-            <dt class="text-xs text-dc-muted">{{ __('levels.rank') }}</dt>
-            <dd class="mt-1 text-xl font-semibold text-dc-header tabular-nums">{{ $rank ? '#'.number_format($rank, 0, '', ' ') : '–' }}</dd>
         </div>
         <div class="rounded-lg bg-dc-900 p-3">
             <dt class="text-xs text-dc-muted">{{ __('levels.credits') }}</dt>
