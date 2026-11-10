@@ -2,8 +2,10 @@
 
 namespace App\Livewire;
 
+use App\Models\Guild;
 use App\Models\TicketType;
 use App\Services\GuildAccess;
+use App\Services\SetupMessages;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Locked;
@@ -28,6 +30,9 @@ class TicketTypes extends Component
     public string $description = '';
 
     public array $teamRoles = [];
+
+    #[Locked]
+    public ?string $panelNotice = null;
 
     public function mount(string $guildId, array $roles = []): void
     {
@@ -70,6 +75,7 @@ class TicketTypes extends Component
         }
 
         $this->cancel();
+        $this->refreshPanel();
         $this->dispatch('saved');
     }
 
@@ -100,6 +106,7 @@ class TicketTypes extends Component
         if ($this->editingId === $id) {
             $this->cancel();
         }
+        $this->refreshPanel();
     }
 
     #[On('auto-setup-done')]
@@ -111,6 +118,24 @@ class TicketTypes extends Component
             'types' => TicketType::query()->where('guild', $this->guildId)->orderBy('position')->orderBy('id')->get(),
             'roleNames' => array_column($this->roles, 'name', 'id'),
         ]);
+    }
+
+    private function refreshPanel(): void
+    {
+        $row = Guild::query()->find($this->guildId);
+        if (! $row?->ticket_panel_message_id) {
+            $this->panelNotice = null;
+
+            return;
+        }
+        if (TicketType::query()->where('guild', $this->guildId)->doesntExist()) {
+            $this->panelNotice = __('tickets.panel_outdated');
+
+            return;
+        }
+        $this->panelNotice = rescue(fn () => app(SetupMessages::class)->refreshTicketPanel($row), false, report: false)
+            ? __('tickets.panel_refreshed')
+            : __('tickets.panel_refresh_failed');
     }
 
     private function authorizeGuild(): void

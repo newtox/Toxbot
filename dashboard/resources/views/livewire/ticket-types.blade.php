@@ -1,4 +1,7 @@
 <div class="space-y-4">
+    @if ($panelNotice)
+        <div role="status" class="rounded-lg border-l-4 border-accent bg-dc-900 px-4 py-3 text-sm">{{ $panelNotice }}</div>
+    @endif
     @if ($types->isEmpty())
         <p class="text-sm text-dc-faint">{{ __('tickets.types_empty') }}</p>
     @else

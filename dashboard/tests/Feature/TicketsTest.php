@@ -262,6 +262,26 @@ class TicketsTest extends TestCase
         Http::assertNotSent(fn (Request $r) => $r->method() === 'POST' && str_contains($r->url(), '/messages'));
     }
 
+    public function test_editing_ticket_types_updates_the_posted_message(): void
+    {
+        $this->login();
+        Guild::create(['id' => self::GUILD, 'language' => 'de_de', 'ticket_category' => '10', 'ticket_panel_channel' => '11']);
+        $type = TicketType::create(['guild' => self::GUILD, 'name' => 'Support', 'description' => 'Hallo']);
+
+        $types = Livewire::test(TicketTypes::class, ['guildId' => self::GUILD])
+            ->call('edit', $type->id)->set('description', 'Hallo asdasd')->call('save')
+            ->assertSet('panelNotice', null);
+        Http::assertNotSent(fn (Request $r) => $r->method() === 'PATCH');
+
+        Guild::query()->whereKey(self::GUILD)->update(['ticket_panel_message_id' => '700']);
+        $types->call('edit', $type->id)->set('description', 'Neuer Text')->call('save')
+            ->assertSet('panelNotice', __('tickets.panel_refreshed'));
+        Http::assertSent(fn (Request $r) => $r->method() === 'PATCH' && str_ends_with($r->url(), '/channels/11/messages/700')
+            && $r['embeds'][0]['fields'][0]['value'] === 'Neuer Text');
+
+        $types->call('remove', $type->id)->assertSet('panelNotice', __('tickets.panel_outdated'));
+    }
+
     public function test_first_save_remembers_the_dashboard_language(): void
     {
         $this->login();

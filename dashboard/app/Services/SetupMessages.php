@@ -34,8 +34,7 @@ class SetupMessages
     public function refreshLanguage(Guild $row, string $guildName): array
     {
         $updated = [];
-        if ($row->ticket_panel_channel && $row->ticket_panel_message_id && $this->ticketTypes($row->id)->isNotEmpty()
-            && $this->editOnly($row->ticket_panel_channel, $row->ticket_panel_message_id, $this->ticketPanelPayload($row))) {
+        if ($this->refreshTicketPanel($row)) {
             $updated[] = 'tickets';
         }
         if ($row->verify_channel && $row->verify_message_id
@@ -44,6 +43,12 @@ class SetupMessages
         }
 
         return $updated;
+    }
+
+    public function refreshTicketPanel(Guild $row): bool
+    {
+        return $row->ticket_panel_channel && $row->ticket_panel_message_id && $this->ticketTypes($row->id)->isNotEmpty()
+            && $this->editOnly($row->ticket_panel_channel, $row->ticket_panel_message_id, $this->ticketPanelPayload($row));
     }
 
     private function ticketPanelPayload(Guild $row): array
