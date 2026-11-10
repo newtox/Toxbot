@@ -91,4 +91,5 @@ return [
     'appeal_new_title' => '新しい BAN 解除申請',
     'appeal_user' => 'メンバー',
     'appeal_min_length' => ':min 文字以上',
+    'appeal_bot_offline' => '承認は Toxbot がオンラインに戻ってからです。BAN を解除するのは Toxbot だからです。',
 ];

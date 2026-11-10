@@ -91,4 +91,5 @@ return [
     'appeal_new_title' => 'नया अनबैन अनुरोध',
     'appeal_user' => 'सदस्य',
     'appeal_min_length' => 'कम से कम :min अक्षर',
+    'appeal_bot_offline' => 'स्वीकार करना तभी होगा जब Toxbot फिर ऑनलाइन हो, क्योंकि बैन वही हटाता है।',
 ];

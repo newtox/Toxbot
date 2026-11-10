@@ -2,8 +2,7 @@
 
 @php
     $pageTitle = $title ? $title.' · Toxbot' : 'Toxbot Dashboard';
-    $botStatus = Auth::check() ? \App\Models\BotStatus::current() : null;
-    $botOffline = $botStatus !== null && ! $botStatus->online();
+    $botOffline = Auth::check() && \App\Models\BotStatus::offline();
     $pageDescription = $description ?? __('login.intro');
     $shareImage = $botAvatar ? str_replace('size=128', 'size=512', $botAvatar) : null;
     $fallbackIcon = 'data:image/svg+xml,'.rawurlencode('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="32" fill="'.$palette['accent'].'"/><text x="32" y="44" text-anchor="middle" font-family="sans-serif" font-size="36" font-weight="700" fill="'.$palette['on'].'">t</text></svg>');

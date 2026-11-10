@@ -91,4 +91,5 @@ return [
     'appeal_new_title' => '새 차단 해제 신청',
     'appeal_user' => '멤버',
     'appeal_min_length' => '최소 :min자',
+    'appeal_bot_offline' => '수락은 Toxbot이 다시 온라인이 된 뒤에만 가능합니다. 차단 해제를 Toxbot이 하기 때문입니다.',
 ];

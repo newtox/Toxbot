@@ -112,6 +112,10 @@
                     </div>
                 @endif
 
+                @if ($botOffline)
+                    <div role="status" class="mb-4 rounded-lg border-l-4 border-dc-red bg-dc-900 px-4 py-3 text-sm">{{ __('moderation.bot_offline') }}</div>
+                @endif
+
                 <form novalidate wire:submit="submit" class="space-y-4">
                     <div>
                         <label class="label" for="action-type">{{ __('moderation.action_type') }}</label>
@@ -149,7 +153,8 @@
                         @error('reason') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
                     </div>
 
-                    <button type="submit" wire:loading.attr="disabled" @disabled($action && ! $action->finished())
+                    @error('actionType') <p class="text-sm text-dc-red">{{ $message }}</p> @enderror
+                    <button type="submit" wire:loading.attr="disabled" @disabled(($action && ! $action->finished()) || $botOffline)
                             @class(['w-full', 'btn-primary' => ! in_array($actionType, ['kick', 'ban'], true), 'btn bg-dc-red text-white hover:brightness-110' => in_array($actionType, ['kick', 'ban'], true)])
                             @if (in_array($actionType, ['kick', 'ban'], true)) data-confirm="{{ __('moderation.confirm_'.$actionType, ['name' => $member['name']]) }}" @endif>
                         {{ __('moderation.action_'.$actionType) }}

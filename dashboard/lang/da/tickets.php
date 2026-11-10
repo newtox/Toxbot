@@ -91,4 +91,5 @@ return [
     'appeal_new_title' => 'Ny unban-anmodning',
     'appeal_user' => 'Medlem',
     'appeal_min_length' => 'mindst :min tegn',
+    'appeal_bot_offline' => 'Accept virker først, når Toxbot er online igen, fordi den skal fjerne udelukkelsen.',
 ];

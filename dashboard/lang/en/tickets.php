@@ -91,4 +91,5 @@ return [
     'appeal_new_title' => 'New unban appeal',
     'appeal_user' => 'Member',
     'appeal_min_length' => 'at least :min characters',
+    'appeal_bot_offline' => 'Accepting only works once Toxbot is back online, since it lifts the ban.',
 ];

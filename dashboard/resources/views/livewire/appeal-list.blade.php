@@ -23,6 +23,11 @@
         @endif
     </section>
 
+    @if ($botOffline)
+        <div role="status" class="rounded-lg border-l-4 border-dc-red bg-dc-800 px-4 py-3 text-sm">{{ __('tickets.appeal_bot_offline') }}</div>
+    @endif
+    @error('appeal') <p class="text-sm text-dc-red">{{ $message }}</p> @enderror
+
     <div class="flex flex-wrap gap-2">
         @foreach (['pending' => __('tickets.filter_pending'), 'all' => __('tickets.filter_all')] as $value => $label)
             <button type="button" wire:click="$set('filter', '{{ $value }}')"
@@ -55,7 +60,7 @@
                     @error('responses.'.$appeal->id) <p class="text-sm text-dc-red">{{ $message }}</p> @enderror
                     <div class="flex flex-wrap justify-end gap-2">
                         <button type="button" wire:click="reject({{ $appeal->id }})" data-confirm="{{ __('tickets.appeal_confirm_reject') }}" class="btn px-3 py-1.5 text-dc-red hover:bg-dc-red hover:text-white">{{ __('tickets.appeal_reject') }}</button>
-                        <button type="button" wire:click="accept({{ $appeal->id }})" data-confirm="{{ __('tickets.appeal_confirm_accept') }}" data-confirm-tone="primary" class="btn-primary px-3 py-1.5">{{ __('tickets.appeal_accept') }}</button>
+                        <button type="button" wire:click="accept({{ $appeal->id }})" data-confirm="{{ __('tickets.appeal_confirm_accept') }}" data-confirm-tone="primary" class="btn-primary px-3 py-1.5" @disabled($botOffline) @if ($botOffline) title="{{ __('tickets.appeal_bot_offline') }}" @endif>{{ __('tickets.appeal_accept') }}</button>
                     </div>
                 </div>
             @else

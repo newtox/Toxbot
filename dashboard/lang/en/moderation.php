@@ -101,4 +101,5 @@ return [
     'mod_error_permission' => 'You don\'t have the Discord permission for this action.',
     'mod_error_unknown' => 'Something went wrong. Please try again.',
     'members_description_member' => 'All members of the server with roles, levels and their profile.',
+    'bot_offline' => 'Toxbot is offline. Moderation works again once it is back online, otherwise it would be carried out late.',
 ];

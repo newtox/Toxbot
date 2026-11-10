@@ -101,4 +101,5 @@ return [
     'mod_error_permission' => 'Dir fehlt in Discord die Berechtigung für diese Aktion.',
     'mod_error_unknown' => 'Da ist etwas schiefgelaufen. Versuch es gleich noch mal.',
     'members_description_member' => 'Alle Mitglieder des Servers mit Rollen, Level und ihrem Profil.',
+    'bot_offline' => 'Toxbot ist offline. Moderation geht erst wieder, wenn er online ist, sonst würde sie verspätet ausgeführt.',
 ];

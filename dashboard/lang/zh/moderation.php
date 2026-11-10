@@ -101,4 +101,5 @@ return [
     'mod_error_permission' => '你没有执行此操作所需的 Discord 权限。',
     'mod_error_unknown' => '出了点问题，请重试。',
     'members_description_member' => '服务器的所有成员，以及他们的身份组、等级和资料。',
+    'bot_offline' => 'Toxbot 目前离线。为避免延迟执行，管理操作要等它重新上线后才能使用。',
 ];

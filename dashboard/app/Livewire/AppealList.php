@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\BotStatus;
 use App\Models\Guild;
 use App\Models\ModAction;
 use App\Models\UnbanAppeal;
@@ -45,6 +46,11 @@ class AppealList extends Component
 
     public function accept(int $id): void
     {
+        if (BotStatus::offline()) {
+            $this->addError('appeal', __('tickets.appeal_bot_offline'));
+
+            return;
+        }
         $this->handle($id, 'accepted');
     }
 
@@ -56,6 +62,7 @@ class AppealList extends Component
     public function render()
     {
         return view('livewire.appeal-list', [
+            'botOffline' => BotStatus::offline(),
             'appeals' => UnbanAppeal::query()->forGuild($this->guildId)
                 ->when($this->filter === 'pending', fn ($query) => $query->where('status', 'pending'))
                 ->latest('id')

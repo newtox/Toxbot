@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\BotStatus;
 use App\Models\BotUser;
 use App\Models\MemberLevel;
 use App\Models\ModAction;
@@ -56,6 +57,12 @@ class MemberProfile extends Component
         ]);
 
         $this->authorizeAction($this->actionType);
+
+        if (BotStatus::offline()) {
+            $this->addError('actionType', __('moderation.bot_offline'));
+
+            return;
+        }
 
         $seconds = null;
         if (in_array($this->actionType, ['timeout', 'ban'], true) && trim($this->duration) !== '') {
@@ -181,6 +188,7 @@ class MemberProfile extends Component
         $globalXp = (int) BotUser::query()->whereKey($this->userId)->value('xp');
 
         return view('livewire.member-profile', [
+            'botOffline' => BotStatus::offline(),
             'member' => $summary,
             'onServer' => $member !== null,
             'ban' => $ban,

@@ -91,4 +91,5 @@ return [
     'appeal_new_title' => 'Nouvelle demande de débannissement',
     'appeal_user' => 'Membre',
     'appeal_min_length' => 'au moins :min caractères',
+    'appeal_bot_offline' => 'Accepter ne fonctionne que lorsque Toxbot est de retour, car c’est lui qui lève le bannissement.',
 ];

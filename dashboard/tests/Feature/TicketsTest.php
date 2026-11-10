@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Livewire\AppealList;
 use App\Livewire\GuildSettings;
 use App\Livewire\TicketTypes;
+use App\Models\BotStatus;
 use App\Models\DashboardUser;
 use App\Models\Guild;
 use App\Models\ModAction;
@@ -355,6 +356,22 @@ class TicketsTest extends TestCase
         $case = new ModCase;
         $case->forceFill(['guild' => self::GUILD, 'number' => 1, 'type' => 'ban', 'user_id' => self::USER, 'moderator_id' => '1', 'reason' => 'Werbung im Chat', 'active' => true])->save();
         $this->get('/appeal/'.self::GUILD)->assertSee('Werbung im Chat')->assertDontSee('Testban');
+    }
+
+    public function test_appeals_cannot_be_accepted_while_the_bot_is_offline(): void
+    {
+        $this->login();
+        Guild::create(['id' => self::GUILD, 'unban_enabled' => true]);
+        BotStatus::create(['id' => 1, 'started_at' => now()->subDay(), 'heartbeat_at' => now()->subMinutes(10)]);
+        $appeal = UnbanAppeal::create(['guild' => self::GUILD, 'user_id' => '555', 'user_name' => 'kira', 'reason' => 'Bitte entbannen, es tut mir leid.']);
+
+        Livewire::test(AppealList::class, ['guildId' => self::GUILD])
+            ->assertSee(__('tickets.appeal_bot_offline'))
+            ->call('accept', $appeal->id)
+            ->assertHasErrors('appeal');
+
+        $this->assertSame('pending', $appeal->fresh()->status);
+        $this->assertSame(0, ModAction::query()->count());
     }
 
     public function test_accepting_an_appeal_queues_an_unban_and_sends_a_dm(): void

@@ -33,6 +33,13 @@ class BotStatus extends Model
         return rescue(fn () => static::query()->find(1), null, report: false);
     }
 
+    public static function offline(): bool
+    {
+        $status = static::current();
+
+        return $status !== null && ! $status->online();
+    }
+
     public function online(): bool
     {
         return $this->heartbeat_at !== null && $this->heartbeat_at->gt(now()->subMinutes(self::OFFLINE_AFTER_MINUTES));

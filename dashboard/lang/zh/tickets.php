@@ -91,4 +91,5 @@ return [
     'appeal_new_title' => '新的解封申请',
     'appeal_user' => '成员',
     'appeal_min_length' => '至少 :min 个字符',
+    'appeal_bot_offline' => '只有 Toxbot 重新上线后才能接受，因为解封由它执行。',
 ];

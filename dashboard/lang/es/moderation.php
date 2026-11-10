@@ -101,4 +101,5 @@ return [
     'mod_error_permission' => 'No tienes el permiso de Discord para esta acción.',
     'mod_error_unknown' => 'Algo salió mal. Inténtalo de nuevo.',
     'members_description_member' => 'Todos los miembros del servidor con roles, nivel y su perfil.',
+    'bot_offline' => 'Toxbot está desconectado. La moderación vuelve a funcionar cuando esté en línea; si no, se aplicaría con retraso.',
 ];

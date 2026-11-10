@@ -7,6 +7,7 @@ use App\Livewire\MemberList;
 use App\Livewire\MemberProfile;
 use App\Livewire\ModlogList;
 use App\Livewire\WarnRules;
+use App\Models\BotStatus;
 use App\Models\DashboardUser;
 use App\Models\Guild;
 use App\Models\MemberLevel;
@@ -171,6 +172,14 @@ class ModerationTest extends TestCase
             ->set('actionType', 'ban')->set('duration', '7d')->set('deleteDays', 1)->set('reason', 'Raid')
             ->call('submit')->assertHasNoErrors()
             ->assertSee(__('moderation.pending'));
+
+        BotStatus::create(['id' => 1, 'started_at' => now()->subDay(), 'heartbeat_at' => now()->subMinutes(10)]);
+        $queued = ModAction::query()->count();
+        Livewire::test(MemberProfile::class, ['guildId' => self::GUILD, 'userId' => self::MEMBER])
+            ->assertSee(__('moderation.bot_offline'))
+            ->set('actionType', 'warn')->set('reason', 'Spam')
+            ->call('submit')->assertHasErrors('actionType');
+        $this->assertSame($queued, ModAction::query()->count());
 
         $action = ModAction::sole();
         $this->assertSame('ban', $action->type);

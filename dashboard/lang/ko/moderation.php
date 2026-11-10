@@ -101,4 +101,5 @@ return [
     'mod_error_permission' => '이 작업에 필요한 Discord 권한이 없습니다.',
     'mod_error_unknown' => '문제가 발생했습니다. 다시 시도해 주세요.',
     'members_description_member' => '서버의 모든 멤버와 역할, 레벨, 프로필.',
+    'bot_offline' => 'Toxbot이 오프라인입니다. 늦게 실행되지 않도록 다시 온라인이 될 때까지 관리 기능을 쓸 수 없습니다.',
 ];

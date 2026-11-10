@@ -91,4 +91,5 @@ return [
     'appeal_new_title' => 'Nueva solicitud de desbaneo',
     'appeal_user' => 'Miembro',
     'appeal_min_length' => 'mínimo :min caracteres',
+    'appeal_bot_offline' => 'Aceptar solo funciona cuando Toxbot vuelva a estar en línea, porque es quien levanta el baneo.',
 ];

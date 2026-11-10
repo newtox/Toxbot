@@ -101,4 +101,5 @@ return [
     'mod_error_permission' => 'Du har ikke Discord-tilladelsen til denne handling.',
     'mod_error_unknown' => 'Noget gik galt. Prøv igen.',
     'members_description_member' => 'Alle medlemmer på serveren med roller, level og deres profil.',
+    'bot_offline' => 'Toxbot er offline. Moderation virker først igen, når den er online, ellers ville den blive udført for sent.',
 ];
