@@ -61,7 +61,7 @@ Toxbot is added to servers with the scopes `bot` and `applications.commands` and
 
 ### Automatic setup
 
-The server overview, `/setup` in Discord and the Moderation, Verification, Link filter, Anti-raid and Tickets pages have an automatic setup. Pick the team roles and the areas, and Toxbot creates what is missing: a private `#mod-log`, a `Tickets` category with `#tickets` and a private `#ticket-log`, a `Support` ticket type and the ticket buttons, the link filter, anti-raid and blocked threads in read-only channels, and for verification an `Unverified` role with a `#verify` channel that hides every other channel from that role. Channels and roles that are already set or have the same name are reused. It needs **Manage Channels** and **Manage Roles**.
+The server overview and `/setup` in Discord have an automatic setup, and the Moderation, Verification and Tickets pages have one for their own area. Pick the team roles and the areas, and Toxbot creates what is missing: a private `#mod-log`, a `Tickets` category with `#tickets` and a private `#ticket-log`, a `Support` ticket type and the ticket buttons, the link filter, anti-raid and blocked threads in read-only channels, and for verification an `Unverified` role with a `#verify` channel that hides every other channel from that role. Channels and roles that are already set or have the same name are reused. It needs **Manage Channels** and **Manage Roles**.
 
 Messages for the whole server (ticket and verify buttons, ticket logs, raid alarms, automatic reasons) use the server language from the Language page. It is taken from the dashboard language of whoever first saves a setting and can be changed there.
 

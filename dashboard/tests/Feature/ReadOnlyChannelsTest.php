@@ -131,7 +131,7 @@ class ReadOnlyChannelsTest extends TestCase
     {
         $this->login();
 
-        $this->get('/servers/'.self::GUILD.'/readonly')->assertOk()->assertSee(__('protection.readonly_title'))->assertSee(__('protection.readonly_hint'));
+        $this->get('/servers/'.self::GUILD.'/readonly')->assertOk()->assertSee(__('protection.readonly_title'))->assertSee(__('protection.readonly_hint'))->assertDontSee(__('setup.run'));
         $this->get('/servers/'.self::GUILD)->assertOk()->assertSee(__('protection.readonly_title'));
     }
 }

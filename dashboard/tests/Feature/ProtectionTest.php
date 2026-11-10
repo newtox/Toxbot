@@ -91,8 +91,8 @@ class ProtectionTest extends TestCase
         $this->login();
 
         $this->get('/servers/'.self::GUILD.'/verification')->assertOk()->assertSee(__('protection.verify_title'))->assertSee(__('protection.verify_no_autorole'));
-        $this->get('/servers/'.self::GUILD.'/links')->assertOk()->assertSee(__('protection.links_title'));
-        $this->get('/servers/'.self::GUILD.'/raid')->assertOk()->assertSee(__('protection.raid_title'));
+        $this->get('/servers/'.self::GUILD.'/links')->assertOk()->assertSee(__('protection.links_title'))->assertDontSee(__('setup.area_protection_text'));
+        $this->get('/servers/'.self::GUILD.'/raid')->assertOk()->assertSee(__('protection.raid_title'))->assertDontSee(__('setup.area_protection_text'));
 
         $this->get('/servers/'.self::GUILD)
             ->assertOk()

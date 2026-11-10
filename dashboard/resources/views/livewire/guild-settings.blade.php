@@ -474,8 +474,11 @@
     </section>
     @endif
 
-    @if (in_array($section, ['verification', 'links', 'raid', 'readonly'], true))
-    <livewire:auto-setup :guild-id="$guildId" :guild-name="$guildName" :areas="$section === 'verification' ? ['verification'] : ['protection']" :compact="true" :key="'auto-setup-'.$section" />
+    @if ($section === 'verification')
+    <livewire:auto-setup :guild-id="$guildId" :guild-name="$guildName" :areas="['verification']" :compact="true" :key="'auto-setup-verification'" />
+    @endif
+
+    @if (in_array($section, ['verification', 'links', 'raid'], true))
 
     @if ($protectionNotice)
         <p class="rounded-lg border-l-4 border-accent bg-dc-800 px-4 py-3 text-sm" role="status">{{ $protectionNotice }}</p>
