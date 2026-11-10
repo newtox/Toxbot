@@ -13,6 +13,10 @@ WORKDIR /app
 COPY pubspec.yaml pubspec.lock ./
 RUN dart pub get
 
+RUN file="$(ls "${PUB_CACHE:-/root/.pub-cache}"/hosted/pub.dev/nyxx-*/lib/src/http/managers/channel_manager.dart)" \
+    && sed -i 's/return parsers\[type\]!(raw, guildId: guildId);/return (parsers[type] ?? parseGuildCategory)(raw, guildId: guildId);/' "$file" \
+    && grep -q 'parsers\[type\] ?? parseGuildCategory' "$file"
+
 COPY . .
 
 ARG GIT_COMMIT
