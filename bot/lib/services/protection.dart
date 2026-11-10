@@ -77,6 +77,31 @@ Future<ProtectionSettings?> _settings(Snowflake guildId) async {
   return settings;
 }
 
+Future<void> _hideFromUnverified(NyxxGateway client, Channel channel) async {
+  if (channel is! GuildChannel || channel is Thread) return;
+  final settings = await _settings(channel.guildId);
+  final role = settings?.verifyRole;
+  if (settings == null || !settings.verifyEnabled || role == null) return;
+
+  final view = Permissions.viewChannel;
+  final overwrites = channel.permissionOverwrites;
+  final ownRole = overwrites.where((o) => o.id == role).firstOrNull;
+  if (ownRole != null && (ownRole.deny.has(view) || ownRole.allow.has(view))) {
+    return;
+  }
+  final everyone = overwrites.where((o) => o.id == channel.guildId).firstOrNull;
+  if (everyone != null && everyone.deny.has(view)) return;
+
+  await client.channels.updatePermissionOverwrite(
+    channel.id,
+    PermissionOverwriteBuilder(
+      id: role,
+      type: PermissionOverwriteType.role,
+      deny: Flags<Permissions>(view.value),
+    ),
+  );
+}
+
 String _normalizeHost(String host) {
   var value = host.toLowerCase().trim();
   if (value.endsWith('.')) value = value.substring(0, value.length - 1);
@@ -488,6 +513,14 @@ Future<({bool removed, bool verifying})> protectJoin(
 }
 
 void setupProtectionHandlers(NyxxGateway client) {
+  client.onChannelCreate.listen((event) async {
+    try {
+      await _hideFromUnverified(client, event.channel);
+    } catch (e) {
+      print('Hiding a new channel from unverified members failed: $e');
+    }
+  });
+
   client.onMessageCreate.listen((event) async {
     try {
       await _handleMessage(client, event.guildId, event.message);
