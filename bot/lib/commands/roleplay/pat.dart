@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:nyxx/nyxx.dart';
+import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:toxbot/utils/database.dart';
 import 'package:toxbot/utils/functions.dart';
@@ -52,8 +53,8 @@ final pat = ChatCommand('pat', 'Pat someone.', localizedDescriptions: {
         EmbedBuilder(
             color: await getUserColorFromDatabase(context.user.id),
             title: (await getString(context.user, 'pat_user_patted'))
-                .replaceAll('&patted', user.username)
-                .replaceAll('&pat', context.user.username),
+                .replaceAll('&patted', escapeMarkdown(user.username))
+                .replaceAll('&pat', escapeMarkdown(context.user.username)),
             image: EmbedImageBuilder(url: httpPackageResult))
       ]));
     }

@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:mysql1/mysql1.dart';
 import 'package:nyxx/nyxx.dart';
+import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:toxbot/models/ticket.dart';
 import 'package:toxbot/services/blacklist.dart';
 import 'package:toxbot/utils/config.dart';
@@ -351,8 +352,8 @@ Future<void> _open(NyxxGateway client, MessageComponentInteraction interaction,
           color: DiscordColor.parseHexString(_ticketColor),
           title: '${type.label} · #${ticket.paddedNumber}',
           description: type.description ??
-              await guildLocalized(
-                  guildId, 'ticket_welcome_default', {'&user': user.username}),
+              await guildLocalized(guildId, 'ticket_welcome_default',
+                  {'&user': escapeMarkdown(user.username)}),
         ),
       ],
       components: [

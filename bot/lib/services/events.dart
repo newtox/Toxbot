@@ -269,7 +269,8 @@ void setupGuildMemberAddHandler(NyxxGateway client) async {
           if (welcomeChannel is TextChannel) {
             String welcomeMessage = (guildSettings['welcome_msg'] as Blob?)
                     ?.toString()
-                    .replaceAll('&user', _userLabel(event.member.user))
+                    .replaceAll(
+                        '&user', escapeMarkdown(_userLabel(event.member.user)))
                     .replaceAll('&server', fullGuild.name)
                     .replaceAll('&mention', "<@${event.member.id}>") ??
                 'Default message if welcome_msg is null';
@@ -324,7 +325,8 @@ void setupGuildMemberRemoveHandler(NyxxGateway client) async {
 
               String byeMessage = (guildSettings['bye_msg'] as Blob?)
                       ?.toString()
-                      .replaceAll('&user', _userLabel(event.user))
+                      .replaceAll(
+                          '&user', escapeMarkdown(_userLabel(event.user)))
                       .replaceAll('&server', fullGuild.name)
                       .replaceAll('&mention', '<@${event.user.id}>') ??
                   'Default message if bye_msg is null';

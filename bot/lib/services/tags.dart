@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:nyxx/nyxx.dart';
+import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:toxbot/models/server_tag.dart';
 import 'package:toxbot/models/tag.dart';
@@ -151,8 +152,10 @@ bool isTagOwnerOrBotOwner(Tag tag, User user) =>
 
 Future<String> fillTagPlaceholders(String content, ChatContext context) async {
   var result = content
-      .replaceAll('&mention', context.user.globalName ?? context.user.username)
-      .replaceAll('&user', context.user.globalName ?? context.user.username);
+      .replaceAll('&mention',
+          escapeMarkdown(context.user.globalName ?? context.user.username))
+      .replaceAll('&user',
+          escapeMarkdown(context.user.globalName ?? context.user.username));
 
   if (context.guild != null &&
       (result.contains('&server') || result.contains('&membercount'))) {

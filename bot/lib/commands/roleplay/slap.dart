@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:nyxx/nyxx.dart';
+import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:toxbot/utils/database.dart';
 import 'package:toxbot/utils/functions.dart';
@@ -52,8 +53,8 @@ final slap = ChatCommand('slap', 'Slap someone.', localizedDescriptions: {
         EmbedBuilder(
             color: await getUserColorFromDatabase(context.user.id),
             title: (await getString(context.user, 'slap_user_slapped'))
-                .replaceAll('&slapped', user.username)
-                .replaceAll('&slap', context.user.username),
+                .replaceAll('&slapped', escapeMarkdown(user.username))
+                .replaceAll('&slap', escapeMarkdown(context.user.username)),
             image: EmbedImageBuilder(url: httpPackageResult))
       ]));
     }

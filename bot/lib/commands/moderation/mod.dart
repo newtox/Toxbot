@@ -1,4 +1,5 @@
 import 'package:nyxx/nyxx.dart';
+import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:toxbot/services/moderation.dart';
 import 'package:toxbot/utils/reply.dart';
@@ -408,7 +409,7 @@ final _cases = ChatCommand(
         EmbedBuilder(
           color: DiscordColor.parseHexString('#5865f2'),
           title: await localized(context.user, 'mod_cases_title',
-              {'&user': user.globalName ?? user.username}),
+              {'&user': escapeMarkdown(user.globalName ?? user.username)}),
           description: lines.join('\n\n'),
         )
       ]),

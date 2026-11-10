@@ -1,5 +1,6 @@
 import 'package:mysql1/mysql1.dart';
 import 'package:nyxx/nyxx.dart';
+import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:toxbot/services/levels.dart' show formatCredits;
 import 'package:toxbot/services/tags.dart';
@@ -489,7 +490,8 @@ final _list = ChatCommand(
                 user,
                 'tag_list_title',
               ))
-                  .replaceAll('&user', target.globalName ?? target.username),
+                  .replaceAll('&user',
+                      escapeMarkdown(target.globalName ?? target.username)),
               description: description,
               footer: limit == null
                   ? null
@@ -574,7 +576,9 @@ final _transfer = ChatCommand(
         await replyError(
           context,
           'tag_transfer_full',
-          replace: {'&user': target.globalName ?? target.username},
+          replace: {
+            '&user': escapeMarkdown(target.globalName ?? target.username)
+          },
         );
         return;
       }
@@ -590,7 +594,7 @@ final _transfer = ChatCommand(
         'tag_transferred',
         replace: {
           '&tag': tag.name,
-          '&user': target.globalName ?? target.username,
+          '&user': escapeMarkdown(target.globalName ?? target.username),
         },
       );
     } catch (e) {

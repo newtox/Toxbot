@@ -22,9 +22,7 @@ Future<String> _leaderboardName(ChatContext context, String userId) async {
     }
   } catch (_) {}
   if (name == null) return '<@$userId>';
-  final escaped = name.replaceAllMapped(
-      RegExp(r'[\\*_~`|>\[\]()]'), (match) => '\\${match[0]}');
-  return '**$escaped**';
+  return '**${escapeMarkdown(name)}**';
 }
 
 final profile = ChatCommand(
@@ -96,7 +94,7 @@ final profile = ChatCommand(
           embeds: [
             EmbedBuilder(
               color: await getUserColorFromDatabase(who.id),
-              title: who.globalName ?? who.username,
+              title: escapeMarkdown(who.globalName ?? who.username),
               thumbnail: EmbedThumbnailBuilder(url: who.avatar.url),
               fields: [
                 EmbedFieldBuilder(

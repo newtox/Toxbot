@@ -496,7 +496,7 @@ final _activeUsers = ChatCommand(
         try {
           final found = await context.client.users.get(Snowflake.parse(userId));
           name =
-              '**${found.globalName ?? found.username}** (@${found.username})';
+              '**${escapeMarkdown(found.globalName ?? found.username)}** (@${escapeMarkdown(found.username)})';
         } catch (_) {
           name = '`$userId`';
         }
