@@ -162,6 +162,8 @@ class GuildSettings extends Component
     #[Locked]
     public ?string $automodNotice = null;
 
+    public ?string $languageNotice = null;
+
     public string $scamCheck = '';
 
     public ?string $scamCheckResult = null;
@@ -554,9 +556,21 @@ class GuildSettings extends Component
             ],
         };
 
-        $row = Guild::forDiscordId($this->guildId)->fill($fields);
+        $row = Guild::forDiscordId($this->guildId);
+        $previousLanguage = $row->language;
+        $row->fill($fields);
         $row->rememberLanguage();
         $row->save();
+
+        $this->languageNotice = null;
+        if ($this->section === 'language' && $previousLanguage !== null && $previousLanguage !== $row->language) {
+            $updated = rescue(fn () => app(SetupMessages::class)->refreshLanguage($row, $this->guildName), [], report: false);
+            if ($updated !== []) {
+                $this->languageNotice = __('guild.language_messages_updated', [
+                    'messages' => implode(', ', array_map(fn (string $key) => __('guild.language_message_'.$key), $updated)),
+                ]);
+            }
+        }
 
         $this->automodNotice = null;
         if (in_array($this->section, ['links', 'automod', 'moderation'], true)) {

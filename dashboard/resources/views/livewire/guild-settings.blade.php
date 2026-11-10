@@ -74,6 +74,10 @@
             @endforeach
         </select>
         @error('language') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+        <p class="mt-3 text-sm text-dc-faint">{{ __('guild.language_messages_hint') }}</p>
+        @if ($languageNotice)
+            <div role="status" class="mt-4 rounded-lg border-l-4 border-accent bg-dc-900 px-4 py-3 text-sm">{{ $languageNotice }}</div>
+        @endif
     </section>
 
     @endif

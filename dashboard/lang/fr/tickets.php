@@ -11,7 +11,7 @@ return [
     'limit' => 'Tickets ouverts par membre',
     'hint' => 'Les salons de tickets sont créés dans la catégorie, et seuls le membre et les rôles d\'équipe du type de ticket les voient. À la fermeture, le salon est supprimé et l\'historique enregistré.',
     'panel_post' => 'Publier les boutons dans le salon',
-    'panel_hint' => 'Publie un message avec un bouton par type de ticket. Enregistre aussi les paramètres.',
+    'panel_hint' => 'Publie le message avec un bouton par type de ticket ou le met à jour, par exemple après une modification des types de ticket. Enregistre aussi les réglages.',
     'panel_needs_category' => 'Choisis d\'abord une catégorie pour les salons de tickets.',
     'panel_needs_channel' => 'Choisis d\'abord le salon où publier les boutons.',
     'panel_needs_type' => 'Ajoute d\'abord au moins un type de ticket ci-dessous.',

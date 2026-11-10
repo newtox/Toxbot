@@ -239,6 +239,29 @@ class TicketsTest extends TestCase
         $this->assertNotSame(__('tickets.panel_title', [], 'fr'), __('tickets.panel_title', [], 'de'));
     }
 
+    public function test_changing_the_server_language_updates_posted_messages(): void
+    {
+        $this->login();
+        Guild::create(['id' => self::GUILD, 'language' => 'de_de', 'ticket_category' => '10', 'ticket_panel_channel' => '11', 'ticket_panel_message_id' => '700', 'verify_channel' => '12', 'verify_message_id' => '701']);
+        TicketType::create(['guild' => self::GUILD, 'name' => 'Support']);
+
+        $component = Livewire::test(GuildSettings::class, [
+            'guild' => ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon_url' => null],
+            'section' => 'language',
+        ]);
+        $component->call('save')->assertSet('languageNotice', null);
+        Http::assertNotSent(fn (Request $r) => $r->method() === 'PATCH');
+
+        $component->set('language', 'da_dk')->call('save')
+            ->assertSet('languageNotice', __('guild.language_messages_updated', ['messages' => __('guild.language_message_tickets').', '.__('guild.language_message_verification')]));
+
+        Http::assertSent(fn (Request $r) => $r->method() === 'PATCH' && str_ends_with($r->url(), '/channels/11/messages/700')
+            && $r['embeds'][0]['title'] === __('tickets.panel_title', [], 'da'));
+        Http::assertSent(fn (Request $r) => $r->method() === 'PATCH' && str_ends_with($r->url(), '/channels/12/messages/701')
+            && $r['components'][0]['components'][0]['label'] === __('protection.message_button', [], 'da'));
+        Http::assertNotSent(fn (Request $r) => $r->method() === 'POST' && str_contains($r->url(), '/messages'));
+    }
+
     public function test_first_save_remembers_the_dashboard_language(): void
     {
         $this->login();

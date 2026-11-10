@@ -11,7 +11,7 @@ return [
     'limit' => 'Åbne tickets pr. medlem',
     'hint' => 'Ticketkanaler oprettes i kategorien, og kun medlemmet og ticket-typens teamroller kan se dem. Når et ticket lukkes, slettes kanalen, og forløbet gemmes.',
     'panel_post' => 'Send knapper i kanalen',
-    'panel_hint' => 'Sender en besked med én knap pr. ticket-type. Gemmer også indstillingerne.',
+    'panel_hint' => 'Sender beskeden med en knap pr. tickettype eller opdaterer den, f.eks. efter ændringer af tickettyperne. Gemmer også indstillingerne.',
     'panel_needs_category' => 'Vælg først en kategori til ticket-kanalerne.',
     'panel_needs_channel' => 'Vælg først kanalen, som knapperne skal postes i.',
     'panel_needs_type' => 'Opret mindst én ticket-type nedenfor først.',

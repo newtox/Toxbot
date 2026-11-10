@@ -11,7 +11,7 @@ return [
     'limit' => 'Tickets abiertos por miembro',
     'hint' => 'Los canales de tickets se crean en la categoría y solo los ven el miembro y los roles del equipo del tipo de ticket. Al cerrar un ticket se borra el canal y se guarda su historial.',
     'panel_post' => 'Publicar botones en el canal',
-    'panel_hint' => 'Publica un mensaje con un botón por tipo de ticket. También guarda los ajustes.',
+    'panel_hint' => 'Publica el mensaje con un botón por tipo de ticket o lo actualiza, por ejemplo tras cambiar los tipos de ticket. También guarda los ajustes.',
     'panel_needs_category' => 'Primero elige una categoría para los canales de tickets.',
     'panel_needs_channel' => 'Primero elige el canal donde se publicarán los botones.',
     'panel_needs_type' => 'Primero añade al menos un tipo de ticket abajo.',

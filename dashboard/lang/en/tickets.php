@@ -11,7 +11,7 @@ return [
     'limit' => 'Open tickets per member',
     'hint' => 'Ticket channels are created in the category, and only the member and the team roles of the ticket type can see them. When a ticket is closed, the channel is deleted and its transcript is saved.',
     'panel_post' => 'Post buttons in channel',
-    'panel_hint' => 'Posts a message with one button per ticket type. Also saves the settings.',
+    'panel_hint' => 'Posts the message with one button per ticket type, or updates it, for example after changing the ticket types. Also saves the settings.',
     'panel_needs_category' => 'Choose a category for the ticket channels first.',
     'panel_needs_channel' => 'Choose the channel for the buttons first.',
     'panel_needs_type' => 'Add at least one ticket type below first.',

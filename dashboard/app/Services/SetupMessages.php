@@ -19,11 +19,39 @@ class SetupMessages
 
     public function postTicketPanel(Guild $row): void
     {
-        $types = $this->ticketTypes($row->id);
         $row->rememberLanguage();
+        $messageId = $this->editOrSend($row->ticket_panel_channel, $row->ticket_panel_message_id, $this->ticketPanelPayload($row));
+        $row->forceFill(['ticket_panel_message_id' => $messageId])->save();
+    }
+
+    public function postVerifyMessage(Guild $row, string $guildName): void
+    {
+        $row->rememberLanguage();
+        $messageId = $this->editOrSend($row->verify_channel, $row->verify_message_id, $this->verifyPayload($row, $guildName));
+        $row->forceFill(['verify_message_id' => $messageId])->save();
+    }
+
+    public function refreshLanguage(Guild $row, string $guildName): array
+    {
+        $updated = [];
+        if ($row->ticket_panel_channel && $row->ticket_panel_message_id && $this->ticketTypes($row->id)->isNotEmpty()
+            && $this->editOnly($row->ticket_panel_channel, $row->ticket_panel_message_id, $this->ticketPanelPayload($row))) {
+            $updated[] = 'tickets';
+        }
+        if ($row->verify_channel && $row->verify_message_id
+            && $this->editOnly($row->verify_channel, $row->verify_message_id, $this->verifyPayload($row, $guildName))) {
+            $updated[] = 'verification';
+        }
+
+        return $updated;
+    }
+
+    private function ticketPanelPayload(Guild $row): array
+    {
+        $types = $this->ticketTypes($row->id);
         $locale = $row->messageLocale();
 
-        $payload = [
+        return [
             'embeds' => [[
                 'color' => 0x5865F2,
                 'title' => __('tickets.panel_title', [], $locale),
@@ -46,16 +74,13 @@ class SetupMessages
             ]],
             'allowed_mentions' => ['parse' => []],
         ];
-
-        $messageId = $this->editOrSend($row->ticket_panel_channel, $row->ticket_panel_message_id, $payload);
-        $row->forceFill(['ticket_panel_message_id' => $messageId])->save();
     }
 
-    public function postVerifyMessage(Guild $row, string $guildName): void
+    private function verifyPayload(Guild $row, string $guildName): array
     {
-        $row->rememberLanguage();
         $locale = $row->messageLocale();
-        $payload = [
+
+        return [
             'embeds' => [[
                 'color' => 0x6DBE33,
                 'title' => __('protection.message_title', ['server' => $guildName], $locale),
@@ -72,9 +97,17 @@ class SetupMessages
             ]],
             'allowed_mentions' => ['parse' => []],
         ];
+    }
 
-        $messageId = $this->editOrSend($row->verify_channel, $row->verify_message_id, $payload);
-        $row->forceFill(['verify_message_id' => $messageId])->save();
+    private function editOnly(string $channelId, string $messageId, array $payload): bool
+    {
+        try {
+            $this->discord->editMessage($channelId, $messageId, $payload);
+
+            return true;
+        } catch (RequestException) {
+            return false;
+        }
     }
 
     private function editOrSend(string $channelId, ?string $messageId, array $payload): string
