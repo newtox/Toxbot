@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:nyxx/nyxx.dart';
@@ -14,7 +15,9 @@ import 'package:toxbot/services/status.dart';
 import 'package:toxbot/services/tickets.dart';
 import 'package:toxbot/utils/config.dart';
 
-void main() async {
+var _connected = false;
+
+Future<void> _start() async {
   final commands = CommandsPlugin(
       prefix: mentionOr((_) => '..'),
       options: CommandsOptions(
@@ -36,6 +39,7 @@ void main() async {
         setupCommandHandler(commands)
       ]));
 
+  _connected = true;
   setupReadyHandler(client);
   setupGuildCreateHandler(client);
   setupGuildMemberAddHandler(client);
@@ -53,4 +57,18 @@ void main() async {
   setupGuildEventHandlers(client);
   setupStarboardHandlers(client);
   setupStatusHeartbeat(client);
+}
+
+void main() {
+  runZonedGuarded(_start, (error, stack) async {
+    if (error is OutOfRemainingSessionsError) {
+      final wait = error.gatewayBot.sessionStartLimit.resetAfter;
+      stderr.writeln(
+          'Discord allows no more session starts right now, retrying in ${wait.inMinutes} minutes.');
+      await Future.delayed(wait + const Duration(minutes: 1));
+      exit(1);
+    }
+    stderr.writeln('Uncaught error: $error\n$stack');
+    if (!_connected) exit(1);
+  });
 }
