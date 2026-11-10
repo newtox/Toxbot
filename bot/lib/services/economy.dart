@@ -357,14 +357,14 @@ Future<(List<(String, int, int)>, int, int)> activeUsers(
     [limit],
   );
   final totals = await connection.query(
-    'SELECT COALESCE(SUM(`commands_used`), 0) AS `total`, COUNT(*) AS `users` FROM `users` WHERE `commands_used` > 0;',
+    'SELECT CAST(COALESCE(SUM(`commands_used`), 0) AS UNSIGNED) AS `total`, COUNT(*) AS `users` FROM `users` WHERE `commands_used` > 0;',
   );
   return (
     [
       for (final row in rows)
         (row['id'].toString(), row['commands_used'] as int, row['xp'] as int),
     ],
-    int.parse(totals.first['total'].toString()),
+    num.parse(totals.first['total'].toString()).toInt(),
     totals.first['users'] as int,
   );
 }
