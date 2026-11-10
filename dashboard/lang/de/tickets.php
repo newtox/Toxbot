@@ -91,5 +91,5 @@ return [
     'appeal_new_title' => 'Neuer Entbannungsantrag',
     'appeal_user' => 'Mitglied',
     'appeal_min_length' => 'mindestens :min Zeichen',
-    'appeal_bot_offline' => 'Annehmen geht erst, wenn Toxbot wieder online ist, weil er die Person entbannt.',
+    'appeal_bot_offline' => 'Annehmen geht erst, wenn Toxbot wieder online ist, weil das Entbannen über Toxbot läuft.',
 ];

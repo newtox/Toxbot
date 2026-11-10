@@ -41,7 +41,7 @@ return [
     'dashboard_title' => 'Dashboard',
     'online' => 'Online',
     'offline' => 'Offline',
-    'no_status' => 'Der Bot hat noch keinen Status gemeldet. Er schreibt ihn jede Minute, sobald er läuft.',
+    'no_status' => 'Toxbot hat noch keinen Status gemeldet. Das passiert jede Minute, sobald Toxbot läuft.',
     'field_version' => 'Version',
     'field_latency' => 'Ping',
     'field_servers' => 'Server',

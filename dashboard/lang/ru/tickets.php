@@ -91,5 +91,5 @@ return [
     'appeal_new_title' => 'Новая заявка на разбан',
     'appeal_user' => 'Участник',
     'appeal_min_length' => 'не меньше :min символов',
-    'appeal_bot_offline' => 'Принять можно только когда Toxbot снова в сети, ведь разбан выполняет он.',
+    'appeal_bot_offline' => 'Принять можно только когда Toxbot снова в сети, ведь разбан выполняет Toxbot.',
 ];

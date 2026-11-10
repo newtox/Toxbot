@@ -13,7 +13,7 @@ return [
     'confirm_mismatch' => 'El nombre no coincide.',
     'delete_button' => 'Eliminar todo y quitar a Toxbot',
     'delete_done' => 'Se eliminó :server y Toxbot abandonó el servidor.',
-    'leave_failed' => 'Se eliminaron los datos de :server, pero Toxbot no pudo abandonar el servidor. Expúlsalo en Discord.',
+    'leave_failed' => 'Se eliminaron los datos de :server, pero Toxbot no pudo abandonar el servidor. Expulsa a Toxbot del servidor en Discord.',
     'owner_only' => 'Solo el propietario del servidor puede eliminar todos los datos.',
     'account_title' => 'Eliminar mis datos',
     'account_description' => 'Elimina todo lo que Toxbot guardó sobre ti y tu acceso al panel.',

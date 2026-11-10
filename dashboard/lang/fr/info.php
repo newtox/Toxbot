@@ -41,7 +41,7 @@ return [
     'dashboard_title' => 'Tableau de bord',
     'online' => 'En ligne',
     'offline' => 'Hors ligne',
-    'no_status' => 'Le bot n\'a pas encore envoyé de statut. Il en écrit un chaque minute tant qu\'il tourne.',
+    'no_status' => 'Toxbot n\'a pas encore envoyé de statut. Un statut est envoyé chaque minute tant que Toxbot tourne.',
     'field_version' => 'Version',
     'field_latency' => 'Ping',
     'field_servers' => 'Serveurs',

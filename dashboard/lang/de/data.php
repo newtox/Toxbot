@@ -13,7 +13,7 @@ return [
     'confirm_mismatch' => 'Der Name passt nicht.',
     'delete_button' => 'Alles löschen und Toxbot entfernen',
     'delete_done' => ':server wurde gelöscht und Toxbot hat den Server verlassen.',
-    'leave_failed' => 'Die Daten von :server wurden gelöscht, aber Toxbot konnte den Server nicht verlassen. Wirf ihn in Discord vom Server.',
+    'leave_failed' => 'Die Daten von :server wurden gelöscht, aber Toxbot konnte den Server nicht verlassen. Entferne Toxbot in Discord vom Server.',
     'owner_only' => 'Nur der Besitzer des Servers kann alle Daten löschen.',
     'account_title' => 'Meine Daten löschen',
     'account_description' => 'Lösche alles, was Toxbot über dich gespeichert hat, und deinen Dashboard-Zugang.',
@@ -33,5 +33,5 @@ return [
     'section_extra_starboard' => 'Bisherige Posts im Starboard bleiben erhalten.',
     'section_extra_automod' => 'Toxbots AutoMod-Regeln werden aus Discord entfernt.',
     'section_extra_links' => 'Die AutoMod-Regel für gesperrte Domains wird aus Discord entfernt.',
-    'section_extra_botprofile' => 'Toxbot bekommt auf diesem Server wieder sein normales Profil.',
+    'section_extra_botprofile' => 'Toxbot bekommt auf diesem Server wieder das normale Profil.',
 ];

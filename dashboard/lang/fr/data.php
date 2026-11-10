@@ -13,7 +13,7 @@ return [
     'confirm_mismatch' => 'Le nom ne correspond pas.',
     'delete_button' => 'Tout supprimer et retirer Toxbot',
     'delete_done' => ':server a été supprimé et Toxbot a quitté le serveur.',
-    'leave_failed' => 'Les données de :server ont été supprimées, mais Toxbot n\'a pas pu quitter le serveur. Expulse-le sur Discord.',
+    'leave_failed' => 'Les données de :server ont été supprimées, mais Toxbot n\'a pas pu quitter le serveur. Retire Toxbot du serveur sur Discord.',
     'owner_only' => 'Seul le propriétaire du serveur peut supprimer toutes les données.',
     'account_title' => 'Supprimer mes données',
     'account_description' => 'Supprime tout ce que Toxbot a enregistré sur toi et ton accès au tableau de bord.',
