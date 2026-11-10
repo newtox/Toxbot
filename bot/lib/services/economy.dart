@@ -270,6 +270,7 @@ Future<String?> buyOrEquip(
   String userId,
   ShopItem item, {
   bool allowBuy = true,
+  bool equip = true,
 }) async {
   await ensureUser(connection, userId);
 
@@ -315,10 +316,12 @@ Future<String?> buyOrEquip(
     );
   }
 
-  await connection.query(
-    'UPDATE `users` SET `${item.column}` = ? WHERE `id` = ?;',
-    [item.id, userId],
-  );
+  if (equip) {
+    await connection.query(
+      'UPDATE `users` SET `${item.column}` = ? WHERE `id` = ?;',
+      [item.id, userId],
+    );
+  }
   return null;
 }
 

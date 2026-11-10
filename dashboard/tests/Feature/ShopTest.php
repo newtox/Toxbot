@@ -42,6 +42,27 @@ class ShopTest extends TestCase
         $this->get('/shop')->assertOk()->assertSee('Ocean')->assertSee('Synthwave');
     }
 
+    public function test_buying_can_skip_equipping(): void
+    {
+        $this->credits(800);
+        $ocean = ShopItem::where('name', 'Ocean')->first();
+
+        Livewire::test(Shop::class)
+            ->call('startBuy', $ocean->id)
+            ->assertSet('buyingId', $ocean->id)
+            ->assertSee(__('shop.buy_and_use'))
+            ->assertSee(__('shop.buy_only'))
+            ->call('buy', $ocean->id, false)
+            ->assertSet('success', true)
+            ->assertSet('buyingId', null)
+            ->assertSee(__('shop.bought_only'));
+
+        $user = BotUser::find(self::USER);
+        $this->assertSame(300, $user->credits);
+        $this->assertNull($user->background_id);
+        $this->assertTrue($user->items()->whereKey($ocean->id)->exists());
+    }
+
     public function test_buying_takes_credits_and_equips(): void
     {
         $this->credits(800);

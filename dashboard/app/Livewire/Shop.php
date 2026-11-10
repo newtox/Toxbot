@@ -25,6 +25,9 @@ class Shop extends Component
     #[Locked]
     public bool $success = false;
 
+    #[Locked]
+    public ?int $buyingId = null;
+
     public function selectTab(string $tab): void
     {
         $this->tab = in_array($tab, ShopItem::TYPES, true) ? $tab : ShopItem::BACKGROUND;
@@ -39,9 +42,21 @@ class Shop extends Component
         }
     }
 
-    public function buy(int $id, Economy $economy): void
+    public function startBuy(int $id): void
     {
-        $this->run(fn () => $economy->buy($this->userId(), ShopItem::findOrFail($id)), 'shop.bought');
+        $this->buyingId = ShopItem::query()->whereKey($id)->exists() ? $id : null;
+        $this->message = null;
+    }
+
+    public function cancelBuy(): void
+    {
+        $this->buyingId = null;
+    }
+
+    public function buy(int $id, Economy $economy, bool $equip = true): void
+    {
+        $this->buyingId = null;
+        $this->run(fn () => $economy->buy($this->userId(), ShopItem::findOrFail($id), $equip), $equip ? 'shop.bought' : 'shop.bought_only');
     }
 
     public function equip(int $id, Economy $economy): void
@@ -102,6 +117,7 @@ class Shop extends Component
         $selected = $this->previews[$this->tab] ?? $equipped[$this->tab];
 
         return view('livewire.shop', [
+            'buyingId' => $this->buyingId,
             'items' => $items,
             'counts' => ShopItem::query()->tap($visible)->selectRaw('type, count(*) as total')->groupBy('type')->pluck('total', 'type'),
             'credits' => (int) $user->credits,

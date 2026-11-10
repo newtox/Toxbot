@@ -36,7 +36,7 @@ class Economy
         return true;
     }
 
-    public function buy(string $userId, ShopItem $item): void
+    public function buy(string $userId, ShopItem $item, bool $equip = true): void
     {
         if (! $item->active) {
             throw new RuntimeException('shop.not_available');
@@ -46,7 +46,7 @@ class Economy
             throw new RuntimeException('shop.for_money');
         }
 
-        DB::transaction(function () use ($userId, $item) {
+        DB::transaction(function () use ($userId, $item, $equip) {
             $user = BotUser::forDiscordId($userId);
             if (! $user->exists) {
                 $user->save();
@@ -62,7 +62,9 @@ class Economy
             }
 
             $user->credits = (int) $user->credits - $item->price;
-            $user->{$item->column()} = $item->id;
+            if ($equip) {
+                $user->{$item->column()} = $item->id;
+            }
             $user->save();
 
             $user->items()->attach($item->id, ['created_at' => now()]);

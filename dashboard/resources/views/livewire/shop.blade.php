@@ -103,13 +103,22 @@
                                     {{ __('shop.buy') }} <x-icon name="external" class="size-4" />
                                 </a>
                             @endif
-                        @else
-                            <button type="button" wire:click="buy({{ $item['id'] }})" wire:loading.attr="disabled"
-                                    data-confirm="{{ __('shop.confirm', ['name' => $item['name'], 'price' => number_format($item['price'], 0, '', ' ').' '.$currency]) }}" data-confirm-tone="primary"
+                        @elseif ($buyingId !== $item['id'])
+                            <button type="button" wire:click="startBuy({{ $item['id'] }})"
                                     @disabled($item['price'] > $credits)
                                     class="btn-primary px-3 py-1.5">{{ __('shop.buy') }}</button>
                         @endif
                     </div>
+                    @if ($buyingId === $item['id'] && ! $item['owned'])
+                        <div class="space-y-3 border-t border-white/5 p-3">
+                            <p class="text-sm">{{ __('shop.confirm', ['name' => $item['name'], 'price' => number_format($item['price'], 0, '', ' ').' '.$currency]) }}</p>
+                            <div class="flex flex-wrap gap-2">
+                                <button type="button" wire:click="buy({{ $item['id'] }}, true)" wire:loading.attr="disabled" class="btn-primary flex-1 px-3 py-1.5">{{ __('shop.buy_and_use') }}</button>
+                                <button type="button" wire:click="buy({{ $item['id'] }}, false)" wire:loading.attr="disabled" class="btn-secondary flex-1 px-3 py-1.5">{{ __('shop.buy_only') }}</button>
+                                <button type="button" wire:click="cancelBuy" class="btn-ghost px-3 py-1.5">{{ __('shop.cancel') }}</button>
+                            </div>
+                        </div>
+                    @endif
                 </article>
             @endforeach
         </div>

@@ -559,18 +559,30 @@ final shop = ChatCommand(
         return;
       }
 
-      final confirmed = await context.getConfirmation(
+      final alreadyOwned = isOwned(choice);
+      final labels = {
+        'equip': await getString(
+            user, alreadyOwned ? 'shop_equip' : 'shop_buy_equip'),
+        'buy': await getString(user, 'shop_buy_only'),
+        'cancel': await getString(user, 'shop_cancel'),
+      };
+      final action = await context.getButtonSelection<String>(
+        ['equip', if (!alreadyOwned) 'buy', 'cancel'],
         preview,
-        values: {
-          true: await getString(
-              user, isOwned(choice) ? 'shop_equip' : 'shop_buy'),
-          false: await getString(user, 'shop_cancel'),
+        styles: {
+          'equip': ButtonStyle.success,
+          'buy': ButtonStyle.primary,
+          'cancel': ButtonStyle.secondary,
         },
-        styles: {true: ButtonStyle.success, false: ButtonStyle.secondary},
+        toButton: (value) => ButtonBuilder(
+          style: ButtonStyle.secondary,
+          label: labels[value],
+          customId: value,
+        ),
         level: ResponseLevel.hint,
         timeout: const Duration(minutes: 2),
       );
-      if (!confirmed) {
+      if (action == 'cancel') {
         await context.respond(
           MessageBuilder(content: await getString(user, 'shop_cancelled')),
           level: ResponseLevel.hint,
@@ -583,6 +595,7 @@ final shop = ChatCommand(
           connection,
           user.id.toString(),
           choice,
+          equip: action == 'equip',
         ),
       );
       if (error != null) {
@@ -591,8 +604,14 @@ final shop = ChatCommand(
       }
 
       await replySuccess(
-          context, isOwned(choice) ? 'shop_equipped' : 'shop_bought',
-          replace: {'&name': choice.name}, level: ResponseLevel.hint);
+          context,
+          alreadyOwned
+              ? 'shop_equipped'
+              : action == 'equip'
+                  ? 'shop_bought'
+                  : 'shop_bought_only',
+          replace: {'&name': choice.name},
+          level: ResponseLevel.hint);
     } on InteractionTimeoutException {
       return;
     } catch (e) {
