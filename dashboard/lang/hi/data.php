@@ -34,4 +34,5 @@ return [
     'section_extra_automod' => 'Toxbot के AutoMod नियम Discord से हटा दिए जाते हैं।',
     'section_extra_links' => 'प्रतिबंधित डोमेन का AutoMod नियम Discord से हटा दिया जाता है।',
     'section_extra_botprofile' => 'इस सर्वर पर Toxbot को उसकी सामान्य प्रोफ़ाइल वापस मिल जाती है।',
+    'section_extra_readonly' => 'जो थ्रेड पहले से बंद हैं, वे Discord में बंद ही रहते हैं।',
 ];

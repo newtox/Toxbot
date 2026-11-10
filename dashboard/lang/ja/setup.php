@@ -13,7 +13,7 @@ return [
     'area_moderation' => 'モデレーション',
     'area_moderation_text' => 'チーム用の非公開 #mod-log と、処罰時のメンバーへのDM。',
     'area_protection' => '保護',
-    'area_protection_text' => '詐欺リンクと他サーバーへの招待をフィルターし、アンチレイドをオンにし、チームのロールをリンクフィルターから除外し、スパム・詐欺メッセージ・プロフィール名での運営なりすましに対する AutoMod を設定します。',
+    'area_protection_text' => '詐欺リンクと他サーバーへの招待をフィルターし、アンチレイドをオンにし、チームのロールをリンクフィルターから除外し、スパム・詐欺メッセージ・プロフィール名での運営なりすましに対する AutoMod を設定し、@everyone が書き込めないチャンネルでスレッドをブロックします。',
     'area_verification' => '認証',
     'area_verification_text' => '新規メンバー用のロール「未認証」、ボタン付きの #verify チャンネルを作成し、他のすべてのチャンネルをこのロールから隠します。',
     'verification_warning' => '新規メンバーはキャプチャを解くまで #verify しか見えなくなります。既にサーバーにいるメンバーには影響しません。',
@@ -66,4 +66,5 @@ return [
     'step_verify_message_failed' => '認証ボタンを投稿できませんでした。',
     'step_automod' => 'AutoMod がスパム、詐欺メッセージ、運営になりすましたプロフィール名をブロックします。',
     'step_automod_failed' => 'AutoMod を完全には設定できませんでした。AutoMod ページを確認してください。',
+    'step_readonly' => '{0} @everyone が書き込めないチャンネルでスレッドをブロックするようになりました。|[1,*] @everyone が書き込めない :count 個のチャンネルでスレッドをブロックしました。',
 ];

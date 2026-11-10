@@ -41,4 +41,5 @@ return [
     'section_data' => 'Data',
     'section_automod' => 'AutoMod',
     'leaderboard' => 'Leaderboard',
+    'section_readonly' => 'Read-only channels',
 ];

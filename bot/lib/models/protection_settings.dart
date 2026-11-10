@@ -22,6 +22,7 @@ class ProtectionSettings {
   final DateTime? raidUntil;
   final int minAccountAge;
   final Snowflake? modlogChannel;
+  final bool readonlyThreads;
 
   ProtectionSettings.fromRow(ResultRow row)
       : verifyEnabled = _flag(row['verify_enabled']),
@@ -44,7 +45,8 @@ class ProtectionSettings {
         raidLevel = _flag(row['raid_level']),
         raidUntil = (row['raid_until'] as DateTime?)?.toUtc(),
         minAccountAge = row['min_account_age'] as int? ?? 0,
-        modlogChannel = _snowflake(row['modlog_channel']);
+        modlogChannel = _snowflake(row['modlog_channel']),
+        readonlyThreads = _flag(row['readonly_threads']);
 
   bool get verifying => verifyEnabled && verifyRole != null;
 

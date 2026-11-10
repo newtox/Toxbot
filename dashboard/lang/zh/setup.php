@@ -13,7 +13,7 @@ return [
     'area_moderation' => '管理',
     'area_moderation_text' => '团队专用的私密 #mod-log，成员受罚时发送私信。',
     'area_protection' => '防护',
-    'area_protection_text' => '过滤诈骗链接和其他服务器的邀请，开启防突袭，将你的团队身份组从链接过滤中豁免，并设置 AutoMod 拦截垃圾信息、诈骗消息和在资料名称中冒充管理团队。',
+    'area_protection_text' => '过滤诈骗链接和其他服务器的邀请，开启防突袭，将你的团队身份组从链接过滤中豁免，并设置 AutoMod 拦截垃圾信息、诈骗消息和在资料名称中冒充管理团队，并在 @everyone 无法发言的频道中禁止子区。',
     'area_verification' => '验证',
     'area_verification_text' => '为新成员创建 “未验证” 身份组和带按钮的 #verify 频道，并对该身份组隐藏其他所有频道。',
     'verification_warning' => '新成员在完成验证码之前只能看到 #verify。已经在服务器里的成员不受影响。',
@@ -66,4 +66,5 @@ return [
     'step_verify_message_failed' => '无法发布验证按钮。',
     'step_automod' => 'AutoMod 会拦截垃圾信息、诈骗消息和冒充管理团队的资料名称。',
     'step_automod_failed' => 'AutoMod 未能完全设置。请查看 AutoMod 页面。',
+    'step_readonly' => '{0} 现在 @everyone 无法发言的频道会禁止子区。|[1,*] 已在 :count 个 @everyone 无法发言的频道中禁止子区。',
 ];

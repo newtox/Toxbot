@@ -34,4 +34,5 @@ return [
     'section_extra_automod' => 'Toxbot의 AutoMod 규칙이 Discord에서 삭제됩니다.',
     'section_extra_links' => '금지 도메인 AutoMod 규칙이 Discord에서 삭제됩니다.',
     'section_extra_botprofile' => '이 서버에서 Toxbot의 프로필이 원래대로 돌아갑니다.',
+    'section_extra_readonly' => '이미 막힌 스레드는 Discord에서 계속 막혀 있습니다.',
 ];

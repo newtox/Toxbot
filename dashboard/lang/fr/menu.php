@@ -41,4 +41,5 @@ return [
     'section_data' => 'Données',
     'section_automod' => 'AutoMod',
     'leaderboard' => 'Classement',
+    'section_readonly' => 'Salons en lecture seule',
 ];

@@ -9,6 +9,7 @@ use App\Services\BotProfile as BotProfiles;
 use App\Services\DataDeletion;
 use App\Services\Discord;
 use App\Services\GuildAccess;
+use App\Services\ReadOnlyChannels;
 use App\Services\ScamList;
 use App\Services\SetupMessages;
 use App\Support\DomainList;
@@ -28,7 +29,7 @@ class GuildSettings extends Component
 
     public const STARBOARD = 'starboard';
 
-    public const SECTIONS = ['welcome', 'goodbye', 'autorole', 'language', 'botprofile', 'levels', 'streams', 'liverole', 'tags', 'events', 'starboard', 'moderation', 'verification', 'links', 'automod', 'raid', 'tickets'];
+    public const SECTIONS = ['welcome', 'goodbye', 'autorole', 'language', 'botprofile', 'levels', 'streams', 'liverole', 'tags', 'events', 'starboard', 'moderation', 'verification', 'links', 'automod', 'raid', 'readonly', 'tickets'];
 
     public const WITHOUT_DISCORD_DATA = ['language', 'botprofile', 'tags', 'events', 'raid'];
 
@@ -41,7 +42,7 @@ class GuildSettings extends Component
     public const GROUPS = [
         'general' => ['welcome' => 'welcome', 'goodbye' => 'bye', 'autorole' => 'autorole', 'language' => 'globe', 'botprofile' => 'sparkles'],
         'community' => ['levels' => 'level', 'streams' => 'stream', 'liverole' => 'live', 'tags' => 'tag', 'events' => 'calendar'],
-        'safety' => ['moderation' => 'shield', 'verification' => 'lock', 'links' => 'link', 'automod' => 'filter', 'raid' => 'alert', 'tickets' => 'ticket'],
+        'safety' => ['moderation' => 'shield', 'verification' => 'lock', 'links' => 'link', 'automod' => 'filter', 'raid' => 'alert', 'readonly' => 'thread', 'tickets' => 'ticket'],
     ];
 
     public const LEGACY_SECTIONS = ['general' => 'welcome', 'protection' => 'verification'];
@@ -182,6 +183,11 @@ class GuildSettings extends Component
 
     public int $minAccountAge = 0;
 
+    public bool $readonlyThreads = false;
+
+    #[Locked]
+    public ?string $readonlyNotice = null;
+
     #[Locked]
     public ?string $raidUntil = null;
 
@@ -280,6 +286,7 @@ class GuildSettings extends Component
         $this->raidKick = (bool) $row->raid_kick;
         $this->raidLevel = (bool) $row->raid_level;
         $this->minAccountAge = (int) $row->min_account_age;
+        $this->readonlyThreads = (bool) $row->readonly_threads;
         $this->raidUntil = $row->raidActive() ? $row->raid_until->toIso8601String() : null;
 
         $this->ticketCategory = $row->ticket_category;
@@ -422,6 +429,7 @@ class GuildSettings extends Component
                 'ticketPanelChannel' => ['nullable', Rule::in($channelIds)],
                 'ticketLimit' => ['required', 'integer', 'min:1', 'max:10'],
             ],
+            'readonly' => [],
         ];
 
         $sectionRules = $rules[$this->section];
@@ -548,6 +556,9 @@ class GuildSettings extends Component
                 'raid_level' => $this->raidLevel,
                 'min_account_age' => $this->minAccountAge,
             ],
+            'readonly' => [
+                'readonly_threads' => $this->readonlyThreads,
+            ],
             'tickets' => [
                 'ticket_category' => $this->ticketCategory ?: null,
                 'ticket_log_channel' => $this->ticketLogChannel ?: null,
@@ -570,6 +581,16 @@ class GuildSettings extends Component
                     'messages' => implode(', ', array_map(fn (string $key) => __('guild.language_message_'.$key), $updated)),
                 ]);
             }
+        }
+
+        $this->readonlyNotice = null;
+        if ($this->section === 'readonly' && $row->readonly_threads) {
+            $result = rescue(fn () => app(ReadOnlyChannels::class)->lock($this->guildId, __('protection.readonly_reason', ['user' => Auth::user()->display_name])), null, report: false);
+            $this->readonlyNotice = match (true) {
+                $result === null => __('protection.readonly_failed_all'),
+                $result['failed'] > 0 => trans_choice('protection.readonly_failed', $result['failed'], ['count' => $result['failed']]),
+                default => trans_choice('protection.readonly_locked', $result['locked'], ['count' => $result['locked']]),
+            };
         }
 
         $this->automodNotice = null;
@@ -774,6 +795,9 @@ class GuildSettings extends Component
             'loadError' => $loadError,
             'automodTemplates' => $this->section === 'automod'
                 ? collect(array_keys(config('app.locales')))->mapWithKeys(fn (string $locale) => [$locale => collect(AutoMod::TEMPLATES)->mapWithKeys(fn (string $template) => [$template => AutoMod::template($template, $locale)])->all()])->all()
+                : [],
+            'readonlyChannels' => $this->section === 'readonly' && $loadError === null
+                ? rescue(fn () => app(ReadOnlyChannels::class)->list($this->guildId), [], report: false)
                 : [],
             'automodConflicts' => $this->section === 'automod' && $loadError === null ? app(AutoMod::class)->conflicts(Guild::forDiscordId($this->guildId)) : [],
             'serverEmojis' => $this->section === self::STARBOARD && $loadError === null

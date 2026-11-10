@@ -59,7 +59,7 @@ class AutoSetup
 
     private string $locale;
 
-    public function __construct(private Discord $discord, private SetupMessages $messages) {}
+    public function __construct(private Discord $discord, private SetupMessages $messages, private ReadOnlyChannels $readOnly) {}
 
     public function run(string $guildId, string $guildName, array $areas, array $teamRoles, string $userName): array
     {
@@ -175,6 +175,7 @@ class AutoSetup
             'automod_spam' => true,
             'automod_words' => AutoMod::merge($row->automod_words, AutoMod::template('scam', $this->locale)),
             'automod_profile_words' => AutoMod::merge($row->automod_profile_words, AutoMod::template('staff', $this->locale)),
+            'readonly_threads' => true,
         ])->save();
 
         $this->done(__('setup.step_links'));
@@ -182,6 +183,12 @@ class AutoSetup
             $this->done(__('setup.step_links_exempt', ['roles' => $this->roleNames($this->teamRoles)]));
         }
         $this->done(__('setup.step_raid', ['joins' => $row->raid_joins, 'seconds' => $row->raid_seconds]));
+
+        $readonly = $this->readOnly->lock($this->guildId, $this->reason, $this->channels);
+        $this->done(trans_choice('setup.step_readonly', $readonly['locked'], ['count' => $readonly['locked']]));
+        if ($readonly['failed'] > 0) {
+            $this->fail(trans_choice('setup.step_hidden_failed', $readonly['failed'], ['count' => $readonly['failed']]));
+        }
 
         $failed = app(AutoMod::class)->sync($row);
         if (array_intersect(['spam', 'words', 'profile'], array_keys($failed)) === []) {

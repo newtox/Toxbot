@@ -34,4 +34,5 @@ return [
     'section_extra_automod' => 'Las reglas de AutoMod de Toxbot se eliminan de Discord.',
     'section_extra_links' => 'La regla de AutoMod de dominios bloqueados se elimina de Discord.',
     'section_extra_botprofile' => 'Toxbot recupera su perfil normal en este servidor.',
+    'section_extra_readonly' => 'Los hilos que ya están bloqueados siguen bloqueados en Discord.',
 ];

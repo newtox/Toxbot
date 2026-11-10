@@ -474,7 +474,7 @@
     </section>
     @endif
 
-    @if (in_array($section, ['verification', 'links', 'raid'], true))
+    @if (in_array($section, ['verification', 'links', 'raid', 'readonly'], true))
     <livewire:auto-setup :guild-id="$guildId" :guild-name="$guildName" :areas="$section === 'verification' ? ['verification'] : ['protection']" :compact="true" :key="'auto-setup-'.$section" />
 
     @if ($protectionNotice)
@@ -904,6 +904,50 @@
             <input id="min-age" type="number" min="0" max="365" wire:model="minAccountAge" class="input">
             @error('minAccountAge') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
             <p class="mt-2 text-sm text-dc-faint">{{ __('protection.min_age_hint') }}</p>
+        </div>
+    </section>
+    @endif
+
+    @if ($section === 'readonly')
+    <section id="readonly" class="card scroll-mt-20">
+        <div class="flex items-start gap-4">
+            <div class="flex-1">
+                <h2 class="text-lg font-semibold text-dc-header">{{ __('protection.readonly_title') }}</h2>
+                <p class="text-sm text-dc-muted">{{ __('protection.readonly_description') }}</p>
+            </div>
+            <label class="relative mt-1 inline-flex shrink-0 cursor-pointer items-center">
+                <input type="checkbox" wire:model="readonlyThreads" class="peer sr-only">
+                <span class="h-6 w-10 rounded-full bg-dc-400 transition-colors peer-checked:bg-accent peer-focus-visible:ring-2 peer-focus-visible:ring-accent-fg peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-dc-800"></span>
+                <span class="absolute top-0.5 left-0.5 size-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-4"></span>
+                <span class="sr-only">{{ __('guild.enable', ['name' => __('protection.readonly_title')]) }}</span>
+            </label>
+        </div>
+
+        <p class="mt-4 text-sm text-dc-faint">{{ __('protection.readonly_hint') }}</p>
+
+        @if ($readonlyNotice)
+            <p class="mt-4 rounded-lg border-l-4 border-accent bg-dc-900 px-4 py-3 text-sm" role="status">{{ $readonlyNotice }}</p>
+        @endif
+
+        <div class="mt-6 border-t border-white/5 pt-5">
+            <h3 class="label">{{ __('protection.readonly_list') }}</h3>
+            @if ($readonlyChannels === [])
+                <p class="text-sm text-dc-faint">{{ __('protection.readonly_none') }}</p>
+            @else
+                <ul class="divide-y divide-black/25 rounded-lg bg-dc-900">
+                    @foreach ($readonlyChannels as $channel)
+                        <li wire:key="readonly-{{ $channel['id'] }}" class="flex flex-wrap items-center gap-x-3 gap-y-1 px-3 py-2">
+                            <span class="min-w-0 flex-1 truncate text-sm text-dc-header">{{ $channel['category'] ? $channel['name'] : '# '.$channel['name'] }}@if ($channel['category'])<span class="ml-2 text-xs text-dc-faint">{{ __('protection.readonly_category') }}</span>@endif</span>
+                            <span @class([
+                                'text-xs font-medium',
+                                'text-dc-muted' => $channel['state'] === 'locked',
+                                'text-dc-yellow' => $channel['state'] === 'open',
+                                'text-dc-faint' => $channel['state'] === 'allowed',
+                            ])>{{ __('protection.readonly_state_'.$channel['state']) }}</span>
+                        </li>
+                    @endforeach
+                </ul>
+            @endif
         </div>
     </section>
     @endif

@@ -41,4 +41,5 @@ return [
     'section_data' => 'डेटा',
     'section_automod' => 'AutoMod',
     'leaderboard' => 'लीडरबोर्ड',
+    'section_readonly' => 'सिर्फ़ पढ़ने वाले चैनल',
 ];

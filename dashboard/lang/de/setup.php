@@ -13,7 +13,7 @@ return [
     'area_moderation' => 'Moderation',
     'area_moderation_text' => 'Ein privater #mod-log für das Team und DMs an Mitglieder, wenn sie bestraft werden.',
     'area_protection' => 'Schutz',
-    'area_protection_text' => 'Filtert Scam-Links und Einladungen zu anderen Servern, schaltet Anti-Raid ein, nimmt deine Team-Rollen vom Linkfilter aus und richtet AutoMod gegen Spam, Scam-Nachrichten und Team-Imitation in Profilnamen ein.',
+    'area_protection_text' => 'Filtert Scam-Links und Einladungen zu anderen Servern, schaltet Anti-Raid ein, nimmt deine Team-Rollen vom Linkfilter aus und richtet AutoMod gegen Spam, Scam-Nachrichten und Team-Imitation in Profilnamen ein. Außerdem werden Threads in Kanälen gesperrt, in denen @everyone nicht schreiben darf.',
     'area_verification' => 'Verifizierung',
     'area_verification_text' => 'Rolle „Unverifiziert“ für neue Mitglieder, ein Kanal #verifizierung mit dem Button, und alle anderen Kanäle werden für diese Rolle ausgeblendet.',
     'verification_warning' => 'Neue Mitglieder sehen dann nur noch #verifizierung, bis sie das Captcha gelöst haben. Wer schon auf dem Server ist, ist nicht betroffen.',
@@ -66,4 +66,5 @@ return [
     'step_verify_message_failed' => 'Der Verifizierungs-Button konnte nicht gepostet werden.',
     'step_automod' => 'AutoMod blockt Spam, Scam-Nachrichten und Profilnamen, die sich als Team ausgeben.',
     'step_automod_failed' => 'AutoMod ließ sich nicht vollständig einrichten. Schau auf der AutoMod-Seite nach.',
+    'step_readonly' => '{0} In Kanälen, in denen @everyone nicht schreiben darf, sind Threads ab jetzt gesperrt.|{1} Threads in :count Kanal gesperrt, in dem @everyone nicht schreiben darf.|[2,*] Threads in :count Kanälen gesperrt, in denen @everyone nicht schreiben darf.',
 ];

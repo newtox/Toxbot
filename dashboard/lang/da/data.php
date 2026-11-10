@@ -34,4 +34,5 @@ return [
     'section_extra_automod' => 'Toxbots AutoMod-regler fjernes fra Discord.',
     'section_extra_links' => 'AutoMod-reglen for blokerede domæner fjernes fra Discord.',
     'section_extra_botprofile' => 'Toxbot får sin normale profil tilbage på denne server.',
+    'section_extra_readonly' => 'Tråde, der allerede er blokeret, forbliver blokeret i Discord.',
 ];

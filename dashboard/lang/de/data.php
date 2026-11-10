@@ -34,4 +34,5 @@ return [
     'section_extra_automod' => 'Toxbots AutoMod-Regeln werden aus Discord entfernt.',
     'section_extra_links' => 'Die AutoMod-Regel für gesperrte Domains wird aus Discord entfernt.',
     'section_extra_botprofile' => 'Toxbot bekommt auf diesem Server wieder das normale Profil.',
+    'section_extra_readonly' => 'Bereits gesperrte Threads bleiben in Discord gesperrt.',
 ];

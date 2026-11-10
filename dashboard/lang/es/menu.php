@@ -41,4 +41,5 @@ return [
     'section_data' => 'Datos',
     'section_automod' => 'AutoMod',
     'leaderboard' => 'Clasificación',
+    'section_readonly' => 'Canales de solo lectura',
 ];

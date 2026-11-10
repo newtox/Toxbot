@@ -41,4 +41,5 @@ return [
     'section_data' => '데이터',
     'section_automod' => 'AutoMod',
     'leaderboard' => '순위표',
+    'section_readonly' => '읽기 전용 채널',
 ];

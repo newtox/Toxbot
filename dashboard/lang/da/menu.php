@@ -41,4 +41,5 @@ return [
     'section_data' => 'Data',
     'section_automod' => 'AutoMod',
     'leaderboard' => 'Rangliste',
+    'section_readonly' => 'Skrivebeskyttede kanaler',
 ];

@@ -41,4 +41,5 @@ return [
     'section_data' => 'Daten',
     'section_automod' => 'AutoMod',
     'leaderboard' => 'Rangliste',
+    'section_readonly' => 'Lese-Kanäle',
 ];

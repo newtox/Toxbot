@@ -41,4 +41,5 @@ return [
     'section_data' => 'Данные',
     'section_automod' => 'AutoMod',
     'leaderboard' => 'Рейтинг',
+    'section_readonly' => 'Каналы только для чтения',
 ];

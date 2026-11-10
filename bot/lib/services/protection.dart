@@ -47,6 +47,11 @@ final _invitePattern = RegExp(
 final _barePattern =
     RegExp(r'\b(?:[a-z0-9-]+\.)+[a-z]{2,}\b', caseSensitive: false);
 
+final _threadPermissions = Flags<Permissions>(
+    Permissions.createPublicThreads.value |
+        Permissions.createPrivateThreads.value |
+        Permissions.sendMessagesInThreads.value);
+
 final Map<Snowflake, (ProtectionSettings?, DateTime)> _settingsCache = {};
 
 final Map<String, (Snowflake?, DateTime)> _inviteCache = {};
@@ -98,6 +103,35 @@ Future<void> _hideFromUnverified(NyxxGateway client, Channel channel) async {
       id: role,
       type: PermissionOverwriteType.role,
       deny: Flags<Permissions>(view.value),
+    ),
+  );
+}
+
+Future<void> _lockThreads(NyxxGateway client, Channel channel) async {
+  if (channel is! GuildTextChannel &&
+      channel is! GuildAnnouncementChannel &&
+      channel is! GuildCategory) {
+    return;
+  }
+  final guildChannel = channel as GuildChannel;
+  final settings = await _settings(guildChannel.guildId);
+  if (settings == null || !settings.readonlyThreads) return;
+
+  final everyone = guildChannel.permissionOverwrites
+      .where((o) => o.id == guildChannel.guildId)
+      .firstOrNull;
+  if (everyone == null || !everyone.deny.has(Permissions.sendMessages)) return;
+  if ((everyone.allow & _threadPermissions).value != 0) return;
+  final missing = _threadPermissions & ~everyone.deny;
+  if (missing.value == 0) return;
+
+  await client.channels.updatePermissionOverwrite(
+    guildChannel.id,
+    PermissionOverwriteBuilder(
+      id: guildChannel.guildId,
+      type: PermissionOverwriteType.role,
+      allow: everyone.allow,
+      deny: everyone.deny | missing,
     ),
   );
 }
@@ -518,6 +552,22 @@ void setupProtectionHandlers(NyxxGateway client) {
       await _hideFromUnverified(client, event.channel);
     } catch (e) {
       print('Hiding a new channel from unverified members failed: $e');
+    }
+  });
+
+  client.onChannelCreate.listen((event) async {
+    try {
+      await _lockThreads(client, event.channel);
+    } catch (e) {
+      print('Blocking threads in a new read-only channel failed: $e');
+    }
+  });
+
+  client.onChannelUpdate.listen((event) async {
+    try {
+      await _lockThreads(client, event.channel);
+    } catch (e) {
+      print('Blocking threads in a read-only channel failed: $e');
     }
   });
 

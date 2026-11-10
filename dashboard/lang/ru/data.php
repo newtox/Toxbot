@@ -34,4 +34,5 @@ return [
     'section_extra_automod' => 'Правила AutoMod от Toxbot удаляются из Discord.',
     'section_extra_links' => 'Правило AutoMod для запрещённых доменов удаляется из Discord.',
     'section_extra_botprofile' => 'Toxbot на этом сервере получает обратно свой обычный профиль.',
+    'section_extra_readonly' => 'Уже запрещённые ветки остаются запрещёнными в Discord.',
 ];

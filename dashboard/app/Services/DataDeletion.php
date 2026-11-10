@@ -42,6 +42,7 @@ class DataDeletion
         'links' => ['link_invites', 'link_scam', 'link_allowlist_enabled', 'link_allowlist', 'link_blocklist', 'link_action', 'link_exempt_roles'],
         'automod' => ['automod_words', 'automod_mentions', 'automod_exempt_roles', 'automod_words_allow', 'automod_words_timeout', 'automod_mention_raid', 'automod_mentions_timeout', 'automod_spam', 'automod_presets', 'automod_presets_allow', 'automod_profile_words', 'automod_message', 'automod_exempt_channels'],
         'raid' => ['raid_enabled', 'raid_joins', 'raid_seconds', 'raid_minutes', 'raid_kick', 'raid_level', 'raid_until', 'min_account_age'],
+        'readonly' => ['readonly_threads'],
         'tickets' => ['ticket_category', 'ticket_log_channel', 'ticket_limit', 'ticket_panel_channel', 'ticket_panel_message_id'],
         'starboard' => ['starboard_channel', 'starboard_emoji', 'starboard_threshold'],
     ];

@@ -41,4 +41,5 @@ return [
     'section_data' => '数据',
     'section_automod' => 'AutoMod',
     'leaderboard' => '排行榜',
+    'section_readonly' => '只读频道',
 ];

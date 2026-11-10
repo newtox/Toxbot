@@ -173,6 +173,13 @@ class ServerController extends Controller
                     'description' => __('protection.raid_description'),
                     'active' => (bool) $row->raid_enabled || $row->min_account_age > 0,
                 ],
+                [
+                    'section' => 'readonly',
+                    'icon' => 'thread',
+                    'title' => __('protection.readonly_title'),
+                    'description' => __('protection.readonly_description'),
+                    'active' => (bool) $row->readonly_threads,
+                ],
             ],
         ]);
     }

@@ -13,7 +13,7 @@ return [
     'area_moderation' => 'Moderation',
     'area_moderation_text' => 'En privat #mod-log til teamet og DM\'er til medlemmer, når de bliver straffet.',
     'area_protection' => 'Beskyttelse',
-    'area_protection_text' => 'Filtrerer svindellinks og invitationer til andre servere, slår anti-raid til, undtager dine team-roller fra linkfilteret og opsætter AutoMod mod spam, svindelbeskeder og team-efterligning i profilnavne.',
+    'area_protection_text' => 'Filtrerer svindellinks og invitationer til andre servere, slår anti-raid til, undtager dine team-roller fra linkfilteret og opsætter AutoMod mod spam, svindelbeskeder og team-efterligning i profilnavne og blokerer tråde i kanaler, hvor @everyone ikke må skrive.',
     'area_verification' => 'Verificering',
     'area_verification_text' => 'Rollen "Ikke verificeret" til nye medlemmer, en #verify-kanal med knappen, og alle andre kanaler skjules for den rolle.',
     'verification_warning' => 'Nye medlemmer ser så kun #verify, indtil de har løst captchaen. Medlemmer, der allerede er på serveren, påvirkes ikke.',
@@ -66,4 +66,5 @@ return [
     'step_verify_message_failed' => 'Verificeringsknappen kunne ikke postes.',
     'step_automod' => 'AutoMod blokerer spam, svindelbeskeder og profilnavne, der udgiver sig for at være teamet.',
     'step_automod_failed' => 'AutoMod kunne ikke sættes helt op. Tjek AutoMod-siden.',
+    'step_readonly' => '{0} Tråde er nu blokeret i kanaler, hvor @everyone ikke må skrive.|{1} Tråde blokeret i :count kanal, hvor @everyone ikke må skrive.|[2,*] Tråde blokeret i :count kanaler, hvor @everyone ikke må skrive.',
 ];
