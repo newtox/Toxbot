@@ -147,4 +147,16 @@ class InfoTest extends TestCase
         $this->get('/servers/'.self::JOINED.'/data')->assertForbidden();
         $this->get('/servers/'.self::JOINED.'/members')->assertDontSee(route('servers.data', self::JOINED));
     }
+
+    public function test_dashboard_warns_while_the_bot_is_offline(): void
+    {
+        $this->login();
+        $this->get('/info/system')->assertDontSee(__('common.bot_offline'))->assertSee(__('common.saved'));
+
+        BotStatus::create(['id' => 1, 'started_at' => now()->subDay(), 'heartbeat_at' => now()]);
+        $this->get('/info/system')->assertDontSee(__('common.bot_offline'))->assertSee(__('common.saved'));
+
+        BotStatus::query()->update(['heartbeat_at' => now()->subMinutes(10)]);
+        $this->get('/info/system')->assertSee(__('common.bot_offline'))->assertSee(__('common.saved_offline'));
+    }
 }

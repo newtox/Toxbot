@@ -2,6 +2,8 @@
 
 @php
     $pageTitle = $title ? $title.' · Toxbot' : 'Toxbot Dashboard';
+    $botStatus = Auth::check() ? \App\Models\BotStatus::current() : null;
+    $botOffline = $botStatus !== null && ! $botStatus->online();
     $pageDescription = $description ?? __('login.intro');
     $shareImage = $botAvatar ? str_replace('size=128', 'size=512', $botAvatar) : null;
     $fallbackIcon = 'data:image/svg+xml,'.rawurlencode('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="32" fill="'.$palette['accent'].'"/><text x="32" y="44" text-anchor="middle" font-family="sans-serif" font-size="36" font-weight="700" fill="'.$palette['on'].'">t</text></svg>');
@@ -166,6 +168,15 @@
 
                 @include('components.layouts.partials.status')
 
+                @if ($botOffline)
+                    <div class="mx-auto mt-4 w-full max-w-5xl px-4 md:px-8">
+                        <a href="{{ route('info.system') }}" role="status" class="flex items-start gap-3 rounded-lg border-l-4 border-dc-red bg-dc-800 px-4 py-3 text-sm hover:bg-dc-700">
+                            <span class="mt-1.5 size-2 shrink-0 rounded-full bg-dc-red"></span>
+                            <span>{{ __('common.bot_offline') }}</span>
+                        </a>
+                    </div>
+                @endif
+
                 <main class="mx-auto w-full max-w-5xl px-4 py-6 md:px-8 md:py-9">
                     {{ $slot }}
                 </main>
@@ -199,8 +210,12 @@
          x-init="show && (timer = setTimeout(() => show = false, 2500))"
          x-on:saved.window="show = true; clearTimeout(timer); timer = setTimeout(() => show = false, 2500)"
          x-show="show" x-transition.opacity x-cloak role="status"
-         class="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-on-accent shadow-lg md:left-[calc(50%+8.75rem)]">
-        {{ __('common.saved') }}
+         @class([
+             'fixed bottom-6 left-1/2 z-50 max-w-[calc(100%-2rem)] -translate-x-1/2 rounded-lg px-4 py-2 text-sm font-medium shadow-lg md:left-[calc(50%+8.75rem)]',
+             'bg-accent text-on-accent' => ! $botOffline,
+             'bg-dc-yellow text-black' => $botOffline,
+         ])>
+        {{ $botOffline ? __('common.saved_offline') : __('common.saved') }}
     </div>
 
     <dialog id="confirm-dialog" aria-labelledby="confirm-title" aria-describedby="confirm-message"
