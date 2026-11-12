@@ -57,6 +57,7 @@ Toxbot is added to servers with the scopes `bot` and `applications.commands` and
 - Server Premium is a Discord guild subscription. Whoever buys it picks the server in Discord, and Server Premium applies to that server. The bot owner can also give Server Premium on the **Premium** page of the administration, without an end date or until a chosen day.
 - Exclusive shop items are sold in the Discord store and can't be bought with credits. The dashboard and `/shop` link to the store, and Toxbot gives the item to the buyer as soon as Discord reports the purchase.
 - Voting on Top.gg gives credits (200 by default, doubled on weekends). `/vote` links to the vote page and shows when a user can vote again.
+- With `TOPGG_TOKEN` set, Toxbot sends its slash commands to the Top.gg commands tab after every start and its server count every 30 minutes. `/system` stays off that list.
 - The Premium page of the user settings lists the servers someone manages and whether Server Premium is active there.
 
 ### Automatic setup

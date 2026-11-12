@@ -55,6 +55,7 @@ services:
       currency: ${CURRENCY:-Credits}
       support_invite: ${SUPPORT_INVITE:-}
       vote_reward: ${TOPGG_VOTE_REWARD:-200}
+      topgg_token: ${TOPGG_TOKEN:-}
       daily_reward: ${DAILY_REWARD:-100}
       daily_streak_bonus: ${DAILY_STREAK_BONUS:-10}
       tag_report_channel: ${TAG_REPORT_CHANNEL:-}

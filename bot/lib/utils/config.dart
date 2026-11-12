@@ -31,6 +31,8 @@ String get currency => _string('currency') ?? 'Credits';
 
 String? get supportInvite => _string('support_invite');
 
+String? get topggToken => _string('topgg_token');
+
 int get voteReward => _int('vote_reward', 200);
 
 int get xpCooldown => _int('xp_cooldown', 60);

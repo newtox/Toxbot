@@ -13,6 +13,7 @@ import 'package:toxbot/services/protection.dart';
 import 'package:toxbot/services/starboard.dart';
 import 'package:toxbot/services/status.dart';
 import 'package:toxbot/services/tickets.dart';
+import 'package:toxbot/services/topgg.dart';
 import 'package:toxbot/utils/config.dart';
 
 var _connected = false;
@@ -57,6 +58,7 @@ Future<void> _start() async {
   setupGuildEventHandlers(client);
   setupStarboardHandlers(client);
   setupStatusHeartbeat(client);
+  setupTopggSync(client);
 }
 
 void main() {
