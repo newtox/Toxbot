@@ -22,7 +22,7 @@ return [
     'forbidden' => 'Discord a refusé le changement. Vérifie que Toxbot est toujours sur le serveur.',
     'failed' => 'Ça n\'a pas marché. Discord indique : :message',
     'name_style' => 'Style du nom',
-    'name_style_hint' => 'Police et effet du nom de Toxbot sur ce serveur. Dans le nom sur le serveur, Discord affiche la couleur du rôle le plus haut de Toxbot ; les couleurs choisies ici apparaissent dans le profil. Officiellement, Discord ne le propose qu’avec Nitro, cela peut donc cesser de fonctionner un jour.',
+    'name_style_hint' => 'Police, effet et couleurs du nom de Toxbot sur ce serveur. Dans le profil, Discord affiche tout comme ici. Dans le chat et la liste des membres, Discord n’affiche que la police ; la couleur vient alors du rôle le plus haut de Toxbot. Les dégradés et effets n’y apparaissent que via le style du rôle, que Discord débloque à partir du niveau de boost 2. Officiellement, Discord ne propose les styles de nom qu’avec Nitro, cela peut donc cesser de fonctionner un jour.',
     'name_font' => 'Police',
     'name_effect' => 'Effet',
     'name_colors' => 'Couleurs',

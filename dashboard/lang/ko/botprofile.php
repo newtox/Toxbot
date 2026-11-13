@@ -22,7 +22,7 @@ return [
     'forbidden' => 'Discord가 변경을 거부했습니다. Toxbot이 아직 서버에 있는지 확인해 주세요.',
     'failed' => '실패했습니다. Discord 메시지: :message',
     'name_style' => '이름 스타일',
-    'name_style_hint' => '이 서버에서 Toxbot 이름의 글꼴과 효과입니다. 서버 안의 이름에는 Toxbot의 가장 높은 역할 색이 표시되고, 여기서 고른 색은 프로필에 보입니다. Discord에서는 공식적으로 Nitro 전용 기능이라 언젠가 작동하지 않을 수도 있습니다.',
+    'name_style_hint' => '이 서버에서 Toxbot 이름의 글꼴, 효과, 색상입니다. 프로필에서는 여기와 똑같이 보입니다. 채팅과 멤버 목록에서는 글꼴만 표시되고, 색은 Toxbot의 가장 높은 역할에서 가져옵니다. 그곳의 그라데이션과 효과는 부스트 레벨 2부터 열리는 역할 스타일로만 가능합니다. Discord에서 이름 스타일은 공식적으로 Nitro 전용이라 언젠가 작동하지 않을 수도 있습니다.',
     'name_font' => '글꼴',
     'name_effect' => '효과',
     'name_colors' => '색상',

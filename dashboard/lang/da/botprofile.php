@@ -22,7 +22,7 @@ return [
     'forbidden' => 'Discord afviste ændringen. Tjek, at Toxbot stadig er på serveren.',
     'failed' => 'Det virkede ikke. Discord siger: :message',
     'name_style' => 'Navnestil',
-    'name_style_hint' => 'Skrifttype og effekt for Toxbots navn på denne server. I navnet på serveren viser Discord farven fra Toxbots højeste rolle, farverne her ses i profilen. Officielt tilbyder Discord det kun med Nitro, så det kan holde op med at virke på et tidspunkt.',
+    'name_style_hint' => 'Skrifttype, effekt og farver for Toxbots navn på denne server. I profilen viser Discord alt, som det ser ud her. I chatten og medlemslisten viser Discord kun skrifttypen, farven kommer der fra Toxbots højeste rolle. Gradienter og effekter findes der kun via rollestilen, som Discord låser op fra Boost-niveau 2. Officielt tilbyder Discord kun navnestile med Nitro, så det kan holde op med at virke på et tidspunkt.',
     'name_font' => 'Skrifttype',
     'name_effect' => 'Effekt',
     'name_colors' => 'Farver',

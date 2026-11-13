@@ -22,7 +22,7 @@ return [
     'forbidden' => 'Discord rechazó el cambio. Comprueba que Toxbot sigue en el servidor.',
     'failed' => 'No ha funcionado. Discord dice: :message',
     'name_style' => 'Estilo del nombre',
-    'name_style_hint' => 'Fuente y efecto para el nombre de Toxbot en este servidor. En el nombre dentro del servidor, Discord muestra el color del rol más alto de Toxbot; los colores de aquí se ven en el perfil. Discord solo lo ofrece oficialmente con Nitro, así que podría dejar de funcionar en algún momento.',
+    'name_style_hint' => 'Fuente, efecto y colores para el nombre de Toxbot en este servidor. En el perfil, Discord lo muestra todo tal como se ve aquí. En el chat y en la lista de miembros, Discord solo muestra la fuente; el color viene del rol más alto de Toxbot. Allí los degradados y efectos solo llegan mediante el estilo del rol, que Discord desbloquea a partir del nivel 2 de mejoras. Discord solo ofrece oficialmente los estilos de nombre con Nitro, así que podría dejar de funcionar en algún momento.',
     'name_font' => 'Fuente',
     'name_effect' => 'Efecto',
     'name_colors' => 'Colores',

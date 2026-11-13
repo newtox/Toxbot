@@ -22,7 +22,7 @@ return [
     'forbidden' => 'Discord 拒绝了此修改。请确认 Toxbot 仍在服务器中。',
     'failed' => '操作失败。Discord 返回：:message',
     'name_style' => '名称样式',
-    'name_style_hint' => 'Toxbot 在此服务器上名称的字体和效果。服务器里的名称会显示 Toxbot 最高身份组的颜色，这里选的颜色会显示在个人资料中。Discord 官方仅向 Nitro 提供此功能，因此将来可能会失效。',
+    'name_style_hint' => 'Toxbot 在此服务器上名称的字体、效果和颜色。在个人资料中，Discord 会按这里的样子显示。在聊天和成员列表中，Discord 只显示字体，颜色来自 Toxbot 最高的身份组。那里的渐变和效果只能通过身份组样式实现，Discord 在服务器助力等级 2 时解锁。Discord 官方仅向 Nitro 提供名称样式，因此将来可能会失效。',
     'name_font' => '字体',
     'name_effect' => '效果',
     'name_colors' => '颜色',

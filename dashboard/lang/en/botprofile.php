@@ -22,7 +22,7 @@ return [
     'forbidden' => 'Discord refused the change. Check that Toxbot is still on the server.',
     'failed' => 'That didn\'t work. Discord says: :message',
     'name_style' => 'Name style',
-    'name_style_hint' => 'Font and effect for Toxbot\'s name on this server. In the name on the server, Discord shows the colour of Toxbot\'s highest role; the colours here appear in the profile. Discord officially offers this only with Nitro, so it may stop working at some point.',
+    'name_style_hint' => 'Font, effect and colours for Toxbot\'s name on this server. In the profile, Discord shows everything as it looks here. In chat and the member list, Discord only shows the font; the colour there comes from Toxbot\'s highest role. Gradients and effects there only come from the role style, which Discord unlocks at Boost level 2. Discord officially offers name styles only with Nitro, so this may stop working at some point.',
     'name_font' => 'Font',
     'name_effect' => 'Effect',
     'name_colors' => 'Colours',
