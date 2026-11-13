@@ -1,6 +1,15 @@
 @import 'tailwindcss';
 @import '@fontsource-variable/bricolage-grotesque/wght.css';
 @import '@fontsource-variable/instrument-sans/wght.css';
+@import '@fontsource/cherry-bomb-one/latin-400.css';
+@import '@fontsource/chicle/latin-400.css';
+@import '@fontsource/kalam/latin-400.css';
+@import '@fontsource/museomoderno/latin-400.css';
+@import '@fontsource/new-rocker/latin-400.css';
+@import '@fontsource/orbitron/latin-400.css';
+@import '@fontsource/pixelify-sans/latin-400.css';
+@import '@fontsource/playpen-sans/latin-400.css';
+@import '@fontsource/zilla-slab/latin-400.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -115,4 +124,34 @@
 
 @utility dc-code {
     @apply rounded-[3px] bg-dc-900 px-1 py-0.5 font-mono text-[0.85em];
+}
+
+@layer components {
+    .name-font-3 { font-family: 'Cherry Bomb One', cursive; }
+    .name-font-4 { font-family: 'Chicle', cursive; }
+    .name-font-6 { font-family: 'MuseoModerno', sans-serif; }
+    .name-font-7 { font-family: Georgia, serif; font-style: italic; }
+    .name-font-8 { font-family: 'Pixelify Sans', monospace; }
+    .name-font-10 { font-family: Georgia, serif; letter-spacing: 0.06em; }
+    .name-font-12 { font-family: 'Zilla Slab', serif; }
+    .name-font-13 { font-family: 'Playpen Sans', cursive; }
+    .name-font-14 { font-family: 'Orbitron', sans-serif; }
+    .name-font-15 { font-family: 'New Rocker', serif; }
+    .name-font-16 { font-family: 'Kalam', cursive; }
+    .name-effect-1 { color: var(--name-a); }
+    .name-effect-2,
+    .name-effect-7 { background: var(--name-gradient); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .name-effect-3 { color: #fff; text-shadow: 0 0 2px var(--name-a), 0 0 6px var(--name-a), 0 0 12px var(--name-a); }
+    .name-effect-4 { color: var(--name-a); -webkit-text-stroke: 1px #000; paint-order: stroke fill; text-shadow: 1px 2px 0 #000; }
+    .name-effect-5 { color: var(--name-a); text-shadow: 2px 2px 0 color-mix(in srgb, var(--name-a) 45%, #000); }
+    .name-effect-7 { background-size: 200% 100%; animation: name-prism 4s linear infinite; }
+    .name-effect-8 { text-shadow: 1px 2px 0 rgb(0 0 0 / 0.45); }
+}
+
+@keyframes name-prism {
+    to { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .name-effect-7 { animation: none; }
 }

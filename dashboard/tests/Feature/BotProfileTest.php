@@ -24,6 +24,8 @@ class BotProfileTest extends TestCase
 
     private array $patches = [];
 
+    private array $urls = [];
+
     private int $patchStatus = 200;
 
     protected function setUp(): void
@@ -58,6 +60,7 @@ class BotProfileTest extends TestCase
     private function recordPatch(Request $request)
     {
         $this->patches[] = json_decode($request->body(), true);
+        $this->urls[] = $request->url();
 
         return Http::response(['user' => ['id' => '999']], $this->patchStatus);
     }
@@ -187,6 +190,74 @@ class BotProfileTest extends TestCase
             ->assertSee(__('botprofile.rate_limited'));
 
         $this->assertFalse((bool) Guild::find(self::GUILD)?->bot_profile);
+    }
+
+    public function test_premium_servers_set_a_name_style(): void
+    {
+        config(['toxbot.premium_guilds' => [self::GUILD]]);
+
+        Livewire::test(BotProfile::class, ['guildId' => self::GUILD])
+            ->assertSee(__('botprofile.name_style'))
+            ->call('save')
+            ->assertHasNoErrors();
+        $this->assertArrayNotHasKey('display_name_font_id', $this->patches[0]);
+
+        Livewire::test(BotProfile::class, ['guildId' => self::GUILD])
+            ->set('nameFont', 8)
+            ->set('nameEffect', 2)
+            ->set('nameColors', ['#FF6B33', '#ff3366', '#ffd166', '#06d6a0', '#5865f2'])
+            ->call('save')
+            ->assertHasNoErrors();
+        $this->assertSame(8, $this->patches[1]['display_name_font_id']);
+        $this->assertSame(2, $this->patches[1]['display_name_effect_id']);
+        $this->assertSame([16739123, 16724838], $this->patches[1]['display_name_colors']);
+        $this->assertSame('/api/v9/guilds/'.self::GUILD.'/members/@me', parse_url($this->urls[1], PHP_URL_PATH));
+        $this->assertSame(['font' => 8, 'effect' => 2, 'colors' => ['#ff6b33', '#ff3366']], Guild::find(self::GUILD)->bot_name_style);
+
+        Livewire::test(BotProfile::class, ['guildId' => self::GUILD])
+            ->assertSet('nameFont', 8)
+            ->assertSet('nameColors', ['#ff6b33', '#ff3366', '#ffd166', '#06d6a0', '#5865f2'])
+            ->call('save');
+        $this->assertArrayNotHasKey('display_name_font_id', $this->patches[2]);
+
+        Livewire::test(BotProfile::class, ['guildId' => self::GUILD])
+            ->set('nameEffect', 3)
+            ->call('save');
+        $this->assertSame([16739123], $this->patches[3]['display_name_colors']);
+
+        Livewire::test(BotProfile::class, ['guildId' => self::GUILD])
+            ->set('nameFont', 13)
+            ->set('nameEffect', 7)
+            ->set('nameColorCount', 5)
+            ->call('save')
+            ->assertHasNoErrors();
+        $this->assertSame([7, 5], [$this->patches[4]['display_name_effect_id'], count($this->patches[4]['display_name_colors'])]);
+
+        Livewire::test(BotProfile::class, ['guildId' => self::GUILD])
+            ->assertSet('nameColorCount', 5)
+            ->set('nameEffect', 8)
+            ->set('nameColorCount', 3)
+            ->call('save');
+        $this->assertSame([8, 3], [$this->patches[5]['display_name_effect_id'], count($this->patches[5]['display_name_colors'])]);
+
+        Livewire::test(BotProfile::class, ['guildId' => self::GUILD])
+            ->set('nameFont', 11)
+            ->set('nameEffect', 1)
+            ->call('save');
+        $this->assertSame([11, 1, []], [$this->patches[6]['display_name_font_id'], $this->patches[6]['display_name_effect_id'], $this->patches[6]['display_name_colors']]);
+        $this->assertNull(Guild::find(self::GUILD)->bot_name_style);
+
+        Livewire::test(BotProfile::class, ['guildId' => self::GUILD])
+            ->set('nameFont', 1)->call('save')->assertHasErrors('nameFont')
+            ->set('nameFont', 8)->set('nameEffect', 6)->call('save')->assertHasErrors('nameEffect')
+            ->set('nameEffect', 1)->set('nameColors', ['red', '#ffffff', '#ffffff', '#ffffff', '#ffffff'])->call('save')->assertHasErrors('nameColors.0');
+        $this->assertCount(7, $this->patches);
+
+        Guild::find(self::GUILD)->update(['bot_name_style' => ['font' => 8, 'effect' => 1, 'colors' => ['#ffffff']]]);
+        app(DataDeletion::class)->resetSection(self::GUILD, 'botprofile');
+        $this->assertSame(11, $this->patches[7]['display_name_font_id']);
+        $this->assertNull($this->patches[7]['avatar']);
+        $this->assertNull(Guild::find(self::GUILD)->bot_name_style);
     }
 
     public function test_profile_is_reset_when_premium_ends_or_the_section_is_reset(): void

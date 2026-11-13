@@ -1,5 +1,16 @@
 <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_18rem]"
-     x-data="{ avatar: toxbot.imageCropper(1), banner: toxbot.imageCropper(680 / 240) }"
+     x-data="{
+         avatar: toxbot.imageCropper(1),
+         banner: toxbot.imageCropper(680 / 240),
+         nameCount() { const effect = +$wire.nameEffect; return effect === 2 ? 2 : ([7, 8].includes(effect) ? Math.min(5, Math.max(2, +$wire.nameColorCount)) : 1) },
+         nameColorList() { return $wire.nameColors.slice(0, this.nameCount()) },
+         nameVars() {
+             const colors = this.nameColorList();
+             const stops = colors.length > 1 ? colors : [colors[0], colors[0]];
+             return { '--name-a': colors[0], '--name-gradient': 'linear-gradient(90deg, ' + (+$wire.nameEffect === 7 ? [...stops, stops[0]] : stops).join(', ') + ')' };
+         },
+         nameLetter(index) { const colors = this.nameColorList(); return +$wire.nameEffect === 8 ? { color: colors[index % colors.length] } : {} },
+     }"
      x-on:bot-profile-saved.window="avatar.clear(); banner.clear(); $refs.avatarInput.value = ''; $refs.bannerInput.value = ''">
     <form novalidate x-on:submit.prevent="$wire.avatarCrop = avatar.crop(); $wire.bannerCrop = banner.crop(); $wire.save()" class="order-2 space-y-5 lg:order-1">
         <fieldset @class(['space-y-5', 'opacity-60' => ! $premium]) @disabled(! $premium)>
@@ -50,6 +61,54 @@
                 @error('bio') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
             </div>
 
+            <div style="--name-a: {{ $nameColors[0] }}; --name-gradient: linear-gradient(90deg, {{ $nameColors[0] }}, {{ $nameColors[1] }})" :style="nameVars()">
+                <p class="label mb-1">{{ __('botprofile.name_style') }}</p>
+                <p class="mb-4 text-xs text-dc-faint">{{ __('botprofile.name_style_hint') }}</p>
+
+                <fieldset>
+                    <legend class="mb-2 text-sm text-dc-muted">{{ __('botprofile.name_font') }}</legend>
+                    <div class="grid grid-cols-4 gap-2">
+                        @foreach ($fonts as $id)
+                            <label wire:key="font-{{ $id }}" class="flex h-14 cursor-pointer items-center justify-center rounded-lg border border-white/10 bg-dc-950 transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-accent-fg"
+                                   :class="$wire.nameFont == {{ $id }} ? '!border-accent' : 'hover:bg-white/[0.04]'">
+                                <input type="radio" wire:model="nameFont" value="{{ $id }}" class="sr-only" aria-label="{{ __('botprofile.font_label', ['number' => $loop->iteration]) }}">
+                                <span class="name-font-{{ $id }} text-xl text-dc-header" aria-hidden="true">Gg</span>
+                            </label>
+                        @endforeach
+                    </div>
+                </fieldset>
+
+                <fieldset class="mt-4">
+                    <legend class="mb-2 text-sm text-dc-muted">{{ __('botprofile.name_effect') }}</legend>
+                    <div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                        @foreach ($effects as $id => $effect)
+                            <label wire:key="effect-{{ $id }}" class="cursor-pointer rounded-lg border border-white/10 bg-dc-950 px-3 py-2 transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-accent-fg"
+                                   :class="$wire.nameEffect == {{ $id }} ? '!border-accent' : 'hover:bg-white/[0.04]'">
+                                <input type="radio" wire:model="nameEffect" value="{{ $id }}" class="sr-only">
+                                <span class="name-effect-{{ $id }} block truncate text-base font-bold">@if ($id === 8)@foreach (mb_str_split(__('botprofile.effect_'.$effect)) as $index => $letter)<span :style="{ color: nameColorList().length > 1 ? nameColorList()[{{ $index }} % nameColorList().length] : ['#ff6b9a', '#ffd166', '#06d6a0', '#4cc9f0'][{{ $index }} % 4] }">{{ $letter }}</span>@endforeach @else{{ __('botprofile.effect_'.$effect) }}@endif</span>
+                            </label>
+                        @endforeach
+                    </div>
+                </fieldset>
+
+                <fieldset class="mt-4">
+                    <legend class="mb-2 text-sm text-dc-muted">{{ __('botprofile.name_colors') }}</legend>
+                    <div class="flex flex-wrap items-center gap-3">
+                        @foreach (range(0, 4) as $index)
+                            <label wire:key="color-{{ $index }}" class="flex items-center" @if ($index > 0) x-show="nameCount() > {{ $index }}" x-cloak @endif>
+                                <input type="color" wire:model="nameColors.{{ $index }}" value="{{ $nameColors[$index] }}" class="h-9 w-12 cursor-pointer rounded-md border border-white/10 bg-dc-900 p-1">
+                                <span class="sr-only">{{ __('botprofile.name_color', ['number' => $index + 1]) }}</span>
+                            </label>
+                        @endforeach
+                        <span x-show="[7, 8].includes(+$wire.nameEffect)" x-cloak class="flex gap-2">
+                            <button type="button" class="btn px-3 py-1.5" x-on:click="$wire.nameColorCount = Math.max(2, nameCount() - 1)" :disabled="nameCount() <= 2" aria-label="{{ __('botprofile.name_color_less') }}">−</button>
+                            <button type="button" class="btn px-3 py-1.5" x-on:click="$wire.nameColorCount = Math.min(5, nameCount() + 1)" :disabled="nameCount() >= 5" aria-label="{{ __('botprofile.name_color_more') }}">+</button>
+                        </span>
+                    </div>
+                    @error('nameColors.*') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
+                </fieldset>
+            </div>
+
             @error('profile') <p class="rounded-lg border-l-4 border-dc-red bg-dc-900 px-4 py-3 text-sm">{{ $message }}</p> @enderror
 
             <div class="flex flex-wrap items-center justify-end gap-3">
@@ -76,7 +135,9 @@
                     <span class="absolute right-0.5 bottom-0.5 size-5 rounded-full border-4 border-dc-950 bg-[#23a55a]"></span>
                 </div>
                 <div class="mt-2 flex items-center gap-2">
-                    <span class="truncate text-lg font-bold text-dc-header">{{ $current['name'] }}</span>
+                    <span class="truncate text-lg font-bold"
+                          :class="$wire.nameFont == 11 && $wire.nameEffect == 1 ? 'text-dc-header' : ['name-font-' + $wire.nameFont, 'name-effect-' + $wire.nameEffect]"
+                          :style="nameVars()"><template x-for="(letter, index) in [...@js($current['name'])]" :key="index"><span :style="nameLetter(index)" x-text="letter"></span></template><noscript>{{ $current['name'] }}</noscript></span>
                     <x-app-tag :verified="$current['verified']" />
                 </div>
                 <p class="truncate text-sm text-dc-text">{{ $current['tag'] }}</p>

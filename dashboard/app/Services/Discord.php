@@ -12,6 +12,8 @@ class Discord
 {
     public const API = 'https://discord.com/api/v10';
 
+    private const API_V9 = 'https://discord.com/api/v9';
+
     public const PERMISSION_KICK_MEMBERS = 0x2;
 
     public const PERMISSION_BAN_MEMBERS = 0x4;
@@ -212,7 +214,8 @@ class Discord
 
     public function updateBotMember(string $guildId, array $payload): void
     {
-        $this->asBot()->patch("/guilds/{$guildId}/members/@me", $payload)->throw();
+        $path = "/guilds/{$guildId}/members/@me";
+        $this->asBot()->patch(array_key_exists('display_name_font_id', $payload) ? self::API_V9.$path : $path, $payload)->throw();
         Cache::forget("discord:guild:{$guildId}:bot-member");
     }
 
