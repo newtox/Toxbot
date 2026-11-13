@@ -21,6 +21,7 @@ import 'package:toxbot/commands/image/neko.dart';
 import 'package:toxbot/commands/image/waifu.dart';
 import 'package:toxbot/commands/levels/levels.dart';
 import 'package:toxbot/commands/levels/slots.dart';
+import 'package:toxbot/commands/moderation/lock.dart';
 import 'package:toxbot/commands/moderation/mod.dart';
 import 'package:toxbot/commands/roleplay/bite.dart';
 import 'package:toxbot/commands/roleplay/blush.dart';
@@ -157,6 +158,7 @@ CommandsPlugin setupCommandHandler(CommandsPlugin commands) {
   commands.addCommand(shop);
   commands.addCommand(slots);
 
+  commands.addCommand(lock);
   commands.addCommand(mod);
 
   commands.addCommand(event);
