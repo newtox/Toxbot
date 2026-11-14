@@ -21,7 +21,11 @@ final kick = ChatCommand('kick', 'Kick someone.', localizedDescriptions: {
   Locale.ptBr: 'Chutar alguém.',
   Locale.tr: 'Birini tekmele.',
   Locale.pl: 'Kopnij kogoś.',
-  Locale.it: 'Dai un calcio a qualcuno.'
+  Locale.it: 'Dai un calcio a qualcuno.',
+  Locale.uk: 'Копнути когось.',
+  Locale.vi: 'Đá ai đó.',
+  Locale.th: 'เตะใครสักคน',
+  Locale.zhTw: '踢某人。'
 }, (ChatContext context,
     [@Description('The user you want to kick.', {
       Locale.da: 'Brugeren, du vil sparke.',
@@ -38,7 +42,11 @@ final kick = ChatCommand('kick', 'Kick someone.', localizedDescriptions: {
       Locale.ptBr: 'O usuário que você quer chutar.',
       Locale.tr: 'Tekmelemek istediğin kullanıcı.',
       Locale.pl: 'Użytkownik, którego chcesz kopnąć.',
-      Locale.it: 'L\'utente a cui vuoi dare un calcio.'
+      Locale.it: 'L\'utente a cui vuoi dare un calcio.',
+      Locale.uk: 'Користувач, якого хочеш копнути.',
+      Locale.vi: 'Người bạn muốn đá.',
+      Locale.th: 'ผู้ใช้ที่อยากเตะ',
+      Locale.zhTw: '你想踢的使用者。'
     })
     User? user]) async {
   try {

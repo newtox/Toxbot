@@ -21,7 +21,11 @@ final bite = ChatCommand('bite', 'Bite someone.', localizedDescriptions: {
   Locale.ptBr: 'Morder alguém.',
   Locale.tr: 'Birini ısır.',
   Locale.pl: 'Ugryź kogoś.',
-  Locale.it: 'Mordi qualcuno.'
+  Locale.it: 'Mordi qualcuno.',
+  Locale.uk: 'Вкусити когось.',
+  Locale.vi: 'Cắn ai đó.',
+  Locale.th: 'กัดใครสักคน',
+  Locale.zhTw: '咬某人。'
 }, (ChatContext context,
     [@Description('The user you want to bite.', {
       Locale.da: 'Brugeren, du vil bide.',
@@ -38,7 +42,11 @@ final bite = ChatCommand('bite', 'Bite someone.', localizedDescriptions: {
       Locale.ptBr: 'O usuário que você quer morder.',
       Locale.tr: 'Isırmak istediğin kullanıcı.',
       Locale.pl: 'Użytkownik, którego chcesz ugryźć.',
-      Locale.it: 'L\'utente che vuoi mordere.'
+      Locale.it: 'L\'utente che vuoi mordere.',
+      Locale.uk: 'Користувач, якого хочеш вкусити.',
+      Locale.vi: 'Người bạn muốn cắn.',
+      Locale.th: 'ผู้ใช้ที่อยากกัด',
+      Locale.zhTw: '你想咬的使用者。'
     })
     User? user]) async {
   try {

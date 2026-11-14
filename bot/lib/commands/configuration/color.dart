@@ -20,7 +20,11 @@ final color = ChatCommand('color', 'Set the color of your embeds.',
       Locale.ptBr: 'Definir a cor dos seus embeds.',
       Locale.tr: 'Embed\'lerinin rengini ayarla.',
       Locale.pl: 'Ustaw kolor swoich embedów.',
-      Locale.it: 'Imposta il colore dei tuoi embed.'
+      Locale.it: 'Imposta il colore dei tuoi embed.',
+      Locale.uk: 'Встановити колір своїх ембедів.',
+      Locale.vi: 'Đặt màu cho embed của bạn.',
+      Locale.th: 'ตั้งสีของ embed ของคุณ',
+      Locale.zhTw: '設定你的嵌入訊息顏色。'
     }, (ChatContext context,
         @Description('The color as hex code, e.g. #7289da.', {
           Locale.da: 'Farven som hex-kode, f.eks. #7289da.',
@@ -37,7 +41,11 @@ final color = ChatCommand('color', 'Set the color of your embeds.',
           Locale.ptBr: 'A cor como código hex, por exemplo #7289da.',
           Locale.tr: 'Hex kodu olarak renk, örneğin #7289da.',
           Locale.pl: 'Kolor jako kod hex, np. #7289da.',
-          Locale.it: 'Il colore come codice hex, ad es. #7289da.'
+          Locale.it: 'Il colore come codice hex, ad es. #7289da.',
+          Locale.uk: 'Колір як hex-код, наприклад #7289da.',
+          Locale.vi: 'Màu dạng mã hex, ví dụ #7289da.',
+          Locale.th: 'สีในรูปแบบรหัส hex เช่น #7289da',
+          Locale.zhTw: 'hex 色碼，例如 #7289da。'
         })
         String color) async {
   final connection = await getMySqlConnection();

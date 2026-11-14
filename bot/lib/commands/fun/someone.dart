@@ -19,7 +19,11 @@ final someone =
   Locale.ptBr: 'Mencionar um membro aleatório.',
   Locale.tr: 'Rastgele bir üyeden bahset.',
   Locale.pl: 'Oznacz losowego członka.',
-  Locale.it: 'Menziona un membro a caso.'
+  Locale.it: 'Menziona un membro a caso.',
+  Locale.uk: 'Згадати випадкового учасника.',
+  Locale.vi: 'Nhắc một thành viên ngẫu nhiên.',
+  Locale.th: 'กล่าวถึงสมาชิกแบบสุ่ม',
+  Locale.zhTw: '隨機提及一位成員。'
 }, checks: [
   GuildCheck.all()
 ], (ChatContext context) async {

@@ -182,6 +182,10 @@ final lock = ChatCommand(
     Locale.tr: 'Kanalları herkese kilitle ya da tekrar aç.',
     Locale.pl: 'Zablokuj kanały dla wszystkich albo otwórz je ponownie.',
     Locale.it: 'Blocca i canali per tutti o riaprili.',
+    Locale.uk: 'Заблокувати канали для всіх або знову відкрити їх.',
+    Locale.vi: 'Khóa kênh với mọi người hoặc mở lại.',
+    Locale.th: 'ล็อกช่องสำหรับทุกคนหรือเปิดอีกครั้ง',
+    Locale.zhTw: '為所有人鎖定頻道或重新開放。',
   },
   checks: [GuildCheck.all(), PermissionsCheck(Permissions.manageChannels)],
   (
@@ -202,6 +206,10 @@ final lock = ChatCommand(
       Locale.tr: 'İlk kanal. Sonradan daha fazlasını ekleyebilirsin.',
       Locale.pl: 'Pierwszy kanał. Kolejne możesz dodać potem.',
       Locale.it: 'Il primo canale. Puoi aggiungerne altri dopo.',
+      Locale.uk: 'Перший канал. Інші можна додати потім.',
+      Locale.vi: 'Kênh đầu tiên. Bạn có thể thêm kênh khác sau.',
+      Locale.th: 'ช่องแรก เพิ่มช่องอื่นได้ทีหลัง',
+      Locale.zhTw: '第一個頻道。之後可以再加更多。',
     })
     GuildChannel? channel,
   ]) async {

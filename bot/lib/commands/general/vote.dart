@@ -32,6 +32,10 @@ final vote = ChatCommand(
     Locale.tr: 'Top.gg\'de Toxbot\'a oy ver ve kredi kazan.',
     Locale.pl: 'Zagłosuj na Toxbota na Top.gg i zdobądź kredyty.',
     Locale.it: 'Vota Toxbot su Top.gg e ottieni crediti.',
+    Locale.uk: 'Проголосувати за Toxbot на Top.gg і отримати кредити.',
+    Locale.vi: 'Bình chọn cho Toxbot trên Top.gg và nhận credit.',
+    Locale.th: 'โหวตให้ Toxbot บน Top.gg และรับเครดิต',
+    Locale.zhTw: '在 Top.gg 為 Toxbot 投票並獲得點數。',
   },
   (ChatContext context) async {
     final user = context.user;

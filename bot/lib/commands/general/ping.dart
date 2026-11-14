@@ -24,7 +24,11 @@ final ping =
   Locale.ptBr: 'Verificar a latência do Toxbot.',
   Locale.tr: 'Toxbot\'un gecikmesini kontrol et.',
   Locale.pl: 'Sprawdź opóźnienie Toxbota.',
-  Locale.it: 'Controlla la latenza di Toxbot.'
+  Locale.it: 'Controlla la latenza di Toxbot.',
+  Locale.uk: 'Перевірити затримку Toxbot.',
+  Locale.vi: 'Kiểm tra độ trễ của Toxbot.',
+  Locale.th: 'ตรวจสอบค่าหน่วงของ Toxbot',
+  Locale.zhTw: '檢查 Toxbot 的延遲。'
 }, (ChatContext context,
         [@UseConverter(latencyTypeConverter)
         @Description('Which latency you want to see.', {
@@ -42,7 +46,11 @@ final ping =
           Locale.ptBr: 'Qual latência você quer ver.',
           Locale.tr: 'Görmek istediğin gecikme.',
           Locale.pl: 'Które opóźnienie chcesz zobaczyć.',
-          Locale.it: 'Quale latenza vuoi vedere.'
+          Locale.it: 'Quale latenza vuoi vedere.',
+          Locale.uk: 'Яку затримку ти хочеш побачити.',
+          Locale.vi: 'Độ trễ bạn muốn xem.',
+          Locale.th: 'ค่าหน่วงที่คุณอยากดู',
+          Locale.zhTw: '你想看哪種延遲。'
         })
         String? selection]) async {
   selection ??= await context.getSelection<String>(

@@ -24,7 +24,11 @@ final info = ChatCommand('info', 'Show information about Toxbot.',
       Locale.ptBr: 'Mostrar informações sobre o Toxbot.',
       Locale.tr: 'Toxbot hakkında bilgi göster.',
       Locale.pl: 'Pokaż informacje o Toxbocie.',
-      Locale.it: 'Mostra informazioni su Toxbot.'
+      Locale.it: 'Mostra informazioni su Toxbot.',
+      Locale.uk: 'Показати інформацію про Toxbot.',
+      Locale.vi: 'Xem thông tin về Toxbot.',
+      Locale.th: 'แสดงข้อมูลเกี่ยวกับ Toxbot',
+      Locale.zhTw: '顯示 Toxbot 的資訊。'
     }, (ChatContext context) async {
   String getCurrentMemoryString() {
     final current = (ProcessInfo.currentRss / 1024 / 1024).toStringAsFixed(2);

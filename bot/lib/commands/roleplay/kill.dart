@@ -21,7 +21,11 @@ final kill = ChatCommand('kill', 'Kill someone.', localizedDescriptions: {
   Locale.ptBr: 'Acabar com alguém.',
   Locale.tr: 'Birini ortadan kaldır.',
   Locale.pl: 'Wykończ kogoś.',
-  Locale.it: 'Fai fuori qualcuno.'
+  Locale.it: 'Fai fuori qualcuno.',
+  Locale.uk: 'Прибрати когось.',
+  Locale.vi: 'Xử ai đó.',
+  Locale.th: 'จัดการใครสักคน',
+  Locale.zhTw: '解決某人。'
 }, (ChatContext context,
     [@Description('The user you want to kill.', {
       Locale.da: 'Brugeren, du vil dræbe.',
@@ -38,7 +42,11 @@ final kill = ChatCommand('kill', 'Kill someone.', localizedDescriptions: {
       Locale.ptBr: 'O usuário com quem você quer acabar.',
       Locale.tr: 'Ortadan kaldırmak istediğin kullanıcı.',
       Locale.pl: 'Użytkownik, którego chcesz wykończyć.',
-      Locale.it: 'L\'utente che vuoi fare fuori.'
+      Locale.it: 'L\'utente che vuoi fare fuori.',
+      Locale.uk: 'Користувач, якого хочеш прибрати.',
+      Locale.vi: 'Người bạn muốn xử.',
+      Locale.th: 'ผู้ใช้ที่อยากจัดการ',
+      Locale.zhTw: '你想解決的使用者。'
     })
     User? user]) async {
   try {

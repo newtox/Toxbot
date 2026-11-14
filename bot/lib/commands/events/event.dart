@@ -20,6 +20,10 @@ const _eventDescription = {
   Locale.tr: 'Etkinlik.',
   Locale.pl: 'Wydarzenie.',
   Locale.it: 'L\'evento.',
+  Locale.uk: 'Подія.',
+  Locale.vi: 'Sự kiện.',
+  Locale.th: 'อีเวนต์',
+  Locale.zhTw: '活動。',
 };
 
 Future<GuildEvent?> _event(ChatContext context, String value) async {
@@ -74,6 +78,10 @@ final _setup = ChatCommand(
     Locale.tr: 'Kendi rolü, kategorisi, metin ve ses kanalı olan bir etkinlik oluştur.',
     Locale.pl: 'Utwórz wydarzenie z własną rolą, kategorią, kanałem tekstowym i głosowym.',
     Locale.it: 'Crea un evento con ruolo, categoria, canale testuale e vocale propri.',
+    Locale.uk: 'Створити подію з власною роллю, категорією, текстовим і голосовим каналом.',
+    Locale.vi: 'Tạo sự kiện với vai trò, danh mục, kênh chat và kênh thoại riêng.',
+    Locale.th: 'สร้างอีเวนต์พร้อมบทบาท หมวดหมู่ ช่องข้อความ และช่องเสียงของตัวเอง',
+    Locale.zhTw: '建立擁有專屬身分組、分類、文字和語音頻道的活動。',
   },
   (
     ChatContext context,
@@ -96,6 +104,10 @@ final _setup = ChatCommand(
       Locale.tr: 'Etkinliğin adı, rol ve kategori için de kullanılır.',
       Locale.pl: 'Nazwa wydarzenia, użyta też dla roli i kategorii.',
       Locale.it: 'Il nome dell\'evento, usato anche per il ruolo e la categoria.',
+      Locale.uk: 'Назва події, також для ролі й категорії.',
+      Locale.vi: 'Tên sự kiện, cũng dùng cho vai trò và danh mục.',
+      Locale.th: 'ชื่ออีเวนต์ ใช้เป็นชื่อบทบาทและหมวดหมู่ด้วย',
+      Locale.zhTw: '活動名稱，也會用於身分組和分類。',
     })
     String name, [
     @Description('The team role that can write in the info channel.', {
@@ -116,6 +128,10 @@ final _setup = ChatCommand(
       Locale.tr: 'Bilgi kanalına yazabilen ekip rolü.',
       Locale.pl: 'Rola zespołu, która może pisać na kanale informacyjnym.',
       Locale.it: 'Il ruolo del team che può scrivere nel canale info.',
+      Locale.uk: 'Роль команди, яка може писати в інфоканалі.',
+      Locale.vi: 'Vai trò đội ngũ được viết trong kênh thông tin.',
+      Locale.th: 'บทบาททีมงานที่เขียนในช่องข้อมูลได้',
+      Locale.zhTw: '可以在資訊頻道發言的團隊身分組。',
     })
     Role? team,
     @Description('How many voice channels the event gets, 1 to 5.', {
@@ -134,6 +150,10 @@ final _setup = ChatCommand(
       Locale.tr: 'Etkinliğin kaç ses kanalı olacağı, 1 ile 5 arası.',
       Locale.pl: 'Ile kanałów głosowych dostaje wydarzenie, od 1 do 5.',
       Locale.it: 'Quanti canali vocali riceve l\'evento, da 1 a 5.',
+      Locale.uk: 'Скільки голосових каналів отримає подія, від 1 до 5.',
+      Locale.vi: 'Số kênh thoại của sự kiện, từ 1 đến 5.',
+      Locale.th: 'จำนวนช่องเสียงของอีเวนต์ ตั้งแต่ 1 ถึง 5',
+      Locale.zhTw: '活動要有幾個語音頻道，1 到 5 個。',
     })
     @UseConverter(IntConverter(min: 1, max: maxVoiceChannels))
     int? voice,
@@ -191,6 +211,10 @@ final _invite = ChatCommand(
     Locale.tr: 'Üyeleri özel mesajla bir etkinliğe davet et.',
     Locale.pl: 'Zaproś członków na wydarzenie przez wiadomość prywatną.',
     Locale.it: 'Invita membri a un evento tramite messaggio diretto.',
+    Locale.uk: 'Запросити учасників на подію через особисті повідомлення.',
+    Locale.vi: 'Mời thành viên tham gia sự kiện qua tin nhắn riêng.',
+    Locale.th: 'เชิญสมาชิกเข้าร่วมอีเวนต์ทางข้อความส่วนตัว',
+    Locale.zhTw: '透過私人訊息邀請成員參加活動。',
   },
   (
     ChatContext context,
@@ -217,6 +241,10 @@ final _invite = ChatCommand(
       Locale.tr: 'Davet edilecek üyeler veya roller, örneğin @Anna @Ben @Ekip ya da Anna, Ben.',
       Locale.pl: 'Członkowie lub role do zaproszenia, np. @Anna @Ben @Zespół albo Anna, Ben.',
       Locale.it: 'Membri o ruoli da invitare, ad es. @Anna @Ben @Team oppure Anna, Ben.',
+      Locale.uk: 'Учасники або ролі для запрошення, наприклад @Anna @Ben @Команда або Anna, Ben.',
+      Locale.vi: 'Thành viên hoặc vai trò cần mời, ví dụ @Anna @Ben @Team hoặc Anna, Ben.',
+      Locale.th: 'สมาชิกหรือบทบาทที่จะเชิญ เช่น @Anna @Ben @Team หรือ Anna, Ben',
+      Locale.zhTw: '要邀請的成員或身分組，例如 @Anna @Ben @團隊 或 Anna, Ben。',
     })
     String members, [
     @Description('Your message to the invited members.', {
@@ -235,6 +263,10 @@ final _invite = ChatCommand(
       Locale.tr: 'Davet edilen üyelere mesajın.',
       Locale.pl: 'Twoja wiadomość do zaproszonych członków.',
       Locale.it: 'Il tuo messaggio per i membri invitati.',
+      Locale.uk: 'Твоє повідомлення для запрошених учасників.',
+      Locale.vi: 'Lời nhắn của bạn gửi đến người được mời.',
+      Locale.th: 'ข้อความของคุณถึงสมาชิกที่ได้รับเชิญ',
+      Locale.zhTw: '給受邀成員的訊息。',
     })
     String? message,
   ]) async {
@@ -338,6 +370,10 @@ final _info = ChatCommand(
     Locale.tr: 'Bir etkinliğe kimin katıldığını, kimin cevap vermediğini ve kimin reddettiğini göster.',
     Locale.pl: 'Pokaż, kto dołączył do wydarzenia, kto jeszcze nie odpowiedział i kto odmówił.',
     Locale.it: 'Mostra chi partecipa a un evento, chi non ha ancora risposto e chi ha rifiutato.',
+    Locale.uk: 'Показати, хто приєднався до події, хто ще не відповів і хто відмовився.',
+    Locale.vi: 'Xem ai đã tham gia, ai chưa trả lời và ai đã từ chối sự kiện.',
+    Locale.th: 'แสดงว่าใครเข้าร่วม ใครยังไม่ตอบ และใครปฏิเสธอีเวนต์',
+    Locale.zhTw: '顯示誰參加了活動、誰還沒回覆、誰婉拒了。',
   },
   (
     ChatContext context,
@@ -426,6 +462,10 @@ final _end = ChatCommand(
     Locale.tr: 'Bir etkinliği bitir ve rolünü, kategorisini ve kanallarını sil.',
     Locale.pl: 'Zakończ wydarzenie i usuń jego rolę, kategorię i kanały.',
     Locale.it: 'Termina un evento ed elimina il suo ruolo, la categoria e i canali.',
+    Locale.uk: 'Завершити подію й видалити її роль, категорію та канали.',
+    Locale.vi: 'Kết thúc sự kiện và xóa vai trò, danh mục và các kênh của nó.',
+    Locale.th: 'จบอีเวนต์และลบบทบาท หมวดหมู่ และช่องของอีเวนต์',
+    Locale.zhTw: '結束活動並刪除它的身分組、分類和頻道。',
   },
   (
     ChatContext context,
@@ -496,6 +536,10 @@ final event = ChatGroup(
     Locale.tr: 'Kendi rolü ve kanalları olan etkinlikler oluştur ve üyeleri davet et.',
     Locale.pl: 'Twórz wydarzenia z własną rolą i kanałami i zapraszaj członków.',
     Locale.it: 'Crea eventi con ruolo e canali propri e invita membri.',
+    Locale.uk: 'Створювати події з власною роллю й каналами та запрошувати учасників.',
+    Locale.vi: 'Tạo sự kiện có vai trò và kênh riêng rồi mời thành viên.',
+    Locale.th: 'สร้างอีเวนต์ที่มีบทบาทและช่องของตัวเอง แล้วเชิญสมาชิก',
+    Locale.zhTw: '建立有專屬身分組和頻道的活動並邀請成員。',
   },
   checks: [
     GuildCheck.all(),

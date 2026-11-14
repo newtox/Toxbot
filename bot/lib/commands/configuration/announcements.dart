@@ -28,7 +28,11 @@ final announcements = ChatGroup(
       Locale.ptBr: 'Gerenciar as mensagens de boas-vindas e de despedida.',
       Locale.tr: 'Karşılama ve veda mesajlarını yönet.',
       Locale.pl: 'Zarządzaj wiadomościami powitalnymi i pożegnalnymi.',
-      Locale.it: 'Gestisci i messaggi di benvenuto e di addio.'
+      Locale.it: 'Gestisci i messaggi di benvenuto e di addio.',
+      Locale.uk: 'Керувати привітаннями та прощальними повідомленнями.',
+      Locale.vi: 'Quản lý tin nhắn chào mừng và tạm biệt.',
+      Locale.th: 'จัดการข้อความต้อนรับและข้อความลา',
+      Locale.zhTw: '管理歡迎與告別訊息。'
     },
     checks: [
       GuildCheck.all(),
@@ -55,7 +59,11 @@ final announcements = ChatGroup(
             Locale.ptBr: 'Definir o canal e a mensagem para entradas ou saídas.',
             Locale.tr: 'Katılma veya ayrılma için kanalı ve mesajı ayarla.',
             Locale.pl: 'Ustaw kanał i wiadomość dla dołączeń lub odejść.',
-            Locale.it: 'Imposta il canale e il messaggio per ingressi o uscite.'
+            Locale.it: 'Imposta il canale e il messaggio per ingressi o uscite.',
+            Locale.uk: 'Встановити канал і повідомлення для входу чи виходу.',
+            Locale.vi: 'Đặt kênh và tin nhắn khi thành viên vào hoặc rời.',
+            Locale.th: 'ตั้งช่องและข้อความเมื่อมีคนเข้าหรือออก',
+            Locale.zhTw: '設定成員加入或離開時的頻道和訊息。'
           },
           checks: [
             PermissionsCheck(Permissions.manageChannels, allowsOverrides: false)
@@ -77,7 +85,11 @@ final announcements = ChatGroup(
                 Locale.ptBr: 'Se é sobre membros entrando ou saindo.',
                 Locale.tr: 'Üyelerin katılması mı ayrılması mı ile ilgili.',
                 Locale.pl: 'Czy chodzi o dołączanie, czy odchodzenie członków.',
-                Locale.it: 'Se riguarda membri che entrano o che escono.'
+                Locale.it: 'Se riguarda membri che entrano o che escono.',
+                Locale.uk: 'Чи йдеться про учасників, які приходять, чи тих, хто йде.',
+                Locale.vi: 'Dành cho thành viên vào hay rời máy chủ.',
+                Locale.th: 'เกี่ยวกับสมาชิกที่เข้ามาหรือออกไป',
+                Locale.zhTw: '針對加入還是離開的成員。'
               })
               @UseConverter(announcementTypeConverter)
               String type,
@@ -96,7 +108,11 @@ final announcements = ChatGroup(
                 Locale.ptBr: 'O canal para onde a mensagem é enviada.',
                 Locale.tr: 'Mesajın gönderileceği kanal.',
                 Locale.pl: 'Kanał, na który wysyłana jest wiadomość.',
-                Locale.it: 'Il canale in cui viene inviato il messaggio.'
+                Locale.it: 'Il canale in cui viene inviato il messaggio.',
+                Locale.uk: 'Канал, куди надсилається повідомлення.',
+                Locale.vi: 'Kênh sẽ nhận tin nhắn.',
+                Locale.th: 'ช่องที่จะส่งข้อความ',
+                Locale.zhTw: '要傳送訊息的頻道。'
               })
               GuildTextChannel channel,
               @Description(
@@ -121,7 +137,11 @@ final announcements = ChatGroup(
                 Locale.ptBr: 'A mensagem. &user, &server e &mention são substituídos.',
                 Locale.tr: 'Mesaj. &user, &server ve &mention değiştirilir.',
                 Locale.pl: 'Wiadomość. &user, &server i &mention zostaną podmienione.',
-                Locale.it: 'Il messaggio. &user, &server e &mention vengono sostituiti.'
+                Locale.it: 'Il messaggio. &user, &server e &mention vengono sostituiti.',
+                Locale.uk: 'Повідомлення. &user, &server і &mention буде замінено.',
+                Locale.vi: 'Tin nhắn. &user, &server và &mention sẽ được thay thế.',
+                Locale.th: 'ข้อความ &user, &server และ &mention จะถูกแทนที่',
+                Locale.zhTw: '訊息內容。&user、&server 和 &mention 會被替換。'
               })
               String message) async {
         final connection = await getMySqlConnection();
@@ -171,7 +191,11 @@ final announcements = ChatGroup(
             Locale.ptBr: 'Mostrar as configurações atuais de boas-vindas e despedida.',
             Locale.tr: 'Şu anki karşılama ve veda ayarlarını göster.',
             Locale.pl: 'Pokaż obecne ustawienia powitań i pożegnań.',
-            Locale.it: 'Mostra le impostazioni attuali di benvenuto e addio.'
+            Locale.it: 'Mostra le impostazioni attuali di benvenuto e addio.',
+            Locale.uk: 'Показати поточні налаштування привітань і прощань.',
+            Locale.vi: 'Xem cài đặt chào mừng và tạm biệt hiện tại.',
+            Locale.th: 'ดูการตั้งค่าต้อนรับและลาปัจจุบัน',
+            Locale.zhTw: '顯示目前的歡迎與告別設定。'
           }, (ChatContext context) async {
         final connection = await getMySqlConnection();
 
@@ -252,7 +276,11 @@ final announcements = ChatGroup(
             Locale.ptBr: 'Redefinir a mensagem de boas-vindas ou de despedida.',
             Locale.tr: 'Karşılama veya veda mesajını sıfırla.',
             Locale.pl: 'Zresetuj wiadomość powitalną lub pożegnalną.',
-            Locale.it: 'Reimposta il messaggio di benvenuto o di addio.'
+            Locale.it: 'Reimposta il messaggio di benvenuto o di addio.',
+            Locale.uk: 'Скинути привітання або прощальне повідомлення.',
+            Locale.vi: 'Đặt lại tin nhắn chào mừng hoặc tạm biệt.',
+            Locale.th: 'รีเซ็ตข้อความต้อนรับหรือข้อความลา',
+            Locale.zhTw: '重設歡迎或告別訊息。'
           },
           checks: [
             PermissionsCheck(Permissions.manageChannels, allowsOverrides: false)
@@ -274,7 +302,11 @@ final announcements = ChatGroup(
                 Locale.ptBr: 'Se é sobre membros entrando ou saindo.',
                 Locale.tr: 'Üyelerin katılması mı ayrılması mı ile ilgili.',
                 Locale.pl: 'Czy chodzi o dołączanie, czy odchodzenie członków.',
-                Locale.it: 'Se riguarda membri che entrano o che escono.'
+                Locale.it: 'Se riguarda membri che entrano o che escono.',
+                Locale.uk: 'Чи йдеться про учасників, які приходять, чи тих, хто йде.',
+                Locale.vi: 'Dành cho thành viên vào hay rời máy chủ.',
+                Locale.th: 'เกี่ยวกับสมาชิกที่เข้ามาหรือออกไป',
+                Locale.zhTw: '針對加入還是離開的成員。'
               })
               @UseConverter(announcementTypeConverter)
               String type) async {

@@ -22,7 +22,11 @@ final handhold =
   Locale.ptBr: 'Segurar a mão de alguém.',
   Locale.tr: 'Birinin elini tut.',
   Locale.pl: 'Weź kogoś za rękę.',
-  Locale.it: 'Tieni la mano a qualcuno.'
+  Locale.it: 'Tieni la mano a qualcuno.',
+  Locale.uk: 'Взяти когось за руку.',
+  Locale.vi: 'Nắm tay ai đó.',
+  Locale.th: 'จับมือใครสักคน',
+  Locale.zhTw: '牽某人的手。'
 }, (ChatContext context,
         [@Description('The user whose hand you want to hold.', {
           Locale.da: 'Brugeren, du vil holde i hånden.',
@@ -39,7 +43,11 @@ final handhold =
           Locale.ptBr: 'O usuário cuja mão você quer segurar.',
           Locale.tr: 'Elini tutmak istediğin kullanıcı.',
           Locale.pl: 'Użytkownik, którego chcesz wziąć za rękę.',
-          Locale.it: 'L\'utente a cui vuoi tenere la mano.'
+          Locale.it: 'L\'utente a cui vuoi tenere la mano.',
+          Locale.uk: 'Користувач, якого хочеш узяти за руку.',
+          Locale.vi: 'Người bạn muốn nắm tay.',
+          Locale.th: 'ผู้ใช้ที่อยากจับมือ',
+          Locale.zhTw: '你想牽手的使用者。'
         })
         User? user]) async {
   try {

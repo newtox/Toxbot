@@ -22,6 +22,10 @@ final _close = ChatCommand(
     Locale.tr: 'Bu ticket\'ı kapat.',
     Locale.pl: 'Zamknij ten ticket.',
     Locale.it: 'Chiudi questo ticket.',
+    Locale.uk: 'Закрити цей тікет.',
+    Locale.vi: 'Đóng ticket này.',
+    Locale.th: 'ปิดทิกเก็ตนี้',
+    Locale.zhTw: '關閉這張客服單。',
   },
   checks: [GuildCheck.all()],
   (
@@ -42,6 +46,10 @@ final _close = ChatCommand(
       Locale.tr: 'Ticket\'ın neden kapatıldığı.',
       Locale.pl: 'Dlaczego ticket jest zamykany.',
       Locale.it: 'Perché il ticket viene chiuso.',
+      Locale.uk: 'Чому тікет закривається.',
+      Locale.vi: 'Lý do đóng ticket.',
+      Locale.th: 'เหตุผลที่ปิดทิกเก็ต',
+      Locale.zhTw: '關閉客服單的原因。',
     })
     String? reason,
   ]) async {
@@ -87,6 +95,10 @@ final _add = ChatCommand(
     Locale.tr: 'Bu ticket\'a bir üye ekle.',
     Locale.pl: 'Dodaj członka do tego ticketu.',
     Locale.it: 'Aggiungi un membro a questo ticket.',
+    Locale.uk: 'Додати учасника до цього тікета.',
+    Locale.vi: 'Thêm một thành viên vào ticket này.',
+    Locale.th: 'เพิ่มสมาชิกเข้าทิกเก็ตนี้',
+    Locale.zhTw: '把成員加入這張客服單。',
   },
   checks: [GuildCheck.all()],
   (
@@ -107,6 +119,10 @@ final _add = ChatCommand(
       Locale.tr: 'Üye.',
       Locale.pl: 'Członek.',
       Locale.it: 'Il membro.',
+      Locale.uk: 'Учасник.',
+      Locale.vi: 'Thành viên.',
+      Locale.th: 'สมาชิก',
+      Locale.zhTw: '成員。',
     })
     Member member,
   ) async {
@@ -155,6 +171,10 @@ final _remove = ChatCommand(
     Locale.tr: 'Bu ticket\'tan bir üyeyi çıkar.',
     Locale.pl: 'Usuń członka z tego ticketu.',
     Locale.it: 'Rimuovi un membro da questo ticket.',
+    Locale.uk: 'Прибрати учасника з цього тікета.',
+    Locale.vi: 'Gỡ một thành viên khỏi ticket này.',
+    Locale.th: 'นำสมาชิกออกจากทิกเก็ตนี้',
+    Locale.zhTw: '把成員從這張客服單移除。',
   },
   checks: [GuildCheck.all()],
   (
@@ -175,6 +195,10 @@ final _remove = ChatCommand(
       Locale.tr: 'Üye.',
       Locale.pl: 'Członek.',
       Locale.it: 'Il membro.',
+      Locale.uk: 'Учасник.',
+      Locale.vi: 'Thành viên.',
+      Locale.th: 'สมาชิก',
+      Locale.zhTw: '成員。',
     })
     Member member,
   ) async {
@@ -218,6 +242,10 @@ final ticket = ChatGroup(
     Locale.tr: 'Bu kanaldaki ticket\'ı yönet.',
     Locale.pl: 'Zarządzaj ticketem na tym kanale.',
     Locale.it: 'Gestisci il ticket in questo canale.',
+    Locale.uk: 'Керувати тікетом у цьому каналі.',
+    Locale.vi: 'Quản lý ticket trong kênh này.',
+    Locale.th: 'จัดการทิกเก็ตในช่องนี้',
+    Locale.zhTw: '管理這個頻道中的客服單。',
   },
   children: [_close, _add, _remove],
 );

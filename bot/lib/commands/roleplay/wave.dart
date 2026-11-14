@@ -20,7 +20,11 @@ final wave = ChatCommand('wave', 'Wave.', localizedDescriptions: {
   Locale.ptBr: 'Acenar.',
   Locale.tr: 'El salla.',
   Locale.pl: 'Pomachaj.',
-  Locale.it: 'Saluta con la mano.'
+  Locale.it: 'Saluta con la mano.',
+  Locale.uk: 'Помахати рукою.',
+  Locale.vi: 'Vẫy tay.',
+  Locale.th: 'โบกมือ',
+  Locale.zhTw: '揮手。'
 }, (ChatContext context) async {
   try {
     final imageUrl = await fetchNekos('wave');

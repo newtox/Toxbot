@@ -25,6 +25,10 @@ final _password = ChatCommand(
     Locale.tr: 'Güvenli bir şifre oluştur.',
     Locale.pl: 'Wygeneruj bezpieczne hasło.',
     Locale.it: 'Genera una password sicura.',
+    Locale.uk: 'Згенерувати надійний пароль.',
+    Locale.vi: 'Tạo một mật khẩu an toàn.',
+    Locale.th: 'สร้างรหัสผ่านที่ปลอดภัย',
+    Locale.zhTw: '產生安全的密碼。',
   },
   (
     ChatContext context, [
@@ -44,6 +48,10 @@ final _password = ChatCommand(
       Locale.tr: 'Şifre uzunluğu (8-128, varsayılan 20).',
       Locale.pl: 'Długość hasła (8-128, domyślnie 20).',
       Locale.it: 'Lunghezza della password (8-128, predefinita 20).',
+      Locale.uk: 'Довжина пароля (8-128, типово 20).',
+      Locale.vi: 'Độ dài mật khẩu (8-128, mặc định 20).',
+      Locale.th: 'ความยาวรหัสผ่าน (8-128 ค่าเริ่มต้น 20)',
+      Locale.zhTw: '密碼長度（8-128，預設 20）。',
     })
     @UseConverter(IntConverter(min: 8, max: 128))
     int? length,
@@ -63,6 +71,10 @@ final _password = ChatCommand(
       Locale.tr: '! # % gibi semboller kullanılsın mı (varsayılan evet).',
       Locale.pl: 'Czy używać symboli takich jak ! # % (domyślnie tak).',
       Locale.it: 'Se usare simboli come ! # % (predefinito sì).',
+      Locale.uk: 'Чи використовувати символи на кшталт ! # % (типово так).',
+      Locale.vi: 'Có dùng ký hiệu như ! # % không (mặc định có).',
+      Locale.th: 'ใช้สัญลักษณ์อย่าง ! # % หรือไม่ (ค่าเริ่มต้นคือใช้)',
+      Locale.zhTw: '是否使用 ! # % 等符號（預設是）。',
     })
     bool? symbols,
   ]) async {
@@ -99,6 +111,10 @@ final _hex = ChatCommand(
     Locale.tr: 'openssl rand -hex gibi rastgele baytları hex olarak oluştur.',
     Locale.pl: 'Wygeneruj losowe bajty jako hex, jak openssl rand -hex.',
     Locale.it: 'Genera byte casuali in hex, come openssl rand -hex.',
+    Locale.uk: 'Згенерувати випадкові байти в hex, як openssl rand -hex.',
+    Locale.vi: 'Tạo byte ngẫu nhiên dạng hex, như openssl rand -hex.',
+    Locale.th: 'สร้างไบต์สุ่มเป็น hex เหมือน openssl rand -hex',
+    Locale.zhTw: '產生 hex 格式的隨機位元組，像 openssl rand -hex。',
   },
   (
     ChatContext context, [
@@ -118,6 +134,10 @@ final _hex = ChatCommand(
       Locale.tr: 'Bayt sayısı (1-64, varsayılan 32).',
       Locale.pl: 'Liczba bajtów (1-64, domyślnie 32).',
       Locale.it: 'Numero di byte (1-64, predefinito 32).',
+      Locale.uk: 'Кількість байтів (1-64, типово 32).',
+      Locale.vi: 'Số byte (1-64, mặc định 32).',
+      Locale.th: 'จำนวนไบต์ (1-64 ค่าเริ่มต้น 32)',
+      Locale.zhTw: '位元組數（1-64，預設 32）。',
     })
     @UseConverter(IntConverter(min: 1, max: 64))
     int? bytes,
@@ -155,6 +175,10 @@ final _color = ChatCommand(
     Locale.tr: 'Rastgele bir renk oluştur.',
     Locale.pl: 'Wygeneruj losowy kolor.',
     Locale.it: 'Genera un colore casuale.',
+    Locale.uk: 'Згенерувати випадковий колір.',
+    Locale.vi: 'Tạo một màu ngẫu nhiên.',
+    Locale.th: 'สร้างสีแบบสุ่ม',
+    Locale.zhTw: '產生隨機顏色。',
   },
   (ChatContext context) async {
     final color = randomColor();
@@ -209,6 +233,10 @@ final generate = ChatGroup(
     Locale.tr: 'Şifreler, rastgele hex değerleri ve renkler oluştur.',
     Locale.pl: 'Generuj hasła, losowe wartości hex i kolory.',
     Locale.it: 'Genera password, valori hex casuali e colori.',
+    Locale.uk: 'Генерувати паролі, випадкові hex-значення й кольори.',
+    Locale.vi: 'Tạo mật khẩu, giá trị hex ngẫu nhiên và màu sắc.',
+    Locale.th: 'สร้างรหัสผ่าน ค่า hex สุ่ม และสี',
+    Locale.zhTw: '產生密碼、隨機 hex 值和顏色。',
   },
   children: [_password, _hex, _color],
 );

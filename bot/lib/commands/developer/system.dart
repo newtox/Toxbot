@@ -33,6 +33,10 @@ final _clearCache = ChatCommand(
     Locale.tr: 'Bot önbelleğini temizle.',
     Locale.pl: 'Wyczyść pamięć podręczną bota.',
     Locale.it: 'Svuota la cache del bot.',
+    Locale.uk: 'Очистити кеш бота.',
+    Locale.vi: 'Xóa bộ nhớ đệm của bot.',
+    Locale.th: 'ล้างแคชของบอท',
+    Locale.zhTw: '清除機器人快取。',
   },
   (ChatContext context) async {
     context.client.channels.cache.clear();
@@ -64,6 +68,10 @@ final _skid = ChatCommand(
     Locale.tr: 'Bir dosya oku.',
     Locale.pl: 'Odczytaj plik.',
     Locale.it: 'Leggi un file.',
+    Locale.uk: 'Прочитати файл.',
+    Locale.vi: 'Đọc một tệp.',
+    Locale.th: 'อ่านไฟล์',
+    Locale.zhTw: '讀取檔案。',
   },
   (
     ChatContext context,
@@ -83,6 +91,10 @@ final _skid = ChatCommand(
       Locale.tr: 'Dosyanın yolu.',
       Locale.pl: 'Ścieżka do pliku.',
       Locale.it: 'Il percorso del file.',
+      Locale.uk: 'Шлях до файлу.',
+      Locale.vi: 'Đường dẫn đến tệp.',
+      Locale.th: 'พาธของไฟล์',
+      Locale.zhTw: '檔案路徑。',
     })
     String path,
     @Description('Whether to send the file content as a hastebin link.', {
@@ -103,6 +115,10 @@ final _skid = ChatCommand(
       Locale.tr: 'Dosya içeriğinin hastebin bağlantısı olarak gönderilip gönderilmeyeceği.',
       Locale.pl: 'Czy wysłać zawartość pliku jako link hastebin.',
       Locale.it: 'Se inviare il contenuto del file come link hastebin.',
+      Locale.uk: 'Чи надіслати вміст файлу посиланням hastebin.',
+      Locale.vi: 'Có gửi nội dung tệp dưới dạng liên kết hastebin không.',
+      Locale.th: 'ส่งเนื้อหาไฟล์เป็นลิงก์ hastebin หรือไม่',
+      Locale.zhTw: '是否以 hastebin 連結傳送檔案內容。',
     })
     bool hastebin,
   ) async {
@@ -134,6 +150,10 @@ final _listRoles = ChatCommand(
     Locale.tr: 'Tüm rolleri ve izinlerini listele.',
     Locale.pl: 'Wypisz wszystkie role i ich uprawnienia.',
     Locale.it: 'Elenca tutti i ruoli e i loro permessi.',
+    Locale.uk: 'Показати всі ролі та їхні дозволи.',
+    Locale.vi: 'Liệt kê mọi vai trò và quyền của chúng.',
+    Locale.th: 'แสดงบทบาททั้งหมดและสิทธิ์ของแต่ละบทบาท',
+    Locale.zhTw: '列出所有身分組及其權限。',
   },
   checks: [GuildCheck.all()],
   (
@@ -154,6 +174,10 @@ final _listRoles = ChatCommand(
       Locale.tr: 'Çıktının hastebin bağlantısı olarak gönderilip gönderilmeyeceği.',
       Locale.pl: 'Czy wysłać wynik jako link hastebin.',
       Locale.it: 'Se inviare l\'output come link hastebin.',
+      Locale.uk: 'Чи надіслати результат посиланням hastebin.',
+      Locale.vi: 'Có gửi kết quả dưới dạng liên kết hastebin không.',
+      Locale.th: 'ส่งผลลัพธ์เป็นลิงก์ hastebin หรือไม่',
+      Locale.zhTw: '是否以 hastebin 連結傳送輸出。',
     })
     bool hastebin,
   ) async {
@@ -195,6 +219,10 @@ final _rustdeskIds = ChatCommand(
     Locale.tr: 'SQLite veritabanındaki RustDesk ID\'lerini göster.',
     Locale.pl: 'Pokaż ID RustDesk z bazy danych SQLite.',
     Locale.it: 'Mostra gli ID RustDesk dal database SQLite.',
+    Locale.uk: 'Показати ID RustDesk з бази даних SQLite.',
+    Locale.vi: 'Xem các ID RustDesk từ cơ sở dữ liệu SQLite.',
+    Locale.th: 'แสดง ID ของ RustDesk จากฐานข้อมูล SQLite',
+    Locale.zhTw: '從 SQLite 資料庫顯示 RustDesk ID。',
   },
   (
     ChatContext context,
@@ -214,6 +242,10 @@ final _rustdeskIds = ChatCommand(
       Locale.tr: 'Çıktının hastebin bağlantısı olarak gönderilip gönderilmeyeceği.',
       Locale.pl: 'Czy wysłać wynik jako link hastebin.',
       Locale.it: 'Se inviare l\'output come link hastebin.',
+      Locale.uk: 'Чи надіслати результат посиланням hastebin.',
+      Locale.vi: 'Có gửi kết quả dưới dạng liên kết hastebin không.',
+      Locale.th: 'ส่งผลลัพธ์เป็นลิงก์ hastebin หรือไม่',
+      Locale.zhTw: '是否以 hastebin 連結傳送輸出。',
     })
     bool hastebin,
   ) async {
@@ -278,6 +310,10 @@ final _sql = ChatCommand(
     Locale.tr: 'Salt okunur bir SQL sorgusu çalıştır.',
     Locale.pl: 'Wykonaj zapytanie SQL tylko do odczytu.',
     Locale.it: 'Esegui una query SQL di sola lettura.',
+    Locale.uk: 'Виконати SQL-запит лише для читання.',
+    Locale.vi: 'Chạy một truy vấn SQL chỉ đọc.',
+    Locale.th: 'รันคำสั่ง SQL แบบอ่านอย่างเดียว',
+    Locale.zhTw: '執行唯讀的 SQL 查詢。',
   },
   (
     ChatContext context,
@@ -297,6 +333,10 @@ final _sql = ChatCommand(
       Locale.tr: 'Sorgu, örneğin SELECT id, xp FROM users LIMIT 10.',
       Locale.pl: 'Zapytanie, np. SELECT id, xp FROM users LIMIT 10.',
       Locale.it: 'La query, ad es. SELECT id, xp FROM users LIMIT 10.',
+      Locale.uk: 'Запит, наприклад SELECT id, xp FROM users LIMIT 10.',
+      Locale.vi: 'Truy vấn, ví dụ SELECT id, xp FROM users LIMIT 10.',
+      Locale.th: 'คำสั่ง เช่น SELECT id, xp FROM users LIMIT 10',
+      Locale.zhTw: '查詢語句，例如 SELECT id, xp FROM users LIMIT 10。',
     })
     String query, [
     @Description('Whether to send the output as a hastebin link.', {
@@ -315,6 +355,10 @@ final _sql = ChatCommand(
       Locale.tr: 'Çıktının hastebin bağlantısı olarak gönderilip gönderilmeyeceği.',
       Locale.pl: 'Czy wysłać wynik jako link hastebin.',
       Locale.it: 'Se inviare l\'output come link hastebin.',
+      Locale.uk: 'Чи надіслати результат посиланням hastebin.',
+      Locale.vi: 'Có gửi kết quả dưới dạng liên kết hastebin không.',
+      Locale.th: 'ส่งผลลัพธ์เป็นลิงก์ hastebin หรือไม่',
+      Locale.zhTw: '是否以 hastebin 連結傳送輸出。',
     })
     bool? hastebin,
   ]) async {
@@ -346,6 +390,10 @@ final _credits = ChatCommand(
     Locale.tr: 'Bir kullanıcıya kredi ver ya da kredisini al.',
     Locale.pl: 'Daj użytkownikowi kredyty albo je odbierz.',
     Locale.it: 'Dai crediti a un utente o toglili.',
+    Locale.uk: 'Дати користувачеві кредити або забрати їх.',
+    Locale.vi: 'Cộng hoặc trừ credit của người dùng.',
+    Locale.th: 'ให้หรือหักเครดิตของผู้ใช้',
+    Locale.zhTw: '給使用者點數或扣除點數。',
   },
   (
     ChatContext context,
@@ -365,6 +413,10 @@ final _credits = ChatCommand(
       Locale.tr: 'Kullanıcı.',
       Locale.pl: 'Użytkownik.',
       Locale.it: 'L\'utente.',
+      Locale.uk: 'Користувач.',
+      Locale.vi: 'Người dùng.',
+      Locale.th: 'ผู้ใช้',
+      Locale.zhTw: '使用者。',
     })
     User target,
     @Description('Credits to add, negative to take away.', {
@@ -383,6 +435,10 @@ final _credits = ChatCommand(
       Locale.tr: 'Eklenecek kredi, almak için negatif.',
       Locale.pl: 'Kredyty do dodania, ujemne, żeby odebrać.',
       Locale.it: 'Crediti da aggiungere, negativi per toglierli.',
+      Locale.uk: 'Скільки кредитів додати, від\'ємне число, щоб забрати.',
+      Locale.vi: 'Số credit cộng thêm, số âm để trừ.',
+      Locale.th: 'เครดิตที่จะเพิ่ม ใส่ค่าติดลบเพื่อหัก',
+      Locale.zhTw: '要增加的點數，負數為扣除。',
     })
     int amount,
   ) async {
@@ -422,6 +478,10 @@ final _giveItem = ChatCommand(
     Locale.tr: 'Bir kullanıcıya mağaza ürününü ücretsiz ver.',
     Locale.pl: 'Daj użytkownikowi przedmiot ze sklepu za darmo.',
     Locale.it: 'Dai gratis un oggetto del negozio a un utente.',
+    Locale.uk: 'Безкоштовно дати користувачеві предмет із магазину.',
+    Locale.vi: 'Tặng miễn phí một món trong cửa hàng cho người dùng.',
+    Locale.th: 'ให้ไอเทมในร้านค้ากับผู้ใช้ฟรี',
+    Locale.zhTw: '免費給使用者一個商店物品。',
   },
   (
     ChatContext context,
@@ -441,6 +501,10 @@ final _giveItem = ChatCommand(
       Locale.tr: 'Kullanıcı.',
       Locale.pl: 'Użytkownik.',
       Locale.it: 'L\'utente.',
+      Locale.uk: 'Користувач.',
+      Locale.vi: 'Người dùng.',
+      Locale.th: 'ผู้ใช้',
+      Locale.zhTw: '使用者。',
     })
     User target,
     @Description('The shop item.', {
@@ -459,6 +523,10 @@ final _giveItem = ChatCommand(
       Locale.tr: 'Mağaza ürünü.',
       Locale.pl: 'Przedmiot ze sklepu.',
       Locale.it: 'L\'oggetto del negozio.',
+      Locale.uk: 'Предмет із магазину.',
+      Locale.vi: 'Món trong cửa hàng.',
+      Locale.th: 'ไอเทมในร้านค้า',
+      Locale.zhTw: '商店物品。',
     })
     @Autocomplete(allItemChoices)
     String name,
@@ -504,6 +572,10 @@ final _takeItem = ChatCommand(
     Locale.tr: 'Bir kullanıcıdan mağaza ürününü geri al.',
     Locale.pl: 'Odbierz użytkownikowi przedmiot ze sklepu.',
     Locale.it: 'Togli un oggetto del negozio a un utente.',
+    Locale.uk: 'Забрати в користувача предмет із магазину.',
+    Locale.vi: 'Lấy lại một món trong cửa hàng từ người dùng.',
+    Locale.th: 'เอาไอเทมในร้านค้าคืนจากผู้ใช้',
+    Locale.zhTw: '收回使用者的商店物品。',
   },
   (
     ChatContext context,
@@ -523,6 +595,10 @@ final _takeItem = ChatCommand(
       Locale.tr: 'Kullanıcı.',
       Locale.pl: 'Użytkownik.',
       Locale.it: 'L\'utente.',
+      Locale.uk: 'Користувач.',
+      Locale.vi: 'Người dùng.',
+      Locale.th: 'ผู้ใช้',
+      Locale.zhTw: '使用者。',
     })
     User target,
     @Description('The shop item.', {
@@ -541,6 +617,10 @@ final _takeItem = ChatCommand(
       Locale.tr: 'Mağaza ürünü.',
       Locale.pl: 'Przedmiot ze sklepu.',
       Locale.it: 'L\'oggetto del negozio.',
+      Locale.uk: 'Предмет із магазину.',
+      Locale.vi: 'Món trong cửa hàng.',
+      Locale.th: 'ไอเทมในร้านค้า',
+      Locale.zhTw: '商店物品。',
     })
     @Autocomplete(allItemChoices)
     String name,
@@ -590,6 +670,10 @@ final _activeUsers = ChatCommand(
     Locale.tr: 'En çok komut kullanan kullanıcıları göster.',
     Locale.pl: 'Pokaż użytkowników, którzy używają najwięcej komend.',
     Locale.it: 'Mostra gli utenti che usano più comandi.',
+    Locale.uk: 'Показати користувачів, які використовують найбільше команд.',
+    Locale.vi: 'Xem những người dùng dùng nhiều lệnh nhất.',
+    Locale.th: 'แสดงผู้ใช้ที่ใช้คำสั่งมากที่สุด',
+    Locale.zhTw: '顯示使用最多指令的使用者。',
   },
   (ChatContext context) async {
     final user = context.user;
@@ -657,6 +741,10 @@ final _eval = ChatCommand(
     Locale.tr: 'Dart kodu çalıştır.',
     Locale.pl: 'Uruchom kod Dart.',
     Locale.it: 'Esegui codice Dart.',
+    Locale.uk: 'Виконати код Dart.',
+    Locale.vi: 'Chạy mã Dart.',
+    Locale.th: 'รันโค้ด Dart',
+    Locale.zhTw: '執行 Dart 程式碼。',
   },
   (ChatContext context) async {
     final modal = await (context as InteractionChatContext).getModal(
@@ -703,6 +791,10 @@ final _structure = ChatCommand(
     Locale.tr: 'Bu sunucunun rollerini, kanallarını ve izinlerini JSON olarak dışa aktar.',
     Locale.pl: 'Wyeksportuj role, kanały i uprawnienia tego serwera jako JSON.',
     Locale.it: 'Esporta ruoli, canali e permessi di questo server come JSON.',
+    Locale.uk: 'Експортувати ролі, канали й дозволи цього сервера як JSON.',
+    Locale.vi: 'Xuất vai trò, kênh và quyền của máy chủ này dưới dạng JSON.',
+    Locale.th: 'ส่งออกบทบาท ช่อง และสิทธิ์ของเซิร์ฟเวอร์นี้เป็น JSON',
+    Locale.zhTw: '將此伺服器的身分組、頻道和權限匯出為 JSON。',
   },
   checks: [GuildCheck.all()],
   (ChatContext context) async {
@@ -745,6 +837,10 @@ final system = ChatGroup(
     Locale.tr: 'Toxbot için dahili araçlar.',
     Locale.pl: 'Narzędzia wewnętrzne Toxbota.',
     Locale.it: 'Strumenti interni di Toxbot.',
+    Locale.uk: 'Внутрішні інструменти Toxbot.',
+    Locale.vi: 'Công cụ nội bộ của Toxbot.',
+    Locale.th: 'เครื่องมือภายในของ Toxbot',
+    Locale.zhTw: 'Toxbot 的內部工具。',
   },
   checks: [UserCheck.id(ownerId)],
   children: [

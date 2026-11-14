@@ -22,7 +22,11 @@ final highfive =
   Locale.ptBr: 'Bater na mão de alguém.',
   Locale.tr: 'Biriyle beşlik çak.',
   Locale.pl: 'Przybij z kimś piątkę.',
-  Locale.it: 'Batti il cinque a qualcuno.'
+  Locale.it: 'Batti il cinque a qualcuno.',
+  Locale.uk: 'Дати комусь п\'ять.',
+  Locale.vi: 'Đập tay với ai đó.',
+  Locale.th: 'ไฮไฟว์กับใครสักคน',
+  Locale.zhTw: '和某人擊掌。'
 }, (ChatContext context,
         [@Description('The user you want to high five.', {
           Locale.da: 'Brugeren, du vil give en high five.',
@@ -39,7 +43,11 @@ final highfive =
           Locale.ptBr: 'O usuário com quem você quer bater na mão.',
           Locale.tr: 'Beşlik çakmak istediğin kullanıcı.',
           Locale.pl: 'Użytkownik, z którym chcesz przybić piątkę.',
-          Locale.it: 'L\'utente a cui vuoi battere il cinque.'
+          Locale.it: 'L\'utente a cui vuoi battere il cinque.',
+          Locale.uk: 'Користувач, якому хочеш дати п\'ять.',
+          Locale.vi: 'Người bạn muốn đập tay.',
+          Locale.th: 'ผู้ใช้ที่อยากไฮไฟว์ด้วย',
+          Locale.zhTw: '你想擊掌的使用者。'
         })
         User? user]) async {
   try {

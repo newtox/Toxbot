@@ -24,6 +24,10 @@ final invite = ChatCommand(
     Locale.tr: 'Toxbot\'u sunucuna eklemek için bağlantıyı al.',
     Locale.pl: 'Weź link, żeby dodać Toxbota na swój serwer.',
     Locale.it: 'Ottieni il link per aggiungere Toxbot al tuo server.',
+    Locale.uk: 'Отримати посилання, щоб додати Toxbot на свій сервер.',
+    Locale.vi: 'Lấy liên kết để thêm Toxbot vào máy chủ của bạn.',
+    Locale.th: 'รับลิงก์สำหรับเพิ่ม Toxbot เข้าเซิร์ฟเวอร์ของคุณ',
+    Locale.zhTw: '取得把 Toxbot 加到你伺服器的連結。',
   },
   (ChatContext context) async {
     final user = context.user;

@@ -21,7 +21,11 @@ final kiss = ChatCommand('kiss', 'Kiss someone.', localizedDescriptions: {
   Locale.ptBr: 'Beijar alguém.',
   Locale.tr: 'Birini öp.',
   Locale.pl: 'Pocałuj kogoś.',
-  Locale.it: 'Bacia qualcuno.'
+  Locale.it: 'Bacia qualcuno.',
+  Locale.uk: 'Поцілувати когось.',
+  Locale.vi: 'Hôn ai đó.',
+  Locale.th: 'จูบใครสักคน',
+  Locale.zhTw: '親某人。'
 }, (ChatContext context,
     [@Description('The user you want to kiss.', {
       Locale.da: 'Brugeren, du vil kysse.',
@@ -38,7 +42,11 @@ final kiss = ChatCommand('kiss', 'Kiss someone.', localizedDescriptions: {
       Locale.ptBr: 'O usuário que você quer beijar.',
       Locale.tr: 'Öpmek istediğin kullanıcı.',
       Locale.pl: 'Użytkownik, którego chcesz pocałować.',
-      Locale.it: 'L\'utente che vuoi baciare.'
+      Locale.it: 'L\'utente che vuoi baciare.',
+      Locale.uk: 'Користувач, якого хочеш поцілувати.',
+      Locale.vi: 'Người bạn muốn hôn.',
+      Locale.th: 'ผู้ใช้ที่อยากจูบ',
+      Locale.zhTw: '你想親的使用者。'
     })
     User? user]) async {
   try {

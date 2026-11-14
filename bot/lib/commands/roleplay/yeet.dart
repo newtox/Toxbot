@@ -21,7 +21,11 @@ final yeet = ChatCommand('yeet', 'Yeet someone.', localizedDescriptions: {
   Locale.ptBr: 'Arremessar alguém longe.',
   Locale.tr: 'Birini uçur.',
   Locale.pl: 'Wyrzuć kogoś w powietrze.',
-  Locale.it: 'Lancia via qualcuno.'
+  Locale.it: 'Lancia via qualcuno.',
+  Locale.uk: 'Жбурнути когось подалі.',
+  Locale.vi: 'Ném ai đó bay đi.',
+  Locale.th: 'โยนใครสักคนปลิวไป',
+  Locale.zhTw: '把某人丟飛。'
 }, (ChatContext context,
     [@Description('The user you want to yeet.', {
       Locale.da: 'Brugeren, du vil kaste væk.',
@@ -38,7 +42,11 @@ final yeet = ChatCommand('yeet', 'Yeet someone.', localizedDescriptions: {
       Locale.ptBr: 'O usuário que você quer arremessar.',
       Locale.tr: 'Uçurmak istediğin kullanıcı.',
       Locale.pl: 'Użytkownik, którego chcesz wyrzucić w powietrze.',
-      Locale.it: 'L\'utente che vuoi lanciare via.'
+      Locale.it: 'L\'utente che vuoi lanciare via.',
+      Locale.uk: 'Користувач, якого хочеш жбурнути.',
+      Locale.vi: 'Người bạn muốn ném bay đi.',
+      Locale.th: 'ผู้ใช้ที่อยากโยน',
+      Locale.zhTw: '你想丟飛的使用者。'
     })
     User? user]) async {
   try {

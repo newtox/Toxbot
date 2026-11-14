@@ -15,10 +15,14 @@ const languageCodeConverter = SimpleConverter.fixed(
     'Italiano',
     'Polski',
     'Português (Brasil)',
+    'Tiếng Việt',
     'Türkçe',
     'Русский',
+    'Українська',
     'हिंदी',
+    'ไทย',
     '中文',
+    '繁體中文',
     '日本語',
     '한국어'
   ],
@@ -42,7 +46,11 @@ final language = ChatCommand(
       Locale.ptBr: 'Definir o idioma que o Toxbot usa com você.',
       Locale.tr: 'Toxbot\'un seninle kullandığı dili ayarla.',
       Locale.pl: 'Ustaw język, którego Toxbot używa z tobą.',
-      Locale.it: 'Imposta la lingua che Toxbot usa con te.'
+      Locale.it: 'Imposta la lingua che Toxbot usa con te.',
+      Locale.uk: 'Встановити мову, якою Toxbot спілкується з тобою.',
+      Locale.vi: 'Đặt ngôn ngữ Toxbot dùng với bạn.',
+      Locale.th: 'ตั้งภาษาที่ Toxbot ใช้กับคุณ',
+      Locale.zhTw: '設定 Toxbot 與你對話時使用的語言。'
     }, (ChatContext context,
         [@UseConverter(languageCodeConverter)
         @Description('The language you want.', {
@@ -60,7 +68,11 @@ final language = ChatCommand(
           Locale.ptBr: 'O idioma que você quer.',
           Locale.tr: 'İstediğin dil.',
           Locale.pl: 'Język, który chcesz.',
-          Locale.it: 'La lingua che vuoi.'
+          Locale.it: 'La lingua che vuoi.',
+          Locale.uk: 'Мова, яку ти хочеш.',
+          Locale.vi: 'Ngôn ngữ bạn muốn.',
+          Locale.th: 'ภาษาที่คุณต้องการ',
+          Locale.zhTw: '你想要的語言。'
         })
         String? selectedLanguage]) async {
   selectedLanguage ??= await context.getSelection<String>(
@@ -73,14 +85,14 @@ final language = ChatCommand(
       'Italiano',
       'Polski',
       'Português (Brasil)',
+      'Tiếng Việt',
       'Türkçe',
-    'Italiano',
-    'Polski',
-    'Português (Brasil)',
-    'Türkçe',
       'Русский',
+      'Українська',
       'हिंदी',
+      'ไทย',
       '中文',
+      '繁體中文',
       '日本語',
       '한국어'
     ],
@@ -98,10 +110,14 @@ final language = ChatCommand(
     'Italiano' => 'it_it',
     'Polski' => 'pl_pl',
     'Português (Brasil)' => 'pt_br',
+    'Tiếng Việt' => 'vi_vn',
     'Türkçe' => 'tr_tr',
     'Русский' => 'ru_ru',
+    'Українська' => 'uk_ua',
     'हिंदी' => 'hi_hi',
+    'ไทย' => 'th_th',
     '中文' => 'zh_cn',
+    '繁體中文' => 'zh_tw',
     '日本語' => 'ja_jp',
     '한국어' => 'ko_ko',
     _ => throw ArgumentError('Unexpected language selection $selectedLanguage.')

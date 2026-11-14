@@ -20,7 +20,11 @@ final cringe = ChatCommand('cringe', 'Cringe.', localizedDescriptions: {
   Locale.ptBr: 'Sentir vergonha alheia.',
   Locale.tr: 'Utan.',
   Locale.pl: 'Poczuj cringe.',
-  Locale.it: 'Prova cringe.'
+  Locale.it: 'Prova cringe.',
+  Locale.uk: 'Відчути крінж.',
+  Locale.vi: 'Thấy ngại.',
+  Locale.th: 'รู้สึกเขินแทน',
+  Locale.zhTw: '覺得尷尬。'
 }, (ChatContext context) async {
   try {
     final imageUrl = await fetchNekos('facepalm');

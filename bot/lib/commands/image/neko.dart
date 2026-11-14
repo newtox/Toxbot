@@ -19,7 +19,11 @@ final neko =
   Locale.ptBr: 'Mostrar uma imagem de neko.',
   Locale.tr: 'Bir neko resmi göster.',
   Locale.pl: 'Pokaż obrazek neko.',
-  Locale.it: 'Mostra un\'immagine neko.'
+  Locale.it: 'Mostra un\'immagine neko.',
+  Locale.uk: 'Показати картинку неко.',
+  Locale.vi: 'Hiện một ảnh neko.',
+  Locale.th: 'แสดงรูปเนโกะ',
+  Locale.zhTw: '顯示貓娘圖片。'
 }, (ChatContext context) async {
   try {
     final imageUrl = await fetchNekos('neko');

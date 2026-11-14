@@ -21,7 +21,11 @@ final cuddle = ChatCommand('cuddle', 'Cuddle someone.', localizedDescriptions: {
   Locale.ptBr: 'Fazer carinho em alguém.',
   Locale.tr: 'Birine sarıl ve sokul.',
   Locale.pl: 'Przytul się do kogoś.',
-  Locale.it: 'Coccola qualcuno.'
+  Locale.it: 'Coccola qualcuno.',
+  Locale.uk: 'Пригорнутися до когось.',
+  Locale.vi: 'Rúc vào ai đó.',
+  Locale.th: 'ซุกกอดใครสักคน',
+  Locale.zhTw: '依偎著某人。'
 }, (ChatContext context,
     [@Description('The user you want to cuddle.', {
       Locale.da: 'Brugeren, du vil kæle for.',
@@ -38,7 +42,11 @@ final cuddle = ChatCommand('cuddle', 'Cuddle someone.', localizedDescriptions: {
       Locale.ptBr: 'O usuário em quem você quer fazer carinho.',
       Locale.tr: 'Sokulmak istediğin kullanıcı.',
       Locale.pl: 'Użytkownik, do którego chcesz się przytulić.',
-      Locale.it: 'L\'utente che vuoi coccolare.'
+      Locale.it: 'L\'utente che vuoi coccolare.',
+      Locale.uk: 'Користувач, до якого хочеш пригорнутися.',
+      Locale.vi: 'Người bạn muốn rúc vào.',
+      Locale.th: 'ผู้ใช้ที่อยากซุกกอด',
+      Locale.zhTw: '你想依偎的使用者。'
     })
     User? user]) async {
   try {

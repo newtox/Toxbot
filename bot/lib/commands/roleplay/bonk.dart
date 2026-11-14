@@ -21,7 +21,11 @@ final bonk = ChatCommand('bonk', 'Bonk someone.', localizedDescriptions: {
   Locale.ptBr: 'Dar um bonk em alguém.',
   Locale.tr: 'Birine bonk at.',
   Locale.pl: 'Daj komuś bonka.',
-  Locale.it: 'Dai un bonk a qualcuno.'
+  Locale.it: 'Dai un bonk a qualcuno.',
+  Locale.uk: 'Дати комусь бонк.',
+  Locale.vi: 'Bonk ai đó.',
+  Locale.th: 'บองก์ใครสักคน',
+  Locale.zhTw: '敲某人一下。'
 }, (ChatContext context,
     [@Description('The user you want to bonk.', {
       Locale.da: 'Brugeren, du vil bonke.',
@@ -38,7 +42,11 @@ final bonk = ChatCommand('bonk', 'Bonk someone.', localizedDescriptions: {
       Locale.ptBr: 'O usuário em quem você quer dar um bonk.',
       Locale.tr: 'Bonk atmak istediğin kullanıcı.',
       Locale.pl: 'Użytkownik, któremu chcesz dać bonka.',
-      Locale.it: 'L\'utente a cui vuoi dare un bonk.'
+      Locale.it: 'L\'utente a cui vuoi dare un bonk.',
+      Locale.uk: 'Користувач, якому хочеш дати бонк.',
+      Locale.vi: 'Người bạn muốn bonk.',
+      Locale.th: 'ผู้ใช้ที่อยากบองก์',
+      Locale.zhTw: '你想敲的使用者。'
     })
     User? user]) async {
   try {

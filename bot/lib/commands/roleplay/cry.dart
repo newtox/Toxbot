@@ -20,7 +20,11 @@ final cry = ChatCommand('cry', 'Cry.', localizedDescriptions: {
   Locale.ptBr: 'Chorar.',
   Locale.tr: 'Ağla.',
   Locale.pl: 'Płacz.',
-  Locale.it: 'Piangi.'
+  Locale.it: 'Piangi.',
+  Locale.uk: 'Плакати.',
+  Locale.vi: 'Khóc.',
+  Locale.th: 'ร้องไห้',
+  Locale.zhTw: '哭泣。'
 }, (ChatContext context) async {
   try {
     final imageUrl = await fetchNekos('cry');
