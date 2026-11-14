@@ -49,6 +49,7 @@ import 'package:toxbot/commands/roleplay/yeet.dart';
 import 'package:toxbot/commands/tags/tag.dart';
 import 'package:toxbot/commands/tickets/ticket.dart';
 import 'package:toxbot/services/blacklist.dart';
+import 'package:toxbot/services/client_language.dart';
 import 'package:toxbot/services/levels.dart';
 import 'package:toxbot/services/premium.dart';
 import 'package:toxbot/services/protection.dart';
@@ -123,6 +124,7 @@ Future<bool> _removedByModerator(Guild guild, Snowflake userId) async {
 
 CommandsPlugin setupCommandHandler(CommandsPlugin commands) {
   commands.check(blacklistCheck);
+  commands.check(clientLanguageCheck);
 
   commands.addCommand(announcements);
   commands.addCommand(autorole);

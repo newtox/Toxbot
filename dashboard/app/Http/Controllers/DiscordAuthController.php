@@ -6,6 +6,7 @@ use App\Models\BlacklistEntry;
 use App\Models\DashboardUser;
 use App\Services\Discord;
 use App\Services\DiscordTokens;
+use App\Support\BotLocale;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -69,6 +70,7 @@ class DiscordAuthController extends Controller
         );
 
         $this->tokens->store($user, $token);
+        BotLocale::applyClientLanguage((string) $user->id, $discordUser['locale'] ?? null);
 
         Auth::login($user, remember: true);
         $request->session()->regenerate();

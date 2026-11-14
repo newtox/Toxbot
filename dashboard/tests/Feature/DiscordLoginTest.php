@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\BotUser;
 use App\Models\DashboardUser;
 use App\Services\DiscordTokens;
 use App\Services\MissingDiscordToken;
@@ -33,6 +34,34 @@ class DiscordLoginTest extends TestCase
         $this->assertSame('refresh-1', $user->discord_refresh_token);
         $this->assertNotSame('access-1', $user->getRawOriginal('discord_access_token'));
         $this->assertTrue($user->discord_token_expires_at->greaterThan(now()->addDays(6)));
+    }
+
+    public function test_first_login_uses_the_discord_language(): void
+    {
+        Http::fake([
+            'discord.com/api/v10/oauth2/token' => Http::response(['access_token' => 'access-1', 'refresh_token' => 'refresh-1', 'expires_in' => 604800]),
+            'discord.com/api/v10/users/@me' => Http::response(['id' => '123456789012345678', 'username' => 'newtox', 'locale' => 'pt-BR']),
+        ]);
+
+        $this->withSession(['discord.oauth_state' => 'state'])
+            ->get('/auth/discord/callback?code=abc&state=state');
+
+        $this->assertSame('pt_br', BotUser::find('123456789012345678')->language);
+    }
+
+    public function test_login_keeps_a_chosen_language(): void
+    {
+        BotUser::create(['id' => '123456789012345678', 'language' => 'de_de', 'color' => '#7289da']);
+
+        Http::fake([
+            'discord.com/api/v10/oauth2/token' => Http::response(['access_token' => 'access-1', 'refresh_token' => 'refresh-1', 'expires_in' => 604800]),
+            'discord.com/api/v10/users/@me' => Http::response(['id' => '123456789012345678', 'username' => 'newtox', 'locale' => 'ja']),
+        ]);
+
+        $this->withSession(['discord.oauth_state' => 'state'])
+            ->get('/auth/discord/callback?code=abc&state=state');
+
+        $this->assertSame('de_de', BotUser::find('123456789012345678')->language);
     }
 
     public function test_expiring_token_is_refreshed(): void
