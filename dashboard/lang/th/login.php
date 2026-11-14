@@ -1,13 +1,13 @@
 <?php
 
 return [
-    'headline' => 'Configure Toxbot without typing slash commands.',
-    'intro' => 'Welcome and goodbye messages with live preview, autorole in one click and your own language and embed color.',
-    'button' => 'Log in with Discord',
-    'privacy' => 'We only see your name, avatar and server list.',
-    'cancelled' => 'Login cancelled.',
-    'invalid' => 'Invalid login. Please try again.',
-    'rejected' => 'Discord rejected the login. Please try again.',
-    'expired' => 'Your Discord session has expired. Please log in again.',
-    'blacklisted' => 'Your account is blocked from Toxbot.',
+    'headline' => 'ตั้งค่า Toxbot โดยไม่ต้องพิมพ์คำสั่งสแลช',
+    'intro' => 'ข้อความต้อนรับและอำลาพร้อมตัวอย่างสด บทบาทอัตโนมัติในคลิกเดียว และภาษากับสี embed ของคุณเอง',
+    'button' => 'เข้าสู่ระบบด้วย Discord',
+    'privacy' => 'เราเห็นแค่ชื่อ อวาตาร์ และรายการเซิร์ฟเวอร์ของคุณ',
+    'cancelled' => 'ยกเลิกการเข้าสู่ระบบแล้ว',
+    'invalid' => 'การเข้าสู่ระบบไม่ถูกต้อง โปรดลองอีกครั้ง',
+    'rejected' => 'Discord ปฏิเสธการเข้าสู่ระบบ โปรดลองอีกครั้ง',
+    'expired' => 'เซสชัน Discord ของคุณหมดอายุ โปรดเข้าสู่ระบบอีกครั้ง',
+    'blacklisted' => 'บัญชีของคุณถูก Toxbot บล็อก',
 ];

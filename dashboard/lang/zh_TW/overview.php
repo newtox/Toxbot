@@ -1,12 +1,12 @@
 <?php
 
 return [
-    'members' => 'Members',
-    'online' => 'Online',
-    'premium_active' => 'Active',
-    'premium_free' => 'Free',
-    'modules' => 'Modules',
-    'on' => 'On',
-    'off' => 'Off',
-    'blocked_tags' => '{0} No blocked tags|{1} :count blocked tag|[2,*] :count blocked tags',
+    'members' => '成員',
+    'online' => '線上',
+    'premium_active' => '已啟用',
+    'premium_free' => '免費',
+    'modules' => '模組',
+    'on' => '開啟',
+    'off' => '關閉',
+    'blocked_tags' => '{0} 沒有被遮蔽的標籤|[1,*] :count 個被遮蔽的標籤',
 ];

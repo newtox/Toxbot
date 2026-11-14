@@ -1,14 +1,14 @@
 <?php
 
 return [
-    'unsaved' => 'Careful – you have unsaved changes!',
-    'reset' => 'Reset',
-    'save' => 'Save changes',
-    'saving' => 'Saving …',
-    'saved' => 'Saved! Toxbot uses the new settings right away.',
-    'bot_offline' => 'Toxbot is offline right now. Settings are saved and apply as soon as it is back online. Buttons in Discord, such as tickets or event sign-ups, don’t work until then.',
-    'saved_offline' => 'Saved! Toxbot is offline and will apply the changes as soon as it is back.',
-    'not_saved' => 'Not saved, please check the marked fields.',
-    'confirm_title' => 'Are you sure?',
-    'cancel' => 'Cancel',
+    'unsaved' => '注意：你有未儲存的更改！',
+    'reset' => '重置',
+    'save' => '儲存更改',
+    'saving' => '儲存中…',
+    'saved' => '已儲存！Toxbot 會立即使用新設定。',
+    'bot_offline' => 'Toxbot 目前離線。設定會被儲存，並在它重新上線後生效。在此之前，Discord 中的按鈕（例如工單或活動報名）無法使用。',
+    'saved_offline' => '已儲存！Toxbot 當前離線，回來後會立即應用這些更改。',
+    'not_saved' => '未儲存，請檢查標記的欄位。',
+    'confirm_title' => '確定嗎？',
+    'cancel' => '取消',
 ];

@@ -1,12 +1,12 @@
 <?php
 
 return [
-    'members' => 'Members',
-    'online' => 'Online',
-    'premium_active' => 'Active',
-    'premium_free' => 'Free',
-    'modules' => 'Modules',
-    'on' => 'On',
-    'off' => 'Off',
-    'blocked_tags' => '{0} No blocked tags|{1} :count blocked tag|[2,*] :count blocked tags',
+    'members' => 'Учасники',
+    'online' => 'Онлайн',
+    'premium_active' => 'Активний',
+    'premium_free' => 'Безкоштовно',
+    'modules' => 'Модулі',
+    'on' => 'Увімк.',
+    'off' => 'Вимк.',
+    'blocked_tags' => '{0} Немає заблокованих тегів|{1} :count заблокований тег|[2,*] Заблокованих тегів: :count',
 ];

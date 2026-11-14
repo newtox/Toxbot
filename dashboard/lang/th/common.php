@@ -1,14 +1,14 @@
 <?php
 
 return [
-    'unsaved' => 'Careful – you have unsaved changes!',
-    'reset' => 'Reset',
-    'save' => 'Save changes',
-    'saving' => 'Saving …',
-    'saved' => 'Saved! Toxbot uses the new settings right away.',
-    'bot_offline' => 'Toxbot is offline right now. Settings are saved and apply as soon as it is back online. Buttons in Discord, such as tickets or event sign-ups, don’t work until then.',
-    'saved_offline' => 'Saved! Toxbot is offline and will apply the changes as soon as it is back.',
-    'not_saved' => 'Not saved, please check the marked fields.',
-    'confirm_title' => 'Are you sure?',
-    'cancel' => 'Cancel',
+    'unsaved' => 'ระวัง – คุณมีการเปลี่ยนแปลงที่ยังไม่ได้บันทึก!',
+    'reset' => 'รีเซ็ต',
+    'save' => 'บันทึกการเปลี่ยนแปลง',
+    'saving' => 'กำลังบันทึก …',
+    'saved' => 'บันทึกแล้ว! Toxbot ใช้การตั้งค่าใหม่ทันที',
+    'bot_offline' => 'ตอนนี้ Toxbot ออฟไลน์อยู่ การตั้งค่าถูกบันทึกแล้วและจะมีผลทันทีที่บอทกลับมาออนไลน์ ปุ่มใน Discord เช่น ทิกเก็ตหรือการลงชื่อเข้าร่วมกิจกรรม จะใช้ไม่ได้จนกว่าจะถึงตอนนั้น',
+    'saved_offline' => 'บันทึกแล้ว! Toxbot ออฟไลน์อยู่และจะใช้การเปลี่ยนแปลงทันทีที่กลับมา',
+    'not_saved' => 'ยังไม่ได้บันทึก โปรดตรวจสอบช่องที่ทำเครื่องหมายไว้',
+    'confirm_title' => 'แน่ใจไหม?',
+    'cancel' => 'ยกเลิก',
 ];

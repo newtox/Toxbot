@@ -1,14 +1,14 @@
 <?php
 
 return [
-    'unsaved' => 'Careful – you have unsaved changes!',
-    'reset' => 'Reset',
-    'save' => 'Save changes',
-    'saving' => 'Saving …',
-    'saved' => 'Saved! Toxbot uses the new settings right away.',
-    'bot_offline' => 'Toxbot is offline right now. Settings are saved and apply as soon as it is back online. Buttons in Discord, such as tickets or event sign-ups, don’t work until then.',
-    'saved_offline' => 'Saved! Toxbot is offline and will apply the changes as soon as it is back.',
-    'not_saved' => 'Not saved, please check the marked fields.',
-    'confirm_title' => 'Are you sure?',
-    'cancel' => 'Cancel',
+    'unsaved' => 'Cẩn thận – bạn có thay đổi chưa lưu!',
+    'reset' => 'Đặt lại',
+    'save' => 'Lưu thay đổi',
+    'saving' => 'Đang lưu …',
+    'saved' => 'Đã lưu! Toxbot dùng cài đặt mới ngay lập tức.',
+    'bot_offline' => 'Toxbot hiện đang ngoại tuyến. Cài đặt đã được lưu và sẽ áp dụng ngay khi bot trực tuyến trở lại. Các nút trong Discord, như ticket hay đăng ký sự kiện, sẽ không hoạt động đến lúc đó.',
+    'saved_offline' => 'Đã lưu! Toxbot đang ngoại tuyến và sẽ áp dụng thay đổi ngay khi trở lại.',
+    'not_saved' => 'Chưa lưu, hãy kiểm tra các ô được đánh dấu.',
+    'confirm_title' => 'Bạn chắc chứ?',
+    'cancel' => 'Hủy',
 ];

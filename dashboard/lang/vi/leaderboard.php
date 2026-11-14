@@ -1,12 +1,12 @@
 <?php
 
 return [
-    'title' => 'Leaderboard',
-    'description' => 'The members of this server with the most XP.',
-    'empty' => 'Nobody has earned XP here yet.',
-    'level' => 'Level :level',
-    'own_rank' => 'You’re in place :rank with :xp XP.',
-    'unranked' => 'You don’t have any XP here yet.',
-    'disabled' => 'Levels are turned off on this server, so there is no leaderboard.',
-    'enable' => 'Turn on levels',
+    'title' => 'Bảng xếp hạng',
+    'description' => 'Các thành viên của máy chủ này có nhiều XP nhất.',
+    'empty' => 'Chưa ai nhận được XP ở đây.',
+    'level' => 'Cấp :level',
+    'own_rank' => 'Bạn đứng hạng :rank với :xp XP.',
+    'unranked' => 'Bạn chưa có XP nào ở đây.',
+    'disabled' => 'Cấp độ đang tắt trên máy chủ này nên không có bảng xếp hạng.',
+    'enable' => 'Bật cấp độ',
 ];

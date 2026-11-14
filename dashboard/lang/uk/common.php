@@ -1,14 +1,14 @@
 <?php
 
 return [
-    'unsaved' => 'Careful – you have unsaved changes!',
-    'reset' => 'Reset',
-    'save' => 'Save changes',
-    'saving' => 'Saving …',
-    'saved' => 'Saved! Toxbot uses the new settings right away.',
-    'bot_offline' => 'Toxbot is offline right now. Settings are saved and apply as soon as it is back online. Buttons in Discord, such as tickets or event sign-ups, don’t work until then.',
-    'saved_offline' => 'Saved! Toxbot is offline and will apply the changes as soon as it is back.',
-    'not_saved' => 'Not saved, please check the marked fields.',
-    'confirm_title' => 'Are you sure?',
-    'cancel' => 'Cancel',
+    'unsaved' => 'Обережно — у тебе є незбережені зміни!',
+    'reset' => 'Скинути',
+    'save' => 'Зберегти зміни',
+    'saving' => 'Збереження …',
+    'saved' => 'Збережено! Toxbot одразу використовує нові налаштування.',
+    'bot_offline' => 'Toxbot зараз офлайн. Налаштування збережено, вони запрацюють, щойно бот повернеться онлайн. Кнопки в Discord, як-от тікети чи запис на події, до того часу не працюють.',
+    'saved_offline' => 'Збережено! Toxbot офлайн і застосує зміни, щойно повернеться.',
+    'not_saved' => 'Не збережено, перевір позначені поля.',
+    'confirm_title' => 'Ти впевнений?',
+    'cancel' => 'Скасувати',
 ];
