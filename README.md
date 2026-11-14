@@ -151,7 +151,7 @@ The dashboard is a Laravel app with Livewire in `dashboard/`:
 - `app/Models/`: one model per table, most of them shared with the bot; `database/migrations/` creates the tables
 - `app/Support/`: small helpers such as `BotLocale`, `DomainList` or `Timezone`, plus `Navigation`, which builds the sidebar for servers, user settings and info, and `CommandCatalog` for the command list
 - `resources/views/`: Blade templates, with the Livewire views in `livewire/` and the server pages in `servers/`
-- `lang/<locale>/`: one file per area (`guild`, `tickets`, `setup`, `data`, …) in all ten languages
+- `lang/<locale>/`: one file per area (`guild`, `tickets`, `setup`, `data`, …) in all 18 languages
 - `tests/Feature/`: one test file per area
 
 The bot and the dashboard share the MySQL database. The dashboard writes settings and queues moderation actions in `mod_actions`; the bot reads them and does everything that needs a live gateway connection.
