@@ -14,7 +14,7 @@ class YouTube
 
     public function hasApiKey(): bool
     {
-        return (bool) config('toxbot.streams.youtube_api_key');
+        return (bool) config('shiori.streams.youtube_api_key');
     }
 
     public static function topic(string $channelId): string
@@ -109,7 +109,7 @@ class YouTube
         $items = Http::timeout(10)->get('https://www.googleapis.com/youtube/v3/videos', [
             'part' => 'snippet,liveStreamingDetails',
             'id' => implode(',', array_slice($ids, 0, 50)),
-            'key' => config('toxbot.streams.youtube_api_key'),
+            'key' => config('shiori.streams.youtube_api_key'),
         ])->throw()->json('items', []);
 
         $videos = [];
@@ -158,7 +158,7 @@ class YouTube
     {
         $item = Http::timeout(10)->get('https://www.googleapis.com/youtube/v3/channels', $query + [
             'part' => 'snippet',
-            'key' => config('toxbot.streams.youtube_api_key'),
+            'key' => config('shiori.streams.youtube_api_key'),
         ])->throw()->json('items.0');
 
         if (! $item) {
@@ -175,7 +175,7 @@ class YouTube
 
     private function secret(): string
     {
-        $secret = (string) config('toxbot.streams.webhook_secret');
+        $secret = (string) config('shiori.streams.webhook_secret');
         if (strlen($secret) < 10) {
             throw new RuntimeException('STREAM_WEBHOOK_SECRET must be at least 10 characters long.');
         }

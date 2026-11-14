@@ -17,7 +17,7 @@ class EnsureBotOwner
 
     public static function check(int|string|null $userId): bool
     {
-        $owner = (string) config('toxbot.owner_id');
+        $owner = (string) config('shiori.owner_id');
 
         return $userId !== null && $owner !== '' && (string) $userId === $owner;
     }

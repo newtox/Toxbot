@@ -6,7 +6,7 @@
         <section class="card flex flex-wrap items-center gap-5">
             <img src="{{ $avatar ?? 'https://cdn.discordapp.com/embed/avatars/0.png' }}" alt="" class="size-16 rounded-2xl">
             <div class="min-w-0 flex-1 basis-64">
-                <h1 class="text-2xl font-bold text-dc-header">Toxbot</h1>
+                <h1 class="text-2xl font-bold text-dc-header">Shiori</h1>
                 <p class="text-sm text-dc-muted">{{ __('info.intro') }}</p>
             </div>
             <div class="flex flex-wrap gap-2 max-sm:w-full">

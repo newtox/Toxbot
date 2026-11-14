@@ -2,7 +2,7 @@
 
 return [
     'title' => 'Thông báo stream',
-    'description' => 'Toxbot đăng thông báo khi creator phát trực tiếp trên Twitch hoặc đăng nội dung mới trên YouTube.',
+    'description' => 'Shiori đăng thông báo khi creator phát trực tiếp trên Twitch hoặc đăng nội dung mới trên YouTube.',
     'no_channel' => 'Không có kênh (tắt)',
     'ping_role' => 'Vai trò để nhắc',
     'no_ping' => 'Không nhắc ai',

@@ -1,7 +1,7 @@
-name: toxbot
+name: shiori
 description: A Dart Discord Bot
 version: 1.0.0
-repository: https://github.com/newtox/Toxbot
+repository: https://github.com/newtox/Shiori
 
 environment:
   sdk: ^3.5.2

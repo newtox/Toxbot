@@ -26,7 +26,7 @@
             @error('newName') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
         </div>
         <div>
-            <label class="label" for="bg-price">{{ __('admin.price') }} ({{ config('toxbot.currency') }})</label>
+            <label class="label" for="bg-price">{{ __('admin.price') }} ({{ config('shiori.currency') }})</label>
             <input id="bg-price" type="number" min="0" wire:model="newPrice" class="input">
             @error('newPrice') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
         </div>
@@ -57,7 +57,7 @@
                 <div class="grid gap-3 sm:grid-cols-4">
                     <input type="text" wire:model.live.blur="rows.{{ $id }}.name" aria-label="{{ __('admin.name') }}" class="input sm:col-span-2">
                     <label class="flex items-center gap-2 text-sm text-dc-muted">
-                        <span class="shrink-0">{{ config('toxbot.currency') }}</span>
+                        <span class="shrink-0">{{ config('shiori.currency') }}</span>
                         <input type="number" min="0" wire:model.live.blur="rows.{{ $id }}.price" aria-label="{{ __('admin.price') }}" class="input">
                     </label>
                     <label class="flex items-center gap-2 text-sm text-dc-muted">

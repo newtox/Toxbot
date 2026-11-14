@@ -51,7 +51,7 @@ class StarboardTest extends TestCase
                     ['original' => 'https://cdn.discordapp.com/attachments/1/2/cat.png?ex=1&is=1&hm=1', 'refreshed' => 'https://cdn.discordapp.com/attachments/1/2/cat.png?ex=ffffffff&is=1&hm=2'],
                 ]]),
                 $isBot && str_contains($url, '/users/@me/guilds') => Http::response([['id' => self::MANAGED], ['id' => self::JOINED]]),
-                $isBot && str_ends_with($url, '/users/@me') => Http::response(['id' => self::BOT, 'username' => 'Toxbot', 'avatar' => null]),
+                $isBot && str_ends_with($url, '/users/@me') => Http::response(['id' => self::BOT, 'username' => 'Shiori', 'avatar' => null]),
                 $request->method() === 'DELETE' && str_contains($url, '/messages/') => Http::response(null, 204),
                 str_contains($url, '/emojis') => Http::response([['id' => '777777777777777777', 'name' => 'pog', 'animated' => false, 'available' => true]]),
                 str_contains($url, '/channels') => Http::response([

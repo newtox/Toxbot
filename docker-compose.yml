@@ -1,5 +1,5 @@
 x-dashboard-env: &dashboard-env
-  APP_NAME: Toxbot
+  APP_NAME: Shiori
   APP_ENV: production
   APP_DEBUG: "false"
   APP_LOCALE: ${APP_LOCALE:-en}
@@ -8,7 +8,7 @@ x-dashboard-env: &dashboard-env
   DB_CONNECTION: mysql
   DB_HOST: ${DB_HOST:-host.docker.internal}
   DB_PORT: ${DB_PORT:-3306}
-  DB_DATABASE: ${DB_DATABASE:-toxbot}
+  DB_DATABASE: ${DB_DATABASE:-shiori}
   DB_USERNAME: ${DB_USERNAME}
   DB_PASSWORD: ${DB_PASSWORD}
   SESSION_DRIVER: database
@@ -20,16 +20,16 @@ x-dashboard-env: &dashboard-env
   DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET}
   DISCORD_REDIRECT_URI: ${APP_URL}/auth/discord/callback
   DISCORD_BOT_TOKEN: ${DISCORD_BOT_TOKEN}
-  TOXBOT_OWNER_ID: ${OWNER_ID}
-  TOXBOT_PREMIUM_GUILDS: ${PREMIUM_GUILDS:-}
-  TOXBOT_PREMIUM_GUILD_SKUS: ${PREMIUM_GUILD_SKUS:-}
-  TOXBOT_CURRENCY: ${CURRENCY:-Credits}
-  TOXBOT_CONTACT_EMAIL: ${CONTACT_EMAIL:-}
-  TOXBOT_SUPPORT_INVITE: ${SUPPORT_INVITE:-}
+  SHIORI_OWNER_ID: ${OWNER_ID}
+  SHIORI_PREMIUM_GUILDS: ${PREMIUM_GUILDS:-}
+  SHIORI_PREMIUM_GUILD_SKUS: ${PREMIUM_GUILD_SKUS:-}
+  SHIORI_CURRENCY: ${CURRENCY:-Credits}
+  SHIORI_CONTACT_EMAIL: ${CONTACT_EMAIL:-}
+  SHIORI_SUPPORT_INVITE: ${SUPPORT_INVITE:-}
   TOPGG_WEBHOOK_SECRET: ${TOPGG_WEBHOOK_SECRET:-}
   TOPGG_VOTE_REWARD: ${TOPGG_VOTE_REWARD:-200}
-  TOXBOT_DAILY_REWARD: ${DAILY_REWARD:-100}
-  TOXBOT_DAILY_STREAK_BONUS: ${DAILY_STREAK_BONUS:-10}
+  SHIORI_DAILY_REWARD: ${DAILY_REWARD:-100}
+  SHIORI_DAILY_STREAK_BONUS: ${DAILY_STREAK_BONUS:-10}
   STREAM_WEBHOOK_SECRET: ${STREAM_WEBHOOK_SECRET:-}
   TWITCH_CLIENT_ID: ${TWITCH_CLIENT_ID:-}
   TWITCH_CLIENT_SECRET: ${TWITCH_CLIENT_SECRET:-}
@@ -39,8 +39,8 @@ x-dashboard-env: &dashboard-env
 
 services:
   bot:
-    image: ghcr.io/newtox/toxbot:latest
-    container_name: toxbot
+    image: ghcr.io/newtox/shiori:latest
+    container_name: shiori
     restart: unless-stopped
     environment:
       token: ${DISCORD_BOT_TOKEN}
@@ -48,9 +48,9 @@ services:
       db_port: ${DB_PORT:-3306}
       db_user: ${DB_USERNAME}
       db_password: ${DB_PASSWORD}
-      db_name: ${DB_DATABASE:-toxbot}
+      db_name: ${DB_DATABASE:-shiori}
       owner_id: ${OWNER_ID}
-      dashboard_url: http://toxbot-dashboard:8080
+      dashboard_url: http://shiori-dashboard:8080
       public_dashboard_url: ${APP_URL}
       currency: ${CURRENCY:-Credits}
       support_invite: ${SUPPORT_INVITE:-}
@@ -66,20 +66,20 @@ services:
       - /docker_volumes/rustdesk/hbbs:/data/rustdesk:ro
 
   dashboard:
-    image: ghcr.io/newtox/toxbot-dashboard:latest
-    container_name: toxbot-dashboard
+    image: ghcr.io/newtox/shiori-dashboard:latest
+    container_name: shiori-dashboard
     restart: unless-stopped
     ports:
       - 127.0.0.1:8090:8080
     environment: *dashboard-env
     volumes:
-      - /docker_volumes/toxbot-dashboard/backgrounds:/var/www/html/storage/app/private/backgrounds
+      - /docker_volumes/shiori-dashboard/backgrounds:/var/www/html/storage/app/private/backgrounds
     extra_hosts:
       - host.docker.internal:host-gateway
 
   scheduler:
-    image: ghcr.io/newtox/toxbot-dashboard:latest
-    container_name: toxbot-scheduler
+    image: ghcr.io/newtox/shiori-dashboard:latest
+    container_name: shiori-scheduler
     restart: unless-stopped
     command: ["php", "/var/www/html/artisan", "schedule:work"]
     stop_signal: SIGTERM

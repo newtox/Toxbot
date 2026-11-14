@@ -2,7 +2,7 @@
 
 return [
     'title' => 'Notificaciones de streams',
-    'description' => 'Toxbot avisa cuando un creador empieza en Twitch o sube algo nuevo a YouTube.',
+    'description' => 'Shiori avisa cuando un creador empieza en Twitch o sube algo nuevo a YouTube.',
     'no_channel' => 'Ningún canal (desactivado)',
     'ping_role' => 'Rol a mencionar',
     'no_ping' => 'No mencionar a nadie',

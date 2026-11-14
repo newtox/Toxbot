@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'headline' => 'Configure Toxbot sans taper de commandes slash.',
+    'headline' => 'Configure Shiori sans taper de commandes slash.',
     'intro' => 'Messages de bienvenue et d\'au revoir avec aperçu en direct, rôle auto en un clic, ta langue et ta couleur d\'embed.',
     'button' => 'Se connecter avec Discord',
     'privacy' => 'Nous ne voyons que ton nom, ton avatar et ta liste de serveurs.',
@@ -9,5 +9,5 @@ return [
     'invalid' => 'Connexion invalide, réessaie.',
     'rejected' => 'Discord a refusé la connexion. Réessaie.',
     'expired' => 'Ta session Discord a expiré. Reconnecte-toi.',
-    'blacklisted' => 'Ton compte est bloqué sur Toxbot.',
+    'blacklisted' => 'Ton compte est bloqué sur Shiori.',
 ];

@@ -3,32 +3,32 @@ import 'dart:io';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
-import 'package:toxbot/services/events.dart';
-import 'package:toxbot/utils/database.dart';
-import 'package:toxbot/utils/functions.dart';
-import 'package:toxbot/utils/utils.dart';
+import 'package:shiori/services/events.dart';
+import 'package:shiori/utils/database.dart';
+import 'package:shiori/utils/functions.dart';
+import 'package:shiori/utils/utils.dart';
 
-final info = ChatCommand('info', 'Show information about Toxbot.',
+final info = ChatCommand('info', 'Show information about Shiori.',
     localizedDescriptions: {
-      Locale.da: 'Vis oplysninger om Toxbot.',
-      Locale.de: 'Infos über Toxbot anzeigen.',
-      Locale.enUs: 'Show information about Toxbot.',
-      Locale.esEs: 'Mostrar información sobre Toxbot.',
-      Locale.fr: 'Afficher des informations sur Toxbot.',
-      Locale.ru: 'Показать информацию о Toxbot.',
-      Locale.hi: 'Toxbot के बारे में जानकारी दिखाएँ।',
-      Locale.zhCn: '显示 Toxbot 的信息。',
-      Locale.ja: 'Toxbot の情報を表示します。',
-      Locale.ko: 'Toxbot 정보를 표시합니다.',
-      Locale.es419: 'Mostrar información sobre Toxbot.',
-      Locale.ptBr: 'Mostrar informações sobre o Toxbot.',
-      Locale.tr: 'Toxbot hakkında bilgi göster.',
+      Locale.da: 'Vis oplysninger om Shiori.',
+      Locale.de: 'Infos über Shiori anzeigen.',
+      Locale.enUs: 'Show information about Shiori.',
+      Locale.esEs: 'Mostrar información sobre Shiori.',
+      Locale.fr: 'Afficher des informations sur Shiori.',
+      Locale.ru: 'Показать информацию о Shiori.',
+      Locale.hi: 'Shiori के बारे में जानकारी दिखाएँ।',
+      Locale.zhCn: '显示 Shiori 的信息。',
+      Locale.ja: 'Shiori の情報を表示します。',
+      Locale.ko: 'Shiori 정보를 표시합니다.',
+      Locale.es419: 'Mostrar información sobre Shiori.',
+      Locale.ptBr: 'Mostrar informações sobre a Shiori.',
+      Locale.tr: 'Shiori hakkında bilgi göster.',
       Locale.pl: 'Pokaż informacje o Toxbocie.',
-      Locale.it: 'Mostra informazioni su Toxbot.',
-      Locale.uk: 'Показати інформацію про Toxbot.',
-      Locale.vi: 'Xem thông tin về Toxbot.',
-      Locale.th: 'แสดงข้อมูลเกี่ยวกับ Toxbot',
-      Locale.zhTw: '顯示 Toxbot 的資訊。'
+      Locale.it: 'Mostra informazioni su Shiori.',
+      Locale.uk: 'Показати інформацію про Shiori.',
+      Locale.vi: 'Xem thông tin về Shiori.',
+      Locale.th: 'แสดงข้อมูลเกี่ยวกับ Shiori',
+      Locale.zhTw: '顯示 Shiori 的資訊。'
     }, (ChatContext context) async {
   String getCurrentMemoryString() {
     final current = (ProcessInfo.currentRss / 1024 / 1024).toStringAsFixed(2);

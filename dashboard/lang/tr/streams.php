@@ -2,7 +2,7 @@
 
 return [
     'title' => 'Yayın bildirimleri',
-    'description' => 'Yayıncılar Twitch\'te canlı yayına başladığında veya YouTube\'a yeni bir şey yüklediğinde Toxbot paylaşır.',
+    'description' => 'Yayıncılar Twitch\'te canlı yayına başladığında veya YouTube\'a yeni bir şey yüklediğinde Shiori paylaşır.',
     'no_channel' => 'Kanal yok (kapalı)',
     'ping_role' => 'Bahsedilecek rol',
     'no_ping' => 'Kimseden bahsetme',

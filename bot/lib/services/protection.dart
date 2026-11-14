@@ -3,13 +3,13 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:nyxx/nyxx.dart';
-import 'package:toxbot/models/protection_settings.dart';
-import 'package:toxbot/services/moderation.dart';
-import 'package:toxbot/utils/config.dart';
-import 'package:toxbot/utils/database.dart';
-import 'package:toxbot/utils/reply.dart';
+import 'package:shiori/models/protection_settings.dart';
+import 'package:shiori/services/moderation.dart';
+import 'package:shiori/utils/config.dart';
+import 'package:shiori/utils/database.dart';
+import 'package:shiori/utils/reply.dart';
 
-export 'package:toxbot/models/protection_settings.dart';
+export 'package:shiori/models/protection_settings.dart';
 
 const _scamListUrls = [
   'https://raw.githubusercontent.com/Discord-AntiScam/scam-links/main/list.txt',
@@ -272,7 +272,7 @@ Future<void> _postModlog(
 
 Future<void> _kick(Guild guild, Snowflake userId) async {
   try {
-    await guild.members.delete(userId, auditLogReason: 'Toxbot anti-raid');
+    await guild.members.delete(userId, auditLogReason: 'Shiori anti-raid');
   } catch (e) {
     print('Anti-raid kick failed for $userId in ${guild.id}: $e');
   }
@@ -290,7 +290,7 @@ Future<void> _startRaid(NyxxGateway client, Guild guild,
     try {
       await client.guilds.update(guild.id,
           GuildUpdateBuilder(verificationLevel: VerificationLevel.veryHigh),
-          auditLogReason: 'Toxbot anti-raid');
+          auditLogReason: 'Shiori anti-raid');
       previousLevel = guild.verificationLevel.value;
     } catch (e) {
       print('Raising the verification level failed in ${guild.id}: $e');
@@ -361,7 +361,7 @@ Future<void> _endRaids(NyxxGateway client) async {
             guildId,
             GuildUpdateBuilder(
                 verificationLevel: VerificationLevel(previousLevel)),
-            auditLogReason: 'Toxbot anti-raid ended');
+            auditLogReason: 'Shiori anti-raid ended');
       } catch (e) {
         print('Restoring the verification level failed in $guildId: $e');
       }
@@ -392,7 +392,7 @@ Future<void> _startVerification(NyxxGateway client, Guild guild, Member member,
     User user, ProtectionSettings settings) async {
   try {
     await member.addRole(settings.verifyRole!,
-        auditLogReason: 'Toxbot verification pending');
+        auditLogReason: 'Shiori verification pending');
   } catch (e) {
     print('Adding the verification role failed in ${guild.id}: $e');
     return;
@@ -437,7 +437,7 @@ Future<void> _handleMessage(
 
   try {
     await message.manager
-        .delete(message.id, auditLogReason: 'Toxbot link filter: $host');
+        .delete(message.id, auditLogReason: 'Shiori link filter: $host');
   } catch (e) {
     print('Deleting a filtered message failed in $guildId: $e');
     return;

@@ -1,6 +1,6 @@
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:toxbot/utils/database.dart';
+import 'package:shiori/utils/database.dart';
 
 const clientLanguageCheckName = 'client-language';
 

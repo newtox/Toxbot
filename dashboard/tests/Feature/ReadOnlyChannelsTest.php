@@ -42,7 +42,7 @@ class ReadOnlyChannelsTest extends TestCase
                     ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon' => null, 'owner' => false, 'permissions' => (string) 0x20],
                 ]),
                 $isBot && str_contains($url, '/users/@me/guilds') => Http::response([['id' => self::GUILD]]),
-                $isBot && str_ends_with($url, '/users/@me') => Http::response(['id' => '999', 'username' => 'Toxbot', 'avatar' => null]),
+                $isBot && str_ends_with($url, '/users/@me') => Http::response(['id' => '999', 'username' => 'Shiori', 'avatar' => null]),
                 str_contains($url, '/members/999') => Http::response(['roles' => []]),
                 str_contains($url, '/channels') => Http::response($this->channels()),
                 str_contains($url, '/roles') => Http::response([

@@ -24,7 +24,7 @@ class BlacklistTest extends TestCase
     {
         parent::setUp();
 
-        config(['toxbot.owner_id' => self::OWNER, 'services.discord.bot_token' => 'bot-token']);
+        config(['shiori.owner_id' => self::OWNER, 'services.discord.bot_token' => 'bot-token']);
 
         Http::fake(function (Request $request) {
             $url = $request->url();

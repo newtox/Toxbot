@@ -1,7 +1,7 @@
 <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_18rem]"
      x-data="{
-         avatar: toxbot.imageCropper(1),
-         banner: toxbot.imageCropper(680 / 240),
+         avatar: shiori.imageCropper(1),
+         banner: shiori.imageCropper(680 / 240),
          nameCount() { const effect = +$wire.nameEffect; return effect === 2 ? 2 : ([7, 8].includes(effect) ? Math.min(5, Math.max(2, +$wire.nameColorCount)) : 1) },
          nameColorList() { return $wire.nameColors.slice(0, this.nameCount()) },
          nameVars() {

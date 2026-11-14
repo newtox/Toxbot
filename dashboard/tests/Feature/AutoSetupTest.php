@@ -47,7 +47,7 @@ class AutoSetupTest extends TestCase
             ['id' => self::GUILD, 'name' => '@everyone', 'position' => 0, 'color' => 0, 'managed' => false, 'permissions' => '0'],
             ['id' => '30', 'name' => 'Moderator', 'position' => 2, 'color' => 0, 'managed' => false, 'permissions' => (string) 0x2],
             ['id' => '31', 'name' => 'Mitglied', 'position' => 1, 'color' => 0, 'managed' => false, 'permissions' => '0'],
-            ['id' => '21', 'name' => 'Toxbot', 'position' => 5, 'color' => 0, 'managed' => true, 'permissions' => (string) (0x10 | 0x10000000)],
+            ['id' => '21', 'name' => 'Shiori', 'position' => 5, 'color' => 0, 'managed' => true, 'permissions' => (string) (0x10 | 0x10000000)],
         ];
 
         Http::fake(function (Request $request) {
@@ -60,7 +60,7 @@ class AutoSetupTest extends TestCase
                     ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon' => null, 'owner' => false, 'permissions' => (string) 0x20],
                 ]),
                 $isBot && str_contains($url, '/users/@me/guilds') => Http::response([['id' => self::GUILD]]),
-                $isBot && str_ends_with($url, '/users/@me') => Http::response(['id' => self::BOT, 'username' => 'Toxbot', 'avatar' => null]),
+                $isBot && str_ends_with($url, '/users/@me') => Http::response(['id' => self::BOT, 'username' => 'Shiori', 'avatar' => null]),
                 str_contains($url, '/auto-moderation/rules') => $method === 'POST'
                     ? Http::response(['id' => (string) (900 + count($this->automod))] + ($this->automod[] = json_decode($request->body(), true)))
                     : Http::response([]),
@@ -252,7 +252,7 @@ class AutoSetupTest extends TestCase
         Http::assertNotSent(fn (Request $r) => $r->method() === 'POST' && str_ends_with($r->url(), '/roles'));
     }
 
-    public function test_stops_when_toxbot_lacks_permissions(): void
+    public function test_stops_when_shiori_lacks_permissions(): void
     {
         $this->login();
         $this->roles[3]['permissions'] = (string) 0x10;
@@ -266,7 +266,7 @@ class AutoSetupTest extends TestCase
         Http::assertNotSent(fn (Request $r) => $r->method() === 'POST');
     }
 
-    public function test_refuses_a_verification_role_above_toxbot(): void
+    public function test_refuses_a_verification_role_above_shiori(): void
     {
         $this->login();
         $this->roles[] = ['id' => '33', 'name' => 'Unverifiziert', 'position' => 9, 'color' => 0, 'managed' => false, 'permissions' => '0'];

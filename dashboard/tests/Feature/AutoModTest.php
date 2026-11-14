@@ -44,14 +44,14 @@ class AutoModTest extends TestCase
                     ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon' => null, 'owner' => false, 'permissions' => (string) 0x20],
                 ]),
                 $isBot && str_contains($url, '/users/@me/guilds') => Http::response([['id' => self::GUILD]]),
-                $isBot && str_ends_with($url, '/users/@me') => Http::response(['id' => '999', 'username' => 'Toxbot', 'avatar' => null]),
+                $isBot && str_ends_with($url, '/users/@me') => Http::response(['id' => '999', 'username' => 'Shiori', 'avatar' => null]),
                 str_contains($url, '/channels') => Http::response([
                     ['id' => '11', 'type' => 0, 'name' => 'mod-log', 'position' => 0],
                 ]),
                 str_contains($url, '/roles') => Http::response([
                     ['id' => self::GUILD, 'name' => '@everyone', 'position' => 0, 'color' => 0, 'managed' => false],
                     ['id' => '20', 'name' => 'Team', 'position' => 1, 'color' => 0, 'managed' => false],
-                    ['id' => '21', 'name' => 'Toxbot', 'position' => 2, 'color' => 0, 'managed' => true],
+                    ['id' => '21', 'name' => 'Shiori', 'position' => 2, 'color' => 0, 'managed' => true],
                 ]),
                 str_contains($url, '/members/') => Http::response(['roles' => ['21']]),
                 default => Http::response([], 404),
@@ -186,12 +186,12 @@ class AutoModTest extends TestCase
         return $id;
     }
 
-    public function test_existing_toxbot_rules_are_taken_over(): void
+    public function test_existing_shiori_rules_are_taken_over(): void
     {
         $words = $this->existing(__('automod.rule_words', [], 'en'), 1);
         $duplicate = $this->existing(__('automod.rule_words', [], 'de'), 1);
-        $mentions = $this->existing('Toxbot Mention Spam', 5);
-        $this->existing('Toxbot old filter', 1);
+        $mentions = $this->existing('Shiori Mention Spam', 5);
+        $this->existing('Shiori old filter', 1);
         $foreign = $this->existing('Their own filter', 1, '42');
 
         $this->settings('automod')->set('automodWords', 'bad')->set('automodMentions', 10)->call('save')

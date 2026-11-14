@@ -4,13 +4,13 @@ import 'dart:convert';
 import 'package:mysql1/mysql1.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
-import 'package:toxbot/models/ticket.dart';
-import 'package:toxbot/services/blacklist.dart';
-import 'package:toxbot/utils/config.dart';
-import 'package:toxbot/utils/database.dart';
-import 'package:toxbot/utils/reply.dart';
+import 'package:shiori/models/ticket.dart';
+import 'package:shiori/services/blacklist.dart';
+import 'package:shiori/utils/config.dart';
+import 'package:shiori/utils/database.dart';
+import 'package:shiori/utils/reply.dart';
 
-export 'package:toxbot/models/ticket.dart';
+export 'package:shiori/models/ticket.dart';
 
 const ticketOpenPrefix = 'ticket_open:';
 
@@ -329,7 +329,7 @@ Future<void> _open(NyxxGateway client, MessageComponentInteraction interaction,
                   allow: _memberAccess),
           ],
         ),
-        auditLogReason: 'Toxbot ticket #${ticket.paddedNumber}',
+        auditLogReason: 'Shiori ticket #${ticket.paddedNumber}',
       );
     } catch (e) {
       print('Creating a ticket channel failed in $guildId: $e');
@@ -443,7 +443,7 @@ Future<void> closeTicket(NyxxGateway client, Ticket ticket, User closer,
 
     await Future.delayed(_deleteDelay);
     await channel.delete(
-        auditLogReason: 'Toxbot ticket #${ticket.paddedNumber} closed');
+        auditLogReason: 'Shiori ticket #${ticket.paddedNumber} closed');
   } catch (e) {
     print('Closing ticket ${ticket.id} failed: $e');
   } finally {

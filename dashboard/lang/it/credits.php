@@ -17,7 +17,7 @@ return [
     'recipient' => 'Destinatario',
     'search' => 'Scrivi un nome …',
     'clear' => 'Rimuovi',
-    'no_servers' => 'Non hai ancora un server in comune con Toxbot.',
+    'no_servers' => 'Non hai ancora un server in comune con Shiori.',
     'amount' => 'Importo',
     'pay_button' => 'Invia',
     'pay_confirm' => 'Inviare davvero i crediti? Non si può annullare.',

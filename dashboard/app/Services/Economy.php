@@ -133,7 +133,7 @@ class Economy
             }
 
             $streak = $since !== null && $since < 2 * self::DAY ? (int) $user->daily_streak + 1 : 1;
-            $amount = (int) config('toxbot.daily.reward') + min(max($streak - 1, 0), 10) * (int) config('toxbot.daily.streak_bonus');
+            $amount = (int) config('shiori.daily.reward') + min(max($streak - 1, 0), 10) * (int) config('shiori.daily.streak_bonus');
 
             $user->daily_at = now();
             $user->daily_streak = $streak;
@@ -249,14 +249,14 @@ class Economy
         $user = BotUser::query()->find($userId);
 
         return min(
-            (int) config('toxbot.tags.max_limit'),
-            (int) config('toxbot.tags.free_limit') + (int) $user?->tag_slots * (int) config('toxbot.tags.slot_size'),
+            (int) config('shiori.tags.max_limit'),
+            (int) config('shiori.tags.free_limit') + (int) $user?->tag_slots * (int) config('shiori.tags.slot_size'),
         );
     }
 
     public function buyTagSlots(string $userId): void
     {
-        $price = (int) config('toxbot.tags.slot_price');
+        $price = (int) config('shiori.tags.slot_price');
 
         DB::transaction(function () use ($userId, $price) {
             $user = BotUser::forDiscordId($userId);
@@ -265,7 +265,7 @@ class Economy
             }
             $user = BotUser::query()->whereKey($userId)->lockForUpdate()->first();
 
-            if ($this->tagLimit($userId) >= (int) config('toxbot.tags.max_limit')) {
+            if ($this->tagLimit($userId) >= (int) config('shiori.tags.max_limit')) {
                 throw new RuntimeException('tags.slots_max');
             }
 

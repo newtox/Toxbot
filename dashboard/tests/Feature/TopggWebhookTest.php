@@ -15,7 +15,7 @@ class TopggWebhookTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        config(['toxbot.topgg.webhook_secret' => 'whs_secret', 'toxbot.topgg.vote_reward' => 200]);
+        config(['shiori.topgg.webhook_secret' => 'whs_secret', 'shiori.topgg.vote_reward' => 200]);
     }
 
     public function test_legacy_webhook_pays_credits_once(): void
@@ -59,7 +59,7 @@ class TopggWebhookTest extends TestCase
 
     public function test_disabled_without_secret(): void
     {
-        config(['toxbot.topgg.webhook_secret' => null]);
+        config(['shiori.topgg.webhook_secret' => null]);
         $this->postJson('/webhooks/topgg', ['user' => self::USER, 'type' => 'upvote'])->assertNotFound();
     }
 }

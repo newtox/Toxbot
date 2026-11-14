@@ -2,15 +2,15 @@
 
 return [
     'title' => 'Tus servidores',
-    'subtitle' => 'Servidores con Toxbot en los que estás. Puedes configurar aquellos en los que tienes el permiso «Gestionar servidor».',
+    'subtitle' => 'Servidores con Shiori en los que estás. Puedes configurar aquellos en los que tienes el permiso «Gestionar servidor».',
     'reload' => 'Recargar lista',
-    'empty' => 'No estás en ningún servidor con Toxbot ni gestionas ningún servidor.',
+    'empty' => 'No estás en ningún servidor con Shiori ni gestionas ningún servidor.',
     'owner' => 'Propietario',
     'manager' => 'Gestor',
     'moderator' => 'Moderador',
-    'without_bot' => 'Toxbot aún no está en estos',
+    'without_bot' => 'Shiori aún no está en estos',
     'invite' => 'Invitar',
     'after_invite' => 'Después de invitar, pulsa «Recargar lista».',
-    'forbidden' => 'No puedes gestionar este servidor o Toxbot no está en él.',
+    'forbidden' => 'No puedes gestionar este servidor o Shiori no está en él.',
     'member' => 'Miembro',
 ];

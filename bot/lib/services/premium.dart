@@ -1,6 +1,6 @@
 import 'package:nyxx/nyxx.dart';
-import 'package:toxbot/services/economy.dart' as economy;
-import 'package:toxbot/utils/database.dart';
+import 'package:shiori/services/economy.dart' as economy;
+import 'package:shiori/utils/database.dart';
 
 Future<void> storeEntitlement(Entitlement entitlement, {bool? deleted}) async {
   final connection = await getMySqlConnection();

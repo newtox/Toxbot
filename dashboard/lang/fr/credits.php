@@ -17,7 +17,7 @@ return [
     'recipient' => 'Destinataire',
     'search' => 'Tape un nom…',
     'clear' => 'Retirer',
-    'no_servers' => 'Tu ne partages encore aucun serveur avec Toxbot.',
+    'no_servers' => 'Tu ne partages encore aucun serveur avec Shiori.',
     'amount' => 'Montant',
     'pay_button' => 'Envoyer',
     'pay_confirm' => 'Vraiment envoyer les crédits ? C’est irréversible.',

@@ -46,7 +46,7 @@ class BotSetupController extends Controller
     public static function validSignature(Request $request): bool
     {
         $secret = (string) config('services.discord.bot_token');
-        $signature = (string) $request->header('X-Toxbot-Signature');
+        $signature = (string) $request->header('X-Shiori-Signature');
 
         return $secret !== '' && $signature !== ''
             && hash_equals(hash_hmac('sha256', $request->getContent(), $secret), $signature);

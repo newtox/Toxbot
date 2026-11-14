@@ -17,7 +17,7 @@ return [
     'recipient' => 'Alıcı',
     'search' => 'Bir ad yaz …',
     'clear' => 'Kaldır',
-    'no_servers' => 'Henüz Toxbot ile ortak bir sunucun yok.',
+    'no_servers' => 'Henüz Shiori ile ortak bir sunucun yok.',
     'amount' => 'Miktar',
     'pay_button' => 'Gönder',
     'pay_confirm' => 'Krediler gerçekten gönderilsin mi? Bu geri alınamaz.',

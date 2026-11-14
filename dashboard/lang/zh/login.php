@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'headline' => '无需输入斜杠命令即可配置 Toxbot。',
+    'headline' => '无需输入斜杠命令即可配置 Shiori。',
     'intro' => '带实时预览的欢迎和告别消息、一键设置自动身份组，以及你自己的语言和嵌入颜色。',
     'button' => '使用 Discord 登录',
     'privacy' => '我们只能看到你的名字、头像和服务器列表。',
@@ -9,5 +9,5 @@ return [
     'invalid' => '登录无效，请重试。',
     'rejected' => 'Discord 拒绝了登录，请重试。',
     'expired' => '你的 Discord 会话已过期，请重新登录。',
-    'blacklisted' => '你的账号已被 Toxbot 封禁。',
+    'blacklisted' => '你的账号已被 Shiori 封禁。',
 ];

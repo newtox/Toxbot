@@ -22,9 +22,9 @@
 
     @if ($canBuySlots)
         <div class="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-lg bg-dc-800 px-4 py-3">
-            <p class="min-w-0 flex-1 basis-64 text-sm text-dc-muted">{{ __('tags.slots_hint', ['count' => $slotSize, 'price' => number_format($slotPrice, 0, '', ' ').' '.config('toxbot.currency')]) }}</p>
+            <p class="min-w-0 flex-1 basis-64 text-sm text-dc-muted">{{ __('tags.slots_hint', ['count' => $slotSize, 'price' => number_format($slotPrice, 0, '', ' ').' '.config('shiori.currency')]) }}</p>
             <button type="button" wire:click="buySlots" wire:loading.attr="disabled" @disabled($credits < $slotPrice)
-                    data-confirm="{{ __('tags.slots_confirm', ['count' => $slotSize, 'price' => number_format($slotPrice, 0, '', ' ').' '.config('toxbot.currency')]) }}" data-confirm-tone="primary"
+                    data-confirm="{{ __('tags.slots_confirm', ['count' => $slotSize, 'price' => number_format($slotPrice, 0, '', ' ').' '.config('shiori.currency')]) }}" data-confirm-tone="primary"
                     class="btn-secondary whitespace-nowrap">{{ __('tags.slots_buy', ['count' => $slotSize]) }}</button>
         </div>
     @endif

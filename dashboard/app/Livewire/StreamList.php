@@ -186,8 +186,8 @@ class StreamList extends Component
             'limit' => $manager->limit($this->guildId),
             'roles' => $this->editingId ? $this->roles($discord) : [],
             'channels' => $this->editingId ? $this->channels($discord) : [],
-            'twitchReady' => $twitch->configured() && strlen((string) config('toxbot.streams.webhook_secret')) >= 10,
-            'youtubeReady' => strlen((string) config('toxbot.streams.webhook_secret')) >= 10,
+            'twitchReady' => $twitch->configured() && strlen((string) config('shiori.streams.webhook_secret')) >= 10,
+            'youtubeReady' => strlen((string) config('shiori.streams.webhook_secret')) >= 10,
             'youtubeHandles' => $youtube->hasApiKey(),
         ]);
     }

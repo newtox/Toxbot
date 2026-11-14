@@ -17,7 +17,7 @@ return [
     'recipient' => 'Empfänger',
     'search' => 'Name eintippen …',
     'clear' => 'Entfernen',
-    'no_servers' => 'Du teilst noch keinen Server mit Toxbot.',
+    'no_servers' => 'Du teilst noch keinen Server mit Shiori.',
     'amount' => 'Betrag',
     'pay_button' => 'Senden',
     'pay_confirm' => 'Credits wirklich senden? Das lässt sich nicht rückgängig machen.',

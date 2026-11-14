@@ -2,7 +2,7 @@
 
 return [
     'title' => 'Powiadomienia o streamach',
-    'description' => 'Toxbot publikuje, gdy twórcy zaczynają transmisję na Twitchu lub wrzucają coś nowego na YouTube.',
+    'description' => 'Shiori publikuje, gdy twórcy zaczynają transmisję na Twitchu lub wrzucają coś nowego na YouTube.',
     'no_channel' => 'Brak kanału (wyłączone)',
     'ping_role' => 'Rola do pingowania',
     'no_ping' => 'Nie pinguj nikogo',

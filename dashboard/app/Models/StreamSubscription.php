@@ -29,7 +29,7 @@ class StreamSubscription extends Model
     public static function freeIds(string $guildId): array
     {
         return static::query()->where('guild', $guildId)->orderBy('id')
-            ->limit((int) config('toxbot.streams.free_limit'))->pluck('id')->map(fn ($id) => (int) $id)->all();
+            ->limit((int) config('shiori.streams.free_limit'))->pluck('id')->map(fn ($id) => (int) $id)->all();
     }
 
     public function source(): BelongsTo

@@ -93,15 +93,15 @@ class MyTags extends Component
             'content.required' => __('tags.content_empty'),
             'content.max' => __('tags.content_max', ['max' => Tag::MAX_LENGTH]),
             'embedColor.regex' => __('profile.color_invalid'),
-            'embedImage.url' => __('tags.image_invalid', ['hosts' => implode(', ', config('toxbot.tags.image_hosts'))]),
+            'embedImage.url' => __('tags.image_invalid', ['hosts' => implode(', ', config('shiori.tags.image_hosts'))]),
         ]);
 
         if ($problem = Tag::contentProblem($this->content)) {
             throw ValidationException::withMessages(['content' => __($problem)]);
         }
 
-        if ($this->embedImage !== '' && ! in_array(strtolower((string) parse_url($this->embedImage, PHP_URL_HOST)), config('toxbot.tags.image_hosts'), true)) {
-            throw ValidationException::withMessages(['embedImage' => __('tags.image_invalid', ['hosts' => implode(', ', config('toxbot.tags.image_hosts'))])]);
+        if ($this->embedImage !== '' && ! in_array(strtolower((string) parse_url($this->embedImage, PHP_URL_HOST)), config('shiori.tags.image_hosts'), true)) {
+            throw ValidationException::withMessages(['embedImage' => __('tags.image_invalid', ['hosts' => implode(', ', config('shiori.tags.image_hosts'))])]);
         }
 
         $embedFields = [
@@ -193,7 +193,7 @@ class MyTags extends Component
 
         try {
             $economy->buyTagSlots((string) Auth::id());
-            $this->slotMessage = __('tags.slots_bought', ['count' => config('toxbot.tags.slot_size')]);
+            $this->slotMessage = __('tags.slots_bought', ['count' => config('shiori.tags.slot_size')]);
             $this->slotSuccess = true;
         } catch (RuntimeException $e) {
             $this->slotMessage = __($e->getMessage());
@@ -210,9 +210,9 @@ class MyTags extends Component
             ...($this->transferringId !== null ? $this->pickerData() : ['pickGuilds' => [], 'pickMatches' => []]),
             'tags' => Tag::query()->where('owner', $userId)->orderBy('name')->get(),
             'limit' => $limit,
-            'canBuySlots' => $limit < (int) config('toxbot.tags.max_limit'),
-            'slotPrice' => (int) config('toxbot.tags.slot_price'),
-            'slotSize' => (int) config('toxbot.tags.slot_size'),
+            'canBuySlots' => $limit < (int) config('shiori.tags.max_limit'),
+            'slotPrice' => (int) config('shiori.tags.slot_price'),
+            'slotSize' => (int) config('shiori.tags.slot_size'),
             'credits' => (int) BotUser::query()->find($userId)?->credits,
         ]);
     }

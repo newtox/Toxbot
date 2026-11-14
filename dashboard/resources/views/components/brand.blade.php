@@ -6,5 +6,5 @@
     @else
         <span class="grid size-9 place-items-center rounded-full bg-accent text-base font-bold text-on-accent">t</span>
     @endif
-    <span class="text-xl font-bold tracking-tight text-accent-fg">toxbot</span>
+    <span class="text-xl font-bold tracking-tight text-accent-fg">shiori</span>
 </a>

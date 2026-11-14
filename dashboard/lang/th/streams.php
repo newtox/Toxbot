@@ -2,7 +2,7 @@
 
 return [
     'title' => 'การแจ้งเตือนสตรีม',
-    'description' => 'Toxbot จะโพสต์เมื่อครีเอเตอร์ไลฟ์บน Twitch หรืออัปโหลดสิ่งใหม่บน YouTube',
+    'description' => 'Shiori จะโพสต์เมื่อครีเอเตอร์ไลฟ์บน Twitch หรืออัปโหลดสิ่งใหม่บน YouTube',
     'no_channel' => 'ไม่มีช่อง (ปิด)',
     'ping_role' => 'บทบาทที่จะแท็ก',
     'no_ping' => 'ไม่แท็กใคร',

@@ -6,7 +6,7 @@ return [
     '403_title' => 'Nessun accesso',
     '403_text' => 'Non hai il permesso di vedere questa pagina. Forse ti manca un ruolo sul server.',
     '404_title' => 'Pagina non trovata',
-    '404_text' => 'Questa pagina non esiste, oppure Toxbot non è più nel server.',
+    '404_text' => 'Questa pagina non esiste, oppure Shiori non è più nel server.',
     '419_title' => 'Sessione scaduta',
     '419_text' => 'La pagina è rimasta aperta troppo a lungo. Ricaricala e riprova.',
     '429_title' => 'Troppe richieste',

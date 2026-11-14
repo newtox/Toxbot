@@ -46,9 +46,9 @@ class VerifyController extends Controller
         $userId = (string) $request->user()->id;
 
         try {
-            $this->discord->removeMemberRole($guild, $userId, $settings->verify_role, 'Toxbot verification');
+            $this->discord->removeMemberRole($guild, $userId, $settings->verify_role, 'Shiori verification');
             if ($settings->autorole && $settings->autorole !== $settings->verify_role) {
-                $this->discord->addMemberRole($guild, $userId, $settings->autorole, 'Toxbot verification');
+                $this->discord->addMemberRole($guild, $userId, $settings->autorole, 'Shiori verification');
             }
         } catch (RequestException $e) {
             report($e);
@@ -72,7 +72,7 @@ class VerifyController extends Controller
             'guildName' => null,
             'guildIcon' => null,
             'settings' => $settings,
-            'siteKey' => config('toxbot.turnstile.site_key'),
+            'siteKey' => config('shiori.turnstile.site_key'),
             'error' => null,
         ];
 
@@ -103,8 +103,8 @@ class VerifyController extends Controller
 
     private function passedChallenge(Request $request): bool
     {
-        $secret = config('toxbot.turnstile.secret_key');
-        if (! $secret || ! config('toxbot.turnstile.site_key')) {
+        $secret = config('shiori.turnstile.secret_key');
+        if (! $secret || ! config('shiori.turnstile.site_key')) {
             return true;
         }
 

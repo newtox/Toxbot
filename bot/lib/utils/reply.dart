@@ -1,8 +1,8 @@
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
-import 'package:toxbot/utils/database.dart';
-import 'package:toxbot/utils/nekos.dart';
+import 'package:shiori/utils/database.dart';
+import 'package:shiori/utils/nekos.dart';
 
 const successColor = '#6dbe33';
 

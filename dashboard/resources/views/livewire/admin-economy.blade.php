@@ -1,4 +1,4 @@
-@php($currency = config('toxbot.currency'))
+@php($currency = config('shiori.currency'))
 <section class="card space-y-5">
     <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
         <img src="{{ $data['avatar'] }}" alt="" class="size-12 shrink-0 rounded-full">

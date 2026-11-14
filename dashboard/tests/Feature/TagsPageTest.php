@@ -57,7 +57,7 @@ class TagsPageTest extends TestCase
 
     public function test_respects_the_free_limit(): void
     {
-        config(['toxbot.tags.free_limit' => 1]);
+        config(['shiori.tags.free_limit' => 1]);
         Tag::create(['name' => 'first', 'owner' => self::USER, 'content' => 'x']);
 
         Livewire::test(MyTags::class)->call('create')->set('name', 'second')->set('content', 'x')
@@ -98,7 +98,7 @@ class TagsPageTest extends TestCase
 
     public function test_extra_tag_slots_are_bought_with_credits(): void
     {
-        config(['toxbot.tags.free_limit' => 2, 'toxbot.tags.slot_size' => 5, 'toxbot.tags.slot_price' => 1000, 'toxbot.tags.max_limit' => 10]);
+        config(['shiori.tags.free_limit' => 2, 'shiori.tags.slot_size' => 5, 'shiori.tags.slot_price' => 1000, 'shiori.tags.max_limit' => 10]);
         $user = BotUser::forDiscordId(self::USER);
         $user->credits = 2500;
         $user->save();
@@ -115,7 +115,7 @@ class TagsPageTest extends TestCase
         $this->assertSame(2, $user->tag_slots);
         $this->assertDatabaseHas('credit_transactions', ['user' => self::USER, 'amount' => -1000, 'reason' => 'tag_slots']);
 
-        config(['toxbot.tags.max_limit' => 50]);
+        config(['shiori.tags.max_limit' => 50]);
         Livewire::test(MyTags::class)->call('buySlots')->assertSet('slotSuccess', false)->assertSet('slotMessage', __('shop.not_enough'));
     }
 }

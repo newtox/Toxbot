@@ -1,10 +1,10 @@
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:toxbot/models/guild_event.dart';
-import 'package:toxbot/utils/database.dart';
-import 'package:toxbot/utils/reply.dart';
+import 'package:shiori/models/guild_event.dart';
+import 'package:shiori/utils/database.dart';
+import 'package:shiori/utils/reply.dart';
 
-export 'package:toxbot/models/guild_event.dart';
+export 'package:shiori/models/guild_event.dart';
 
 const eventJoinPrefix = 'event_join:';
 
@@ -122,12 +122,12 @@ Future<void> _deleteParts(NyxxRest client, Snowflake guildId,
   for (final channelId in channels) {
     if (channelId != null) {
       await _quietly(() => client.channels[channelId]
-          .delete(auditLogReason: 'Toxbot event ended'));
+          .delete(auditLogReason: 'Shiori event ended'));
     }
   }
   if (roleId != null) {
     await _quietly(() => client.guilds[guildId].roles
-        .delete(roleId, auditLogReason: 'Toxbot event ended'));
+        .delete(roleId, auditLogReason: 'Shiori event ended'));
   }
 }
 
@@ -194,10 +194,10 @@ Future<void> _answer(NyxxGateway client,
   try {
     if (join) {
       await members.addRole(user.id, event.roleId!,
-          auditLogReason: 'Toxbot event: ${event.name}');
+          auditLogReason: 'Shiori event: ${event.name}');
     } else {
       await members.removeRole(user.id, event.roleId!,
-          auditLogReason: 'Toxbot event: ${event.name}');
+          auditLogReason: 'Shiori event: ${event.name}');
     }
   } catch (e) {
     print('Changing the event role failed for event ${event.id}: $e');
@@ -282,7 +282,7 @@ Future<Iterable<CommandOptionChoiceBuilder<String>>> eventChoices(
 Future<GuildEvent?> createEvent(
     NyxxGateway client, Guild guild, String name, Member creator,
     {Role? team, int voiceCount = 1}) async {
-  final reason = 'Toxbot event: $name';
+  final reason = 'Shiori event: $name';
   Role? role;
   final channels = <Snowflake>[];
 

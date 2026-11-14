@@ -17,7 +17,7 @@ return [
     'recipient' => 'Modtager',
     'search' => 'Skriv et navn …',
     'clear' => 'Fjern',
-    'no_servers' => 'Du deler ingen servere med Toxbot endnu.',
+    'no_servers' => 'Du deler ingen servere med Shiori endnu.',
     'amount' => 'Beløb',
     'pay_button' => 'Send',
     'pay_confirm' => 'Vil du virkelig sende credits? Det kan ikke fortrydes.',

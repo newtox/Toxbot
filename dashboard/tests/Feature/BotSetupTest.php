@@ -29,7 +29,7 @@ class BotSetupTest extends TestCase
         $body = json_encode($payload);
         $headers = ['Content-Type' => 'application/json', 'Accept' => 'application/json'];
         if ($secret !== null) {
-            $headers['X-Toxbot-Signature'] = hash_hmac('sha256', $body, $secret);
+            $headers['X-Shiori-Signature'] = hash_hmac('sha256', $body, $secret);
         }
 
         return $this->call('POST', '/internal/setup', [], [], [], $this->transformHeadersToServerVars($headers), $body);

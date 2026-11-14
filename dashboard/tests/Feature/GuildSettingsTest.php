@@ -40,7 +40,7 @@ class GuildSettingsTest extends TestCase
                 $isBot && str_contains($url, '/users/@me/guilds') => Http::response([
                     ['id' => self::GUILD], ['id' => self::OTHER_GUILD],
                 ]),
-                $isBot && str_ends_with($url, '/users/@me') => Http::response(['id' => self::BOT, 'username' => 'Toxbot', 'avatar' => null]),
+                $isBot && str_ends_with($url, '/users/@me') => Http::response(['id' => self::BOT, 'username' => 'Shiori', 'avatar' => null]),
                 str_contains($url, '/channels') => Http::response([
                     ['id' => '10', 'type' => 4, 'name' => 'Info', 'position' => 0],
                     ['id' => '11', 'type' => 0, 'name' => 'willkommen', 'position' => 0, 'parent_id' => '10'],
@@ -49,7 +49,7 @@ class GuildSettingsTest extends TestCase
                 str_contains($url, '/roles') => Http::response([
                     ['id' => self::GUILD, 'name' => '@everyone', 'position' => 0, 'color' => 0, 'managed' => false],
                     ['id' => '20', 'name' => 'Mitglied', 'position' => 1, 'color' => 0x57F287, 'managed' => false],
-                    ['id' => '21', 'name' => 'Toxbot', 'position' => 2, 'color' => 0, 'managed' => true],
+                    ['id' => '21', 'name' => 'Shiori', 'position' => 2, 'color' => 0, 'managed' => true],
                     ['id' => '22', 'name' => 'Admin', 'position' => 3, 'color' => 0, 'managed' => false],
                 ]),
                 str_contains($url, '/members/') => Http::response(['roles' => ['21']]),

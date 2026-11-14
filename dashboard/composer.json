@@ -1,8 +1,8 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "newtox/toxbot-dashboard",
+    "name": "newtox/shiori-dashboard",
     "type": "project",
-    "description": "Web-Dashboard für Toxbot",
+    "description": "Web-Dashboard für Shiori",
     "keywords": [
         "laravel",
         "framework"

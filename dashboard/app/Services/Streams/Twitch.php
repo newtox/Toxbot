@@ -14,7 +14,7 @@ class Twitch
 
     public function configured(): bool
     {
-        return config('toxbot.streams.twitch_client_id') && config('toxbot.streams.twitch_client_secret');
+        return config('shiori.streams.twitch_client_id') && config('shiori.streams.twitch_client_secret');
     }
 
     public function user(string $login): ?array
@@ -94,7 +94,7 @@ class Twitch
 
     public function secret(): string
     {
-        $secret = (string) config('toxbot.streams.webhook_secret');
+        $secret = (string) config('shiori.streams.webhook_secret');
         if (strlen($secret) < 10) {
             throw new RuntimeException('STREAM_WEBHOOK_SECRET must be at least 10 characters long.');
         }
@@ -111,7 +111,7 @@ class Twitch
         return Http::baseUrl(self::API)
             ->acceptJson()
             ->timeout(10)
-            ->withHeaders(['Client-Id' => config('toxbot.streams.twitch_client_id')])
+            ->withHeaders(['Client-Id' => config('shiori.streams.twitch_client_id')])
             ->withToken($this->token());
     }
 
@@ -124,8 +124,8 @@ class Twitch
 
         try {
             $response = Http::asForm()->timeout(10)->post('https://id.twitch.tv/oauth2/token', [
-                'client_id' => config('toxbot.streams.twitch_client_id'),
-                'client_secret' => config('toxbot.streams.twitch_client_secret'),
+                'client_id' => config('shiori.streams.twitch_client_id'),
+                'client_secret' => config('shiori.streams.twitch_client_secret'),
                 'grant_type' => 'client_credentials',
             ])->throw()->json();
         } catch (RequestException $e) {

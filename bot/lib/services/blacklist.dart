@@ -1,7 +1,7 @@
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:toxbot/utils/config.dart';
-import 'package:toxbot/utils/database.dart';
+import 'package:shiori/utils/config.dart';
+import 'package:shiori/utils/database.dart';
 
 const _cacheLifetime = Duration(minutes: 1);
 

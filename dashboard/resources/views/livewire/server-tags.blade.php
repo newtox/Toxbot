@@ -42,7 +42,7 @@
             @error('content') <p class="mt-2 text-sm text-dc-red">{{ $message }}</p> @enderror
             <div class="mt-3 flex flex-wrap gap-2">
                 @foreach (['&user', '&server', '&membercount'] as $token)
-                    <button type="button" x-on:click="toxbot.insertAtCursor($refs.content, '{{ $token }}')"
+                    <button type="button" x-on:click="shiori.insertAtCursor($refs.content, '{{ $token }}')"
                             class="rounded-full bg-dc-600 px-3 py-1 font-mono text-xs text-dc-text transition hover:bg-accent hover:text-on-accent">{{ $token }}</button>
                 @endforeach
             </div>

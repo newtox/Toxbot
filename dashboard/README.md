@@ -1,13 +1,13 @@
-# Toxbot Dashboard
+# Shiori Dashboard
 
-Web dashboard for [Toxbot](../README.md), built with Laravel, Livewire and Tailwind CSS.
+Web dashboard for [Shiori](../README.md), built with Laravel, Livewire and Tailwind CSS.
 
 - **Discord login** via OAuth2 (scopes `identify guilds`)
-- **Server list** with every server with Toxbot you are on. Servers where you are owner, administrator or have "Manage Server" can be configured; on the others you see the member list and the starboard, plus the modlog with Kick Members, Ban Members, Timeout Members or View Audit Log, the unban appeals with Ban Members, and the tickets of the ticket types whose team roles you have. Servers you manage without Toxbot get an invite button.
+- **Server list** with every server with Shiori you are on. Servers where you are owner, administrator or have "Manage Server" can be configured; on the others you see the member list and the starboard, plus the modlog with Kick Members, Ban Members, Timeout Members or View Audit Log, the unban appeals with Ban Members, and the tickets of the ticket types whose team roles you have. Servers you manage without Shiori get an invite button.
 - **Landing page** with features, Premium and invite link, plus live numbers for servers, members with XP and tags
 - **Server overview** with member count, streamers, Server Premium status and every module at a glance; every setting has its own page, grouped into General (welcome, goodbye, autorole, language, data), Community (levels, streams, live role, tags) and Moderation & safety (moderation, verification, link filter, AutoMod, anti-raid, tickets). The groups fold in the sidebar and remember their state, and each page can be reset on its own. Members, leaderboard (on servers with levels turned on), starboard, modlog, ticket history and appeals sit above them under Server.
 - **Welcome and goodbye messages** with channel picker, placeholders (`&mention`, `&user`, `&server`) and a live preview that looks like Discord
-- **Autorole**, limited to roles below Toxbot's highest role, same rule as `/autorole`
+- **Autorole**, limited to roles below Shiori's highest role, same rule as `/autorole`
 - **Server language** for everything posted to the whole server, such as ticket and verify buttons, ticket logs and raid alarms
 - **Server levels**, **level-up messages** and **tags** per server: server levels are off until an admin turns them on, then members earn server XP for messages and commands; turn level-ups and tags on or off, pick the channel, send level-ups as a DM as well, unblock blocked tags and manage server tags (20 per server, 100 with Server Premium, only on that server, shown by `/tag show` ahead of global tags with the same name)
 - **User settings** with their own sidebar: profile card with level, rank and credits and a picker for your background, avatar frame and progress bar, credits with the daily reward, sending credits to a member and recent transactions, handing tags over to someone else, language and embed color (same as `/language` and `/color`, the color is also the dashboard's accent color), Premium, shop, tags and your data
@@ -26,13 +26,13 @@ Web dashboard for [Toxbot](../README.md), built with Laravel, Livewire and Tailw
 - **Tickets**: ticket types with emoji, text and team roles, the button message, and the ticket history with transcripts
 - **Unban appeals**: form for banned members under `/appeal/{server}` and a list for the team to accept or reject
 - **Automatic setup** on the overview and in the moderation, protection and ticket settings: creates the missing channels, roles and permissions
-- **Data**: a server's Data page resets its settings or deletes all its data and removes Toxbot (owner only); the Data page in the user settings deletes your own data
+- **Data**: a server's Data page resets its settings or deletes all its data and removes Shiori (owner only); the Data page in the user settings deletes your own data
 - **Info** with links (GitHub, Top.gg, privacy policy, terms, contact), every slash command with its options and a search, read from Discord's application commands, and a system page with the bot's status and the versions of bot and dashboard
 - **All 10 bot languages**. For logged-in users, the dashboard language and the bot language are the same setting.
 
 ## How it works with the bot
 
-The dashboard reads and writes Toxbot's own tables (`guilds`, `users`, `tags`, `member_levels`, `backgrounds` and so on) in the shared MySQL database. The bot reads them fresh on every event and command, so there is no restart and no extra API between the two.
+The dashboard reads and writes Shiori's own tables (`guilds`, `users`, `tags`, `member_levels`, `backgrounds` and so on) in the shared MySQL database. The bot reads them fresh on every event and command, so there is no restart and no extra API between the two.
 
 Channels, roles and bot info come straight from the Discord REST API using the bot token. The dashboard also posts messages, creates channels and roles and swaps roles for verification this way.
 

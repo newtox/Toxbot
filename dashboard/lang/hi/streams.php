@@ -2,7 +2,7 @@
 
 return [
     'title' => 'स्ट्रीम सूचनाएं',
-    'description' => 'जब क्रिएटर Twitch पर लाइव हों या YouTube पर कुछ नया डालें, Toxbot बताता है।',
+    'description' => 'जब क्रिएटर Twitch पर लाइव हों या YouTube पर कुछ नया डालें, Shiori बताती है।',
     'no_channel' => 'कोई चैनल नहीं (बंद)',
     'ping_role' => 'पिंग करने वाली रोल',
     'no_ping' => 'किसी को पिंग न करें',

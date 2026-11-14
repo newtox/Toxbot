@@ -15,9 +15,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - image: toxbot
+          - image: shiori
             context: bot
-          - image: toxbot-dashboard
+          - image: shiori-dashboard
             context: dashboard
     steps:
       - uses: actions/checkout@v4
@@ -40,7 +40,7 @@ jobs:
           tags: |
             ghcr.io/newtox/${{ matrix.image }}:latest
             ghcr.io/newtox/${{ matrix.image }}:${{ github.sha }}
-          labels: org.opencontainers.image.source=https://github.com/newtox/Toxbot
+          labels: org.opencontainers.image.source=https://github.com/newtox/Shiori
           build-args: |
             GIT_COMMIT=${{ github.sha }}
             BUILD_DATE=${{ steps.build.outputs.date }}

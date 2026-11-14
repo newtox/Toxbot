@@ -2,7 +2,7 @@
 
 return [
     'title' => 'Notifiche delle live',
-    'description' => 'Toxbot pubblica quando i creator vanno in live su Twitch o caricano qualcosa di nuovo su YouTube.',
+    'description' => 'Shiori pubblica quando i creator vanno in live su Twitch o caricano qualcosa di nuovo su YouTube.',
     'no_channel' => 'Nessun canale (disattivato)',
     'ping_role' => 'Ruolo da menzionare',
     'no_ping' => 'Non menzionare nessuno',

@@ -6,7 +6,7 @@ return [
     '403_title' => 'No access',
     '403_text' => 'You don’t have permission to see this page. You might be missing a role on the server.',
     '404_title' => 'Page not found',
-    '404_text' => 'This page doesn’t exist, or Toxbot is no longer on the server.',
+    '404_text' => 'This page doesn’t exist, or Shiori is no longer on the server.',
     '419_title' => 'Session expired',
     '419_text' => 'The page was open for too long. Reload it and try again.',
     '429_title' => 'Too many requests',

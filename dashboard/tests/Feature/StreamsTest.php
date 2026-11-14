@@ -40,14 +40,14 @@ class StreamsTest extends TestCase
         parent::setUp();
 
         config([
-            'app.url' => 'https://toxbot.test',
+            'app.url' => 'https://shiori.test',
             'services.discord.bot_token' => 'bot-token',
-            'toxbot.streams.webhook_secret' => self::SECRET,
-            'toxbot.streams.twitch_client_id' => 'twitch-id',
-            'toxbot.streams.twitch_client_secret' => 'twitch-secret',
-            'toxbot.premium_guild_skus' => ['700'],
+            'shiori.streams.webhook_secret' => self::SECRET,
+            'shiori.streams.twitch_client_id' => 'twitch-id',
+            'shiori.streams.twitch_client_secret' => 'twitch-secret',
+            'shiori.premium_guild_skus' => ['700'],
         ]);
-        url()->forceRootUrl('https://toxbot.test');
+        url()->forceRootUrl('https://shiori.test');
 
         Http::fake(function (Request $request) {
             $url = $request->url();
@@ -185,7 +185,7 @@ class StreamsTest extends TestCase
         $this->twitchRequest('notification', ['subscription' => ['type' => 'stream.offline'], 'event' => ['broadcaster_user_id' => '42']]);
         Http::assertSent(fn (Request $r) => $r->method() === 'DELETE' && str_contains($r->url(), '/channels/555/messages/900'));
 
-        config(['toxbot.premium_guilds' => [self::GUILD]]);
+        config(['shiori.premium_guilds' => [self::GUILD]]);
         $this->twitchRequest('notification', ['subscription' => ['type' => 'stream.online'], 'event' => ['id' => 'stream-2', 'broadcaster_user_id' => '42']]);
         $this->twitchRequest('notification', ['subscription' => ['type' => 'stream.offline'], 'event' => ['broadcaster_user_id' => '42']]);
         Http::assertSent(fn (Request $r) => $r->method() === 'PATCH' && str_contains($r->url(), '/channels/555/messages/900')
@@ -261,7 +261,7 @@ class StreamsTest extends TestCase
 
     public function test_youtube_live_status_is_shown_until_the_stream_ends(): void
     {
-        config(['toxbot.streams.youtube_api_key' => 'yt-key']);
+        config(['shiori.streams.youtube_api_key' => 'yt-key']);
         $this->guild();
         $source = StreamSource::create(['platform' => 'youtube', 'external_id' => 'UC1234567890123456789012', 'name' => 'Mein Kanal']);
         StreamSubscription::create(['guild' => self::GUILD, 'stream_source_id' => $source->id]);
@@ -314,7 +314,7 @@ class StreamsTest extends TestCase
     public function test_free_limit_and_youtube_channel_id(): void
     {
         $this->login();
-        config(['toxbot.streams.free_limit' => 1]);
+        config(['shiori.streams.free_limit' => 1]);
 
         Livewire::test(StreamList::class, ['guildId' => self::GUILD])
             ->set('platform', 'youtube')->set('input', 'https://www.youtube.com/channel/UC1234567890123456789012')
@@ -325,7 +325,7 @@ class StreamsTest extends TestCase
             ->set('platform', 'youtube')->set('input', '@someone')
             ->call('add')->assertSet('error', __('streams.limit', ['limit' => 1]));
 
-        config(['toxbot.streams.free_limit' => 5]);
+        config(['shiori.streams.free_limit' => 5]);
         Livewire::test(StreamList::class, ['guildId' => self::GUILD])
             ->set('platform', 'youtube')->set('input', '@someone')
             ->call('add')->assertSet('error', __('streams.youtube_need_id'));
@@ -348,7 +348,7 @@ class StreamsTest extends TestCase
     public function test_youtube_api_errors_show_the_reason(): void
     {
         $this->login();
-        config(['toxbot.streams.youtube_api_key' => 'key']);
+        config(['shiori.streams.youtube_api_key' => 'key']);
 
         Livewire::test(StreamList::class, ['guildId' => self::GUILD])
             ->set('platform', 'youtube')->set('input', '@someone')
@@ -368,7 +368,7 @@ class StreamsTest extends TestCase
             ->call('edit', $subscription->id)->set('pingRole', '888')->call('saveSubscription');
         $this->assertNull($subscription->fresh()->role);
 
-        config(['toxbot.premium_guilds' => [self::GUILD]]);
+        config(['shiori.premium_guilds' => [self::GUILD]]);
         Livewire::test(StreamList::class, ['guildId' => self::GUILD])
             ->call('edit', $subscription->id)->set('pingRole', '999')->call('saveSubscription')
             ->assertHasErrors('pingRole')
@@ -393,7 +393,7 @@ class StreamsTest extends TestCase
             ->call('edit', $subscription->id)->set('notifyChannel', '556')->call('saveSubscription');
         $this->assertNull($subscription->fresh()->channel);
 
-        config(['toxbot.premium_guilds' => [self::GUILD]]);
+        config(['shiori.premium_guilds' => [self::GUILD]]);
         Livewire::test(StreamList::class, ['guildId' => self::GUILD])
             ->call('edit', $subscription->id)->assertSee('# valheim')->assertDontSee('# Voice')
             ->set('notifyChannel', '557')->call('saveSubscription')->assertHasErrors('notifyChannel')
@@ -406,7 +406,7 @@ class StreamsTest extends TestCase
         $this->assertStringContainsString('/channels/556/messages', $this->discordPostUrls[0]);
         $this->assertSame('556', StreamAnnouncement::first()->channel_id);
 
-        config(['toxbot.premium_guilds' => []]);
+        config(['shiori.premium_guilds' => []]);
         StreamAnnouncement::query()->delete();
         $payload['event']['id'] = 'stream-4';
         $this->twitchRequest('notification', $payload)->assertNoContent();
@@ -420,7 +420,7 @@ class StreamsTest extends TestCase
             ->shouldReceive('manageableGuilds')->andReturn([['id' => self::GUILD, 'name' => 'Toxic', 'icon_url' => null, 'has_bot' => true]])
             ->shouldReceive('find')->andReturn(['id' => self::GUILD]));
 
-        config(['toxbot.premium_guild_skus' => ['900']]);
+        config(['shiori.premium_guild_skus' => ['900']]);
         $this->assertFalse(app(Premium::class)->isGuildPremium(self::GUILD));
         Livewire::test(PremiumServers::class)->assertSee('Toxic')->assertSee(__('profile.premium_inactive'));
 
@@ -431,7 +431,7 @@ class StreamsTest extends TestCase
 
     public function test_only_free_limit_streamers_are_announced_without_premium(): void
     {
-        config(['toxbot.streams.free_limit' => 1]);
+        config(['shiori.streams.free_limit' => 1]);
         $this->guild();
         $other = StreamSource::create(['platform' => 'twitch', 'external_id' => '1', 'login' => 'first', 'name' => 'First']);
         StreamSubscription::create(['guild' => self::GUILD, 'stream_source_id' => $other->id]);
@@ -442,7 +442,7 @@ class StreamsTest extends TestCase
         $this->twitchRequest('notification', $payload)->assertNoContent();
         $this->assertCount(0, $this->discordPosts);
 
-        config(['toxbot.premium_guilds' => [self::GUILD]]);
+        config(['shiori.premium_guilds' => [self::GUILD]]);
         $source->update(['live_item' => null]);
         $this->twitchRequest('notification', array_replace_recursive($payload, ['event' => ['id' => 'stream-4']]))->assertNoContent();
         $this->assertCount(1, $this->discordPosts);
@@ -458,7 +458,7 @@ class StreamsTest extends TestCase
             ->call('edit', $subscription->id)->set('filterGames', 'Valheim')->set('endAction', 'delete')->call('saveSubscription');
         $this->assertNull($subscription->fresh()->filter_games);
 
-        config(['toxbot.premium_guilds' => [self::GUILD]]);
+        config(['shiori.premium_guilds' => [self::GUILD]]);
         Livewire::test(StreamList::class, ['guildId' => self::GUILD])
             ->call('edit', $subscription->id)->set('filterGames', 'Valheim')->set('endAction', 'delete')->call('saveSubscription');
         $this->assertSame('Valheim', $subscription->fresh()->filter_games);

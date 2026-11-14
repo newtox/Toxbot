@@ -5,14 +5,14 @@ import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:sqlite3/sqlite3.dart';
-import 'package:toxbot/services/developer.dart';
-import 'package:toxbot/services/economy.dart' as economy;
-import 'package:toxbot/services/levels.dart';
-import 'package:toxbot/services/structure.dart';
-import 'package:toxbot/utils/config.dart';
-import 'package:toxbot/utils/database.dart';
-import 'package:toxbot/utils/functions.dart';
-import 'package:toxbot/utils/reply.dart';
+import 'package:shiori/services/developer.dart';
+import 'package:shiori/services/economy.dart' as economy;
+import 'package:shiori/services/levels.dart';
+import 'package:shiori/services/structure.dart';
+import 'package:shiori/utils/config.dart';
+import 'package:shiori/utils/database.dart';
+import 'package:shiori/utils/functions.dart';
+import 'package:shiori/utils/reply.dart';
 
 final _clearCache = ChatCommand(
   'clear-cache',
@@ -820,27 +820,27 @@ final _structure = ChatCommand(
 
 final system = ChatGroup(
   'system',
-  'Internal tools for Toxbot.',
+  'Internal tools for Shiori.',
   localizedDescriptions: {
-    Locale.da: 'Interne værktøjer til Toxbot.',
-    Locale.de: 'Interne Werkzeuge für Toxbot.',
-    Locale.enUs: 'Internal tools for Toxbot.',
-    Locale.esEs: 'Herramientas internas de Toxbot.',
-    Locale.fr: 'Outils internes de Toxbot.',
-    Locale.ru: 'Внутренние инструменты Toxbot.',
-    Locale.hi: 'Toxbot के अंदरूनी टूल।',
-    Locale.zhCn: 'Toxbot 内部工具。',
-    Locale.ja: 'Toxbot の内部ツールです。',
-    Locale.ko: 'Toxbot 내부 도구입니다.',
-    Locale.es419: 'Herramientas internas de Toxbot.',
-    Locale.ptBr: 'Ferramentas internas do Toxbot.',
-    Locale.tr: 'Toxbot için dahili araçlar.',
-    Locale.pl: 'Narzędzia wewnętrzne Toxbota.',
-    Locale.it: 'Strumenti interni di Toxbot.',
-    Locale.uk: 'Внутрішні інструменти Toxbot.',
-    Locale.vi: 'Công cụ nội bộ của Toxbot.',
-    Locale.th: 'เครื่องมือภายในของ Toxbot',
-    Locale.zhTw: 'Toxbot 的內部工具。',
+    Locale.da: 'Interne værktøjer til Shiori.',
+    Locale.de: 'Interne Werkzeuge für Shiori.',
+    Locale.enUs: 'Internal tools for Shiori.',
+    Locale.esEs: 'Herramientas internas de Shiori.',
+    Locale.fr: 'Outils internes de Shiori.',
+    Locale.ru: 'Внутренние инструменты Shiori.',
+    Locale.hi: 'Shiori के अंदरूनी टूल।',
+    Locale.zhCn: 'Shiori 内部工具。',
+    Locale.ja: 'Shiori の内部ツールです。',
+    Locale.ko: 'Shiori 내부 도구입니다.',
+    Locale.es419: 'Herramientas internas de Shiori.',
+    Locale.ptBr: 'Ferramentas internas da Shiori.',
+    Locale.tr: 'Shiori için dahili araçlar.',
+    Locale.pl: 'Narzędzia wewnętrzne Shiori.',
+    Locale.it: 'Strumenti interni di Shiori.',
+    Locale.uk: 'Внутрішні інструменти Shiori.',
+    Locale.vi: 'Công cụ nội bộ của Shiori.',
+    Locale.th: 'เครื่องมือภายในของ Shiori',
+    Locale.zhTw: 'Shiori 的內部工具。',
   },
   checks: [UserCheck.id(ownerId)],
   children: [

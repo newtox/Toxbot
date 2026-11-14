@@ -1,4 +1,4 @@
-@php($currency = config('toxbot.currency'))
+@php($currency = config('shiori.currency'))
 <div class="space-y-6">
     <div class="flex flex-wrap items-end justify-between gap-4">
         <div>

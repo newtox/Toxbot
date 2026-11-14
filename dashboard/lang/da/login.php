@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'headline' => 'Indstil Toxbot uden at skrive slash-kommandoer.',
+    'headline' => 'Indstil Shiori uden at skrive slash-kommandoer.',
     'intro' => 'Velkomst- og farvelbeskeder med live-forhåndsvisning, autorolle med ét klik og dit eget sprog og din egen embed-farve.',
     'button' => 'Log ind med Discord',
     'privacy' => 'Vi ser kun dit navn, din avatar og din serverliste.',
@@ -9,5 +9,5 @@ return [
     'invalid' => 'Ugyldigt login. Prøv igen.',
     'rejected' => 'Discord afviste login. Prøv igen.',
     'expired' => 'Din Discord-session er udløbet. Log ind igen.',
-    'blacklisted' => 'Din konto er blokeret fra Toxbot.',
+    'blacklisted' => 'Din konto er blokeret fra Shiori.',
 ];

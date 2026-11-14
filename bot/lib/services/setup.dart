@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
 import 'package:nyxx/nyxx.dart';
-import 'package:toxbot/utils/config.dart';
-import 'package:toxbot/utils/database.dart';
+import 'package:shiori/utils/config.dart';
+import 'package:shiori/utils/database.dart';
 
 const setupAreas = ['tickets', 'moderation', 'protection', 'verification'];
 
@@ -78,7 +78,7 @@ Future<List<({bool ok, String text})>?> runAutoSetup({
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'X-Toxbot-Signature': signature,
+            'X-Shiori-Signature': signature,
           },
           body: body,
         )

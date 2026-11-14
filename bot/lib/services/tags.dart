@@ -3,10 +3,10 @@ import 'dart:math';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:toxbot/models/server_tag.dart';
-import 'package:toxbot/models/tag.dart';
-import 'package:toxbot/utils/config.dart';
-import 'package:toxbot/utils/database.dart';
+import 'package:shiori/models/server_tag.dart';
+import 'package:shiori/models/tag.dart';
+import 'package:shiori/utils/config.dart';
+import 'package:shiori/utils/database.dart';
 
 final tagNamePattern = RegExp(r'^[a-z0-9_-]{1,32}$');
 

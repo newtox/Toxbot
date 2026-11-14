@@ -391,7 +391,7 @@ class Discord
         return Http::baseUrl(self::API)
             ->acceptJson()
             ->timeout(10)
-            ->withUserAgent('DiscordBot (https://github.com/newtox/Toxbot, 1.0) ToxbotDashboard')
+            ->withUserAgent('DiscordBot (https://github.com/newtox/Shiori, 1.0) ShioriDashboard')
 
             ->retry(2, function (int $attempt, \Throwable $e) {
                 if ($e instanceof RequestException && $e->response->status() === 429) {

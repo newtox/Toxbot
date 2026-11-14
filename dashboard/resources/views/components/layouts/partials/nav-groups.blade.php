@@ -1,7 +1,7 @@
 @foreach ($groups as $group)
     @if ($group['collapsible'])
-        <div x-data="{ open: toxbot.navGroupOpen(@js($group['key']), @js($group['active'])) }" class="space-y-1.5">
-            <button type="button" x-on:click="open = !open; toxbot.rememberNavGroup(@js($group['key']), open)" x-bind:aria-expanded="open"
+        <div x-data="{ open: shiori.navGroupOpen(@js($group['key']), @js($group['active'])) }" class="space-y-1.5">
+            <button type="button" x-on:click="open = !open; shiori.rememberNavGroup(@js($group['key']), open)" x-bind:aria-expanded="open"
                     class="nav-heading flex w-full items-center gap-1 rounded-md pt-1 text-left transition hover:text-dc-muted">
                 <span class="flex-1">{{ $group['label'] }}</span>
                 <x-icon name="chevron-down" class="size-3.5 transition-transform" x-bind:class="open || '-rotate-90'" />

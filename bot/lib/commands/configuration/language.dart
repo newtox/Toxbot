@@ -1,9 +1,9 @@
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
-import 'package:toxbot/utils/database.dart';
-import 'package:toxbot/utils/functions.dart';
-import 'package:toxbot/utils/reply.dart';
+import 'package:shiori/utils/database.dart';
+import 'package:shiori/utils/functions.dart';
+import 'package:shiori/utils/reply.dart';
 
 const languageCodeConverter = SimpleConverter.fixed(
   elements: [
@@ -30,27 +30,27 @@ const languageCodeConverter = SimpleConverter.fixed(
 );
 
 final language = ChatCommand(
-    'language', 'Set the language Toxbot uses with you.',
+    'language', 'Set the language Shiori uses with you.',
     localizedDescriptions: {
-      Locale.da: 'Indstil det sprog, Toxbot bruger med dig.',
-      Locale.de: 'Die Sprache festlegen, in der Toxbot mit dir spricht.',
-      Locale.enUs: 'Set the language Toxbot uses with you.',
-      Locale.esEs: 'Establecer el idioma que Toxbot usa contigo.',
-      Locale.fr: 'Définir la langue que Toxbot utilise avec toi.',
-      Locale.ru: 'Задать язык, на котором Toxbot общается с тобой.',
-      Locale.hi: 'वह भाषा सेट करें जिसमें Toxbot आपसे बात करे।',
-      Locale.zhCn: '设置 Toxbot 与你交流时使用的语言。',
-      Locale.ja: 'Toxbot があなたに使う言語を設定します。',
-      Locale.ko: 'Toxbot이 사용할 언어를 설정합니다.',
-      Locale.es419: 'Establecer el idioma que Toxbot usa contigo.',
-      Locale.ptBr: 'Definir o idioma que o Toxbot usa com você.',
-      Locale.tr: 'Toxbot\'un seninle kullandığı dili ayarla.',
-      Locale.pl: 'Ustaw język, którego Toxbot używa z tobą.',
-      Locale.it: 'Imposta la lingua che Toxbot usa con te.',
-      Locale.uk: 'Встановити мову, якою Toxbot спілкується з тобою.',
-      Locale.vi: 'Đặt ngôn ngữ Toxbot dùng với bạn.',
-      Locale.th: 'ตั้งภาษาที่ Toxbot ใช้กับคุณ',
-      Locale.zhTw: '設定 Toxbot 與你對話時使用的語言。'
+      Locale.da: 'Indstil det sprog, Shiori bruger med dig.',
+      Locale.de: 'Die Sprache festlegen, in der Shiori mit dir spricht.',
+      Locale.enUs: 'Set the language Shiori uses with you.',
+      Locale.esEs: 'Establecer el idioma que Shiori usa contigo.',
+      Locale.fr: 'Définir la langue que Shiori utilise avec toi.',
+      Locale.ru: 'Задать язык, на котором Shiori общается с тобой.',
+      Locale.hi: 'वह भाषा सेट करें जिसमें Shiori आपसे बात करे।',
+      Locale.zhCn: '设置 Shiori 与你交流时使用的语言。',
+      Locale.ja: 'Shiori があなたに使う言語を設定します。',
+      Locale.ko: 'Shiori가 사용할 언어를 설정합니다.',
+      Locale.es419: 'Establecer el idioma que Shiori usa contigo.',
+      Locale.ptBr: 'Definir o idioma que a Shiori usa com você.',
+      Locale.tr: 'Shiori\'un seninle kullandığı dili ayarla.',
+      Locale.pl: 'Ustaw język, którego Shiori używa z tobą.',
+      Locale.it: 'Imposta la lingua che Shiori usa con te.',
+      Locale.uk: 'Встановити мову, якою Shiori спілкується з тобою.',
+      Locale.vi: 'Đặt ngôn ngữ Shiori dùng với bạn.',
+      Locale.th: 'ตั้งภาษาที่ Shiori ใช้กับคุณ',
+      Locale.zhTw: '設定 Shiori 與你對話時使用的語言。'
     }, (ChatContext context,
         [@UseConverter(languageCodeConverter)
         @Description('The language you want.', {

@@ -53,7 +53,7 @@ class TicketsTest extends TestCase
                 ]),
                 $isBot && str_contains($url, '/users/@me/guilds') => Http::response([['id' => self::GUILD]]),
                 $isBot && str_ends_with($url, '/users/@me/channels') => Http::response(['id' => '800']),
-                $isBot && str_ends_with($url, '/users/@me') => Http::response(['id' => self::BOT, 'username' => 'Toxbot', 'avatar' => null]),
+                $isBot && str_ends_with($url, '/users/@me') => Http::response(['id' => self::BOT, 'username' => 'Shiori', 'avatar' => null]),
                 str_contains($url, '/bans/') => $this->banned ? Http::response(['reason' => $this->banReason]) : Http::response([], 404),
                 str_contains($url, '/messages/') => Http::response(['id' => '700']),
                 str_contains($url, '/messages') => Http::response(['id' => '700']),
@@ -65,7 +65,7 @@ class TicketsTest extends TestCase
                 str_contains($url, '/roles') => Http::response([
                     ['id' => self::GUILD, 'name' => '@everyone', 'position' => 0, 'color' => 0, 'managed' => false],
                     ['id' => '30', 'name' => 'Support-Team', 'position' => 1, 'color' => 0, 'managed' => false],
-                    ['id' => '21', 'name' => 'Toxbot', 'position' => 3, 'color' => 0, 'managed' => true],
+                    ['id' => '21', 'name' => 'Shiori', 'position' => 3, 'color' => 0, 'managed' => true],
                 ]),
                 str_contains($url, '/members/') => Http::response(['roles' => ['21']]),
                 str_contains($url, '/guilds/'.self::GUILD) => Http::response(['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon' => null]),

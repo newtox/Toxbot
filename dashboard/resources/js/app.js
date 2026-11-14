@@ -94,7 +94,7 @@ function setAccent(hex) {
     style.setProperty('--color-accent-fg', fg);
 }
 
-const navGroupKey = 'toxbot:nav-groups';
+const navGroupKey = 'shiori:nav-groups';
 
 function storedNavGroups() {
     try {
@@ -217,7 +217,7 @@ function imageCropper(aspect) {
     };
 }
 
-window.toxbot = { renderDiscordMessage, insertAtCursor, discordTimestamp, setAccent, navGroupOpen, rememberNavGroup, imageCropper };
+window.shiori = { renderDiscordMessage, insertAtCursor, discordTimestamp, setAccent, navGroupOpen, rememberNavGroup, imageCropper };
 
 function rememberTimezone() {
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -307,9 +307,9 @@ function setupSidebarSwipe() {
 
         if (!quick || Math.abs(dx) < swipeDistance || Math.abs(dx) < Math.abs(dy) * 1.5) return;
         if (dx > 0 && !open && fromLeft) {
-            window.dispatchEvent(new CustomEvent('toxbot-nav', { detail: true }));
+            window.dispatchEvent(new CustomEvent('shiori-nav', { detail: true }));
         } else if (dx < 0 && open) {
-            window.dispatchEvent(new CustomEvent('toxbot-nav', { detail: false }));
+            window.dispatchEvent(new CustomEvent('shiori-nav', { detail: false }));
         }
     }, { passive: true });
 }

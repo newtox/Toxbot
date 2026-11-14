@@ -32,11 +32,11 @@ class BotProfile
 
         return [
             'verified' => self::isVerified($user),
-            'tag' => ($user['username'] ?? 'Toxbot').($discriminator !== '0' ? '#'.$discriminator : ''),
+            'tag' => ($user['username'] ?? 'Shiori').($discriminator !== '0' ? '#'.$discriminator : ''),
             'avatar' => $this->image($guildId, $botId, 'avatars', $member['avatar'] ?? null),
             'banner' => $this->image($guildId, $botId, 'banners', $member['banner'] ?? null),
             'default_avatar' => $this->discord->botAvatarUrl() ?? 'https://cdn.discordapp.com/embed/avatars/0.png',
-            'name' => $member['nick'] ?? $member['user']['global_name'] ?? $member['user']['username'] ?? 'Toxbot',
+            'name' => $member['nick'] ?? $member['user']['global_name'] ?? $member['user']['username'] ?? 'Shiori',
         ];
     }
 

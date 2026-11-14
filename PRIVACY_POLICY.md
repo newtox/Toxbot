@@ -1,10 +1,10 @@
-# Privacy Policy for Toxbot Discord Bot
+# Privacy Policy for Shiori Discord Bot
 
 Last Updated: 29.10.2026
 
 ## Introduction
 
-This Privacy Policy explains how Toxbot ("we", "our", or "the bot") and the Toxbot dashboard collect, use, and protect information when you use them.
+This Privacy Policy explains how Shiori ("we", "our", or "the bot") and the Shiori dashboard collect, use, and protect information when you use them.
 
 ## Information We Collect
 
@@ -19,9 +19,9 @@ This Privacy Policy explains how Toxbot ("we", "our", or "the bot") and the Toxb
 - **Live role**: to give the live role, the bot sees on servers with a live role whether you are currently streaming on Discord. This status is not stored.
 - **Moderation**: when a moderator warns, times out, kicks, bans or unbans you on a server, or when Discord reports such an action from its audit log, we store a case with your ID and name, the moderator's ID and name, the reason and the duration. Moderators of that server can see these cases and your roles, join date and level in the dashboard. The member list in the dashboard is loaded from Discord when it is opened and is not stored.
 - **Link filter**: on servers that turn on the link filter, the bot checks new messages for links. Messages with unwanted links are deleted; if the server also warns or times out, a moderation case with the blocked domain is stored. Other messages are not stored.
-- **AutoMod**: on servers that use it, Toxbot creates AutoMod rules in Discord with the server's blocked domains and words. Discord checks the messages itself; Toxbot does not receive or store the blocked messages.
+- **AutoMod**: on servers that use it, Shiori creates AutoMod rules in Discord with the server's blocked domains and words. Discord checks the messages itself; Shiori does not receive or store the blocked messages.
 - **Verification**: on servers with verification, we store when you joined and when you verified. The captcha is provided by Cloudflare Turnstile.
-- **Tickets**: when you open a ticket, we store the ticket number, type, your ID and name, and who closed it and why. When a ticket is closed with Toxbot, the messages in the ticket channel are saved as a transcript: author ID, name and avatar, the text and links to attachments. The server's team can read the transcript in the dashboard, and a copy is posted in the server's ticket log channel.
+- **Tickets**: when you open a ticket, we store the ticket number, type, your ID and name, and who closed it and why. When a ticket is closed with Shiori, the messages in the ticket channel are saved as a transcript: author ID, name and avatar, the text and links to attachments. The server's team can read the transcript in the dashboard, and a copy is posted in the server's ticket log channel.
 - **Events**: when someone creates an event with `/event setup`, we store the event's name, its role, team role and channels and the ID of the person who created it. Invites are sent by DM; who joined is not stored, Discord only remembers who has the event role. Everything is deleted with `/event end`.
 - **Unban appeals**: if you are banned and send an appeal, we store your ID, name, your text, the ban reason Discord tells us, and the team's decision and answer.
 - **Purchases**: when you buy Server Premium or an exclusive shop item, Discord tells us which product you bought, for which server or account, and how long it is valid. **We never see your payment details**; payments are handled entirely by Discord.
@@ -38,7 +38,7 @@ To draw your profile card, the dashboard loads your current avatar from Discord 
 
 We use the collected information to:
 - Provide the bot's and dashboard's features, such as settings, levels, leaderboards, the shop, tags and Server Premium
-- Prevent abuse, for example by removing reported tags and blocking users or servers that misuse Toxbot. For a block we store the user or server ID, a short reason and the date.
+- Prevent abuse, for example by removing reported tags and blocking users or servers that misuse Shiori. For a block we store the user or server ID, a short reason and the date.
 - Improve and develop new features
 - Respond to user requests and support needs
 
@@ -52,7 +52,7 @@ Some information is visible to other users on purpose: your level, rank, credits
 
 - **Discord** runs the platform and handles all payments. See [Discord's Privacy Policy](https://discord.com/privacy).
 - **Cloudflare Turnstile** checks that a person, not a bot, solves the verification. Your browser connects to Cloudflare for this. See [Cloudflare's Privacy Policy](https://www.cloudflare.com/privacypolicy/).
-- **Top.gg**: if you vote for Toxbot on Top.gg, Top.gg sends us your Discord ID so we can give you credits. See [Top.gg's Privacy Policy](https://top.gg/privacy).
+- **Top.gg**: if you vote for Shiori on Top.gg, Top.gg sends us your Discord ID so we can give you credits. See [Top.gg's Privacy Policy](https://top.gg/privacy).
 - **Twitch** and **YouTube**: for stream notifications we ask them for public channel, stream and video information and receive notifications when a followed channel goes live. No data about you is sent there. See [Twitch's Privacy Notice](https://www.twitch.tv/p/legal/privacy-notice/) and [Google's Privacy Policy](https://policies.google.com/privacy).
 - **waifu.pics** provides the images for roleplay and image commands. No data about you is sent there.
 - Images in tags are loaded from the image host the tag's creator chose (for example Discord or Imgur) when a tag is shown.
@@ -66,12 +66,12 @@ We implement reasonable security measures to protect your information:
 
 ## Data Retention
 
-- Your settings, levels, credits, purchases and tags are kept as long as you use Toxbot, or until you delete them in the dashboard or ask us to.
-- A server's settings, tickets, unban appeals and verifications are deleted after Toxbot has been removed from that server, at the latest the next time the bot restarts.
-- The owner of a server can delete all data of that server at any time in the dashboard. Toxbot then leaves the server.
+- Your settings, levels, credits, purchases and tags are kept as long as you use Shiori, or until you delete them in the dashboard or ask us to.
+- A server's settings, tickets, unban appeals and verifications are deleted after Shiori has been removed from that server, at the latest the next time the bot restarts.
+- The owner of a server can delete all data of that server at any time in the dashboard. Shiori then leaves the server.
 - Followed streamers are removed together with the server's settings. Announcement records are deleted after 30 days.
-- Moderation cases are kept as long as the server uses Toxbot, so moderators can see a member's history. You can ask us to delete them.
-- Server levels stay stored even after Toxbot leaves a server, so they are still there if it is added again. You can ask us to delete them.
+- Moderation cases are kept as long as the server uses Shiori, so moderators can see a member's history. You can ask us to delete them.
+- Server levels stay stored even after Shiori leaves a server, so they are still there if she is added again. You can ask us to delete them.
 
 ## Your Rights
 

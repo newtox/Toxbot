@@ -50,7 +50,7 @@ class InfoTest extends TestCase
                     ['id' => self::JOINED, 'name' => 'Valheim Crew', 'icon' => null, 'owner' => false, 'permissions' => '0'],
                 ]),
                 $isBot && str_contains($url, '/users/@me/guilds') => Http::response([['id' => self::MANAGED], ['id' => self::JOINED]]),
-                $isBot && str_ends_with($url, '/users/@me') => Http::response(['id' => '999', 'username' => 'Toxbot', 'avatar' => null]),
+                $isBot && str_ends_with($url, '/users/@me') => Http::response(['id' => '999', 'username' => 'Shiori', 'avatar' => null]),
                 str_contains($url, '/channels') || str_contains($url, '/roles') => Http::response([]),
                 str_contains($url, '/members/') => Http::response(['roles' => []]),
                 default => Http::response([], 404),
@@ -70,13 +70,13 @@ class InfoTest extends TestCase
     public function test_general_page_links_everything(): void
     {
         $this->login();
-        config(['toxbot.contact_email' => 'hallo@toxbot.test', 'toxbot.support_invite' => null]);
+        config(['shiori.contact_email' => 'hallo@shiori.test', 'shiori.support_invite' => null]);
 
         $this->get('/info')
             ->assertOk()
-            ->assertSee('https://github.com/newtox/Toxbot/issues')
+            ->assertSee('https://github.com/newtox/Shiori/issues')
             ->assertSee('PRIVACY_POLICY.md')
-            ->assertSee('mailto:hallo@toxbot.test', false)
+            ->assertSee('mailto:hallo@shiori.test', false)
             ->assertSee(route('profile.data'))
             ->assertSee(route('info.system'))
             ->assertDontSee(__('info.support_server'))
@@ -107,12 +107,12 @@ class InfoTest extends TestCase
     public function test_system_page_shows_bot_status(): void
     {
         $this->login();
-        config(['toxbot.commit' => 'abcdef1234567890', 'toxbot.build_date' => '2026-10-25T10:00:00Z']);
+        config(['shiori.commit' => 'abcdef1234567890', 'shiori.build_date' => '2026-10-25T10:00:00Z']);
 
         $this->get('/info/system')->assertOk()->assertSee(__('info.no_status'))->assertSee('abcdef1')->assertSee(PHP_VERSION);
 
         BotStatus::create(['id' => 1, 'started_at' => now()->subDay(), 'heartbeat_at' => now(), 'commit' => '1234567abcdef', 'dart_version' => '3.9.0', 'guilds' => 42, 'latency_ms' => 87, 'memory_bytes' => 120 * 1024 * 1024, 'memory_peak_bytes' => 200 * 1024 * 1024, 'user_id' => '999']);
-        $this->get('/info/system')->assertOk()->assertSee(__('info.online'))->assertSee('87 ms')->assertSee('120.00 / 200.00 MB')->assertSee('github.com/newtox/Toxbot/commit/1234567abcdef');
+        $this->get('/info/system')->assertOk()->assertSee(__('info.online'))->assertSee('87 ms')->assertSee('120.00 / 200.00 MB')->assertSee('github.com/newtox/Shiori/commit/1234567abcdef');
 
         BotStatus::query()->update(['heartbeat_at' => now()->subMinutes(10)]);
         $this->get('/info/system')->assertOk()->assertSee(__('info.offline'))->assertDontSee('87 ms');

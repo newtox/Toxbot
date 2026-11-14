@@ -46,7 +46,7 @@ class ProtectionTest extends TestCase
                     ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon' => null, 'owner' => false, 'permissions' => (string) 0x20],
                 ]),
                 $isBot && str_contains($url, '/users/@me/guilds') => Http::response([['id' => self::GUILD]]),
-                $isBot && str_ends_with($url, '/users/@me') => Http::response(['id' => self::BOT, 'username' => 'Toxbot', 'avatar' => null]),
+                $isBot && str_ends_with($url, '/users/@me') => Http::response(['id' => self::BOT, 'username' => 'Shiori', 'avatar' => null]),
                 str_contains($url, '/roles/') => Http::response(null, 204),
                 str_contains($url, '/messages/') => Http::response(['id' => '700']),
                 str_contains($url, '/messages') => Http::response(['id' => '700']),
@@ -57,7 +57,7 @@ class ProtectionTest extends TestCase
                     ['id' => self::GUILD, 'name' => '@everyone', 'position' => 0, 'color' => 0, 'managed' => false],
                     ['id' => '30', 'name' => 'Unverifiziert', 'position' => 1, 'color' => 0, 'managed' => false],
                     ['id' => '31', 'name' => 'Mitglied', 'position' => 2, 'color' => 0, 'managed' => false],
-                    ['id' => '21', 'name' => 'Toxbot', 'position' => 3, 'color' => 0, 'managed' => true],
+                    ['id' => '21', 'name' => 'Shiori', 'position' => 3, 'color' => 0, 'managed' => true],
                 ]),
                 str_contains($url, '/members/'.self::BOT) => Http::response(['roles' => ['21']]),
                 str_contains($url, '/members/'.self::USER) => $this->isMember
@@ -248,7 +248,7 @@ class ProtectionTest extends TestCase
 
     public function test_verifying_removes_the_role_and_gives_the_autorole(): void
     {
-        config(['toxbot.turnstile.site_key' => 'site', 'toxbot.turnstile.secret_key' => 'secret']);
+        config(['shiori.turnstile.site_key' => 'site', 'shiori.turnstile.secret_key' => 'secret']);
         $this->login();
         Guild::create(['id' => self::GUILD, 'verify_enabled' => true, 'verify_role' => '30', 'autorole' => '31']);
 
@@ -265,7 +265,7 @@ class ProtectionTest extends TestCase
 
     public function test_failed_captcha_keeps_the_role(): void
     {
-        config(['toxbot.turnstile.site_key' => 'site', 'toxbot.turnstile.secret_key' => 'secret']);
+        config(['shiori.turnstile.site_key' => 'site', 'shiori.turnstile.secret_key' => 'secret']);
         $this->captcha = false;
         $this->login();
         Guild::create(['id' => self::GUILD, 'verify_enabled' => true, 'verify_role' => '30']);

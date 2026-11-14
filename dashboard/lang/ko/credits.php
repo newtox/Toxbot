@@ -17,7 +17,7 @@ return [
     'recipient' => '받는 사람',
     'search' => '이름 입력…',
     'clear' => '제거',
-    'no_servers' => '아직 Toxbot과 함께 있는 서버가 없습니다.',
+    'no_servers' => '아직 Shiori와 함께 있는 서버가 없습니다.',
     'amount' => '금액',
     'pay_button' => '보내기',
     'pay_confirm' => '정말 크레딧을 보낼까요? 되돌릴 수 없습니다.',

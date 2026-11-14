@@ -1,5 +1,5 @@
 {
-  description = "Toxbot Discord Bot";
+  description = "Shiori Discord Bot";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -19,7 +19,7 @@
           shellHook = ''
             cd ${root}/bot
             dart pub get
-            echo "Toxbot: $(dart --version 2>&1)"
+            echo "Shiori: $(dart --version 2>&1)"
           '';
         };
 
@@ -33,7 +33,7 @@
 
           shellHook = ''
             cd ${root}/dashboard
-            echo "Toxbot Dashboard: PHP $(php -r 'echo PHP_VERSION;'), Node $(node -v)"
+            echo "Shiori Dashboard: PHP $(php -r 'echo PHP_VERSION;'), Node $(node -v)"
           '';
         };
       };

@@ -1,8 +1,8 @@
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:toxbot/services/moderation.dart';
-import 'package:toxbot/utils/reply.dart';
+import 'package:shiori/services/moderation.dart';
+import 'package:shiori/utils/reply.dart';
 
 const _bulkDeleteLimit = Duration(days: 14);
 

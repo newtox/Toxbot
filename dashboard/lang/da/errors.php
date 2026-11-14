@@ -6,7 +6,7 @@ return [
     '403_title' => 'Ingen adgang',
     '403_text' => 'Du har ikke tilladelse til at se denne side. Måske mangler du en rolle på serveren.',
     '404_title' => 'Siden findes ikke',
-    '404_text' => 'Siden findes ikke, eller Toxbot er ikke længere på serveren.',
+    '404_text' => 'Siden findes ikke, eller Shiori er ikke længere på serveren.',
     '419_title' => 'Sessionen er udløbet',
     '419_text' => 'Siden var åben for længe. Genindlæs den, og prøv igen.',
     '429_title' => 'For mange forespørgsler',

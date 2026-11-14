@@ -17,7 +17,7 @@ return [
     'recipient' => 'Destinatário',
     'search' => 'Digite um nome …',
     'clear' => 'Remover',
-    'no_servers' => 'Você ainda não tem um servidor em comum com o Toxbot.',
+    'no_servers' => 'Você ainda não tem um servidor em comum com a Shiori.',
     'amount' => 'Quantidade',
     'pay_button' => 'Enviar',
     'pay_confirm' => 'Enviar mesmo os créditos? Isso não pode ser desfeito.',

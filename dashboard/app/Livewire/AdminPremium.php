@@ -70,7 +70,7 @@ class AdminPremium extends Component
 
         return view('livewire.admin-premium', [
             'grants' => $grants,
-            'configGuilds' => config('toxbot.premium_guilds'),
+            'configGuilds' => config('shiori.premium_guilds'),
         ]);
     }
 

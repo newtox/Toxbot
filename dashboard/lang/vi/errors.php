@@ -6,7 +6,7 @@ return [
     '403_title' => 'Không có quyền truy cập',
     '403_text' => 'Bạn không có quyền xem trang này. Có thể bạn thiếu một vai trò trên máy chủ.',
     '404_title' => 'Không tìm thấy trang',
-    '404_text' => 'Trang này không tồn tại, hoặc Toxbot không còn ở trên máy chủ.',
+    '404_text' => 'Trang này không tồn tại, hoặc Shiori không còn ở trên máy chủ.',
     '419_title' => 'Phiên đã hết hạn',
     '419_text' => 'Trang đã mở quá lâu. Hãy tải lại và thử lại.',
     '429_title' => 'Quá nhiều yêu cầu',

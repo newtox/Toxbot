@@ -2,7 +2,7 @@
 
 return [
     'title' => 'Stream notifications',
-    'description' => 'Toxbot posts when creators go live on Twitch or upload something new on YouTube.',
+    'description' => 'Shiori posts when creators go live on Twitch or upload something new on YouTube.',
     'no_channel' => 'No channel (off)',
     'ping_role' => 'Role to ping',
     'no_ping' => 'Ping nobody',

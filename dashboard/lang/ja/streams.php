@@ -2,7 +2,7 @@
 
 return [
     'title' => '配信通知',
-    'description' => 'クリエイターがTwitchで配信を始めたりYouTubeに投稿したりするとToxbotがお知らせします。',
+    'description' => 'クリエイターがTwitchで配信を始めたりYouTubeに投稿したりするとShioriがお知らせします。',
     'no_channel' => 'チャンネルなし（オフ）',
     'ping_role' => 'メンションするロール',
     'no_ping' => '誰にもメンションしない',

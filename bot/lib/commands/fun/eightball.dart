@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:toxbot/utils/database.dart';
-import 'package:toxbot/utils/functions.dart';
+import 'package:shiori/utils/database.dart';
+import 'package:shiori/utils/functions.dart';
 
 final eightball = ChatCommand('8ball', 'Ask the magic 8ball a question.',
     localizedDescriptions: {

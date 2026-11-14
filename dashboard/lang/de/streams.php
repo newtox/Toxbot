@@ -2,7 +2,7 @@
 
 return [
     'title' => 'Stream-Benachrichtigungen',
-    'description' => 'Toxbot meldet, wenn Creator auf Twitch live gehen oder auf YouTube etwas Neues hochladen.',
+    'description' => 'Shiori meldet, wenn Creator auf Twitch live gehen oder auf YouTube etwas Neues hochladen.',
     'no_channel' => 'Kein Kanal (aus)',
     'ping_role' => 'Rolle anpingen',
     'no_ping' => 'Niemanden anpingen',

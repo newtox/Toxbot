@@ -15,7 +15,7 @@ return [
     'delete_data' => 'Usuń swoje dane',
     'contact_title' => 'Kontakt',
     'new_issue' => 'Zgłoś błąd lub coś zaproponuj',
-    'commands_description' => 'Wszystkie komendy ukośnikowe Toxbota z ich opcjami.',
+    'commands_description' => 'Wszystkie komendy ukośnikowe Shiori z ich opcjami.',
     'commands_search' => 'Szukaj komend …',
     'commands_count' => ':shown z :total komend',
     'commands_restricted' => 'Wymaga uprawnień',

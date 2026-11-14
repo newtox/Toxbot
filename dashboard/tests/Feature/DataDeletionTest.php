@@ -57,7 +57,7 @@ class DataDeletionTest extends TestCase
                 ]),
                 $isBot && $request->method() === 'DELETE' && str_contains($url, '/users/@me/guilds/') => Http::response(null, 204),
                 $isBot && str_contains($url, '/users/@me/guilds') => Http::response([['id' => self::GUILD]]),
-                $isBot && str_ends_with($url, '/users/@me') => Http::response(['id' => self::BOT, 'username' => 'Toxbot', 'avatar' => null]),
+                $isBot && str_ends_with($url, '/users/@me') => Http::response(['id' => self::BOT, 'username' => 'Shiori', 'avatar' => null]),
                 $request->method() === 'DELETE' && str_contains($url, '/messages/') => Http::response(null, 204),
                 str_contains($url, '/roles') || str_contains($url, '/channels') => Http::response([]),
                 str_contains($url, '/members/') => Http::response(['roles' => []]),
@@ -134,7 +134,7 @@ class DataDeletionTest extends TestCase
         Http::assertNotSent(fn (Request $r) => str_contains($r->url(), '/users/@me/guilds/'.self::GUILD));
     }
 
-    public function test_owner_deletes_everything_and_toxbot_leaves(): void
+    public function test_owner_deletes_everything_and_shiori_leaves(): void
     {
         $this->login();
         $this->serverFixtures();

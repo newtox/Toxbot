@@ -2,7 +2,7 @@
 
 return [
     'title' => 'Avisos de live',
-    'description' => 'O Toxbot avisa quando criadores entram ao vivo na Twitch ou publicam algo novo no YouTube.',
+    'description' => 'A Shiori avisa quando criadores entram ao vivo na Twitch ou publicam algo novo no YouTube.',
     'no_channel' => 'Nenhum canal (desligado)',
     'ping_role' => 'Cargo para mencionar',
     'no_ping' => 'Não mencionar ninguém',

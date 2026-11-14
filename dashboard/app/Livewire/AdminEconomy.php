@@ -38,7 +38,7 @@ class AdminEconomy extends Component
         $this->validate(['amount' => ['required', 'integer', 'not_in:0', 'min:-1000000000', 'max:1000000000']], ['amount.*' => __('admin.users_amount_invalid')]);
 
         $balance = $economy->adjustCredits($this->userId, (int) $this->amount);
-        $this->notice = __('admin.users_adjusted', ['amount' => number_format($balance, 0, '', ' ').' '.config('toxbot.currency')]);
+        $this->notice = __('admin.users_adjusted', ['amount' => number_format($balance, 0, '', ' ').' '.config('shiori.currency')]);
         $this->reset('amount');
     }
 

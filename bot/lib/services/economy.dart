@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:mysql1/mysql1.dart';
-import 'package:toxbot/models/economy.dart';
+import 'package:shiori/models/economy.dart';
 
-export 'package:toxbot/models/economy.dart';
+export 'package:shiori/models/economy.dart';
 
 int xpToNext(int level) => 100 * level + 100;
 

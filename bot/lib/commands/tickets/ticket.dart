@@ -1,7 +1,7 @@
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:toxbot/services/tickets.dart';
-import 'package:toxbot/utils/reply.dart';
+import 'package:shiori/services/tickets.dart';
+import 'package:shiori/utils/reply.dart';
 
 final _close = ChatCommand(
   'close',

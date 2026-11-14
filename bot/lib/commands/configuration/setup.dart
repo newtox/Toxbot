@@ -1,9 +1,9 @@
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:toxbot/services/setup.dart';
-import 'package:toxbot/utils/config.dart';
-import 'package:toxbot/utils/database.dart';
-import 'package:toxbot/utils/reply.dart';
+import 'package:shiori/services/setup.dart';
+import 'package:shiori/utils/config.dart';
+import 'package:shiori/utils/database.dart';
+import 'package:shiori/utils/reply.dart';
 
 const _setupColor = '#5865f2';
 
@@ -39,32 +39,32 @@ final setup = ChatCommand(
   (
     ChatContext context, [
     @Description(
-        'The team role. Without it, Toxbot uses roles with moderator rights.', {
+        'The team role. Without it, Shiori uses roles with moderator rights.', {
       Locale.da:
-          'Teamrollen. Uden den bruger Toxbot roller med moderatorrettigheder.',
+          'Teamrollen. Uden den bruger Shiori roller med moderatorrettigheder.',
       Locale.de:
-          'Die Team-Rolle. Ohne sie nimmt Toxbot Rollen mit Moderationsrechten.',
+          'Die Team-Rolle. Ohne sie nimmt Shiori Rollen mit Moderationsrechten.',
       Locale.enUs:
-          'The team role. Without it, Toxbot uses roles with moderator rights.',
+          'The team role. Without it, Shiori uses roles with moderator rights.',
       Locale.esEs:
-          'El rol del equipo. Sin él, Toxbot usa roles con permisos de moderación.',
+          'El rol del equipo. Sin él, Shiori usa roles con permisos de moderación.',
       Locale.fr:
-          'Le rôle de l’équipe. Sans lui, Toxbot prend les rôles avec des droits de modération.',
-      Locale.ru: 'Роль команды. Без неё Toxbot берёт роли с правами модерации.',
-      Locale.hi: 'टीम रोल। इसके बिना Toxbot मॉडरेटर अधिकारों वाले रोल लेता है।',
-      Locale.zhCn: '团队身份组。不填时 Toxbot 使用拥有管理权限的身份组。',
+          'Le rôle de l’équipe. Sans lui, Shiori prend les rôles avec des droits de modération.',
+      Locale.ru: 'Роль команды. Без неё Shiori берёт роли с правами модерации.',
+      Locale.hi: 'टीम रोल। इसके बिना Shiori मॉडरेटर अधिकारों वाले रोल लेती है।',
+      Locale.zhCn: '团队身份组。不填时 Shiori 使用拥有管理权限的身份组。',
       Locale.ja: 'チームのロール。指定しない場合はモデレーター権限を持つロールを使います。',
       Locale.ko: '팀 역할. 비워 두면 관리 권한이 있는 역할을 사용합니다.',
       Locale.es419:
-          'El rol del equipo. Sin él, Toxbot usa roles con permisos de moderación.',
-      Locale.ptBr: 'O cargo da equipe. Sem ele, o Toxbot usa cargos com direitos de moderador.',
-      Locale.tr: 'Ekip rolü. Belirtilmezse Toxbot moderatör yetkili rolleri kullanır.',
-      Locale.pl: 'Rola zespołu. Bez niej Toxbot użyje ról z uprawnieniami moderatora.',
-      Locale.it: 'Il ruolo del team. Senza, Toxbot usa i ruoli con permessi da moderatore.',
-      Locale.uk: 'Роль команди. Без неї Toxbot використовує ролі з правами модератора.',
-      Locale.vi: 'Vai trò đội ngũ. Nếu bỏ trống, Toxbot dùng các vai trò có quyền kiểm duyệt.',
-      Locale.th: 'บทบาททีมงาน ถ้าไม่ระบุ Toxbot จะใช้บทบาทที่มีสิทธิ์ผู้ดูแล',
-      Locale.zhTw: '團隊身分組。沒有的話，Toxbot 會使用有管理權限的身分組。',
+          'El rol del equipo. Sin él, Shiori usa roles con permisos de moderación.',
+      Locale.ptBr: 'O cargo da equipe. Sem ele, a Shiori usa cargos com direitos de moderador.',
+      Locale.tr: 'Ekip rolü. Belirtilmezse Shiori moderatör yetkili rolleri kullanır.',
+      Locale.pl: 'Rola zespołu. Bez niej Shiori użyje ról z uprawnieniami moderatora.',
+      Locale.it: 'Il ruolo del team. Senza, Shiori usa i ruoli con permessi da moderatore.',
+      Locale.uk: 'Роль команди. Без неї Shiori використовує ролі з правами модератора.',
+      Locale.vi: 'Vai trò đội ngũ. Nếu bỏ trống, Shiori dùng các vai trò có quyền kiểm duyệt.',
+      Locale.th: 'บทบาททีมงาน ถ้าไม่ระบุ Shiori จะใช้บทบาทที่มีสิทธิ์ผู้ดูแล',
+      Locale.zhTw: '團隊身分組。沒有的話，Shiori 會使用有管理權限的身分組。',
     })
     Role? team,
   ]) async {

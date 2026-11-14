@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:nyxx/nyxx.dart';
-import 'package:toxbot/models/starboard_emoji.dart';
-import 'package:toxbot/models/starboard_settings.dart';
-import 'package:toxbot/utils/database.dart';
-import 'package:toxbot/utils/reply.dart';
+import 'package:shiori/models/starboard_emoji.dart';
+import 'package:shiori/models/starboard_settings.dart';
+import 'package:shiori/utils/database.dart';
+import 'package:shiori/utils/reply.dart';
 
 const _starColor = '#f0b232';
 

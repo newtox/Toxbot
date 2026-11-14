@@ -2,12 +2,12 @@ import 'package:mysql1/mysql1.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:toxbot/services/levels.dart' show formatCredits;
-import 'package:toxbot/services/tags.dart';
-import 'package:toxbot/utils/config.dart';
-import 'package:toxbot/utils/database.dart';
-import 'package:toxbot/utils/functions.dart';
-import 'package:toxbot/utils/reply.dart';
+import 'package:shiori/services/levels.dart' show formatCredits;
+import 'package:shiori/services/tags.dart';
+import 'package:shiori/utils/config.dart';
+import 'package:shiori/utils/database.dart';
+import 'package:shiori/utils/functions.dart';
+import 'package:shiori/utils/reply.dart';
 
 final _create = ChatCommand(
   'create',

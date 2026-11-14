@@ -17,7 +17,7 @@ return [
     'recipient' => '接收者',
     'search' => '输入名字…',
     'clear' => '移除',
-    'no_servers' => '你还没有和 Toxbot 共同的服务器。',
+    'no_servers' => '你还没有和 Shiori 共同的服务器。',
     'amount' => '数量',
     'pay_button' => '发送',
     'pay_confirm' => '确定要转出积分吗？此操作无法撤销。',

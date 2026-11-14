@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class AccentTest extends TestCase
 {
-    public function test_invalid_colors_fall_back_to_toxbot_green(): void
+    public function test_invalid_colors_fall_back_to_shiori_green(): void
     {
         $this->assertSame(Accent::DEFAULT, Accent::normalize('nope'));
         $this->assertSame('#aabbcc', Accent::normalize('#ABC'));

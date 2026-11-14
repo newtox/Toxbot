@@ -53,7 +53,7 @@
                                     </div>
                                 @endunless
                                 @if ($message->content)
-                                    <div class="break-words whitespace-pre-wrap text-dc-text" x-html="toxbot.renderDiscordMessage(@js($message->content), ctx)">{{ $message->content }}</div>
+                                    <div class="break-words whitespace-pre-wrap text-dc-text" x-html="shiori.renderDiscordMessage(@js($message->content), ctx)">{{ $message->content }}</div>
                                 @endif
                                 @foreach ($message->attachments ?? [] as $attachment)
                                     <a href="{{ $attachment['url'] }}" target="_blank" rel="noopener" class="block truncate text-sm text-dc-link hover:underline">{{ $attachment['name'] }}</a>

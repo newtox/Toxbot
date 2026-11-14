@@ -114,7 +114,7 @@ Artisan::command('premium:bot-profiles', function (BotProfile $profiles, Premium
         }
     }
     $this->info("Reset {$reset} bot profiles.");
-})->purpose('Give Toxbot its normal profile back on servers whose Server Premium ran out');
+})->purpose('Give Shiori its normal profile back on servers whose Server Premium ran out');
 
 Schedule::command('cards:prune')->hourly()->withoutOverlapping();
 Schedule::command('streams:maintain')->hourly()->withoutOverlapping();

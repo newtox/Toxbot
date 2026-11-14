@@ -3,8 +3,8 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:nyxx/nyxx.dart';
-import 'package:toxbot/services/events.dart';
-import 'package:toxbot/utils/config.dart';
+import 'package:shiori/services/events.dart';
+import 'package:shiori/utils/config.dart';
 
 const _api = 'https://top.gg/api/v1/projects/@me';
 

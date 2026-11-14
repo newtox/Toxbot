@@ -2,9 +2,9 @@ import 'package:collection/collection.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
-import 'package:toxbot/utils/database.dart';
-import 'package:toxbot/utils/functions.dart';
-import 'package:toxbot/utils/reply.dart';
+import 'package:shiori/utils/database.dart';
+import 'package:shiori/utils/functions.dart';
+import 'package:shiori/utils/reply.dart';
 
 const announcementTypeConverter = SimpleConverter.fixed(
   elements: ['Join', 'Leave'],

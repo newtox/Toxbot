@@ -23,7 +23,7 @@ class AdminPremiumTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        config(['toxbot.owner_id' => self::OWNER, 'toxbot.premium_guilds' => []]);
+        config(['shiori.owner_id' => self::OWNER, 'shiori.premium_guilds' => []]);
         $this->actingAs(DashboardUser::create(['id' => (int) self::OWNER, 'username' => 'newtox']));
     }
 

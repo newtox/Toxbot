@@ -23,8 +23,8 @@ class SourceManager
     public function limit(string $guildId): int
     {
         return $this->premium->isGuildPremium($guildId)
-            ? config('toxbot.streams.premium_limit')
-            : config('toxbot.streams.free_limit');
+            ? config('shiori.streams.premium_limit')
+            : config('shiori.streams.free_limit');
     }
 
     public function add(string $guildId, string $platform, string $input): StreamSubscription

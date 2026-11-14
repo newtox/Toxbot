@@ -26,7 +26,7 @@ class AdminTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        config(['toxbot.owner_id' => self::OWNER]);
+        config(['shiori.owner_id' => self::OWNER]);
     }
 
     public function test_only_the_owner_sees_the_admin_page(): void

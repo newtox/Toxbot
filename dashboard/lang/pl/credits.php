@@ -17,7 +17,7 @@ return [
     'recipient' => 'Odbiorca',
     'search' => 'Wpisz nazwę …',
     'clear' => 'Usuń',
-    'no_servers' => 'Nie masz jeszcze wspólnego serwera z Toxbotem.',
+    'no_servers' => 'Nie masz jeszcze wspólnego serwera z Shiori.',
     'amount' => 'Ilość',
     'pay_button' => 'Wyślij',
     'pay_confirm' => 'Na pewno wysłać kredyty? Tego nie da się cofnąć.',

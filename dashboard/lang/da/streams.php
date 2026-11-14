@@ -2,7 +2,7 @@
 
 return [
     'title' => 'Stream-notifikationer',
-    'description' => 'Toxbot skriver, når skabere går live på Twitch eller uploader noget nyt på YouTube.',
+    'description' => 'Shiori skriver, når skabere går live på Twitch eller uploader noget nyt på YouTube.',
     'no_channel' => 'Ingen kanal (fra)',
     'ping_role' => 'Rolle at pinge',
     'no_ping' => 'Ping ingen',

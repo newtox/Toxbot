@@ -81,7 +81,7 @@ class ProfileCredits extends Component
 
     public static function credits(int $amount): string
     {
-        return number_format($amount, 0, '', "\u{00A0}")."\u{00A0}".config('toxbot.currency');
+        return number_format($amount, 0, '', "\u{00A0}")."\u{00A0}".config('shiori.currency');
     }
 
     private static function duration(int $seconds): string

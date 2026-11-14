@@ -2,7 +2,7 @@
 
 return [
     'title' => '直播通知',
-    'description' => '創作者在 Twitch 開播或在 YouTube 釋出新內容時，Toxbot 會傳送通知。',
+    'description' => '創作者在 Twitch 開播或在 YouTube 釋出新內容時，Shiori 會傳送通知。',
     'no_channel' => '無頻道（關閉）',
     'ping_role' => '要提及的身份組',
     'no_ping' => '不提及任何人',

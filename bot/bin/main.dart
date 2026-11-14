@@ -3,18 +3,18 @@ import 'dart:io';
 
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:toxbot/services/events.dart';
-import 'package:toxbot/services/guild_events.dart';
-import 'package:toxbot/services/levels.dart';
-import 'package:toxbot/services/live_role.dart';
-import 'package:toxbot/services/moderation.dart';
-import 'package:toxbot/services/premium.dart';
-import 'package:toxbot/services/protection.dart';
-import 'package:toxbot/services/starboard.dart';
-import 'package:toxbot/services/status.dart';
-import 'package:toxbot/services/tickets.dart';
-import 'package:toxbot/services/topgg.dart';
-import 'package:toxbot/utils/config.dart';
+import 'package:shiori/services/events.dart';
+import 'package:shiori/services/guild_events.dart';
+import 'package:shiori/services/levels.dart';
+import 'package:shiori/services/live_role.dart';
+import 'package:shiori/services/moderation.dart';
+import 'package:shiori/services/premium.dart';
+import 'package:shiori/services/protection.dart';
+import 'package:shiori/services/starboard.dart';
+import 'package:shiori/services/status.dart';
+import 'package:shiori/services/tickets.dart';
+import 'package:shiori/services/topgg.dart';
+import 'package:shiori/utils/config.dart';
 
 var _connected = false;
 

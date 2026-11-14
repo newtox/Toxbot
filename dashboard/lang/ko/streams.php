@@ -2,7 +2,7 @@
 
 return [
     'title' => '방송 알림',
-    'description' => '크리에이터가 Twitch에서 방송을 시작하거나 YouTube에 새 영상을 올리면 Toxbot이 알려줍니다.',
+    'description' => '크리에이터가 Twitch에서 방송을 시작하거나 YouTube에 새 영상을 올리면 Shiori가 알려줍니다.',
     'no_channel' => '채널 없음 (끔)',
     'ping_role' => '멘션할 역할',
     'no_ping' => '아무도 멘션하지 않음',

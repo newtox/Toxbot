@@ -822,7 +822,7 @@ class GuildSettings extends Component
                 'unknownUser' => __('guild.unknown_user'),
                 'channels' => (object) $channelNames,
                 'roles' => (object) $roleMap,
-                'botName' => $botMember['nick'] ?? $bot['global_name'] ?? $bot['username'] ?? 'Toxbot',
+                'botName' => $botMember['nick'] ?? $bot['global_name'] ?? $bot['username'] ?? 'Shiori',
                 'botAvatar' => match (true) {
                     isset($botMember['avatar']) => "https://cdn.discordapp.com/guilds/{$this->guildId}/users/{$bot['id']}/avatars/{$botMember['avatar']}.png?size=80",
                     isset($bot['avatar']) => "https://cdn.discordapp.com/avatars/{$bot['id']}/{$bot['avatar']}.png?size=80",

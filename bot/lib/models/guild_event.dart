@@ -1,6 +1,6 @@
 import 'package:mysql1/mysql1.dart';
 import 'package:nyxx/nyxx.dart';
-import 'package:toxbot/utils/database.dart';
+import 'package:shiori/utils/database.dart';
 
 Snowflake? _id(Object? value) {
   final text = textOrNull(value);

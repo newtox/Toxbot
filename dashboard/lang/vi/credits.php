@@ -17,7 +17,7 @@ return [
     'recipient' => 'Người nhận',
     'search' => 'Nhập tên …',
     'clear' => 'Bỏ',
-    'no_servers' => 'Bạn chưa có máy chủ chung nào với Toxbot.',
+    'no_servers' => 'Bạn chưa có máy chủ chung nào với Shiori.',
     'amount' => 'Số lượng',
     'pay_button' => 'Gửi',
     'pay_confirm' => 'Thật sự gửi credit? Việc này không thể hoàn tác.',

@@ -24,7 +24,7 @@ class AdminEconomyTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        config(['toxbot.owner_id' => self::OWNER, 'services.discord.bot_token' => 'test']);
+        config(['shiori.owner_id' => self::OWNER, 'services.discord.bot_token' => 'test']);
         Http::fake(['*' => Http::response(['id' => self::USER, 'username' => 'someone', 'global_name' => 'Someone'])]);
         $this->actingAs(DashboardUser::create(['id' => (int) self::OWNER, 'username' => 'newtox']));
     }

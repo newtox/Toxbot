@@ -1,7 +1,7 @@
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:toxbot/utils/nekos.dart';
-import 'package:toxbot/utils/reply.dart';
+import 'package:shiori/utils/nekos.dart';
+import 'package:shiori/utils/reply.dart';
 
 final waifu =
     ChatCommand('waifu', 'Show a waifu picture.', localizedDescriptions: {

@@ -94,7 +94,7 @@ class ServerTagsTest extends TestCase
             ->set('name', 'one-more')->set('content', 'x')->call('save')
             ->assertHasErrors('name');
 
-        config(['toxbot.premium_guilds' => [self::GUILD]]);
+        config(['shiori.premium_guilds' => [self::GUILD]]);
 
         Livewire::test(ServerTags::class, ['guildId' => self::GUILD])
             ->assertDontSee(__('guild.server_tags_premium', ['max' => ServerTag::PREMIUM_LIMIT]))

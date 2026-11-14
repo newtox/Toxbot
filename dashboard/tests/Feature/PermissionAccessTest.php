@@ -53,7 +53,7 @@ class PermissionAccessTest extends TestCase
                     ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon' => null, 'owner' => false, 'permissions' => (string) $this->permissions],
                 ]),
                 $isBot && str_contains($url, '/users/@me/guilds') => Http::response([['id' => self::GUILD]]),
-                $isBot && str_ends_with($url, '/users/@me') => Http::response(['id' => '999', 'username' => 'Toxbot', 'avatar' => null]),
+                $isBot && str_ends_with($url, '/users/@me') => Http::response(['id' => '999', 'username' => 'Shiori', 'avatar' => null]),
                 str_contains($url, '/members/'.self::USER) => Http::response($member(self::USER, $this->roles)),
                 str_contains($url, '/members/'.self::MEMBER) => Http::response($member(self::MEMBER, [])),
                 str_contains($url, '/members/') => Http::response(['message' => 'Unknown Member'], 404),

@@ -28,12 +28,12 @@ class HomeTest extends TestCase
 
     public function test_buy_button_links_to_the_discord_store(): void
     {
-        config(['services.discord.client_id' => '561253410591211520', 'services.discord.bot_token' => 'bot-token', 'toxbot.premium_guild_skus' => []]);
+        config(['services.discord.client_id' => '561253410591211520', 'services.discord.bot_token' => 'bot-token', 'shiori.premium_guild_skus' => []]);
         Http::fake(['discord.com/api/v10/*' => Http::response([])]);
 
         $this->get('/')->assertOk()->assertDontSee(__('home.premium_buy'));
 
-        config(['toxbot.premium_guild_skus' => ['1300000000000000001']]);
+        config(['shiori.premium_guild_skus' => ['1300000000000000001']]);
         $store = 'https://discord.com/application-directory/561253410591211520/store/1300000000000000001';
         $this->get('/')->assertOk()->assertSee($store, false);
 

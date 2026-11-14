@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:nyxx/nyxx.dart';
-import 'package:toxbot/services/events.dart';
-import 'package:toxbot/utils/database.dart';
+import 'package:shiori/services/events.dart';
+import 'package:shiori/utils/database.dart';
 
 const _interval = Duration(minutes: 1);
 

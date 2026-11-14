@@ -1,5 +1,5 @@
 import 'package:nyxx/nyxx.dart';
-import 'package:toxbot/models/starboard_emoji.dart';
+import 'package:shiori/models/starboard_emoji.dart';
 
 class StarboardSettings {
   final Snowflake channelId;

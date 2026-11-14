@@ -69,7 +69,7 @@ class GuildEvents
 
     public function create(string $guildId, string $name, string $creatorId, ?string $teamRoleId, int $voiceCount = 1): GuildEvent
     {
-        $reason = 'Toxbot event: '.$name;
+        $reason = 'Shiori event: '.$name;
         $botId = (string) $this->discord->botUser()['id'];
         $created = ['role' => null, 'channels' => []];
 
@@ -132,7 +132,7 @@ class GuildEvents
             $event->guild,
             $event->role_id,
             [...$event->voiceChannelIds(), $event->text_channel_id, $event->info_channel_id, $event->category_id],
-            'Toxbot event ended',
+            'Shiori event ended',
         );
         $event->invites()->delete();
         $event->delete();

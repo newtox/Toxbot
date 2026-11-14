@@ -55,7 +55,7 @@
                 <div class="mt-3 flex flex-wrap gap-2">
                     @foreach (\App\Models\Guild::PLACEHOLDERS as $token => $hint)
                         <button type="button" title="{{ __($hint) }}"
-                                x-on:click="toxbot.insertAtCursor($refs.{{ $msg }}, '{{ $token }}')"
+                                x-on:click="shiori.insertAtCursor($refs.{{ $msg }}, '{{ $token }}')"
                                 class="rounded-full bg-dc-600 px-3 py-1 font-mono text-xs text-dc-text transition hover:bg-accent hover:text-on-accent">
                             {{ $token }}
                         </button>
@@ -82,10 +82,10 @@
                         <div class="flex flex-wrap items-center gap-x-2">
                             <span class="font-medium text-dc-header" x-text="ctx.botName"></span>
                             <x-app-tag :verified="$botVerified" class="self-center" />
-                            <span class="text-xs text-dc-muted" x-text="toxbot.discordTimestamp(ctx.todayAt)"></span>
+                            <span class="text-xs text-dc-muted" x-text="shiori.discordTimestamp(ctx.todayAt)"></span>
                         </div>
                         <div x-show="$wire.{{ $msg }}" class="break-words whitespace-pre-wrap text-dc-text"
-                             x-html="toxbot.renderDiscordMessage($wire.{{ $msg }}, ctx)"></div>
+                             x-html="shiori.renderDiscordMessage($wire.{{ $msg }}, ctx)"></div>
                         <div x-show="!$wire.{{ $msg }}" class="text-dc-faint italic">{{ __('guild.no_message') }}</div>
                     </div>
                 </div>

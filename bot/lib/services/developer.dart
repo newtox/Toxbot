@@ -6,12 +6,12 @@ import 'package:mysql1/mysql1.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
-import 'package:toxbot/models/eval_result.dart';
-import 'package:toxbot/utils/database.dart';
-import 'package:toxbot/utils/reply.dart';
-import 'package:toxbot/utils/utils.dart';
+import 'package:shiori/models/eval_result.dart';
+import 'package:shiori/utils/database.dart';
+import 'package:shiori/utils/reply.dart';
+import 'package:shiori/utils/utils.dart';
 
-export 'package:toxbot/models/eval_result.dart';
+export 'package:shiori/models/eval_result.dart';
 
 const _evalImports = [
   'dart:async',
@@ -19,8 +19,8 @@ const _evalImports = [
   'dart:io',
   'dart:math',
   'package:mysql1/mysql1.dart',
-  'package:toxbot/utils/config.dart',
-  'package:toxbot/utils/database.dart',
+  'package:shiori/utils/config.dart',
+  'package:shiori/utils/database.dart',
 ];
 
 const _evalTimeout = Duration(seconds: 30);

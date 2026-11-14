@@ -45,9 +45,9 @@ class BotProfileTest extends TestCase
                 $isBot && str_contains($url, '/users/@me/guilds') => Http::response([['id' => self::GUILD]]),
                 $isBot && str_ends_with($url, '/members/@me') && $request->method() === 'PATCH' => $this->recordPatch($request),
                 $isBot && str_contains($url, '/guilds/'.self::GUILD.'/members/999') => Http::response([
-                    'user' => ['id' => '999', 'username' => 'Toxbot'], 'nick' => null, 'avatar' => 'abc', 'banner' => null,
+                    'user' => ['id' => '999', 'username' => 'Shiori'], 'nick' => null, 'avatar' => 'abc', 'banner' => null,
                 ]),
-                $isBot && str_ends_with($url, '/users/@me') => Http::response(['id' => '999', 'username' => 'Toxbot', 'avatar' => 'global']),
+                $isBot && str_ends_with($url, '/users/@me') => Http::response(['id' => '999', 'username' => 'Shiori', 'avatar' => 'global']),
                 default => Http::response([], 404),
             };
         });
@@ -78,7 +78,7 @@ class BotProfileTest extends TestCase
 
     public function test_premium_servers_set_avatar_banner_and_bio(): void
     {
-        config(['toxbot.premium_guilds' => [self::GUILD]]);
+        config(['shiori.premium_guilds' => [self::GUILD]]);
 
         Livewire::test(BotProfile::class, ['guildId' => self::GUILD])
             ->assertDontSee(__('botprofile.locked'))
@@ -111,7 +111,7 @@ class BotProfileTest extends TestCase
 
     public function test_images_are_cut_to_the_chosen_section(): void
     {
-        config(['toxbot.premium_guilds' => [self::GUILD]]);
+        config(['shiori.premium_guilds' => [self::GUILD]]);
 
         $source = new Imagick;
         $source->newImage(300, 100, new ImagickPixel('red'));
@@ -181,7 +181,7 @@ class BotProfileTest extends TestCase
 
     public function test_discord_errors_are_shown(): void
     {
-        config(['toxbot.premium_guilds' => [self::GUILD]]);
+        config(['shiori.premium_guilds' => [self::GUILD]]);
         $this->patchStatus = 429;
 
         Livewire::test(BotProfile::class, ['guildId' => self::GUILD])
@@ -194,7 +194,7 @@ class BotProfileTest extends TestCase
 
     public function test_premium_servers_set_a_name_style(): void
     {
-        config(['toxbot.premium_guilds' => [self::GUILD]]);
+        config(['shiori.premium_guilds' => [self::GUILD]]);
 
         Livewire::test(BotProfile::class, ['guildId' => self::GUILD])
             ->assertSee(__('botprofile.name_style'))
@@ -265,11 +265,11 @@ class BotProfileTest extends TestCase
         Guild::create(['id' => self::GUILD, 'bot_profile' => true, 'bot_bio' => 'Hallo']);
         Guild::create(['id' => '222', 'bot_profile' => false]);
 
-        config(['toxbot.premium_guilds' => [self::GUILD]]);
+        config(['shiori.premium_guilds' => [self::GUILD]]);
         Artisan::call('premium:bot-profiles');
         $this->assertSame([], $this->patches);
 
-        config(['toxbot.premium_guilds' => []]);
+        config(['shiori.premium_guilds' => []]);
         Artisan::call('premium:bot-profiles');
         $this->assertSame([['avatar' => null, 'banner' => null, 'bio' => null]], $this->patches);
         $guild = Guild::find(self::GUILD);

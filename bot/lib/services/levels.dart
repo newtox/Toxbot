@@ -4,13 +4,13 @@ import 'package:http/http.dart' as http;
 import 'package:mysql1/mysql1.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:toxbot/services/blacklist.dart';
-import 'package:toxbot/services/economy.dart' as economy;
-import 'package:toxbot/utils/config.dart';
-import 'package:toxbot/utils/database.dart';
-import 'package:toxbot/utils/reply.dart';
+import 'package:shiori/services/blacklist.dart';
+import 'package:shiori/services/economy.dart' as economy;
+import 'package:shiori/utils/config.dart';
+import 'package:shiori/utils/database.dart';
+import 'package:shiori/utils/reply.dart';
 
-export 'package:toxbot/services/economy.dart' show levelFromXp, LevelProgress;
+export 'package:shiori/services/economy.dart' show levelFromXp, LevelProgress;
 
 final _random = Random();
 

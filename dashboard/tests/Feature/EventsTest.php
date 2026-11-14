@@ -49,7 +49,7 @@ class EventsTest extends TestCase
                     ['id' => self::GUILD, 'name' => 'Toxic Lounge', 'icon' => null, 'owner' => true, 'permissions' => '8'],
                 ]),
                 $isBot && str_contains($url, '/users/@me/guilds') => Http::response([['id' => self::GUILD]]),
-                $isBot && str_ends_with($url, '/users/@me') => Http::response(['id' => '999', 'username' => 'Toxbot']),
+                $isBot && str_ends_with($url, '/users/@me') => Http::response(['id' => '999', 'username' => 'Shiori']),
                 $isBot && $method === 'POST' && str_ends_with($url, '/users/@me/channels') => in_array($request['recipient_id'], $this->failingDms, true)
                     ? Http::response(['message' => 'Cannot send messages to this user'], 403)
                     : Http::response(['id' => 'dm-'.$request['recipient_id']]),
@@ -61,7 +61,7 @@ class EventsTest extends TestCase
                     ['id' => self::GUILD, 'name' => '@everyone', 'position' => 0, 'color' => 0],
                     ['id' => '700000000000000001', 'name' => 'Orga', 'position' => 3, 'color' => 0],
                     ['id' => '700000000000000002', 'name' => 'Gamer', 'position' => 2, 'color' => 0],
-                    ['id' => '700000000000000003', 'name' => 'Toxbot', 'position' => 4, 'color' => 0, 'tags' => ['bot_id' => '999']],
+                    ['id' => '700000000000000003', 'name' => 'Shiori', 'position' => 4, 'color' => 0, 'tags' => ['bot_id' => '999']],
                 ]),
                 str_contains($url, '/guilds/'.self::GUILD.'/channels') => Http::response([]),
                 str_contains($url, '/guilds/'.self::GUILD.'/members') => Http::response([

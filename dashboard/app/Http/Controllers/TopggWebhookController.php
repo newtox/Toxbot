@@ -10,10 +10,10 @@ class TopggWebhookController extends Controller
 {
     public function __invoke(Request $request, Economy $economy): Response
     {
-        $secret = (string) config('toxbot.topgg.webhook_secret');
+        $secret = (string) config('shiori.topgg.webhook_secret');
         abort_if($secret === '', 404);
 
-        $reward = (int) config('toxbot.topgg.vote_reward');
+        $reward = (int) config('shiori.topgg.vote_reward');
 
         if ($request->hasHeader('x-topgg-signature')) {
             abort_unless($this->validSignature($request, $secret), 401);

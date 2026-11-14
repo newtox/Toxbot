@@ -2,7 +2,7 @@
 
 return [
     'title' => 'Notifications de stream',
-    'description' => 'Toxbot prévient quand des créateurs sont en live sur Twitch ou publient sur YouTube.',
+    'description' => 'Shiori prévient quand des créateurs sont en live sur Twitch ou publient sur YouTube.',
     'no_channel' => 'Aucun salon (désactivé)',
     'ping_role' => 'Rôle à mentionner',
     'no_ping' => 'Ne mentionner personne',

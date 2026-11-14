@@ -17,7 +17,7 @@ return [
     'recipient' => '受取人',
     'search' => '名前を入力…',
     'clear' => '削除',
-    'no_servers' => 'Toxbot と共通のサーバーがまだありません。',
+    'no_servers' => 'Shiori と共通のサーバーがまだありません。',
     'amount' => '金額',
     'pay_button' => '送る',
     'pay_confirm' => '本当にクレジットを送りますか？取り消せません。',

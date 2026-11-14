@@ -33,7 +33,7 @@ class CreditsTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        config(['services.discord.bot_token' => 'bot-token', 'services.discord.client_id' => 'client', 'toxbot.currency' => 'Credits']);
+        config(['services.discord.bot_token' => 'bot-token', 'services.discord.client_id' => 'client', 'shiori.currency' => 'Credits']);
 
         Http::fake(function (Request $request) {
             $url = $request->url();
@@ -68,7 +68,7 @@ class CreditsTest extends TestCase
 
     public function test_daily_reward_can_be_collected_once_a_day_and_builds_a_streak(): void
     {
-        config(['toxbot.daily.reward' => 100, 'toxbot.daily.streak_bonus' => 10]);
+        config(['shiori.daily.reward' => 100, 'shiori.daily.streak_bonus' => 10]);
         BotUser::forDiscordId(self::USER)->forceFill(['daily_at' => now()->subHours(30), 'daily_streak' => 3, 'credits' => 5])->save();
 
         Livewire::test(ProfileCredits::class)
@@ -161,7 +161,7 @@ class CreditsTest extends TestCase
 
     public function test_tags_are_not_handed_to_someone_without_free_slots(): void
     {
-        config(['toxbot.tags.free_limit' => 1]);
+        config(['shiori.tags.free_limit' => 1]);
         Tag::create(['name' => 'hers', 'owner' => self::ANNA, 'content' => 'x']);
         $tag = Tag::create(['name' => 'faq', 'owner' => self::USER, 'content' => 'Hallo']);
 
@@ -205,7 +205,7 @@ class CreditsTest extends TestCase
 
         $this->get(route('admin.users'))->assertForbidden();
 
-        config(['toxbot.owner_id' => self::USER]);
+        config(['shiori.owner_id' => self::USER]);
         $this->get(route('admin.users'))->assertOk()
             ->assertSee(__('admin.active_title'))
             ->assertSee(route('admin.user', self::ANNA))

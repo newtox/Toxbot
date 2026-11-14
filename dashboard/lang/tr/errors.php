@@ -6,7 +6,7 @@ return [
     '403_title' => 'Erişim yok',
     '403_text' => 'Bu sayfayı görme iznin yok. Sunucuda bir rolün eksik olabilir.',
     '404_title' => 'Sayfa bulunamadı',
-    '404_text' => 'Bu sayfa yok ya da Toxbot artık sunucuda değil.',
+    '404_text' => 'Bu sayfa yok ya da Shiori artık sunucuda değil.',
     '419_title' => 'Oturum süresi doldu',
     '419_text' => 'Sayfa çok uzun süre açık kaldı. Yenile ve tekrar dene.',
     '429_title' => 'Çok fazla istek',

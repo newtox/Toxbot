@@ -9,12 +9,12 @@ class ErrorPagesTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_errors_use_the_toxbot_pages(): void
+    public function test_errors_use_the_shiori_pages(): void
     {
         $this->get('/does-not-exist')->assertNotFound()
             ->assertSee(__('errors.404_title'))
             ->assertSee(__('errors.home'))
-            ->assertSee('toxbot');
+            ->assertSee('shiori');
 
         foreach ([403, 419, 429, 500, 503] as $code) {
             $html = view('errors.'.$code)->render();

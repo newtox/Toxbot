@@ -13,14 +13,14 @@ class InfoController extends Controller
 {
     public function general(Discord $discord): View
     {
-        $repository = rtrim((string) config('toxbot.repository'), '/');
+        $repository = rtrim((string) config('shiori.repository'), '/');
 
         return view('info.general', [
             'avatar' => rescue(fn () => $discord->botAvatarUrl(), null, report: false),
             'inviteUrl' => $discord->inviteUrl(),
             'topggUrl' => 'https://top.gg/bot/'.config('services.discord.client_id'),
-            'supportInvite' => config('toxbot.support_invite'),
-            'contactEmail' => config('toxbot.contact_email'),
+            'supportInvite' => config('shiori.support_invite'),
+            'contactEmail' => config('shiori.contact_email'),
             'repository' => $repository,
         ]);
     }
@@ -32,10 +32,10 @@ class InfoController extends Controller
 
     public function system(Discord $discord): View
     {
-        $repository = rtrim((string) config('toxbot.repository'), '/');
+        $repository = rtrim((string) config('shiori.repository'), '/');
         $status = BotStatus::current();
-        $commit = config('toxbot.commit');
-        $buildDate = config('toxbot.build_date');
+        $commit = config('shiori.commit');
+        $buildDate = config('shiori.build_date');
 
         return view('info.system', [
             'status' => $status,

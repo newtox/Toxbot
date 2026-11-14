@@ -1,7 +1,7 @@
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:toxbot/utils/database.dart';
-import 'package:toxbot/utils/functions.dart';
+import 'package:shiori/utils/database.dart';
+import 'package:shiori/utils/functions.dart';
 
 const latencyTypeConverter = SimpleConverter.fixed(
   elements: ['Basic', 'Real', 'Gateway'],
@@ -9,26 +9,26 @@ const latencyTypeConverter = SimpleConverter.fixed(
 );
 
 final ping =
-    ChatCommand('ping', 'Check Toxbot\'s latency.', localizedDescriptions: {
-  Locale.da: 'Tjek Toxbots forsinkelse.',
-  Locale.de: 'Die Latenz von Toxbot prüfen.',
-  Locale.enUs: 'Check Toxbot\'s latency.',
-  Locale.esEs: 'Comprobar la latencia de Toxbot.',
-  Locale.fr: 'Vérifier la latence de Toxbot.',
-  Locale.ru: 'Проверить задержку Toxbot.',
-  Locale.hi: 'Toxbot की लेटेंसी जाँचें।',
-  Locale.zhCn: '检查 Toxbot 的延迟。',
-  Locale.ja: 'Toxbot の遅延を確認します。',
-  Locale.ko: 'Toxbot의 지연 시간을 확인합니다.',
-  Locale.es419: 'Comprobar la latencia de Toxbot.',
-  Locale.ptBr: 'Verificar a latência do Toxbot.',
-  Locale.tr: 'Toxbot\'un gecikmesini kontrol et.',
-  Locale.pl: 'Sprawdź opóźnienie Toxbota.',
-  Locale.it: 'Controlla la latenza di Toxbot.',
-  Locale.uk: 'Перевірити затримку Toxbot.',
-  Locale.vi: 'Kiểm tra độ trễ của Toxbot.',
-  Locale.th: 'ตรวจสอบค่าหน่วงของ Toxbot',
-  Locale.zhTw: '檢查 Toxbot 的延遲。'
+    ChatCommand('ping', 'Check Shiori\'s latency.', localizedDescriptions: {
+  Locale.da: 'Tjek Shioris forsinkelse.',
+  Locale.de: 'Die Latenz von Shiori prüfen.',
+  Locale.enUs: 'Check Shiori\'s latency.',
+  Locale.esEs: 'Comprobar la latencia de Shiori.',
+  Locale.fr: 'Vérifier la latence de Shiori.',
+  Locale.ru: 'Проверить задержку Shiori.',
+  Locale.hi: 'Shiori की लेटेंसी जाँचें।',
+  Locale.zhCn: '检查 Shiori 的延迟。',
+  Locale.ja: 'Shiori の遅延を確認します。',
+  Locale.ko: 'Shiori의 지연 시간을 확인합니다.',
+  Locale.es419: 'Comprobar la latencia de Shiori.',
+  Locale.ptBr: 'Verificar a latência da Shiori.',
+  Locale.tr: 'Shiori\'un gecikmesini kontrol et.',
+  Locale.pl: 'Sprawdź opóźnienie Shiori.',
+  Locale.it: 'Controlla la latenza di Shiori.',
+  Locale.uk: 'Перевірити затримку Shiori.',
+  Locale.vi: 'Kiểm tra độ trễ của Shiori.',
+  Locale.th: 'ตรวจสอบค่าหน่วงของ Shiori',
+  Locale.zhTw: '檢查 Shiori 的延遲。'
 }, (ChatContext context,
         [@UseConverter(latencyTypeConverter)
         @Description('Which latency you want to see.', {

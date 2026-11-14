@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'headline' => 'Configure Toxbot without typing slash commands.',
+    'headline' => 'Configure Shiori without typing slash commands.',
     'intro' => 'Welcome and goodbye messages with live preview, autorole in one click and your own language and embed color.',
     'button' => 'Log in with Discord',
     'privacy' => 'We only see your name, avatar and server list.',
@@ -9,5 +9,5 @@ return [
     'invalid' => 'Invalid login. Please try again.',
     'rejected' => 'Discord rejected the login. Please try again.',
     'expired' => 'Your Discord session has expired. Please log in again.',
-    'blacklisted' => 'Your account is blocked from Toxbot.',
+    'blacklisted' => 'Your account is blocked from Shiori.',
 ];

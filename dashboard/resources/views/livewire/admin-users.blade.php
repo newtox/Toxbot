@@ -46,7 +46,7 @@
                             </div>
                             <div class="shrink-0 text-right text-sm tabular-nums">
                                 <p class="font-medium text-dc-header">{{ __('admin.active_count', ['count' => number_format($entry['commands'], 0, '', "\u{00A0}")]) }}</p>
-                                <p class="text-xs text-dc-muted">{{ __('leaderboard.level', ['level' => $entry['level']]) }} · {{ number_format($entry['credits'], 0, '', "\u{00A0}") }}&nbsp;{{ config('toxbot.currency') }}</p>
+                                <p class="text-xs text-dc-muted">{{ __('leaderboard.level', ['level' => $entry['level']]) }} · {{ number_format($entry['credits'], 0, '', "\u{00A0}") }}&nbsp;{{ config('shiori.currency') }}</p>
                             </div>
                         </a>
                     </li>

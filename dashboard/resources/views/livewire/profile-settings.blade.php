@@ -24,7 +24,7 @@
                 },
                 valid(hex) { return /^#([0-9a-f]{6}|[0-9a-f]{3})$/i.test(hex ?? '') },
              }"
-             x-effect="valid($wire.color) && toxbot.setAccent(long($wire.color))">
+             x-effect="valid($wire.color) && shiori.setAccent(long($wire.color))">
         <h2 class="text-lg font-semibold text-dc-header">{{ __('profile.color_title') }}</h2>
         <p class="mb-5 text-sm text-dc-muted">
             {{ __('profile.color_description') }}

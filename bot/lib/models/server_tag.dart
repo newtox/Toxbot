@@ -1,5 +1,5 @@
 import 'package:mysql1/mysql1.dart';
-import 'package:toxbot/utils/database.dart';
+import 'package:shiori/utils/database.dart';
 
 class ServerTag {
   final int id;

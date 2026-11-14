@@ -1,10 +1,10 @@
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
-import 'package:toxbot/utils/database.dart';
-import 'package:toxbot/utils/functions.dart';
-import 'package:toxbot/utils/nekos.dart';
-import 'package:toxbot/utils/reply.dart';
+import 'package:shiori/utils/database.dart';
+import 'package:shiori/utils/functions.dart';
+import 'package:shiori/utils/nekos.dart';
+import 'package:shiori/utils/reply.dart';
 
 class _Action {
   final String category;

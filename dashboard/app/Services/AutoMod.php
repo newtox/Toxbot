@@ -232,7 +232,7 @@ class AutoMod
 
         return array_values(array_filter($existing, fn (array $rule) => (string) ($rule['creator_id'] ?? '') === $botId
             && (int) ($rule['trigger_type'] ?? 0) === 1
-            && str_starts_with((string) ($rule['name'] ?? ''), 'Toxbot')
+            && str_starts_with((string) ($rule['name'] ?? ''), 'Shiori')
             && ! in_array((string) ($rule['id'] ?? ''), $keep, true)
             && ! in_array($rule['id'] ?? null, $ours, true)));
     }

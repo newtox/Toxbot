@@ -1,7 +1,7 @@
 @props(['title' => null, 'description' => null, 'guild' => null, 'guilds' => []])
 
 @php
-    $pageTitle = $title ? $title.' · Toxbot' : 'Toxbot Dashboard';
+    $pageTitle = $title ? $title.' · Shiori' : 'Shiori Dashboard';
     $botOffline = Auth::check() && \App\Models\BotStatus::offline();
     $pageDescription = $description ?? __('login.intro');
     $shareImage = $botAvatar ? str_replace('size=128', 'size=512', $botAvatar) : null;
@@ -23,7 +23,7 @@
     @endauth
 
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Toxbot">
+    <meta property="og:site_name" content="Shiori">
     <meta property="og:title" content="{{ $pageTitle }}">
     <meta property="og:description" content="{{ $pageDescription }}">
     <meta property="og:url" content="{{ url()->current() }}">
@@ -46,7 +46,7 @@
 </head>
 <body class="min-h-dvh" x-data="{ nav: false }" x-on:keydown.escape.window="nav = false"
       @auth x-bind:data-nav="nav ? 'open' : 'closed'" x-effect="document.documentElement.classList.toggle('overflow-hidden', nav)"
-      x-on:toxbot-nav.window="nav = $event.detail" x-on:resize.window="if (innerWidth >= 768) nav = false" @endauth>
+      x-on:shiori-nav.window="nav = $event.detail" x-on:resize.window="if (innerWidth >= 768) nav = false" @endauth>
     @auth
         <div class="md:flex">
             <div x-show="nav" x-transition.opacity x-on:click="nav = false" x-cloak

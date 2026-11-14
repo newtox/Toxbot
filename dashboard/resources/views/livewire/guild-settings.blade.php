@@ -242,7 +242,7 @@
             </div>
             <div class="flex flex-wrap gap-2">
                 @foreach (\App\Models\Guild::STREAM_PLACEHOLDERS as $token => $hint)
-                    <button type="button" title="{{ __($hint) }}" x-on:click="toxbot.insertAtCursor($refs[target], '{{ $token }}')"
+                    <button type="button" title="{{ __($hint) }}" x-on:click="shiori.insertAtCursor($refs[target], '{{ $token }}')"
                             class="rounded-full bg-dc-600 px-3 py-1 font-mono text-xs text-dc-text transition hover:bg-accent hover:text-on-accent">{{ $token }}</button>
                 @endforeach
             </div>
@@ -553,7 +553,7 @@
                 </button>
                 <span class="text-xs text-dc-faint">{{ __('protection.post_hint') }}</span>
             </div>
-            @unless (config('toxbot.turnstile.site_key') && config('toxbot.turnstile.secret_key'))
+            @unless (config('shiori.turnstile.site_key') && config('shiori.turnstile.secret_key'))
                 <p class="rounded-lg border-l-4 border-dc-yellow bg-dc-900 px-3 py-2 text-sm">{{ __('protection.turnstile_missing') }}</p>
             @endunless
         </div>
