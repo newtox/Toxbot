@@ -1,5 +1,6 @@
 da_dk:
   global_error: "Der er opstået en fejl!"
+  global_gif_unavailable: "Jeg kunne ikke hente et billede lige nu. Prøv igen om lidt."
   blacklisted: "Du er blevet udelukket fra Toxbot."
   announcements_set: "&type er blevet indstillet."
   announcements_none: "Der er hverken indstillet en velkomst- eller en farvelbesked."
@@ -387,6 +388,7 @@ da_dk:
 
 de_de:
   global_error: "Da ist etwas schiefgelaufen."
+  global_gif_unavailable: "Ich konnte gerade kein Bild laden. Versuch es gleich noch einmal."
   blacklisted: "Du bist für Toxbot gesperrt."
   announcements_set: "Die &type ist eingerichtet."
   announcements_none: "Es ist noch keine Willkommens- oder Abschiedsnachricht eingerichtet."
@@ -774,6 +776,7 @@ de_de:
 
 en_us:
   global_error: "An error has occurred!"
+  global_gif_unavailable: "I couldn't load an image right now. Please try again in a moment."
   blacklisted: "You have been blocked from using Toxbot."
   announcements_set: "The &type has been set."
   announcements_none: "Neither a welcome nor a goodbye message is set."
@@ -1161,6 +1164,7 @@ en_us:
 
 es_es:
   global_error: "¡Ha ocurrido un error!"
+  global_gif_unavailable: "No he podido cargar una imagen. Inténtalo de nuevo en un momento."
   blacklisted: "Se te ha bloqueado el uso de Toxbot."
   announcements_set: "Se ha establecido el &type."
   announcements_none: "No hay ningún mensaje de bienvenida ni de despedida."
@@ -1548,6 +1552,7 @@ es_es:
 
 fr_fr:
   global_error: "Une erreur s'est produite !"
+  global_gif_unavailable: "Je n'ai pas pu charger d'image. Réessaie dans un instant."
   blacklisted: "Tu as été exclu de Toxbot."
   announcements_set: "Le &type a été défini."
   announcements_none: "Aucun message de bienvenue ni d'au revoir n'est défini."
@@ -1935,6 +1940,7 @@ fr_fr:
 
 hi_hi:
   global_error: "एक त्रुटि हुई है!"
+  global_gif_unavailable: "अभी कोई तस्वीर लोड नहीं हो सकी। थोड़ी देर बाद फिर से कोशिश करें।"
   blacklisted: "आपको Toxbot इस्तेमाल करने से रोक दिया गया है।"
   announcements_set: "&type सेट कर दिया गया है।"
   announcements_none: "न स्वागत संदेश सेट है, न विदाई संदेश।"
@@ -2322,6 +2328,7 @@ hi_hi:
 
 ja_jp:
   global_error: "エラーが発生しました！"
+  global_gif_unavailable: "画像を読み込めませんでした。少し待ってからもう一度お試しください。"
   blacklisted: "あなたは Toxbot の利用を禁止されています。"
   announcements_set: "&typeを設定しました。"
   announcements_none: "歓迎メッセージもお別れメッセージも設定されていません。"
@@ -2709,6 +2716,7 @@ ja_jp:
 
 ko_ko:
   global_error: "오류가 발생했습니다!"
+  global_gif_unavailable: "지금은 이미지를 불러올 수 없습니다. 잠시 후 다시 시도해 주세요."
   blacklisted: "Toxbot 사용이 차단되었습니다."
   announcements_set: "&type을(를) 설정했습니다."
   announcements_none: "환영 메시지와 작별 메시지가 모두 설정되어 있지 않습니다."
@@ -3096,6 +3104,7 @@ ko_ko:
 
 ru_ru:
   global_error: "Произошла ошибка!"
+  global_gif_unavailable: "Сейчас не получилось загрузить картинку. Попробуй ещё раз чуть позже."
   blacklisted: "Тебе запрещено пользоваться Toxbot."
   announcements_set: "&type установлено."
   announcements_none: "Ни приветствие, ни прощание не настроены."
@@ -3483,6 +3492,7 @@ ru_ru:
 
 zh_cn:
   global_error: "发生错误！"
+  global_gif_unavailable: "暂时无法加载图片，请稍后再试。"
   blacklisted: "你已被禁止使用 Toxbot。"
   announcements_set: "&type已设置。"
   announcements_none: "尚未设置欢迎消息或告别消息。"

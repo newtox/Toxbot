@@ -2,6 +2,7 @@ import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:toxbot/utils/database.dart';
+import 'package:toxbot/utils/nekos.dart';
 
 const successColor = '#6dbe33';
 
@@ -62,7 +63,9 @@ Future<void> replyError(
 }
 
 Future<void> replyException(InteractiveContext context, Object error) =>
-    replyErrorText(context, codeBlock(error.toString(), 'sh'));
+    error is NekosUnavailableException
+        ? replyError(context, 'global_gif_unavailable')
+        : replyErrorText(context, codeBlock(error.toString(), 'sh'));
 
 Future<void> replyErrorText(
     InteractiveContext context, String description) async {

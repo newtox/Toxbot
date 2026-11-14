@@ -1,8 +1,6 @@
-import 'dart:convert';
-
-import 'package:http/http.dart' as http;
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
+import 'package:toxbot/utils/nekos.dart';
 import 'package:toxbot/utils/reply.dart';
 
 final neko =
@@ -19,20 +17,15 @@ final neko =
   Locale.ko: 'neko 이미지를 표시합니다.'
 }, (ChatContext context) async {
   try {
-    final httpPackageUrl = Uri.https('waifu.pics', 'api/sfw/neko');
-    final httpPackageInfo = await http.get(httpPackageUrl);
+    final imageUrl = await fetchNekos('neko');
 
-    final httpPackageResponse =
-        jsonDecode(utf8.decode(httpPackageInfo.bodyBytes)) as Map;
-    final httpPackageResult = Uri.parse(httpPackageResponse['url'] as String);
-
-    final imageResponse = (await http.get(httpPackageResult)).bodyBytes;
+    final imageResponse = await downloadNekos(imageUrl);
 
     await context.respond(MessageBuilder(attachments: [
       AttachmentBuilder(
           data: imageResponse,
-          fileName: httpPackageResult.path.toString().substring(1),
-          description: httpPackageResult.host.toString())
+          fileName: imageUrl.pathSegments.last,
+          description: imageUrl.host.toString())
     ]));
   } catch (e) {
     print('Error in neko command: $e');

@@ -1,11 +1,9 @@
-import 'dart:convert';
-
-import 'package:http/http.dart' as http;
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_extensions/nyxx_extensions.dart';
 import 'package:nyxx_commands/nyxx_commands.dart';
 import 'package:toxbot/utils/database.dart';
 import 'package:toxbot/utils/functions.dart';
+import 'package:toxbot/utils/nekos.dart';
 import 'package:toxbot/utils/reply.dart';
 
 final kick = ChatCommand('kick', 'Kick someone.', localizedDescriptions: {
@@ -34,19 +32,14 @@ final kick = ChatCommand('kick', 'Kick someone.', localizedDescriptions: {
     })
     User? user]) async {
   try {
-    final httpPackageUrl = Uri.https('waifu.pics', 'api/sfw/kick');
-    final httpPackageInfo = await http.get(httpPackageUrl);
-
-    final httpPackageResponse =
-        jsonDecode(utf8.decode(httpPackageInfo.bodyBytes)) as Map;
-    final httpPackageResult = Uri.parse(httpPackageResponse['url'] as String);
+    final imageUrl = await fetchNekos('kick');
 
     if (user == null || user.id == context.user.id) {
       await context.respond(MessageBuilder(embeds: [
         EmbedBuilder(
             color: await getUserColorFromDatabase(context.user.id),
             title: (await getString(context.user, 'kick_user')),
-            image: EmbedImageBuilder(url: httpPackageResult))
+            image: EmbedImageBuilder(url: imageUrl))
       ]));
     } else {
       await context.respond(MessageBuilder(content: '<@${user.id}>', embeds: [
@@ -55,7 +48,7 @@ final kick = ChatCommand('kick', 'Kick someone.', localizedDescriptions: {
             title: (await getString(context.user, 'kick_user_kicked'))
                 .replaceAll('&kicked', escapeMarkdown(user.username))
                 .replaceAll('&kick', escapeMarkdown(context.user.username)),
-            image: EmbedImageBuilder(url: httpPackageResult))
+            image: EmbedImageBuilder(url: imageUrl))
       ]));
     }
   } catch (e) {
