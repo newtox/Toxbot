@@ -16,7 +16,6 @@ import 'package:toxbot/commands/general/info.dart';
 import 'package:toxbot/commands/general/invite.dart';
 import 'package:toxbot/commands/general/ping.dart';
 import 'package:toxbot/commands/general/vote.dart';
-import 'package:toxbot/commands/image/awoo.dart';
 import 'package:toxbot/commands/image/neko.dart';
 import 'package:toxbot/commands/image/waifu.dart';
 import 'package:toxbot/commands/levels/levels.dart';
@@ -38,7 +37,6 @@ import 'package:toxbot/commands/roleplay/hug.dart';
 import 'package:toxbot/commands/roleplay/kick.dart';
 import 'package:toxbot/commands/roleplay/kill.dart';
 import 'package:toxbot/commands/roleplay/kiss.dart';
-import 'package:toxbot/commands/roleplay/lick.dart';
 import 'package:toxbot/commands/roleplay/nom.dart';
 import 'package:toxbot/commands/roleplay/pat.dart';
 import 'package:toxbot/commands/roleplay/poke.dart';
@@ -143,7 +141,6 @@ CommandsPlugin setupCommandHandler(CommandsPlugin commands) {
   commands.addCommand(ping);
   commands.addCommand(vote);
 
-  commands.addCommand(awoo);
   commands.addCommand(neko);
   commands.addCommand(waifu);
 
@@ -181,7 +178,6 @@ CommandsPlugin setupCommandHandler(CommandsPlugin commands) {
   commands.addCommand(kick);
   commands.addCommand(kill);
   commands.addCommand(kiss);
-  commands.addCommand(lick);
   commands.addCommand(nom);
   commands.addCommand(pat);
   commands.addCommand(poke);
