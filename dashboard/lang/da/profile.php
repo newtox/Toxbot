@@ -8,7 +8,7 @@ return [
     'color_description' => 'Farven i kanten af Toxbots embeds, når du bruger en kommando.',
     'color_accent' => 'Dashboardet bruger den også som accentfarve.',
     'embed_title' => 'Sådan ser dine embeds ud',
-    'embed_text' => 'Toxbot bruger f.eks. denne farve ved /hug, /pat eller /info.',
+    'embed_text' => 'Toxbot bruger f.eks. denne farve ved /roleplay eller /info.',
     'color_invalid' => 'Angiv en hex-farve som #7289da.',
     'premium_active' => 'Aktiv',
     'premium_inactive' => 'Ikke aktiv',

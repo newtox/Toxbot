@@ -8,7 +8,7 @@ return [
     'color_description' => 'Kolor na krawędzi embedów Toxbota, gdy używasz komendy.',
     'color_accent' => 'Panel też używa go jako koloru akcentu.',
     'embed_title' => 'Tak wyglądają twoje embedy',
-    'embed_text' => 'Toxbot używa tego koloru np. przy /hug, /pat czy /info.',
+    'embed_text' => 'Toxbot używa tego koloru np. przy /roleplay czy /info.',
     'color_invalid' => 'Podaj kolor hex, np. #7289da.',
     'premium_active' => 'Aktywne',
     'premium_inactive' => 'Nieaktywne',

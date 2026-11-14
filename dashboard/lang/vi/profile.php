@@ -8,7 +8,7 @@ return [
     'color_description' => 'Màu ở viền embed của Toxbot khi bạn dùng lệnh.',
     'color_accent' => 'Bảng điều khiển cũng dùng nó làm màu nhấn.',
     'embed_title' => 'Embed của bạn trông như thế này',
-    'embed_text' => 'Toxbot dùng màu này cho /hug, /pat hoặc /info chẳng hạn.',
+    'embed_text' => 'Toxbot dùng màu này cho /roleplay hoặc /info chẳng hạn.',
     'color_invalid' => 'Hãy nhập màu hex như #7289da.',
     'premium_active' => 'Đang hoạt động',
     'premium_inactive' => 'Không hoạt động',

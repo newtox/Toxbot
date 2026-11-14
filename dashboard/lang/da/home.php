@@ -34,7 +34,7 @@ return [
     'f_welcome_t' => 'Velkomst & autorolle',
     'f_welcome_d' => 'Velkomst- og farvelbeskeder med live-forhåndsvisning og en rolle til hvert nyt medlem. Eller lad Toxbot sætte tickets, moderation og beskyttelse op med ét klik.',
     'f_fun_t' => 'Rollespil & sjov',
-    'f_fun_d' => '/hug, /pat, /8ball og mange flere med anime-GIF\'er, plus /generate til adgangskoder, hex-værdier og tilfældige farver.',
+    'f_fun_d' => '/roleplay, /8ball og mange flere med anime-GIF\'er, plus /generate til adgangskoder, hex-værdier og tilfældige farver.',
     'f_lang_t' => '18 sprog',
     'f_lang_d' => 'Alle vælger deres eget sprog og embed-farve, i Discord og i dashboardet.',
     'premium_title' => 'Premium',

@@ -34,7 +34,7 @@ return [
     'f_welcome_t' => 'Benvenuto e ruolo automatico',
     'f_welcome_d' => 'Messaggi di benvenuto e di addio con anteprima dal vivo e un ruolo per ogni nuovo membro. Oppure lascia che Toxbot configuri ticket, moderazione e protezione con un clic.',
     'f_fun_t' => 'Roleplay e divertimento',
-    'f_fun_d' => '/hug, /pat, /8ball e molto altro con GIF anime, più /generate per password, valori hex e colori casuali.',
+    'f_fun_d' => '/roleplay, /8ball e molto altro con GIF anime, più /generate per password, valori hex e colori casuali.',
     'f_lang_t' => '18 lingue',
     'f_lang_d' => 'Ognuno sceglie la propria lingua e il colore degli embed, in Discord e nella dashboard.',
     'premium_title' => 'Premium',

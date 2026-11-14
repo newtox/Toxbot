@@ -8,7 +8,7 @@ return [
     'color_description' => 'जब आप कोई कमांड चलाते हैं, तो Toxbot के एम्बेड के किनारे का रंग।',
     'color_accent' => 'डैशबोर्ड भी इसे अपने एक्सेंट रंग के रूप में इस्तेमाल करता है।',
     'embed_title' => 'आपके एम्बेड ऐसे दिखते हैं',
-    'embed_text' => 'उदाहरण के लिए, Toxbot यह रंग /hug, /pat या /info में इस्तेमाल करता है।',
+    'embed_text' => 'उदाहरण के लिए, Toxbot यह रंग /roleplay या /info में इस्तेमाल करता है।',
     'color_invalid' => 'कृपया #7289da जैसा हेक्स रंग डालें।',
     'premium_active' => 'सक्रिय',
     'premium_inactive' => 'सक्रिय नहीं',

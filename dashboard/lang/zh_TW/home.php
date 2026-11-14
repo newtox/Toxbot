@@ -34,7 +34,7 @@ return [
     'f_welcome_t' => '歡迎與自動身份組',
     'f_welcome_d' => '帶實時預覽的歡迎和告別訊息，併為每位新成員分配身份組。也可以讓 Toxbot 一鍵設定工單、管理和防護。',
     'f_fun_t' => '角色扮演與娛樂',
-    'f_fun_d' => '/hug、/pat、/8ball 等眾多命令，配有動漫 GIF，還有生成密碼、十六進位制值和隨機顏色的 /generate。',
+    'f_fun_d' => '/roleplay、/8ball 等眾多命令，配有動漫 GIF，還有生成密碼、十六進位制值和隨機顏色的 /generate。',
     'f_lang_t' => '18 種語言',
     'f_lang_d' => '每個人都可以選擇自己的語言和嵌入顏色，在 Discord 和控制面板中都適用。',
     'premium_title' => '高階版',

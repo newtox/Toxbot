@@ -34,7 +34,7 @@ return [
     'f_welcome_t' => 'Chào mừng & vai trò tự động',
     'f_welcome_d' => 'Tin nhắn chào mừng và tạm biệt có xem trước trực tiếp, và một vai trò cho mọi thành viên mới. Hoặc để Toxbot thiết lập ticket, kiểm duyệt và bảo vệ chỉ với một cú nhấp.',
     'f_fun_t' => 'Nhập vai & giải trí',
-    'f_fun_d' => '/hug, /pat, /8ball và nhiều lệnh khác với GIF anime, cùng /generate cho mật khẩu, giá trị hex và màu ngẫu nhiên.',
+    'f_fun_d' => '/roleplay, /8ball và nhiều lệnh khác với GIF anime, cùng /generate cho mật khẩu, giá trị hex và màu ngẫu nhiên.',
     'f_lang_t' => '18 ngôn ngữ',
     'f_lang_d' => 'Mỗi người chọn ngôn ngữ và màu embed riêng, trong Discord và trong bảng điều khiển.',
     'premium_title' => 'Premium',

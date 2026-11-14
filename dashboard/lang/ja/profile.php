@@ -8,7 +8,7 @@ return [
     'color_description' => 'コマンドを使ったときの Toxbot の埋め込みの縁の色です。',
     'color_accent' => 'ダッシュボードのアクセントカラーにも使われます。',
     'embed_title' => '埋め込みはこう見えます',
-    'embed_text' => 'たとえば /hug、/pat、/info でこの色が使われます。',
+    'embed_text' => 'たとえば /roleplay、/info でこの色が使われます。',
     'color_invalid' => '#7289da のような16進カラーを入力してください。',
     'premium_active' => '有効',
     'premium_inactive' => '未加入',

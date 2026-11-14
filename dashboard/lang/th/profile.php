@@ -8,7 +8,7 @@ return [
     'color_description' => 'สีที่ขอบ embed ของ Toxbot เมื่อคุณใช้คำสั่ง',
     'color_accent' => 'แดชบอร์ดใช้สีนี้เป็นสีเน้นด้วย',
     'embed_title' => 'embed ของคุณจะดูแบบนี้',
-    'embed_text' => 'Toxbot ใช้สีนี้กับ /hug, /pat หรือ /info เป็นต้น',
+    'embed_text' => 'Toxbot ใช้สีนี้กับ /roleplay หรือ /info เป็นต้น',
     'color_invalid' => 'โปรดกรอกสี hex เช่น #7289da',
     'premium_active' => 'ใช้งานอยู่',
     'premium_inactive' => 'ไม่ได้ใช้งาน',

@@ -8,7 +8,7 @@ return [
     'color_description' => 'Bir komut kullandığında Toxbot\'un embed\'lerinin kenarındaki renk.',
     'color_accent' => 'Panel bunu vurgu rengi olarak da kullanır.',
     'embed_title' => 'Embed\'lerin böyle görünür',
-    'embed_text' => 'Toxbot bu rengi örneğin /hug, /pat veya /info için kullanır.',
+    'embed_text' => 'Toxbot bu rengi örneğin /roleplay veya /info için kullanır.',
     'color_invalid' => 'Lütfen #7289da gibi bir hex rengi gir.',
     'premium_active' => 'Aktif',
     'premium_inactive' => 'Aktif değil',

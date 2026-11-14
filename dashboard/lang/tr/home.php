@@ -34,7 +34,7 @@ return [
     'f_welcome_t' => 'Karşılama ve otomatik rol',
     'f_welcome_d' => 'Canlı önizlemeli karşılama ve veda mesajları ve her yeni üyeye bir rol. Ya da Toxbot\'un ticket\'ları, moderasyonu ve korumayı tek tıkla kurmasına izin ver.',
     'f_fun_t' => 'Roleplay ve eğlence',
-    'f_fun_d' => '/hug, /pat, /8ball ve anime GIF\'leriyle çok daha fazlası, ayrıca şifreler, hex değerleri ve rastgele renkler için /generate.',
+    'f_fun_d' => '/roleplay, /8ball ve anime GIF\'leriyle çok daha fazlası, ayrıca şifreler, hex değerleri ve rastgele renkler için /generate.',
     'f_lang_t' => '18 dil',
     'f_lang_d' => 'Herkes kendi dilini ve embed rengini seçer; Discord\'da ve panelde.',
     'premium_title' => 'Premium',

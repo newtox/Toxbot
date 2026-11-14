@@ -8,7 +8,7 @@ return [
     'color_description' => '你使用命令时，Toxbot 嵌入消息边缘的颜色。',
     'color_accent' => '控制面板也会把它用作强调色。',
     'embed_title' => '你的嵌入消息长这样',
-    'embed_text' => '例如，Toxbot 会在 /hug、/pat 或 /info 中使用这个颜色。',
+    'embed_text' => '例如，Toxbot 会在 /roleplay 或 /info 中使用这个颜色。',
     'color_invalid' => '请输入像 #7289da 这样的十六进制颜色。',
     'premium_active' => '已开通',
     'premium_inactive' => '未开通',

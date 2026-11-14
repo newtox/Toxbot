@@ -22,7 +22,7 @@ Both share the same MySQL database. Whatever you change in the dashboard (welcom
 
 ## Features
 
-- **Roleplay, image and fun commands** like `/hug`, `/pat` or `/8ball`
+- **Roleplay, image and fun commands** like `/roleplay` or `/8ball`
 - **Generators**: `/generate password`, `/generate hex` (like `openssl rand -hex`) and `/generate color` with a preview
 - **Server setup** in Discord (`/announcements`, `/autorole`) and in the dashboard: welcome and goodbye messages, autorole, level-up messages in a channel and as a DM, and a server language for messages to the whole server; every setting has its own page in the dashboard
 - **Automatic setup** in the dashboard or with `/setup` in Discord: creates the channels, roles and permissions for tickets, moderation, protection and verification in one go

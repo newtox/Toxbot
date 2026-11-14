@@ -8,7 +8,7 @@ return [
     'color_description' => 'Колір на краю ембедів Toxbot, коли ти використовуєш команду.',
     'color_accent' => 'Панель також використовує його як акцентний колір.',
     'embed_title' => 'Ось так виглядають твої ембеди',
-    'embed_text' => 'Toxbot використовує цей колір, наприклад, для /hug, /pat чи /info.',
+    'embed_text' => 'Toxbot використовує цей колір, наприклад, для /roleplay чи /info.',
     'color_invalid' => 'Введи hex-колір, наприклад #7289da.',
     'premium_active' => 'Активний',
     'premium_inactive' => 'Неактивний',

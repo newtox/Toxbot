@@ -8,7 +8,7 @@ return [
     'color_description' => 'Die Farbe am Rand von Toxbots Embeds, wenn du einen Befehl benutzt.',
     'color_accent' => 'Das Dashboard nutzt sie auch als Akzentfarbe.',
     'embed_title' => 'So sehen deine Embeds aus',
-    'embed_text' => 'Toxbot nutzt diese Farbe zum Beispiel bei /hug, /pat oder /info.',
+    'embed_text' => 'Toxbot nutzt diese Farbe zum Beispiel bei /roleplay oder /info.',
     'color_invalid' => 'Gib die Farbe als Hex-Code an, zum Beispiel #7289da.',
     'premium_active' => 'Aktiv',
     'premium_inactive' => 'Nicht aktiv',

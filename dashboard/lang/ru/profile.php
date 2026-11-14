@@ -8,7 +8,7 @@ return [
     'color_description' => 'Цвет полоски у эмбедов Toxbot, когда ты используешь команду.',
     'color_accent' => 'Панель тоже использует его как акцентный цвет.',
     'embed_title' => 'Так выглядят твои эмбеды',
-    'embed_text' => 'Например, Toxbot использует этот цвет в /hug, /pat или /info.',
+    'embed_text' => 'Например, Toxbot использует этот цвет в /roleplay или /info.',
     'color_invalid' => 'Укажи цвет в формате hex, например #7289da.',
     'premium_active' => 'Активен',
     'premium_inactive' => 'Не активен',
