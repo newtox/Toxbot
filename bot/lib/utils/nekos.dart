@@ -8,6 +8,12 @@ const _timeout = Duration(seconds: 5);
 
 const _headers = {'User-Agent': 'Toxbot (https://github.com/newtox/Toxbot)'};
 
+const _batchSize = 10;
+
+const _historySize = 8;
+
+final _recent = <String, List<String>>{};
+
 class NekosUnavailableException implements Exception {
   NekosUnavailableException(this.reason);
 
@@ -31,21 +37,39 @@ Future<http.Response> _get(Uri url) async {
   }
 }
 
-Future<Uri> fetchNekos(String category) async {
-  final response = await _get(Uri.https(_host, 'api/v2/$category'));
+List<Uri> _parse(http.Response response) {
   try {
     final body = jsonDecode(utf8.decode(response.bodyBytes)) as Map;
-    final result = (body['results'] as List).first as Map;
-    final url = Uri.parse(result['url'] as String);
-    if (url.host != _host) {
-      throw NekosUnavailableException('Unexpected host ${url.host}');
+    final urls = [
+      for (final result in body['results'] as List)
+        Uri.parse((result as Map)['url'] as String)
+    ];
+    if (urls.isEmpty || urls.any((candidate) => candidate.host != _host)) {
+      throw NekosUnavailableException('Unexpected response');
     }
-    return url;
+    return urls;
   } on NekosUnavailableException {
     rethrow;
   } catch (e) {
     throw NekosUnavailableException(e.toString());
   }
+}
+
+Uri _pickFresh(String category, List<Uri> urls) {
+  final recent = _recent.putIfAbsent(category, () => []);
+  final picked = urls.firstWhere(
+      (candidate) => !recent.contains(candidate.toString()),
+      orElse: () => urls.first);
+  recent.add(picked.toString());
+  if (recent.length > _historySize) {
+    recent.removeAt(0);
+  }
+  return picked;
+}
+
+Future<Uri> fetchNekos(String category) async {
+  final url = Uri.https(_host, 'api/v2/$category', {'amount': '$_batchSize'});
+  return _pickFresh(category, _parse(await _get(url)));
 }
 
 Future<List<int>> downloadNekos(Uri url) async => (await _get(url)).bodyBytes;
