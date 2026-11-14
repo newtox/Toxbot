@@ -15,7 +15,12 @@ final blush = ChatCommand('blush', 'Blush.', localizedDescriptions: {
   Locale.hi: 'शरमाएँ।',
   Locale.zhCn: '脸红。',
   Locale.ja: '赤面します。',
-  Locale.ko: '얼굴을 붉힙니다.'
+  Locale.ko: '얼굴을 붉힙니다.',
+  Locale.es419: 'Sonrojarse.',
+  Locale.ptBr: 'Corar.',
+  Locale.tr: 'Kızar.',
+  Locale.pl: 'Zarumień się.',
+  Locale.it: 'Arrossisci.'
 }, (ChatContext context) async {
   try {
     final imageUrl = await fetchNekos('blush');

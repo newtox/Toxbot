@@ -23,7 +23,12 @@ final announcements = ChatGroup(
       Locale.hi: 'स्वागत और विदाई संदेश प्रबंधित करें।',
       Locale.zhCn: '管理欢迎和告别消息。',
       Locale.ja: '歓迎メッセージとお別れメッセージを管理します。',
-      Locale.ko: '환영 및 작별 메시지를 관리합니다.'
+      Locale.ko: '환영 및 작별 메시지를 관리합니다.',
+      Locale.es419: 'Gestionar los mensajes de bienvenida y despedida.',
+      Locale.ptBr: 'Gerenciar as mensagens de boas-vindas e de despedida.',
+      Locale.tr: 'Karşılama ve veda mesajlarını yönet.',
+      Locale.pl: 'Zarządzaj wiadomościami powitalnymi i pożegnalnymi.',
+      Locale.it: 'Gestisci i messaggi di benvenuto e di addio.'
     },
     checks: [
       GuildCheck.all(),
@@ -44,7 +49,13 @@ final announcements = ChatGroup(
             Locale.hi: 'जुड़ने या जाने के लिए चैनल और संदेश सेट करें।',
             Locale.zhCn: '设置加入或离开时的频道和消息。',
             Locale.ja: '参加時または退出時のチャンネルとメッセージを設定します。',
-            Locale.ko: '입장 또는 퇴장 시 채널과 메시지를 설정합니다.'
+            Locale.ko: '입장 또는 퇴장 시 채널과 메시지를 설정합니다.',
+            Locale.es419:
+                'Establecer el canal y el mensaje para llegadas o salidas.',
+            Locale.ptBr: 'Definir o canal e a mensagem para entradas ou saídas.',
+            Locale.tr: 'Katılma veya ayrılma için kanalı ve mesajı ayarla.',
+            Locale.pl: 'Ustaw kanał i wiadomość dla dołączeń lub odejść.',
+            Locale.it: 'Imposta il canale e il messaggio per ingressi o uscite.'
           },
           checks: [
             PermissionsCheck(Permissions.manageChannels, allowsOverrides: false)
@@ -61,7 +72,12 @@ final announcements = ChatGroup(
                 Locale.hi: 'जुड़ने वाले या जाने वाले सदस्यों के लिए।',
                 Locale.zhCn: '针对加入还是离开的成员。',
                 Locale.ja: '参加するメンバーか退出するメンバーか。',
-                Locale.ko: '입장하는 멤버인지 퇴장하는 멤버인지.'
+                Locale.ko: '입장하는 멤버인지 퇴장하는 멤버인지.',
+                Locale.es419: 'Si se trata de miembros que llegan o se van.',
+                Locale.ptBr: 'Se é sobre membros entrando ou saindo.',
+                Locale.tr: 'Üyelerin katılması mı ayrılması mı ile ilgili.',
+                Locale.pl: 'Czy chodzi o dołączanie, czy odchodzenie członków.',
+                Locale.it: 'Se riguarda membri che entrano o che escono.'
               })
               @UseConverter(announcementTypeConverter)
               String type,
@@ -75,7 +91,12 @@ final announcements = ChatGroup(
                 Locale.hi: 'वह चैनल जिसमें संदेश भेजा जाता है।',
                 Locale.zhCn: '发送消息的频道。',
                 Locale.ja: 'メッセージを送るチャンネル。',
-                Locale.ko: '메시지를 보낼 채널.'
+                Locale.ko: '메시지를 보낼 채널.',
+                Locale.es419: 'El canal al que se envía el mensaje.',
+                Locale.ptBr: 'O canal para onde a mensagem é enviada.',
+                Locale.tr: 'Mesajın gönderileceği kanal.',
+                Locale.pl: 'Kanał, na który wysyłana jest wiadomość.',
+                Locale.it: 'Il canale in cui viene inviato il messaggio.'
               })
               GuildTextChannel channel,
               @Description(
@@ -94,7 +115,13 @@ final announcements = ChatGroup(
                     'संदेश। &user, &server और &mention बदल दिए जाते हैं।',
                 Locale.zhCn: '消息内容。&user、&server 和 &mention 会被替换。',
                 Locale.ja: 'メッセージ。&user、&server、&mention は置き換えられます。',
-                Locale.ko: '메시지. &user, &server, &mention은 바뀝니다.'
+                Locale.ko: '메시지. &user, &server, &mention은 바뀝니다.',
+                Locale.es419:
+                    'El mensaje. Se reemplazan &user, &server y &mention.',
+                Locale.ptBr: 'A mensagem. &user, &server e &mention são substituídos.',
+                Locale.tr: 'Mesaj. &user, &server ve &mention değiştirilir.',
+                Locale.pl: 'Wiadomość. &user, &server i &mention zostaną podmienione.',
+                Locale.it: 'Il messaggio. &user, &server e &mention vengono sostituiti.'
               })
               String message) async {
         final connection = await getMySqlConnection();
@@ -138,7 +165,13 @@ final announcements = ChatGroup(
             Locale.hi: 'मौजूदा स्वागत और विदाई सेटिंग दिखाएँ।',
             Locale.zhCn: '显示当前的欢迎和告别设置。',
             Locale.ja: '現在の歓迎とお別れの設定を表示します。',
-            Locale.ko: '현재 환영 및 작별 설정을 표시합니다.'
+            Locale.ko: '현재 환영 및 작별 설정을 표시합니다.',
+            Locale.es419:
+                'Mostrar los ajustes actuales de bienvenida y despedida.',
+            Locale.ptBr: 'Mostrar as configurações atuais de boas-vindas e despedida.',
+            Locale.tr: 'Şu anki karşılama ve veda ayarlarını göster.',
+            Locale.pl: 'Pokaż obecne ustawienia powitań i pożegnań.',
+            Locale.it: 'Mostra le impostazioni attuali di benvenuto e addio.'
           }, (ChatContext context) async {
         final connection = await getMySqlConnection();
 
@@ -214,7 +247,12 @@ final announcements = ChatGroup(
             Locale.hi: 'स्वागत या विदाई संदेश रीसेट करें।',
             Locale.zhCn: '重置欢迎或告别消息。',
             Locale.ja: '歓迎メッセージまたはお別れメッセージをリセットします。',
-            Locale.ko: '환영 또는 작별 메시지를 초기화합니다.'
+            Locale.ko: '환영 또는 작별 메시지를 초기화합니다.',
+            Locale.es419: 'Restablecer el mensaje de bienvenida o despedida.',
+            Locale.ptBr: 'Redefinir a mensagem de boas-vindas ou de despedida.',
+            Locale.tr: 'Karşılama veya veda mesajını sıfırla.',
+            Locale.pl: 'Zresetuj wiadomość powitalną lub pożegnalną.',
+            Locale.it: 'Reimposta il messaggio di benvenuto o di addio.'
           },
           checks: [
             PermissionsCheck(Permissions.manageChannels, allowsOverrides: false)
@@ -231,7 +269,12 @@ final announcements = ChatGroup(
                 Locale.hi: 'जुड़ने वाले या जाने वाले सदस्यों के लिए।',
                 Locale.zhCn: '针对加入还是离开的成员。',
                 Locale.ja: '参加するメンバーか退出するメンバーか。',
-                Locale.ko: '입장하는 멤버인지 퇴장하는 멤버인지.'
+                Locale.ko: '입장하는 멤버인지 퇴장하는 멤버인지.',
+                Locale.es419: 'Si se trata de miembros que llegan o se van.',
+                Locale.ptBr: 'Se é sobre membros entrando ou saindo.',
+                Locale.tr: 'Üyelerin katılması mı ayrılması mı ile ilgili.',
+                Locale.pl: 'Czy chodzi o dołączanie, czy odchodzenie członków.',
+                Locale.it: 'Se riguarda membri che entrano o che escono.'
               })
               @UseConverter(announcementTypeConverter)
               String type) async {

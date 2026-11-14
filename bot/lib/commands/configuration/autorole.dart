@@ -15,7 +15,12 @@ final autorole = ChatGroup('autorole', 'Manage the role new members get.',
       Locale.hi: 'नए सदस्यों को मिलने वाला रोल प्रबंधित करें।',
       Locale.zhCn: '管理新成员获得的身份组。',
       Locale.ja: '新しいメンバーに付与するロールを管理します。',
-      Locale.ko: '새 멤버에게 줄 역할을 관리합니다.'
+      Locale.ko: '새 멤버에게 줄 역할을 관리합니다.',
+      Locale.es419: 'Gestionar el rol que reciben los nuevos miembros.',
+      Locale.ptBr: 'Gerenciar o cargo que novos membros recebem.',
+      Locale.tr: 'Yeni üyelerin aldığı rolü yönet.',
+      Locale.pl: 'Zarządzaj rolą, którą dostają nowi członkowie.',
+      Locale.it: 'Gestisci il ruolo che ricevono i nuovi membri.'
     },
     checks: [
       GuildCheck.all(),
@@ -32,7 +37,12 @@ final autorole = ChatGroup('autorole', 'Manage the role new members get.',
             Locale.hi: 'नए सदस्यों को मिलने वाला रोल सेट करें।',
             Locale.zhCn: '设置新成员获得的身份组。',
             Locale.ja: '新しいメンバーに付与するロールを設定します。',
-            Locale.ko: '새 멤버에게 줄 역할을 설정합니다.'
+            Locale.ko: '새 멤버에게 줄 역할을 설정합니다.',
+            Locale.es419: 'Establecer el rol que reciben los nuevos miembros.',
+            Locale.ptBr: 'Definir o cargo que novos membros recebem.',
+            Locale.tr: 'Yeni üyelerin aldığı rolü ayarla.',
+            Locale.pl: 'Ustaw rolę, którą dostają nowi członkowie.',
+            Locale.it: 'Imposta il ruolo che ricevono i nuovi membri.'
           },
           checks: [
             PermissionsCheck(Permissions.manageGuild, allowsOverrides: false)
@@ -47,7 +57,12 @@ final autorole = ChatGroup('autorole', 'Manage the role new members get.',
                 Locale.hi: 'वह रोल जो नए सदस्यों को मिलता है।',
                 Locale.zhCn: '新成员获得的身份组。',
                 Locale.ja: '新しいメンバーに付与するロール。',
-                Locale.ko: '새 멤버가 받을 역할.'
+                Locale.ko: '새 멤버가 받을 역할.',
+                Locale.es419: 'El rol que reciben los nuevos miembros.',
+                Locale.ptBr: 'O cargo que novos membros recebem.',
+                Locale.tr: 'Yeni üyelerin aldığı rol.',
+                Locale.pl: 'Rola, którą dostają nowi członkowie.',
+                Locale.it: 'Il ruolo che ricevono i nuovi membri.'
               })
               Role? role) async {
         final connection = await getMySqlConnection();
@@ -101,7 +116,12 @@ final autorole = ChatGroup('autorole', 'Manage the role new members get.',
         Locale.hi: 'मौजूदा ऑटोरोल दिखाएँ।',
         Locale.zhCn: '显示当前的自动身份组。',
         Locale.ja: '現在の自動ロールを表示します。',
-        Locale.ko: '현재 자동 역할을 표시합니다.'
+        Locale.ko: '현재 자동 역할을 표시합니다.',
+        Locale.es419: 'Mostrar el autorol actual.',
+        Locale.ptBr: 'Mostrar o cargo automático atual.',
+        Locale.tr: 'Şu anki otomatik rolü göster.',
+        Locale.pl: 'Pokaż obecną automatyczną rolę.',
+        Locale.it: 'Mostra il ruolo automatico attuale.'
       }, (ChatContext context) async {
         final connection = await getMySqlConnection();
 
@@ -136,7 +156,12 @@ final autorole = ChatGroup('autorole', 'Manage the role new members get.',
         Locale.hi: 'ऑटोरोल हटाएँ।',
         Locale.zhCn: '移除自动身份组。',
         Locale.ja: '自動ロールを解除します。',
-        Locale.ko: '자동 역할을 해제합니다.'
+        Locale.ko: '자동 역할을 해제합니다.',
+        Locale.es419: 'Quitar el autorol.',
+        Locale.ptBr: 'Remover o cargo automático.',
+        Locale.tr: 'Otomatik rolü kaldır.',
+        Locale.pl: 'Usuń automatyczną rolę.',
+        Locale.it: 'Rimuovi il ruolo automatico.'
       }, (ChatContext context) async {
         final connection = await getMySqlConnection();
 

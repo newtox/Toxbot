@@ -15,7 +15,12 @@ final smug = ChatCommand('smug', 'Look smug.', localizedDescriptions: {
   Locale.hi: 'घमंडी अंदाज़ में मुस्कुराएँ।',
   Locale.zhCn: '得意一笑。',
   Locale.ja: 'ドヤ顔をします。',
-  Locale.ko: '의기양양한 표정을 짓습니다.'
+  Locale.ko: '의기양양한 표정을 짓습니다.',
+  Locale.es419: 'Poner cara de suficiencia.',
+  Locale.ptBr: 'Fazer cara de convencido.',
+  Locale.tr: 'Kendinden emin görün.',
+  Locale.pl: 'Zrób zadowoloną minę.',
+  Locale.it: 'Fai la faccia compiaciuta.'
 }, (ChatContext context) async {
   try {
     final imageUrl = await fetchNekos('smug');

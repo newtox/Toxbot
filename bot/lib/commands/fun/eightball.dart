@@ -16,7 +16,12 @@ final eightball = ChatCommand('8ball', 'Ask the magic 8ball a question.',
       Locale.hi: 'जादुई 8ball से सवाल पूछें।',
       Locale.zhCn: '向神奇 8 号球提问。',
       Locale.ja: '魔法の 8ball に質問します。',
-      Locale.ko: '마법의 8볼에게 질문합니다.'
+      Locale.ko: '마법의 8볼에게 질문합니다.',
+      Locale.es419: 'Hacerle una pregunta a la bola 8 mágica.',
+      Locale.ptBr: 'Fazer uma pergunta à bola 8 mágica.',
+      Locale.tr: 'Sihirli 8 topuna bir soru sor.',
+      Locale.pl: 'Zadaj pytanie magicznej kuli 8.',
+      Locale.it: 'Fai una domanda alla palla 8 magica.'
     }, (ChatContext context,
         @Description('Your question for the 8ball.', {
           Locale.da: 'Dit spørgsmål til 8ball.',
@@ -28,7 +33,12 @@ final eightball = ChatCommand('8ball', 'Ask the magic 8ball a question.',
           Locale.hi: '8ball के लिए आपका सवाल।',
           Locale.zhCn: '你要问 8 号球的问题。',
           Locale.ja: '8ball への質問。',
-          Locale.ko: '8볼에게 할 질문.'
+          Locale.ko: '8볼에게 할 질문.',
+          Locale.es419: 'Tu pregunta para la bola 8.',
+          Locale.ptBr: 'Sua pergunta para a bola 8.',
+          Locale.tr: '8 topuna sorun.',
+          Locale.pl: 'Twoje pytanie do kuli 8.',
+          Locale.it: 'La tua domanda per la palla 8.'
         })
         String question) async {
   final random = Random();

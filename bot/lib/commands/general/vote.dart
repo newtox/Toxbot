@@ -27,6 +27,11 @@ final vote = ChatCommand(
     Locale.zhCn: '在 Top.gg 上为 Toxbot 投票并获得积分。',
     Locale.ja: 'Top.gg で Toxbot に投票してクレジットをもらいます。',
     Locale.ko: 'Top.gg에서 Toxbot에 투표하고 크레딧을 받습니다.',
+    Locale.es419: 'Vota por Toxbot en Top.gg y consigue créditos.',
+    Locale.ptBr: 'Votar no Toxbot no Top.gg e ganhar créditos.',
+    Locale.tr: 'Top.gg\'de Toxbot\'a oy ver ve kredi kazan.',
+    Locale.pl: 'Zagłosuj na Toxbota na Top.gg i zdobądź kredyty.',
+    Locale.it: 'Vota Toxbot su Top.gg e ottieni crediti.',
   },
   (ChatContext context) async {
     final user = context.user;

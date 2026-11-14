@@ -15,7 +15,12 @@ final smile = ChatCommand('smile', 'Smile.', localizedDescriptions: {
   Locale.hi: 'मुस्कुराएँ।',
   Locale.zhCn: '微笑。',
   Locale.ja: '笑顔になります。',
-  Locale.ko: '미소 짓습니다.'
+  Locale.ko: '미소 짓습니다.',
+  Locale.es419: 'Sonreír.',
+  Locale.ptBr: 'Sorrir.',
+  Locale.tr: 'Gülümse.',
+  Locale.pl: 'Uśmiechnij się.',
+  Locale.it: 'Sorridi.'
 }, (ChatContext context) async {
   try {
     final imageUrl = await fetchNekos('smile');

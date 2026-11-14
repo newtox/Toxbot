@@ -28,6 +28,11 @@ final _clearCache = ChatCommand(
     Locale.zhCn: '清空机器人缓存。',
     Locale.ja: 'ボットのキャッシュを消去します。',
     Locale.ko: '봇 캐시를 비웁니다.',
+    Locale.es419: 'Vaciar la caché del bot.',
+    Locale.ptBr: 'Limpar o cache do bot.',
+    Locale.tr: 'Bot önbelleğini temizle.',
+    Locale.pl: 'Wyczyść pamięć podręczną bota.',
+    Locale.it: 'Svuota la cache del bot.',
   },
   (ChatContext context) async {
     context.client.channels.cache.clear();
@@ -54,6 +59,11 @@ final _skid = ChatCommand(
     Locale.zhCn: '读取一个文件。',
     Locale.ja: 'ファイルを読み込みます。',
     Locale.ko: '파일을 읽습니다.',
+    Locale.es419: 'Leer un archivo.',
+    Locale.ptBr: 'Ler um arquivo.',
+    Locale.tr: 'Bir dosya oku.',
+    Locale.pl: 'Odczytaj plik.',
+    Locale.it: 'Leggi un file.',
   },
   (
     ChatContext context,
@@ -68,6 +78,11 @@ final _skid = ChatCommand(
       Locale.zhCn: '文件路径。',
       Locale.ja: 'ファイルのパス。',
       Locale.ko: '파일 경로.',
+      Locale.es419: 'La ruta del archivo.',
+      Locale.ptBr: 'O caminho do arquivo.',
+      Locale.tr: 'Dosyanın yolu.',
+      Locale.pl: 'Ścieżka do pliku.',
+      Locale.it: 'Il percorso del file.',
     })
     String path,
     @Description('Whether to send the file content as a hastebin link.', {
@@ -82,6 +97,12 @@ final _skid = ChatCommand(
       Locale.zhCn: '是否以 hastebin 链接发送文件内容。',
       Locale.ja: 'ファイルの内容を hastebin のリンクで送るか。',
       Locale.ko: '파일 내용을 hastebin 링크로 보낼지 여부.',
+      Locale.es419:
+          'Si se envía el contenido del archivo como enlace de hastebin.',
+      Locale.ptBr: 'Se o conteúdo do arquivo deve ser enviado como link do hastebin.',
+      Locale.tr: 'Dosya içeriğinin hastebin bağlantısı olarak gönderilip gönderilmeyeceği.',
+      Locale.pl: 'Czy wysłać zawartość pliku jako link hastebin.',
+      Locale.it: 'Se inviare il contenuto del file come link hastebin.',
     })
     bool hastebin,
   ) async {
@@ -108,6 +129,11 @@ final _listRoles = ChatCommand(
     Locale.zhCn: '列出所有身份组及其权限。',
     Locale.ja: 'すべてのロールと権限を一覧表示します。',
     Locale.ko: '모든 역할과 권한을 나열합니다.',
+    Locale.es419: 'Listar todos los roles y sus permisos.',
+    Locale.ptBr: 'Listar todos os cargos e suas permissões.',
+    Locale.tr: 'Tüm rolleri ve izinlerini listele.',
+    Locale.pl: 'Wypisz wszystkie role i ich uprawnienia.',
+    Locale.it: 'Elenca tutti i ruoli e i loro permessi.',
   },
   checks: [GuildCheck.all()],
   (
@@ -123,6 +149,11 @@ final _listRoles = ChatCommand(
       Locale.zhCn: '是否以 hastebin 链接发送输出。',
       Locale.ja: '出力を hastebin のリンクで送るか。',
       Locale.ko: '출력을 hastebin 링크로 보낼지 여부.',
+      Locale.es419: 'Si se envía la salida como enlace de hastebin.',
+      Locale.ptBr: 'Se a saída deve ser enviada como link do hastebin.',
+      Locale.tr: 'Çıktının hastebin bağlantısı olarak gönderilip gönderilmeyeceği.',
+      Locale.pl: 'Czy wysłać wynik jako link hastebin.',
+      Locale.it: 'Se inviare l\'output come link hastebin.',
     })
     bool hastebin,
   ) async {
@@ -159,6 +190,11 @@ final _rustdeskIds = ChatCommand(
     Locale.zhCn: '显示 SQLite 数据库中的 RustDesk ID。',
     Locale.ja: 'SQLite データベースの RustDesk ID を表示します。',
     Locale.ko: 'SQLite 데이터베이스의 RustDesk ID를 표시합니다.',
+    Locale.es419: 'Mostrar los ID de RustDesk de la base de datos SQLite.',
+    Locale.ptBr: 'Mostrar os IDs do RustDesk do banco de dados SQLite.',
+    Locale.tr: 'SQLite veritabanındaki RustDesk ID\'lerini göster.',
+    Locale.pl: 'Pokaż ID RustDesk z bazy danych SQLite.',
+    Locale.it: 'Mostra gli ID RustDesk dal database SQLite.',
   },
   (
     ChatContext context,
@@ -173,6 +209,11 @@ final _rustdeskIds = ChatCommand(
       Locale.zhCn: '是否以 hastebin 链接发送输出。',
       Locale.ja: '出力を hastebin のリンクで送るか。',
       Locale.ko: '출력을 hastebin 링크로 보낼지 여부.',
+      Locale.es419: 'Si se envía la salida como enlace de hastebin.',
+      Locale.ptBr: 'Se a saída deve ser enviada como link do hastebin.',
+      Locale.tr: 'Çıktının hastebin bağlantısı olarak gönderilip gönderilmeyeceği.',
+      Locale.pl: 'Czy wysłać wynik jako link hastebin.',
+      Locale.it: 'Se inviare l\'output come link hastebin.',
     })
     bool hastebin,
   ) async {
@@ -232,6 +273,11 @@ final _sql = ChatCommand(
     Locale.zhCn: '运行只读 SQL 查询。',
     Locale.ja: '読み取り専用の SQL クエリを実行します。',
     Locale.ko: '읽기 전용 SQL 쿼리를 실행합니다.',
+    Locale.es419: 'Ejecutar una consulta SQL de solo lectura.',
+    Locale.ptBr: 'Executar uma consulta SQL somente leitura.',
+    Locale.tr: 'Salt okunur bir SQL sorgusu çalıştır.',
+    Locale.pl: 'Wykonaj zapytanie SQL tylko do odczytu.',
+    Locale.it: 'Esegui una query SQL di sola lettura.',
   },
   (
     ChatContext context,
@@ -246,6 +292,11 @@ final _sql = ChatCommand(
       Locale.zhCn: '查询语句，例如 SELECT id, xp FROM users LIMIT 10。',
       Locale.ja: 'クエリ（例: SELECT id, xp FROM users LIMIT 10）。',
       Locale.ko: '쿼리, 예: SELECT id, xp FROM users LIMIT 10.',
+      Locale.es419: 'La consulta, p. ej. SELECT id, xp FROM users LIMIT 10.',
+      Locale.ptBr: 'A consulta, por exemplo SELECT id, xp FROM users LIMIT 10.',
+      Locale.tr: 'Sorgu, örneğin SELECT id, xp FROM users LIMIT 10.',
+      Locale.pl: 'Zapytanie, np. SELECT id, xp FROM users LIMIT 10.',
+      Locale.it: 'La query, ad es. SELECT id, xp FROM users LIMIT 10.',
     })
     String query, [
     @Description('Whether to send the output as a hastebin link.', {
@@ -259,6 +310,11 @@ final _sql = ChatCommand(
       Locale.zhCn: '是否以 hastebin 链接发送输出。',
       Locale.ja: '出力を hastebin のリンクで送るか。',
       Locale.ko: '출력을 hastebin 링크로 보낼지 여부.',
+      Locale.es419: 'Si se envía la salida como enlace de hastebin.',
+      Locale.ptBr: 'Se a saída deve ser enviada como link do hastebin.',
+      Locale.tr: 'Çıktının hastebin bağlantısı olarak gönderilip gönderilmeyeceği.',
+      Locale.pl: 'Czy wysłać wynik jako link hastebin.',
+      Locale.it: 'Se inviare l\'output come link hastebin.',
     })
     bool? hastebin,
   ]) async {
@@ -285,6 +341,11 @@ final _credits = ChatCommand(
     Locale.zhCn: '给用户发放或扣除积分。',
     Locale.ja: 'ユーザーにクレジットを付与または没収します。',
     Locale.ko: '사용자에게 크레딧을 주거나 회수합니다.',
+    Locale.es419: 'Dar créditos a un usuario o quitárselos.',
+    Locale.ptBr: 'Dar ou tirar créditos de um usuário.',
+    Locale.tr: 'Bir kullanıcıya kredi ver ya da kredisini al.',
+    Locale.pl: 'Daj użytkownikowi kredyty albo je odbierz.',
+    Locale.it: 'Dai crediti a un utente o toglili.',
   },
   (
     ChatContext context,
@@ -299,6 +360,11 @@ final _credits = ChatCommand(
       Locale.zhCn: '用户。',
       Locale.ja: 'ユーザー。',
       Locale.ko: '사용자.',
+      Locale.es419: 'El usuario.',
+      Locale.ptBr: 'O usuário.',
+      Locale.tr: 'Kullanıcı.',
+      Locale.pl: 'Użytkownik.',
+      Locale.it: 'L\'utente.',
     })
     User target,
     @Description('Credits to add, negative to take away.', {
@@ -312,6 +378,11 @@ final _credits = ChatCommand(
       Locale.zhCn: '要增加的积分，负数表示扣除。',
       Locale.ja: '追加するクレジット。マイナスで没収。',
       Locale.ko: '추가할 크레딧, 음수면 회수합니다.',
+      Locale.es419: 'Créditos para sumar; en negativo para quitar.',
+      Locale.ptBr: 'Créditos a adicionar, negativo para tirar.',
+      Locale.tr: 'Eklenecek kredi, almak için negatif.',
+      Locale.pl: 'Kredyty do dodania, ujemne, żeby odebrać.',
+      Locale.it: 'Crediti da aggiungere, negativi per toglierli.',
     })
     int amount,
   ) async {
@@ -346,6 +417,11 @@ final _giveItem = ChatCommand(
     Locale.zhCn: '免费送给用户一件商店物品。',
     Locale.ja: 'ユーザーにショップのアイテムをプレゼントします。',
     Locale.ko: '사용자에게 상점 아이템을 무료로 줍니다.',
+    Locale.es419: 'Regalar a un usuario un artículo de la tienda.',
+    Locale.ptBr: 'Dar um item da loja de graça para um usuário.',
+    Locale.tr: 'Bir kullanıcıya mağaza ürününü ücretsiz ver.',
+    Locale.pl: 'Daj użytkownikowi przedmiot ze sklepu za darmo.',
+    Locale.it: 'Dai gratis un oggetto del negozio a un utente.',
   },
   (
     ChatContext context,
@@ -360,6 +436,11 @@ final _giveItem = ChatCommand(
       Locale.zhCn: '用户。',
       Locale.ja: 'ユーザー。',
       Locale.ko: '사용자.',
+      Locale.es419: 'El usuario.',
+      Locale.ptBr: 'O usuário.',
+      Locale.tr: 'Kullanıcı.',
+      Locale.pl: 'Użytkownik.',
+      Locale.it: 'L\'utente.',
     })
     User target,
     @Description('The shop item.', {
@@ -373,6 +454,11 @@ final _giveItem = ChatCommand(
       Locale.zhCn: '商店物品。',
       Locale.ja: 'ショップのアイテム。',
       Locale.ko: '상점 아이템.',
+      Locale.es419: 'El artículo de la tienda.',
+      Locale.ptBr: 'O item da loja.',
+      Locale.tr: 'Mağaza ürünü.',
+      Locale.pl: 'Przedmiot ze sklepu.',
+      Locale.it: 'L\'oggetto del negozio.',
     })
     @Autocomplete(allItemChoices)
     String name,
@@ -413,6 +499,11 @@ final _takeItem = ChatCommand(
     Locale.zhCn: '收回用户的一件商店物品。',
     Locale.ja: 'ユーザーからショップのアイテムを取り上げます。',
     Locale.ko: '사용자에게서 상점 아이템을 회수합니다.',
+    Locale.es419: 'Quitar a un usuario un artículo de la tienda.',
+    Locale.ptBr: 'Tirar um item da loja de um usuário.',
+    Locale.tr: 'Bir kullanıcıdan mağaza ürününü geri al.',
+    Locale.pl: 'Odbierz użytkownikowi przedmiot ze sklepu.',
+    Locale.it: 'Togli un oggetto del negozio a un utente.',
   },
   (
     ChatContext context,
@@ -427,6 +518,11 @@ final _takeItem = ChatCommand(
       Locale.zhCn: '用户。',
       Locale.ja: 'ユーザー。',
       Locale.ko: '사용자.',
+      Locale.es419: 'El usuario.',
+      Locale.ptBr: 'O usuário.',
+      Locale.tr: 'Kullanıcı.',
+      Locale.pl: 'Użytkownik.',
+      Locale.it: 'L\'utente.',
     })
     User target,
     @Description('The shop item.', {
@@ -440,6 +536,11 @@ final _takeItem = ChatCommand(
       Locale.zhCn: '商店物品。',
       Locale.ja: 'ショップのアイテム。',
       Locale.ko: '상점 아이템.',
+      Locale.es419: 'El artículo de la tienda.',
+      Locale.ptBr: 'O item da loja.',
+      Locale.tr: 'Mağaza ürünü.',
+      Locale.pl: 'Przedmiot ze sklepu.',
+      Locale.it: 'L\'oggetto del negozio.',
     })
     @Autocomplete(allItemChoices)
     String name,
@@ -484,6 +585,11 @@ final _activeUsers = ChatCommand(
     Locale.zhCn: '显示执行命令最多的用户。',
     Locale.ja: 'コマンドを最も多く実行しているユーザーを表示します。',
     Locale.ko: '명령어를 가장 많이 실행한 사용자를 표시합니다.',
+    Locale.es419: 'Mostrar los usuarios que más comandos ejecutan.',
+    Locale.ptBr: 'Mostrar os usuários que mais usam comandos.',
+    Locale.tr: 'En çok komut kullanan kullanıcıları göster.',
+    Locale.pl: 'Pokaż użytkowników, którzy używają najwięcej komend.',
+    Locale.it: 'Mostra gli utenti che usano più comandi.',
   },
   (ChatContext context) async {
     final user = context.user;
@@ -546,6 +652,11 @@ final _eval = ChatCommand(
     Locale.zhCn: '运行 Dart 代码。',
     Locale.ja: 'Dart コードを実行します。',
     Locale.ko: 'Dart 코드를 실행합니다.',
+    Locale.es419: 'Ejecutar código Dart.',
+    Locale.ptBr: 'Executar código Dart.',
+    Locale.tr: 'Dart kodu çalıştır.',
+    Locale.pl: 'Uruchom kod Dart.',
+    Locale.it: 'Esegui codice Dart.',
   },
   (ChatContext context) async {
     final modal = await (context as InteractionChatContext).getModal(
@@ -586,6 +697,12 @@ final _structure = ChatCommand(
     Locale.zhCn: '将此服务器的身份组、频道和权限导出为 JSON。',
     Locale.ja: 'このサーバーのロール、チャンネル、権限を JSON でエクスポートします。',
     Locale.ko: '이 서버의 역할, 채널, 권한을 JSON으로 내보냅니다.',
+    Locale.es419:
+        'Exportar los roles, canales y permisos de este servidor como JSON.',
+    Locale.ptBr: 'Exportar os cargos, canais e permissões deste servidor como JSON.',
+    Locale.tr: 'Bu sunucunun rollerini, kanallarını ve izinlerini JSON olarak dışa aktar.',
+    Locale.pl: 'Wyeksportuj role, kanały i uprawnienia tego serwera jako JSON.',
+    Locale.it: 'Esporta ruoli, canali e permessi di questo server come JSON.',
   },
   checks: [GuildCheck.all()],
   (ChatContext context) async {
@@ -623,6 +740,11 @@ final system = ChatGroup(
     Locale.zhCn: 'Toxbot 内部工具。',
     Locale.ja: 'Toxbot の内部ツールです。',
     Locale.ko: 'Toxbot 내부 도구입니다.',
+    Locale.es419: 'Herramientas internas de Toxbot.',
+    Locale.ptBr: 'Ferramentas internas do Toxbot.',
+    Locale.tr: 'Toxbot için dahili araçlar.',
+    Locale.pl: 'Narzędzia wewnętrzne Toxbota.',
+    Locale.it: 'Strumenti interni di Toxbot.',
   },
   checks: [UserCheck.id(ownerId)],
   children: [

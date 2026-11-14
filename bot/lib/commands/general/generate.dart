@@ -20,6 +20,11 @@ final _password = ChatCommand(
     Locale.zhCn: '生成一个安全的密码。',
     Locale.ja: '安全なパスワードを生成します。',
     Locale.ko: '안전한 비밀번호를 생성합니다.',
+    Locale.es419: 'Generar una contraseña segura.',
+    Locale.ptBr: 'Gerar uma senha segura.',
+    Locale.tr: 'Güvenli bir şifre oluştur.',
+    Locale.pl: 'Wygeneruj bezpieczne hasło.',
+    Locale.it: 'Genera una password sicura.',
   },
   (
     ChatContext context, [
@@ -34,6 +39,11 @@ final _password = ChatCommand(
       Locale.zhCn: '密码长度（8-128，默认 20）。',
       Locale.ja: 'パスワードの長さ（8-128、既定 20）。',
       Locale.ko: '비밀번호 길이 (8-128, 기본값 20).',
+      Locale.es419: 'Longitud de la contraseña (8-128, por defecto 20).',
+      Locale.ptBr: 'Tamanho da senha (8-128, padrão 20).',
+      Locale.tr: 'Şifre uzunluğu (8-128, varsayılan 20).',
+      Locale.pl: 'Długość hasła (8-128, domyślnie 20).',
+      Locale.it: 'Lunghezza della password (8-128, predefinita 20).',
     })
     @UseConverter(IntConverter(min: 8, max: 128))
     int? length,
@@ -48,6 +58,11 @@ final _password = ChatCommand(
       Locale.zhCn: '是否使用 ! # % 等符号（默认是）。',
       Locale.ja: '! # % などの記号を使うか（既定ははい）。',
       Locale.ko: '! # % 같은 기호 사용 여부 (기본값 예).',
+      Locale.es419: 'Si se usan símbolos como ! # % (por defecto sí).',
+      Locale.ptBr: 'Se deve usar símbolos como ! # % (padrão sim).',
+      Locale.tr: '! # % gibi semboller kullanılsın mı (varsayılan evet).',
+      Locale.pl: 'Czy używać symboli takich jak ! # % (domyślnie tak).',
+      Locale.it: 'Se usare simboli come ! # % (predefinito sì).',
     })
     bool? symbols,
   ]) async {
@@ -79,6 +94,11 @@ final _hex = ChatCommand(
     Locale.zhCn: '以十六进制生成随机字节，类似 openssl rand -hex。',
     Locale.ja: 'openssl rand -hex のようにランダムなバイトを 16 進数で生成します。',
     Locale.ko: 'openssl rand -hex처럼 무작위 바이트를 16진수로 생성합니다.',
+    Locale.es419: 'Generar bytes aleatorios en hex, como openssl rand -hex.',
+    Locale.ptBr: 'Gerar bytes aleatórios em hex, como openssl rand -hex.',
+    Locale.tr: 'openssl rand -hex gibi rastgele baytları hex olarak oluştur.',
+    Locale.pl: 'Wygeneruj losowe bajty jako hex, jak openssl rand -hex.',
+    Locale.it: 'Genera byte casuali in hex, come openssl rand -hex.',
   },
   (
     ChatContext context, [
@@ -93,6 +113,11 @@ final _hex = ChatCommand(
       Locale.zhCn: '字节数（1-64，默认 32）。',
       Locale.ja: 'バイト数（1-64、既定 32）。',
       Locale.ko: '바이트 수 (1-64, 기본값 32).',
+      Locale.es419: 'Número de bytes (1-64, por defecto 32).',
+      Locale.ptBr: 'Número de bytes (1-64, padrão 32).',
+      Locale.tr: 'Bayt sayısı (1-64, varsayılan 32).',
+      Locale.pl: 'Liczba bajtów (1-64, domyślnie 32).',
+      Locale.it: 'Numero di byte (1-64, predefinito 32).',
     })
     @UseConverter(IntConverter(min: 1, max: 64))
     int? bytes,
@@ -125,6 +150,11 @@ final _color = ChatCommand(
     Locale.zhCn: '生成一个随机颜色。',
     Locale.ja: 'ランダムな色を生成します。',
     Locale.ko: '무작위 색상을 생성합니다.',
+    Locale.es419: 'Generar un color aleatorio.',
+    Locale.ptBr: 'Gerar uma cor aleatória.',
+    Locale.tr: 'Rastgele bir renk oluştur.',
+    Locale.pl: 'Wygeneruj losowy kolor.',
+    Locale.it: 'Genera un colore casuale.',
   },
   (ChatContext context) async {
     final color = randomColor();
@@ -174,6 +204,11 @@ final generate = ChatGroup(
     Locale.zhCn: '生成密码、随机十六进制值和颜色。',
     Locale.ja: 'パスワード、ランダムな 16 進値、色を生成します。',
     Locale.ko: '비밀번호, 무작위 16진수 값, 색상을 생성합니다.',
+    Locale.es419: 'Generar contraseñas, valores hex aleatorios y colores.',
+    Locale.ptBr: 'Gerar senhas, valores hex aleatórios e cores.',
+    Locale.tr: 'Şifreler, rastgele hex değerleri ve renkler oluştur.',
+    Locale.pl: 'Generuj hasła, losowe wartości hex i kolory.',
+    Locale.it: 'Genera password, valori hex casuali e colori.',
   },
   children: [_password, _hex, _color],
 );

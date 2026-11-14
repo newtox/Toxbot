@@ -16,7 +16,12 @@ final hug = ChatCommand('hug', 'Hug someone.', localizedDescriptions: {
   Locale.hi: 'किसी को गले लगाएँ।',
   Locale.zhCn: '拥抱某人。',
   Locale.ja: '誰かをハグします。',
-  Locale.ko: '누군가를 안아 줍니다.'
+  Locale.ko: '누군가를 안아 줍니다.',
+  Locale.es419: 'Abrazar a alguien.',
+  Locale.ptBr: 'Abraçar alguém.',
+  Locale.tr: 'Birine sarıl.',
+  Locale.pl: 'Uściskaj kogoś.',
+  Locale.it: 'Abbraccia qualcuno.'
 }, (ChatContext context,
     [@Description('The user you want to hug.', {
       Locale.da: 'Brugeren, du vil kramme.',
@@ -28,7 +33,12 @@ final hug = ChatCommand('hug', 'Hug someone.', localizedDescriptions: {
       Locale.hi: 'वह उपयोगकर्ता जिसे आप गले लगाना चाहते हैं।',
       Locale.zhCn: '你想拥抱的用户。',
       Locale.ja: 'ハグしたいユーザー。',
-      Locale.ko: '안아 줄 사용자.'
+      Locale.ko: '안아 줄 사용자.',
+      Locale.es419: 'El usuario al que quieres abrazar.',
+      Locale.ptBr: 'O usuário que você quer abraçar.',
+      Locale.tr: 'Sarılmak istediğin kullanıcı.',
+      Locale.pl: 'Użytkownik, którego chcesz uściskać.',
+      Locale.it: 'L\'utente che vuoi abbracciare.'
     })
     User? user]) async {
   try {

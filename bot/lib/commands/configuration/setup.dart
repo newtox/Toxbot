@@ -22,6 +22,11 @@ final setup = ChatCommand(
     Locale.zhCn: '设置工单、管理、防护和验证。',
     Locale.ja: 'チケット、モデレーション、保護、認証を設定します。',
     Locale.ko: '티켓, 관리, 보호, 인증을 설정합니다.',
+    Locale.es419: 'Configurar tickets, moderación, protección y verificación.',
+    Locale.ptBr: 'Configurar tickets, moderação, proteção e verificação.',
+    Locale.tr: 'Ticket\'ları, moderasyonu, korumayı ve doğrulamayı kur.',
+    Locale.pl: 'Skonfiguruj tickety, moderację, ochronę i weryfikację.',
+    Locale.it: 'Configura ticket, moderazione, protezione e verifica.',
   },
   checks: [
     GuildCheck.all(),
@@ -46,6 +51,12 @@ final setup = ChatCommand(
       Locale.zhCn: '团队身份组。不填时 Toxbot 使用拥有管理权限的身份组。',
       Locale.ja: 'チームのロール。指定しない場合はモデレーター権限を持つロールを使います。',
       Locale.ko: '팀 역할. 비워 두면 관리 권한이 있는 역할을 사용합니다.',
+      Locale.es419:
+          'El rol del equipo. Sin él, Toxbot usa roles con permisos de moderación.',
+      Locale.ptBr: 'O cargo da equipe. Sem ele, o Toxbot usa cargos com direitos de moderador.',
+      Locale.tr: 'Ekip rolü. Belirtilmezse Toxbot moderatör yetkili rolleri kullanır.',
+      Locale.pl: 'Rola zespołu. Bez niej Toxbot użyje ról z uprawnieniami moderatora.',
+      Locale.it: 'Il ruolo del team. Senza, Toxbot usa i ruoli con permessi da moderatore.',
     })
     Role? team,
   ]) async {

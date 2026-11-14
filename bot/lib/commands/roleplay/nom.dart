@@ -16,7 +16,12 @@ final nom = ChatCommand('nom', 'Nom someone.', localizedDescriptions: {
   Locale.hi: 'किसी को कुतरें।',
   Locale.zhCn: '啃某人。',
   Locale.ja: '誰かをかじります。',
-  Locale.ko: '누군가를 냠냠합니다.'
+  Locale.ko: '누군가를 냠냠합니다.',
+  Locale.es419: 'Mordisquear a alguien.',
+  Locale.ptBr: 'Dar uma mordidinha em alguém.',
+  Locale.tr: 'Birini kemir.',
+  Locale.pl: 'Podgryź kogoś.',
+  Locale.it: 'Sgranocchia qualcuno.'
 }, (ChatContext context,
     [@Description('The user you want to nom.', {
       Locale.da: 'Brugeren, du vil gnaske på.',
@@ -28,7 +33,12 @@ final nom = ChatCommand('nom', 'Nom someone.', localizedDescriptions: {
       Locale.hi: 'वह उपयोगकर्ता जिसे आप कुतरना चाहते हैं।',
       Locale.zhCn: '你想啃的用户。',
       Locale.ja: 'かじりたいユーザー。',
-      Locale.ko: '냠냠할 사용자.'
+      Locale.ko: '냠냠할 사용자.',
+      Locale.es419: 'El usuario al que quieres mordisquear.',
+      Locale.ptBr: 'O usuário em quem você quer dar uma mordidinha.',
+      Locale.tr: 'Kemirmek istediğin kullanıcı.',
+      Locale.pl: 'Użytkownik, którego chcesz podgryźć.',
+      Locale.it: 'L\'utente che vuoi sgranocchiare.'
     })
     User? user]) async {
   try {

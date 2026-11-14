@@ -14,7 +14,12 @@ final someone =
   Locale.hi: 'किसी रैंडम सदस्य को मेंशन करें।',
   Locale.zhCn: '随机提及一名成员。',
   Locale.ja: 'ランダムなメンバーをメンションします。',
-  Locale.ko: '무작위 멤버를 멘션합니다.'
+  Locale.ko: '무작위 멤버를 멘션합니다.',
+  Locale.es419: 'Mencionar a un miembro al azar.',
+  Locale.ptBr: 'Mencionar um membro aleatório.',
+  Locale.tr: 'Rastgele bir üyeden bahset.',
+  Locale.pl: 'Oznacz losowego członka.',
+  Locale.it: 'Menziona un membro a caso.'
 }, checks: [
   GuildCheck.all()
 ], (ChatContext context) async {

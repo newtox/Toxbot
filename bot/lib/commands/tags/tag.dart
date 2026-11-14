@@ -23,6 +23,11 @@ final _create = ChatCommand(
     Locale.zhCn: '创建一个新标签。',
     Locale.ja: '新しいタグを作成します。',
     Locale.ko: '새 태그를 만듭니다.',
+    Locale.es419: 'Crear un tag nuevo.',
+    Locale.ptBr: 'Criar uma nova tag.',
+    Locale.tr: 'Yeni bir tag oluştur.',
+    Locale.pl: 'Utwórz nowy tag.',
+    Locale.it: 'Crea un nuovo tag.',
   },
   (
     ChatContext context,
@@ -37,6 +42,11 @@ final _create = ChatCommand(
       Locale.zhCn: '标签名称（a-z、0-9、_ 和 -）。',
       Locale.ja: 'タグの名前（a-z、0-9、_、-）。',
       Locale.ko: '태그 이름 (a-z, 0-9, _, -).',
+      Locale.es419: 'El nombre del tag (a-z, 0-9, _ y -).',
+      Locale.ptBr: 'O nome da tag (a-z, 0-9, _ e -).',
+      Locale.tr: 'Tag\'in adı (a-z, 0-9, _ ve -).',
+      Locale.pl: 'Nazwa tagu (a-z, 0-9, _ i -).',
+      Locale.it: 'Il nome del tag (a-z, 0-9, _ e -).',
     })
     String name,
   ) async {
@@ -125,6 +135,11 @@ final _edit = ChatCommand(
     Locale.zhCn: '编辑你的一个标签。',
     Locale.ja: '自分のタグを編集します。',
     Locale.ko: '내 태그를 수정합니다.',
+    Locale.es419: 'Editar uno de tus tags.',
+    Locale.ptBr: 'Editar uma das suas tags.',
+    Locale.tr: 'Tag\'lerinden birini düzenle.',
+    Locale.pl: 'Edytuj jeden ze swoich tagów.',
+    Locale.it: 'Modifica uno dei tuoi tag.',
   },
   (
     ChatContext context,
@@ -139,6 +154,11 @@ final _edit = ChatCommand(
       Locale.zhCn: '你想编辑的标签。',
       Locale.ja: '編集したいタグ。',
       Locale.ko: '수정할 태그.',
+      Locale.es419: 'El tag que quieres editar.',
+      Locale.ptBr: 'A tag que você quer editar.',
+      Locale.tr: 'Düzenlemek istediğin tag.',
+      Locale.pl: 'Tag, który chcesz edytować.',
+      Locale.it: 'Il tag che vuoi modificare.',
     })
     @Autocomplete(ownTags)
     String name,
@@ -212,6 +232,11 @@ final _delete = ChatCommand(
     Locale.zhCn: '删除你的一个标签。',
     Locale.ja: '自分のタグを削除します。',
     Locale.ko: '내 태그를 삭제합니다.',
+    Locale.es419: 'Borrar uno de tus tags.',
+    Locale.ptBr: 'Apagar uma das suas tags.',
+    Locale.tr: 'Tag\'lerinden birini sil.',
+    Locale.pl: 'Usuń jeden ze swoich tagów.',
+    Locale.it: 'Elimina uno dei tuoi tag.',
   },
   (
     ChatContext context,
@@ -226,6 +251,11 @@ final _delete = ChatCommand(
       Locale.zhCn: '你想删除的标签。',
       Locale.ja: '削除したいタグ。',
       Locale.ko: '삭제할 태그.',
+      Locale.es419: 'El tag que quieres borrar.',
+      Locale.ptBr: 'A tag que você quer apagar.',
+      Locale.tr: 'Silmek istediğin tag.',
+      Locale.pl: 'Tag, który chcesz usunąć.',
+      Locale.it: 'Il tag che vuoi eliminare.',
     })
     @Autocomplete(ownTags)
     String name,
@@ -272,6 +302,11 @@ final _show = ChatCommand(
     Locale.zhCn: '显示一个标签。',
     Locale.ja: 'タグを表示します。',
     Locale.ko: '태그를 표시합니다.',
+    Locale.es419: 'Mostrar un tag.',
+    Locale.ptBr: 'Mostrar uma tag.',
+    Locale.tr: 'Bir tag göster.',
+    Locale.pl: 'Pokaż tag.',
+    Locale.it: 'Mostra un tag.',
   },
   (
     ChatContext context,
@@ -286,6 +321,11 @@ final _show = ChatCommand(
       Locale.zhCn: '你想显示的标签。',
       Locale.ja: '表示したいタグ。',
       Locale.ko: '표시할 태그.',
+      Locale.es419: 'El tag que quieres mostrar.',
+      Locale.ptBr: 'A tag que você quer mostrar.',
+      Locale.tr: 'Göstermek istediğin tag.',
+      Locale.pl: 'Tag, który chcesz pokazać.',
+      Locale.it: 'Il tag che vuoi mostrare.',
     })
     @Autocomplete(shownTags)
     String name,
@@ -367,6 +407,11 @@ final _info = ChatCommand(
     Locale.zhCn: '显示标签的信息。',
     Locale.ja: 'タグの情報を表示します。',
     Locale.ko: '태그 정보를 표시합니다.',
+    Locale.es419: 'Mostrar información sobre un tag.',
+    Locale.ptBr: 'Mostrar informações sobre uma tag.',
+    Locale.tr: 'Bir tag hakkında bilgi göster.',
+    Locale.pl: 'Pokaż informacje o tagu.',
+    Locale.it: 'Mostra informazioni su un tag.',
   },
   (
     ChatContext context,
@@ -381,6 +426,11 @@ final _info = ChatCommand(
       Locale.zhCn: '你想了解的标签。',
       Locale.ja: '詳しく知りたいタグ。',
       Locale.ko: '자세히 알고 싶은 태그.',
+      Locale.es419: 'El tag del que quieres saber más.',
+      Locale.ptBr: 'A tag sobre a qual você quer saber mais.',
+      Locale.tr: 'Hakkında daha fazla bilgi istediğin tag.',
+      Locale.pl: 'Tag, o którym chcesz wiedzieć więcej.',
+      Locale.it: 'Il tag su cui vuoi saperne di più.',
     })
     @Autocomplete(allTags)
     String name,
@@ -443,6 +493,11 @@ final _list = ChatCommand(
     Locale.zhCn: '列出某个用户的标签。',
     Locale.ja: 'ユーザーのタグを一覧表示します。',
     Locale.ko: '사용자의 태그 목록을 표시합니다.',
+    Locale.es419: 'Listar los tags de un usuario.',
+    Locale.ptBr: 'Listar as tags de um usuário.',
+    Locale.tr: 'Bir kullanıcının tag\'lerini listele.',
+    Locale.pl: 'Wypisz tagi użytkownika.',
+    Locale.it: 'Elenca i tag di un utente.',
   },
   (
     ChatContext context, [
@@ -457,6 +512,11 @@ final _list = ChatCommand(
       Locale.zhCn: '你想查看谁的标签。默认是你自己。',
       Locale.ja: '見たいタグの持ち主。既定は自分。',
       Locale.ko: '태그를 볼 사용자. 기본값은 나.',
+      Locale.es419: 'De quién quieres ver los tags. Por defecto, los tuyos.',
+      Locale.ptBr: 'De quem são as tags que você quer ver. Por padrão, as suas.',
+      Locale.tr: 'Kimin tag\'lerini görmek istediğin. Varsayılan olarak seninkiler.',
+      Locale.pl: 'Czyje tagi chcesz zobaczyć. Domyślnie twoje.',
+      Locale.it: 'Di chi vuoi vedere i tag. Di default i tuoi.',
     })
     User? target,
   ]) async {
@@ -524,6 +584,11 @@ final _transfer = ChatCommand(
     Locale.zhCn: '把你的一个标签转给别人。',
     Locale.ja: '自分のタグを他の人に譲ります。',
     Locale.ko: '내 태그를 다른 사람에게 넘깁니다.',
+    Locale.es419: 'Darle uno de tus tags a otra persona.',
+    Locale.ptBr: 'Dar uma das suas tags para outra pessoa.',
+    Locale.tr: 'Tag\'lerinden birini başkasına ver.',
+    Locale.pl: 'Przekaż jeden ze swoich tagów komuś innemu.',
+    Locale.it: 'Dai uno dei tuoi tag a qualcun altro.',
   },
   (
     ChatContext context,
@@ -538,6 +603,11 @@ final _transfer = ChatCommand(
       Locale.zhCn: '你想转让的标签。',
       Locale.ja: '譲りたいタグ。',
       Locale.ko: '넘길 태그.',
+      Locale.es419: 'El tag que quieres regalar.',
+      Locale.ptBr: 'A tag que você quer dar.',
+      Locale.tr: 'Vermek istediğin tag.',
+      Locale.pl: 'Tag, który chcesz przekazać.',
+      Locale.it: 'Il tag che vuoi cedere.',
     })
     @Autocomplete(ownTags)
     String name,
@@ -552,6 +622,11 @@ final _transfer = ChatCommand(
       Locale.zhCn: '标签的新主人。',
       Locale.ja: 'タグの新しい持ち主。',
       Locale.ko: '태그의 새 주인.',
+      Locale.es419: 'El nuevo dueño del tag.',
+      Locale.ptBr: 'O novo dono da tag.',
+      Locale.tr: 'Tag\'in yeni sahibi.',
+      Locale.pl: 'Nowy właściciel tagu.',
+      Locale.it: 'Il nuovo proprietario del tag.',
     })
     User target,
   ) async {
@@ -617,6 +692,11 @@ final _embed = ChatCommand(
     Locale.zhCn: '以嵌入形式显示标签。',
     Locale.ja: 'タグを埋め込みで表示します。',
     Locale.ko: '태그를 임베드로 표시합니다.',
+    Locale.es419: 'Mostrar un tag como embed.',
+    Locale.ptBr: 'Mostrar uma tag como embed.',
+    Locale.tr: 'Bir tag\'i embed olarak göster.',
+    Locale.pl: 'Pokaż tag jako embed.',
+    Locale.it: 'Mostra un tag come embed.',
   },
   (
     ChatContext context,
@@ -631,6 +711,11 @@ final _embed = ChatCommand(
       Locale.zhCn: '你想修改的标签。',
       Locale.ja: '変更したいタグ。',
       Locale.ko: '변경할 태그.',
+      Locale.es419: 'El tag que quieres cambiar.',
+      Locale.ptBr: 'A tag que você quer mudar.',
+      Locale.tr: 'Değiştirmek istediğin tag.',
+      Locale.pl: 'Tag, który chcesz zmienić.',
+      Locale.it: 'Il tag che vuoi modificare.',
     })
     @Autocomplete(ownTags)
     String name,
@@ -645,6 +730,11 @@ final _embed = ChatCommand(
       Locale.zhCn: '标签是否以嵌入形式显示。',
       Locale.ja: 'タグを埋め込みで表示するか。',
       Locale.ko: '태그를 임베드로 표시할지 여부.',
+      Locale.es419: 'Si el tag se muestra como embed.',
+      Locale.ptBr: 'Se a tag é mostrada como embed.',
+      Locale.tr: 'Tag\'in embed olarak gösterilip gösterilmeyeceği.',
+      Locale.pl: 'Czy tag ma być pokazywany jako embed.',
+      Locale.it: 'Se il tag viene mostrato come embed.',
     })
     bool enabled, [
     @Description('Hex color of the embed, e.g. #abc123.', {
@@ -658,6 +748,11 @@ final _embed = ChatCommand(
       Locale.zhCn: '嵌入的十六进制颜色，例如 #abc123。',
       Locale.ja: '埋め込みの 16 進カラー（例: #abc123）。',
       Locale.ko: '임베드의 16진수 색상, 예: #abc123.',
+      Locale.es419: 'Color hex del embed, p. ej. #abc123.',
+      Locale.ptBr: 'Cor hex do embed, por exemplo #abc123.',
+      Locale.tr: 'Embed\'in hex rengi, örneğin #abc123.',
+      Locale.pl: 'Kolor hex embeda, np. #abc123.',
+      Locale.it: 'Colore hex dell\'embed, ad es. #abc123.',
     })
     String? color,
     @Description('Link to an image shown in the embed.', {
@@ -671,6 +766,11 @@ final _embed = ChatCommand(
       Locale.zhCn: '嵌入中显示的图片链接。',
       Locale.ja: '埋め込みに表示する画像のリンク。',
       Locale.ko: '임베드에 표시할 이미지 링크.',
+      Locale.es419: 'Enlace a una imagen que se muestra en el embed.',
+      Locale.ptBr: 'Link para uma imagem mostrada no embed.',
+      Locale.tr: 'Embed\'de gösterilecek bir resmin bağlantısı.',
+      Locale.pl: 'Link do obrazka pokazywanego w embedzie.',
+      Locale.it: 'Link a un\'immagine mostrata nell\'embed.',
     })
     String? image,
   ]) async {
@@ -737,6 +837,11 @@ final _report = ChatCommand(
     Locale.zhCn: '举报内容不当的标签。',
     Locale.ja: '不適切な内容のタグを報告します。',
     Locale.ko: '부적절한 태그를 신고합니다.',
+    Locale.es419: 'Denunciar un tag con contenido inapropiado.',
+    Locale.ptBr: 'Denunciar uma tag com conteúdo impróprio.',
+    Locale.tr: 'Uygunsuz içerikli bir tag\'i bildir.',
+    Locale.pl: 'Zgłoś tag z nieodpowiednią treścią.',
+    Locale.it: 'Segnala un tag con contenuti inappropriati.',
   },
   (
     ChatContext context,
@@ -751,6 +856,11 @@ final _report = ChatCommand(
       Locale.zhCn: '你想举报的标签。',
       Locale.ja: '報告したいタグ。',
       Locale.ko: '신고할 태그.',
+      Locale.es419: 'El tag que quieres denunciar.',
+      Locale.ptBr: 'A tag que você quer denunciar.',
+      Locale.tr: 'Bildirmek istediğin tag.',
+      Locale.pl: 'Tag, który chcesz zgłosić.',
+      Locale.it: 'Il tag che vuoi segnalare.',
     })
     @Autocomplete(allTags)
     String name,
@@ -765,6 +875,11 @@ final _report = ChatCommand(
       Locale.zhCn: '你举报此标签的原因。',
       Locale.ja: 'このタグを報告する理由。',
       Locale.ko: '이 태그를 신고하는 이유.',
+      Locale.es419: 'Por qué denuncias este tag.',
+      Locale.ptBr: 'Por que você está denunciando esta tag.',
+      Locale.tr: 'Bu tag\'i neden bildirdiğin.',
+      Locale.pl: 'Dlaczego zgłaszasz ten tag.',
+      Locale.it: 'Perché segnali questo tag.',
     })
     String reason,
   ) async {
@@ -856,6 +971,11 @@ final _block = ChatCommand(
     Locale.zhCn: '在此服务器屏蔽一个标签。',
     Locale.ja: 'このサーバーでタグをブロックします。',
     Locale.ko: '이 서버에서 태그를 차단합니다.',
+    Locale.es419: 'Bloquear un tag en este servidor.',
+    Locale.ptBr: 'Bloquear uma tag neste servidor.',
+    Locale.tr: 'Bu sunucuda bir tag\'i engelle.',
+    Locale.pl: 'Zablokuj tag na tym serwerze.',
+    Locale.it: 'Blocca un tag su questo server.',
   },
   checks: [
     GuildCheck.all(),
@@ -874,6 +994,11 @@ final _block = ChatCommand(
       Locale.zhCn: '你想屏蔽的标签。',
       Locale.ja: 'ブロックしたいタグ。',
       Locale.ko: '차단할 태그.',
+      Locale.es419: 'El tag que quieres bloquear.',
+      Locale.ptBr: 'A tag que você quer bloquear.',
+      Locale.tr: 'Engellemek istediğin tag.',
+      Locale.pl: 'Tag, który chcesz zablokować.',
+      Locale.it: 'Il tag che vuoi bloccare.',
     })
     @Autocomplete(allTags)
     String name,
@@ -912,6 +1037,11 @@ final _unblock = ChatCommand(
     Locale.zhCn: '在此服务器解除屏蔽一个标签。',
     Locale.ja: 'このサーバーでタグのブロックを解除します。',
     Locale.ko: '이 서버에서 태그 차단을 해제합니다.',
+    Locale.es419: 'Desbloquear un tag en este servidor.',
+    Locale.ptBr: 'Desbloquear uma tag neste servidor.',
+    Locale.tr: 'Bu sunucuda bir tag\'in engelini kaldır.',
+    Locale.pl: 'Odblokuj tag na tym serwerze.',
+    Locale.it: 'Sblocca un tag su questo server.',
   },
   checks: [
     GuildCheck.all(),
@@ -930,6 +1060,11 @@ final _unblock = ChatCommand(
       Locale.zhCn: '你想解除屏蔽的标签。',
       Locale.ja: 'ブロックを解除したいタグ。',
       Locale.ko: '차단을 해제할 태그.',
+      Locale.es419: 'El tag que quieres desbloquear.',
+      Locale.ptBr: 'A tag que você quer desbloquear.',
+      Locale.tr: 'Engelini kaldırmak istediğin tag.',
+      Locale.pl: 'Tag, który chcesz odblokować.',
+      Locale.it: 'Il tag che vuoi sbloccare.',
     })
     @Autocomplete(allTags)
     String name,
@@ -968,6 +1103,11 @@ final _toggle = ChatCommand(
     Locale.zhCn: '为此服务器开启或关闭标签。',
     Locale.ja: 'このサーバーのタグをオンまたはオフにします。',
     Locale.ko: '이 서버의 태그를 켜거나 끕니다.',
+    Locale.es419: 'Activar o desactivar los tags en este servidor.',
+    Locale.ptBr: 'Ativar ou desativar as tags neste servidor.',
+    Locale.tr: 'Bu sunucuda tag\'leri aç ya da kapat.',
+    Locale.pl: 'Włącz albo wyłącz tagi na tym serwerze.',
+    Locale.it: 'Attiva o disattiva i tag su questo server.',
   },
   checks: [
     GuildCheck.all(),
@@ -986,6 +1126,11 @@ final _toggle = ChatCommand(
       Locale.zhCn: '此服务器是否可以使用标签。',
       Locale.ja: 'このサーバーでタグを使えるか。',
       Locale.ko: '이 서버에서 태그를 쓸 수 있는지 여부.',
+      Locale.es419: 'Si los tags se pueden usar en este servidor.',
+      Locale.ptBr: 'Se as tags podem ser usadas neste servidor.',
+      Locale.tr: 'Bu sunucuda tag\'lerin kullanılıp kullanılamayacağı.',
+      Locale.pl: 'Czy tagi mogą być używane na tym serwerze.',
+      Locale.it: 'Se i tag possono essere usati su questo server.',
     })
     bool enabled,
   ) async {
@@ -1018,6 +1163,11 @@ final _slots = ChatCommand(
     Locale.zhCn: '用积分购买更多标签位置。',
     Locale.ja: 'クレジットでタグの枠を増やします。',
     Locale.ko: '크레딧으로 태그 슬롯을 더 구매합니다.',
+    Locale.es419: 'Compra más espacio para tus tags con créditos.',
+    Locale.ptBr: 'Comprar mais espaço para suas tags com créditos.',
+    Locale.tr: 'Kredilerle tag\'lerin için daha fazla yer satın al.',
+    Locale.pl: 'Kup za kredyty więcej miejsca na swoje tagi.',
+    Locale.it: 'Compra con i crediti più spazio per i tuoi tag.',
   },
   (ChatContext context) async {
     final user = context.user;
@@ -1096,6 +1246,11 @@ final tag = ChatGroup(
     Locale.zhCn: '创建和使用标签，也就是你自己的命令。',
     Locale.ja: 'タグ（自分だけのコマンド）を作成して使います。',
     Locale.ko: '나만의 명령어인 태그를 만들고 사용합니다.',
+    Locale.es419: 'Crear y usar tags, tus propios comandos.',
+    Locale.ptBr: 'Criar e usar tags, seus próprios comandos.',
+    Locale.tr: 'Kendi komutların olan tag\'leri oluştur ve kullan.',
+    Locale.pl: 'Twórz i używaj tagów, czyli własnych komend.',
+    Locale.it: 'Crea e usa tag, i tuoi comandi personali.',
   },
   children: [
     _create,

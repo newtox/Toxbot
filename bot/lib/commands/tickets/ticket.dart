@@ -17,6 +17,11 @@ final _close = ChatCommand(
     Locale.zhCn: '关闭此工单。',
     Locale.ja: 'このチケットを閉じます。',
     Locale.ko: '이 티켓을 닫습니다.',
+    Locale.es419: 'Cerrar este ticket.',
+    Locale.ptBr: 'Fechar este ticket.',
+    Locale.tr: 'Bu ticket\'ı kapat.',
+    Locale.pl: 'Zamknij ten ticket.',
+    Locale.it: 'Chiudi questo ticket.',
   },
   checks: [GuildCheck.all()],
   (
@@ -32,6 +37,11 @@ final _close = ChatCommand(
       Locale.zhCn: '关闭工单的原因。',
       Locale.ja: 'チケットを閉じる理由。',
       Locale.ko: '티켓을 닫는 이유.',
+      Locale.es419: 'Por qué se cierra el ticket.',
+      Locale.ptBr: 'Por que o ticket está sendo fechado.',
+      Locale.tr: 'Ticket\'ın neden kapatıldığı.',
+      Locale.pl: 'Dlaczego ticket jest zamykany.',
+      Locale.it: 'Perché il ticket viene chiuso.',
     })
     String? reason,
   ]) async {
@@ -72,6 +82,11 @@ final _add = ChatCommand(
     Locale.zhCn: '将一名成员加入此工单。',
     Locale.ja: 'このチケットにメンバーを追加します。',
     Locale.ko: '이 티켓에 멤버를 추가합니다.',
+    Locale.es419: 'Añadir a un miembro a este ticket.',
+    Locale.ptBr: 'Adicionar um membro a este ticket.',
+    Locale.tr: 'Bu ticket\'a bir üye ekle.',
+    Locale.pl: 'Dodaj członka do tego ticketu.',
+    Locale.it: 'Aggiungi un membro a questo ticket.',
   },
   checks: [GuildCheck.all()],
   (
@@ -87,6 +102,11 @@ final _add = ChatCommand(
       Locale.zhCn: '成员。',
       Locale.ja: 'メンバー。',
       Locale.ko: '멤버.',
+      Locale.es419: 'El miembro.',
+      Locale.ptBr: 'O membro.',
+      Locale.tr: 'Üye.',
+      Locale.pl: 'Członek.',
+      Locale.it: 'Il membro.',
     })
     Member member,
   ) async {
@@ -130,6 +150,11 @@ final _remove = ChatCommand(
     Locale.zhCn: '将一名成员移出此工单。',
     Locale.ja: 'このチケットからメンバーを外します。',
     Locale.ko: '이 티켓에서 멤버를 제거합니다.',
+    Locale.es419: 'Quitar a un miembro de este ticket.',
+    Locale.ptBr: 'Remover um membro deste ticket.',
+    Locale.tr: 'Bu ticket\'tan bir üyeyi çıkar.',
+    Locale.pl: 'Usuń członka z tego ticketu.',
+    Locale.it: 'Rimuovi un membro da questo ticket.',
   },
   checks: [GuildCheck.all()],
   (
@@ -145,6 +170,11 @@ final _remove = ChatCommand(
       Locale.zhCn: '成员。',
       Locale.ja: 'メンバー。',
       Locale.ko: '멤버.',
+      Locale.es419: 'El miembro.',
+      Locale.ptBr: 'O membro.',
+      Locale.tr: 'Üye.',
+      Locale.pl: 'Członek.',
+      Locale.it: 'Il membro.',
     })
     Member member,
   ) async {
@@ -183,6 +213,11 @@ final ticket = ChatGroup(
     Locale.zhCn: '管理此频道中的工单。',
     Locale.ja: 'このチャンネルのチケットを管理します。',
     Locale.ko: '이 채널의 티켓을 관리합니다.',
+    Locale.es419: 'Gestionar el ticket de este canal.',
+    Locale.ptBr: 'Gerenciar o ticket neste canal.',
+    Locale.tr: 'Bu kanaldaki ticket\'ı yönet.',
+    Locale.pl: 'Zarządzaj ticketem na tym kanale.',
+    Locale.it: 'Gestisci il ticket in questo canale.',
   },
   children: [_close, _add, _remove],
 );

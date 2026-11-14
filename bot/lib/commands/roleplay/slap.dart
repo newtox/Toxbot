@@ -16,7 +16,12 @@ final slap = ChatCommand('slap', 'Slap someone.', localizedDescriptions: {
   Locale.hi: 'किसी को थप्पड़ मारें।',
   Locale.zhCn: '扇某人耳光。',
   Locale.ja: '誰かをビンタします。',
-  Locale.ko: '누군가의 뺨을 때립니다.'
+  Locale.ko: '누군가의 뺨을 때립니다.',
+  Locale.es419: 'Abofetear a alguien.',
+  Locale.ptBr: 'Dar um tapa em alguém.',
+  Locale.tr: 'Birine tokat at.',
+  Locale.pl: 'Daj komuś klapsa.',
+  Locale.it: 'Dai uno schiaffo a qualcuno.'
 }, (ChatContext context,
     [@Description('The user you want to slap.', {
       Locale.da: 'Brugeren, du vil give en lussing.',
@@ -28,7 +33,12 @@ final slap = ChatCommand('slap', 'Slap someone.', localizedDescriptions: {
       Locale.hi: 'वह उपयोगकर्ता जिसे आप थप्पड़ मारना चाहते हैं।',
       Locale.zhCn: '你想扇耳光的用户。',
       Locale.ja: 'ビンタしたいユーザー。',
-      Locale.ko: '뺨을 때릴 사용자.'
+      Locale.ko: '뺨을 때릴 사용자.',
+      Locale.es419: 'El usuario al que quieres abofetear.',
+      Locale.ptBr: 'O usuário em quem você quer dar um tapa.',
+      Locale.tr: 'Tokat atmak istediğin kullanıcı.',
+      Locale.pl: 'Użytkownik, któremu chcesz dać klapsa.',
+      Locale.it: 'L\'utente a cui vuoi dare uno schiaffo.'
     })
     User? user]) async {
   try {

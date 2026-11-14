@@ -15,6 +15,7 @@ class BotSetupController extends Controller
     public const LOCALES = [
         'da_dk' => 'da', 'de_de' => 'de', 'en_us' => 'en', 'es_es' => 'es', 'fr_fr' => 'fr',
         'hi_hi' => 'hi', 'ja_jp' => 'ja', 'ko_ko' => 'ko', 'ru_ru' => 'ru', 'zh_cn' => 'zh',
+        'it_it' => 'it', 'pl_pl' => 'pl', 'pt_br' => 'pt', 'tr_tr' => 'tr',
     ];
 
     public function __invoke(Request $request, AutoSetup $setup): JsonResponse

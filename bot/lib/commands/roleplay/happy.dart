@@ -15,7 +15,12 @@ final happy = ChatCommand('happy', 'Be happy.', localizedDescriptions: {
   Locale.hi: 'खुश हों।',
   Locale.zhCn: '开心。',
   Locale.ja: '喜びます。',
-  Locale.ko: '기뻐합니다.'
+  Locale.ko: '기뻐합니다.',
+  Locale.es419: 'Estar feliz.',
+  Locale.ptBr: 'Ficar feliz.',
+  Locale.tr: 'Mutlu ol.',
+  Locale.pl: 'Ciesz się.',
+  Locale.it: 'Sii felice.'
 }, (ChatContext context) async {
   try {
     final imageUrl = await fetchNekos('happy');

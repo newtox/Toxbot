@@ -16,7 +16,12 @@ final bully = ChatCommand('bully', 'Bully someone.', localizedDescriptions: {
   Locale.hi: 'किसी को परेशान करें।',
   Locale.zhCn: '欺负某人。',
   Locale.ja: '誰かをからかいます。',
-  Locale.ko: '누군가를 괴롭힙니다.'
+  Locale.ko: '누군가를 괴롭힙니다.',
+  Locale.es419: 'Molestar a alguien.',
+  Locale.ptBr: 'Provocar alguém.',
+  Locale.tr: 'Biriyle uğraş.',
+  Locale.pl: 'Podokuczaj komuś.',
+  Locale.it: 'Prendi in giro qualcuno.'
 }, (ChatContext context,
     [@Description('The user you want to bully.', {
       Locale.da: 'Brugeren, du vil drille.',
@@ -28,7 +33,12 @@ final bully = ChatCommand('bully', 'Bully someone.', localizedDescriptions: {
       Locale.hi: 'वह उपयोगकर्ता जिसे आप परेशान करना चाहते हैं।',
       Locale.zhCn: '你想欺负的用户。',
       Locale.ja: 'からかいたいユーザー。',
-      Locale.ko: '괴롭힐 사용자.'
+      Locale.ko: '괴롭힐 사용자.',
+      Locale.es419: 'El usuario al que quieres molestar.',
+      Locale.ptBr: 'O usuário que você quer provocar.',
+      Locale.tr: 'Uğraşmak istediğin kullanıcı.',
+      Locale.pl: 'Użytkownik, któremu chcesz dokuczyć.',
+      Locale.it: 'L\'utente che vuoi prendere in giro.'
     })
     User? user]) async {
   try {

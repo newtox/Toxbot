@@ -20,6 +20,11 @@ final _warn = ChatCommand(
     Locale.zhCn: '警告一名成员。',
     Locale.ja: 'メンバーに警告します。',
     Locale.ko: '멤버에게 경고합니다.',
+    Locale.es419: 'Advertir a un miembro.',
+    Locale.ptBr: 'Advertir um membro.',
+    Locale.tr: 'Bir üyeyi uyar.',
+    Locale.pl: 'Ostrzeż członka.',
+    Locale.it: 'Avverti un membro.',
   },
   checks: [GuildCheck.all(), PermissionsCheck(Permissions.moderateMembers)],
   (ChatContext context,
@@ -34,6 +39,11 @@ final _warn = ChatCommand(
             Locale.zhCn: '成员。',
             Locale.ja: 'メンバー。',
             Locale.ko: '멤버.',
+            Locale.es419: 'El miembro.',
+            Locale.ptBr: 'O membro.',
+            Locale.tr: 'Üye.',
+            Locale.pl: 'Członek.',
+            Locale.it: 'Il membro.',
           })
           Member member,
           [@Description('The reason, shown in the modlog.', {
@@ -47,6 +57,11 @@ final _warn = ChatCommand(
             Locale.zhCn: '原因，会显示在管理日志中。',
             Locale.ja: '理由。モデレーションログに表示されます。',
             Locale.ko: '사유. 관리 로그에 표시됩니다.',
+            Locale.es419: 'El motivo, se muestra en el registro de moderación.',
+            Locale.ptBr: 'O motivo, mostrado no registro de moderação.',
+            Locale.tr: 'Moderasyon kaydında gösterilen sebep.',
+            Locale.pl: 'Powód, widoczny w logu moderacji.',
+            Locale.it: 'Il motivo, mostrato nel modlog.',
           })
           String? reason]) =>
       runModerationCommand(context,
@@ -67,6 +82,11 @@ final _timeout = ChatCommand(
     Locale.zhCn: '禁言一名成员。',
     Locale.ja: 'メンバーをタイムアウトします。',
     Locale.ko: '멤버를 타임아웃합니다.',
+    Locale.es419: 'Aislar temporalmente a un miembro.',
+    Locale.ptBr: 'Colocar um membro de castigo.',
+    Locale.tr: 'Bir üyeyi zaman aşımına al.',
+    Locale.pl: 'Wycisz członka.',
+    Locale.it: 'Metti un membro in timeout.',
   },
   checks: [GuildCheck.all(), PermissionsCheck(Permissions.moderateMembers)],
   (ChatContext context,
@@ -81,6 +101,11 @@ final _timeout = ChatCommand(
         Locale.zhCn: '成员。',
         Locale.ja: 'メンバー。',
         Locale.ko: '멤버.',
+        Locale.es419: 'El miembro.',
+        Locale.ptBr: 'O membro.',
+        Locale.tr: 'Üye.',
+        Locale.pl: 'Członek.',
+        Locale.it: 'Il membro.',
       })
       Member member,
       @Description('Duration, e.g. 10m, 2h, 7d.', {
@@ -94,6 +119,11 @@ final _timeout = ChatCommand(
         Locale.zhCn: '时长，例如 10m、2h、7d。',
         Locale.ja: '期間（例: 10m、2h、7d）。',
         Locale.ko: '기간, 예: 10m, 2h, 7d.',
+        Locale.es419: 'Duración, p. ej. 10m, 2h, 7d.',
+        Locale.ptBr: 'Duração, por exemplo 10m, 2h, 7d.',
+        Locale.tr: 'Süre, örneğin 10m, 2h, 7d.',
+        Locale.pl: 'Czas trwania, np. 10m, 2h, 7d.',
+        Locale.it: 'Durata, ad es. 10m, 2h, 7d.',
       })
       String duration,
       [@Description('The reason, shown in the modlog.', {
@@ -107,6 +137,11 @@ final _timeout = ChatCommand(
         Locale.zhCn: '原因，会显示在管理日志中。',
         Locale.ja: '理由。モデレーションログに表示されます。',
         Locale.ko: '사유. 관리 로그에 표시됩니다.',
+        Locale.es419: 'El motivo, se muestra en el registro de moderación.',
+        Locale.ptBr: 'O motivo, mostrado no registro de moderação.',
+        Locale.tr: 'Moderasyon kaydında gösterilen sebep.',
+        Locale.pl: 'Powód, widoczny w logu moderacji.',
+        Locale.it: 'Il motivo, mostrato nel modlog.',
       })
       String? reason]) async {
     final parsed = parseOptionalDuration(duration);
@@ -133,6 +168,11 @@ final _untimeout = ChatCommand(
     Locale.zhCn: '解除一名成员的禁言。',
     Locale.ja: 'メンバーのタイムアウトを解除します。',
     Locale.ko: '멤버의 타임아웃을 해제합니다.',
+    Locale.es419: 'Quitar el aislamiento de un miembro.',
+    Locale.ptBr: 'Remover o castigo de um membro.',
+    Locale.tr: 'Bir üyenin zaman aşımını kaldır.',
+    Locale.pl: 'Zdejmij wyciszenie członka.',
+    Locale.it: 'Rimuovi il timeout di un membro.',
   },
   checks: [GuildCheck.all(), PermissionsCheck(Permissions.moderateMembers)],
   (ChatContext context,
@@ -147,6 +187,11 @@ final _untimeout = ChatCommand(
             Locale.zhCn: '成员。',
             Locale.ja: 'メンバー。',
             Locale.ko: '멤버.',
+            Locale.es419: 'El miembro.',
+            Locale.ptBr: 'O membro.',
+            Locale.tr: 'Üye.',
+            Locale.pl: 'Członek.',
+            Locale.it: 'Il membro.',
           })
           Member member,
           [@Description('The reason, shown in the modlog.', {
@@ -160,6 +205,11 @@ final _untimeout = ChatCommand(
             Locale.zhCn: '原因，会显示在管理日志中。',
             Locale.ja: '理由。モデレーションログに表示されます。',
             Locale.ko: '사유. 관리 로그에 표시됩니다.',
+            Locale.es419: 'El motivo, se muestra en el registro de moderación.',
+            Locale.ptBr: 'O motivo, mostrado no registro de moderação.',
+            Locale.tr: 'Moderasyon kaydında gösterilen sebep.',
+            Locale.pl: 'Powód, widoczny w logu moderacji.',
+            Locale.it: 'Il motivo, mostrato nel modlog.',
           })
           String? reason]) =>
       runModerationCommand(context,
@@ -180,6 +230,11 @@ final _kick = ChatCommand(
     Locale.zhCn: '将一名成员踢出服务器。',
     Locale.ja: 'メンバーをサーバーからキックします。',
     Locale.ko: '멤버를 서버에서 추방합니다.',
+    Locale.es419: 'Expulsar a un miembro del servidor.',
+    Locale.ptBr: 'Expulsar um membro do servidor.',
+    Locale.tr: 'Bir üyeyi sunucudan at.',
+    Locale.pl: 'Wyrzuć członka z serwera.',
+    Locale.it: 'Espelli un membro dal server.',
   },
   checks: [GuildCheck.all(), PermissionsCheck(Permissions.kickMembers)],
   (ChatContext context,
@@ -194,6 +249,11 @@ final _kick = ChatCommand(
             Locale.zhCn: '成员。',
             Locale.ja: 'メンバー。',
             Locale.ko: '멤버.',
+            Locale.es419: 'El miembro.',
+            Locale.ptBr: 'O membro.',
+            Locale.tr: 'Üye.',
+            Locale.pl: 'Członek.',
+            Locale.it: 'Il membro.',
           })
           Member member,
           [@Description('The reason, shown in the modlog.', {
@@ -207,6 +267,11 @@ final _kick = ChatCommand(
             Locale.zhCn: '原因，会显示在管理日志中。',
             Locale.ja: '理由。モデレーションログに表示されます。',
             Locale.ko: '사유. 관리 로그에 표시됩니다.',
+            Locale.es419: 'El motivo, se muestra en el registro de moderación.',
+            Locale.ptBr: 'O motivo, mostrado no registro de moderação.',
+            Locale.tr: 'Moderasyon kaydında gösterilen sebep.',
+            Locale.pl: 'Powód, widoczny w logu moderacji.',
+            Locale.it: 'Il motivo, mostrato nel modlog.',
           })
           String? reason]) =>
       runModerationCommand(context,
@@ -227,6 +292,11 @@ final _ban = ChatCommand(
     Locale.zhCn: '永久或临时封禁一名用户。',
     Locale.ja: 'ユーザーを永久または期間限定で BAN します。',
     Locale.ko: '사용자를 영구 또는 일정 기간 차단합니다.',
+    Locale.es419: 'Banear a un usuario, para siempre o por un tiempo.',
+    Locale.ptBr: 'Banir um usuário, permanentemente ou por um tempo.',
+    Locale.tr: 'Bir kullanıcıyı kalıcı olarak ya da bir süreliğine yasakla.',
+    Locale.pl: 'Zbanuj użytkownika na stałe albo na jakiś czas.',
+    Locale.it: 'Banna un utente, per sempre o per un po\'.',
   },
   checks: [GuildCheck.all(), PermissionsCheck(Permissions.banMembers)],
   (ChatContext context,
@@ -241,6 +311,11 @@ final _ban = ChatCommand(
         Locale.zhCn: '成员。',
         Locale.ja: 'メンバー。',
         Locale.ko: '멤버.',
+        Locale.es419: 'El miembro.',
+        Locale.ptBr: 'O membro.',
+        Locale.tr: 'Üye.',
+        Locale.pl: 'Członek.',
+        Locale.it: 'Il membro.',
       })
       User user,
       [@Description('The reason, shown in the modlog.', {
@@ -254,6 +329,11 @@ final _ban = ChatCommand(
         Locale.zhCn: '原因，会显示在管理日志中。',
         Locale.ja: '理由。モデレーションログに表示されます。',
         Locale.ko: '사유. 관리 로그에 표시됩니다.',
+        Locale.es419: 'El motivo, se muestra en el registro de moderación.',
+        Locale.ptBr: 'O motivo, mostrado no registro de moderação.',
+        Locale.tr: 'Moderasyon kaydında gösterilen sebep.',
+        Locale.pl: 'Powód, widoczny w logu moderacji.',
+        Locale.it: 'Il motivo, mostrato nel modlog.',
       })
       String? reason,
       @Description('Duration of a temporary ban, e.g. 7d. Empty = permanent.', {
@@ -272,6 +352,12 @@ final _ban = ChatCommand(
         Locale.zhCn: '临时封禁的时长，例如 7d。留空 = 永久。',
         Locale.ja: '期間限定 BAN の期間（例: 7d）。空欄 = 永久。',
         Locale.ko: '임시 차단 기간, 예: 7d. 비우면 영구.',
+        Locale.es419:
+            'Duración de un baneo temporal, p. ej. 7d. Vacío = permanente.',
+        Locale.ptBr: 'Duração de um banimento temporário, por exemplo 7d. Vazio = permanente.',
+        Locale.tr: 'Geçici yasağın süresi, örneğin 7d. Boş = kalıcı.',
+        Locale.pl: 'Czas tymczasowego bana, np. 7d. Puste = na stałe.',
+        Locale.it: 'Durata di un ban temporaneo, ad es. 7d. Vuoto = permanente.',
       })
       String? duration,
       @Description('Delete messages from the last days (0-7).', {
@@ -285,6 +371,11 @@ final _ban = ChatCommand(
         Locale.zhCn: '删除最近几天的消息（0-7）。',
         Locale.ja: '過去の日数分のメッセージを削除（0-7）。',
         Locale.ko: '최근 며칠간의 메시지 삭제 (0-7).',
+        Locale.es419: 'Borrar los mensajes de los últimos días (0-7).',
+        Locale.ptBr: 'Apagar mensagens dos últimos dias (0-7).',
+        Locale.tr: 'Son günlerdeki mesajları sil (0-7).',
+        Locale.pl: 'Usuń wiadomości z ostatnich dni (0-7).',
+        Locale.it: 'Elimina i messaggi degli ultimi giorni (0-7).',
       })
       @UseConverter(IntConverter(min: 0, max: 7))
       int? deleteMessages]) async {
@@ -316,6 +407,11 @@ final _unban = ChatCommand(
     Locale.zhCn: '解除封禁。',
     Locale.ja: 'BAN を解除します。',
     Locale.ko: '차단을 해제합니다.',
+    Locale.es419: 'Levantar un baneo.',
+    Locale.ptBr: 'Remover um banimento.',
+    Locale.tr: 'Bir yasağı kaldır.',
+    Locale.pl: 'Zdejmij bana.',
+    Locale.it: 'Revoca un ban.',
   },
   checks: [GuildCheck.all(), PermissionsCheck(Permissions.banMembers)],
   (ChatContext context,
@@ -330,6 +426,11 @@ final _unban = ChatCommand(
         Locale.zhCn: '被封禁用户的 ID。',
         Locale.ja: 'BAN されたユーザーの ID。',
         Locale.ko: '차단된 사용자의 ID.',
+        Locale.es419: 'ID de usuario de la persona baneada.',
+        Locale.ptBr: 'ID de usuário da pessoa banida.',
+        Locale.tr: 'Yasaklı kişinin kullanıcı ID\'si.',
+        Locale.pl: 'ID użytkownika zbanowanej osoby.',
+        Locale.it: 'ID utente della persona bannata.',
       })
       String userId,
       [@Description('The reason, shown in the modlog.', {
@@ -343,6 +444,11 @@ final _unban = ChatCommand(
         Locale.zhCn: '原因，会显示在管理日志中。',
         Locale.ja: '理由。モデレーションログに表示されます。',
         Locale.ko: '사유. 관리 로그에 표시됩니다.',
+        Locale.es419: 'El motivo, se muestra en el registro de moderación.',
+        Locale.ptBr: 'O motivo, mostrado no registro de moderação.',
+        Locale.tr: 'Moderasyon kaydında gösterilen sebep.',
+        Locale.pl: 'Powód, widoczny w logu moderacji.',
+        Locale.it: 'Il motivo, mostrato nel modlog.',
       })
       String? reason]) async {
     final id = Snowflake.parse(
@@ -370,6 +476,11 @@ final _cases = ChatCommand(
     Locale.zhCn: '显示一名成员的最近案例。',
     Locale.ja: 'メンバーの最近のケースを表示します。',
     Locale.ko: '멤버의 최근 기록을 표시합니다.',
+    Locale.es419: 'Mostrar los últimos casos de un miembro.',
+    Locale.ptBr: 'Mostrar os casos mais recentes de um membro.',
+    Locale.tr: 'Bir üyenin son vakalarını göster.',
+    Locale.pl: 'Pokaż ostatnie sprawy członka.',
+    Locale.it: 'Mostra gli ultimi casi di un membro.',
   },
   checks: [GuildCheck.all(), PermissionsCheck(Permissions.moderateMembers)],
   (
@@ -385,6 +496,11 @@ final _cases = ChatCommand(
       Locale.zhCn: '成员。',
       Locale.ja: 'メンバー。',
       Locale.ko: '멤버.',
+      Locale.es419: 'El miembro.',
+      Locale.ptBr: 'O membro.',
+      Locale.tr: 'Üye.',
+      Locale.pl: 'Członek.',
+      Locale.it: 'Il membro.',
     })
     User user,
   ) async {
@@ -432,6 +548,11 @@ final _case = ChatCommand(
     Locale.zhCn: '显示单个案例。',
     Locale.ja: '1 件のケースを表示します。',
     Locale.ko: '기록 하나를 표시합니다.',
+    Locale.es419: 'Mostrar un caso concreto.',
+    Locale.ptBr: 'Mostrar um caso específico.',
+    Locale.tr: 'Tek bir vakayı göster.',
+    Locale.pl: 'Pokaż pojedynczą sprawę.',
+    Locale.it: 'Mostra un singolo caso.',
   },
   checks: [GuildCheck.all(), PermissionsCheck(Permissions.moderateMembers)],
   (
@@ -447,6 +568,11 @@ final _case = ChatCommand(
       Locale.zhCn: '案例编号。',
       Locale.ja: 'ケース番号。',
       Locale.ko: '기록 번호.',
+      Locale.es419: 'El número del caso.',
+      Locale.ptBr: 'O número do caso.',
+      Locale.tr: 'Vaka numarası.',
+      Locale.pl: 'Numer sprawy.',
+      Locale.it: 'Il numero del caso.',
     })
     @UseConverter(IntConverter(min: 1))
     int number,
@@ -480,6 +606,11 @@ final _clear = ChatCommand(
     Locale.zhCn: '删除此频道中的消息。',
     Locale.ja: 'このチャンネルのメッセージを削除します。',
     Locale.ko: '이 채널의 메시지를 삭제합니다.',
+    Locale.es419: 'Borrar mensajes en este canal.',
+    Locale.ptBr: 'Apagar mensagens neste canal.',
+    Locale.tr: 'Bu kanaldaki mesajları sil.',
+    Locale.pl: 'Usuń wiadomości na tym kanale.',
+    Locale.it: 'Elimina messaggi in questo canale.',
   },
   checks: [GuildCheck.all(), PermissionsCheck(Permissions.manageMessages)],
   (
@@ -496,6 +627,11 @@ final _clear = ChatCommand(
       Locale.zhCn: '你想删除的消息数量（1-500）。',
       Locale.ja: '削除したいメッセージの数（1〜500）。',
       Locale.ko: '삭제할 메시지 수 (1-500).',
+      Locale.es419: 'Cuántos mensajes quieres borrar (1-500).',
+      Locale.ptBr: 'Quantas mensagens você quer apagar (1-500).',
+      Locale.tr: 'Kaç mesaj silmek istediğin (1-500).',
+      Locale.pl: 'Ile wiadomości chcesz usunąć (1-500).',
+      Locale.it: 'Quanti messaggi vuoi eliminare (1-500).',
     })
     int amount, [
     @Description('Only delete messages from this user.', {
@@ -509,6 +645,11 @@ final _clear = ChatCommand(
       Locale.zhCn: '只删除此用户的消息。',
       Locale.ja: 'このユーザーのメッセージだけを削除します。',
       Locale.ko: '이 사용자의 메시지만 삭제합니다.',
+      Locale.es419: 'Borrar solo los mensajes de este usuario.',
+      Locale.ptBr: 'Apagar só mensagens deste usuário.',
+      Locale.tr: 'Sadece bu kullanıcının mesajlarını sil.',
+      Locale.pl: 'Usuń tylko wiadomości tego użytkownika.',
+      Locale.it: 'Elimina solo i messaggi di questo utente.',
     })
     User? user,
   ]) async {
@@ -584,6 +725,12 @@ final mod = ChatGroup(
     Locale.zhCn: '警告、禁言、踢出和封禁成员，删除消息并查看案例。',
     Locale.ja: 'メンバーへの警告、タイムアウト、キック、BAN、メッセージ削除とケースの確認を行います。',
     Locale.ko: '멤버 경고, 타임아웃, 추방, 차단, 메시지 삭제 및 기록 조회를 합니다.',
+    Locale.es419:
+        'Advertir, aislar, expulsar y banear miembros, borrar mensajes y ver casos.',
+    Locale.ptBr: 'Advertir, castigar, expulsar e banir membros, limpar mensagens e ver casos.',
+    Locale.tr: 'Üyeleri uyar, sustur, at ve yasakla, mesajları temizle ve vakalara bak.',
+    Locale.pl: 'Ostrzegaj, wyciszaj, wyrzucaj i banuj członków, czyść wiadomości i przeglądaj sprawy.',
+    Locale.it: 'Avverti, metti in timeout, espelli e banna membri, pulisci messaggi e consulta i casi.',
   },
   children: [
     _warn,

@@ -15,7 +15,12 @@ final wink = ChatCommand('wink', 'Wink.', localizedDescriptions: {
   Locale.hi: 'आँख मारें।',
   Locale.zhCn: '眨眼。',
   Locale.ja: 'ウインクします。',
-  Locale.ko: '윙크합니다.'
+  Locale.ko: '윙크합니다.',
+  Locale.es419: 'Guiñar un ojo.',
+  Locale.ptBr: 'Piscar.',
+  Locale.tr: 'Göz kırp.',
+  Locale.pl: 'Puść oczko.',
+  Locale.it: 'Fai l\'occhiolino.'
 }, (ChatContext context) async {
   try {
     final imageUrl = await fetchNekos('wink');

@@ -16,7 +16,12 @@ final pat = ChatCommand('pat', 'Pat someone.', localizedDescriptions: {
   Locale.hi: 'किसी को थपथपाएँ।',
   Locale.zhCn: '摸摸某人。',
   Locale.ja: '誰かをなでます。',
-  Locale.ko: '누군가를 쓰다듬습니다.'
+  Locale.ko: '누군가를 쓰다듬습니다.',
+  Locale.es419: 'Acariciar a alguien.',
+  Locale.ptBr: 'Fazer cafuné em alguém.',
+  Locale.tr: 'Birinin başını okşa.',
+  Locale.pl: 'Pogłaszcz kogoś.',
+  Locale.it: 'Accarezza la testa a qualcuno.'
 }, (ChatContext context,
     [@Description('The user you want to pat.', {
       Locale.da: 'Brugeren, du vil ae.',
@@ -28,7 +33,12 @@ final pat = ChatCommand('pat', 'Pat someone.', localizedDescriptions: {
       Locale.hi: 'वह उपयोगकर्ता जिसे आप थपथपाना चाहते हैं।',
       Locale.zhCn: '你想摸摸的用户。',
       Locale.ja: 'なでたいユーザー。',
-      Locale.ko: '쓰다듬을 사용자.'
+      Locale.ko: '쓰다듬을 사용자.',
+      Locale.es419: 'El usuario al que quieres acariciar.',
+      Locale.ptBr: 'O usuário em quem você quer fazer cafuné.',
+      Locale.tr: 'Başını okşamak istediğin kullanıcı.',
+      Locale.pl: 'Użytkownik, którego chcesz pogłaskać.',
+      Locale.it: 'L\'utente a cui vuoi accarezzare la testa.'
     })
     User? user]) async {
   try {

@@ -12,6 +12,10 @@ const languageCodeConverter = SimpleConverter.fixed(
     'English',
     'Español',
     'Français',
+    'Italiano',
+    'Polski',
+    'Português (Brasil)',
+    'Türkçe',
     'Русский',
     'हिंदी',
     '中文',
@@ -33,7 +37,12 @@ final language = ChatCommand(
       Locale.hi: 'वह भाषा सेट करें जिसमें Toxbot आपसे बात करे।',
       Locale.zhCn: '设置 Toxbot 与你交流时使用的语言。',
       Locale.ja: 'Toxbot があなたに使う言語を設定します。',
-      Locale.ko: 'Toxbot이 사용할 언어를 설정합니다.'
+      Locale.ko: 'Toxbot이 사용할 언어를 설정합니다.',
+      Locale.es419: 'Establecer el idioma que Toxbot usa contigo.',
+      Locale.ptBr: 'Definir o idioma que o Toxbot usa com você.',
+      Locale.tr: 'Toxbot\'un seninle kullandığı dili ayarla.',
+      Locale.pl: 'Ustaw język, którego Toxbot używa z tobą.',
+      Locale.it: 'Imposta la lingua che Toxbot usa con te.'
     }, (ChatContext context,
         [@UseConverter(languageCodeConverter)
         @Description('The language you want.', {
@@ -46,7 +55,12 @@ final language = ChatCommand(
           Locale.hi: 'वह भाषा जो आप चाहते हैं।',
           Locale.zhCn: '你想使用的语言。',
           Locale.ja: '使いたい言語。',
-          Locale.ko: '사용할 언어.'
+          Locale.ko: '사용할 언어.',
+          Locale.es419: 'El idioma que quieres.',
+          Locale.ptBr: 'O idioma que você quer.',
+          Locale.tr: 'İstediğin dil.',
+          Locale.pl: 'Język, który chcesz.',
+          Locale.it: 'La lingua che vuoi.'
         })
         String? selectedLanguage]) async {
   selectedLanguage ??= await context.getSelection<String>(
@@ -56,6 +70,14 @@ final language = ChatCommand(
       'English',
       'Español',
       'Français',
+      'Italiano',
+      'Polski',
+      'Português (Brasil)',
+      'Türkçe',
+    'Italiano',
+    'Polski',
+    'Português (Brasil)',
+    'Türkçe',
       'Русский',
       'हिंदी',
       '中文',
@@ -73,6 +95,10 @@ final language = ChatCommand(
     'English' => 'en_us',
     'Español' => 'es_es',
     'Français' => 'fr_fr',
+    'Italiano' => 'it_it',
+    'Polski' => 'pl_pl',
+    'Português (Brasil)' => 'pt_br',
+    'Türkçe' => 'tr_tr',
     'Русский' => 'ru_ru',
     'हिंदी' => 'hi_hi',
     '中文' => 'zh_cn',

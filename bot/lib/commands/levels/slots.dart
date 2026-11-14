@@ -93,6 +93,11 @@ final slots = ChatCommand(
     Locale.zhCn: '用你的积分玩老虎机。',
     Locale.ja: 'クレジットでスロットマシンを遊びます。',
     Locale.ko: '크레딧으로 슬롯머신을 돌립니다.',
+    Locale.es419: 'Juega a la tragaperras con tus créditos.',
+    Locale.ptBr: 'Jogar no caça-níqueis com seus créditos.',
+    Locale.tr: 'Kredilerinle slot makinesi oyna.',
+    Locale.pl: 'Zagraj na automacie swoimi kredytami.',
+    Locale.it: 'Gioca alla slot machine con i tuoi crediti.',
   },
   (
     ChatContext context, [
@@ -115,6 +120,12 @@ final slots = ChatCommand(
       Locale.zhCn: '下注的积分数量。留空可查看赔率表。',
       Locale.ja: '賭けるクレジット。空欄にすると配当表を表示します。',
       Locale.ko: '걸 크레딧 수. 비워 두면 배당표를 표시합니다.',
+      Locale.es419:
+          'Cuántos créditos apuestas. Déjalo vacío para ver la tabla de premios.',
+      Locale.ptBr: 'Quantos créditos você aposta. Deixe vazio para ver a tabela de prêmios.',
+      Locale.tr: 'Kaç kredi yatırdığın. Ödeme tablosunu görmek için boş bırak.',
+      Locale.pl: 'Ile kredytów stawiasz. Zostaw puste, żeby zobaczyć tabelę wypłat.',
+      Locale.it: 'Quanti crediti punti. Lascia vuoto per vedere la tabella delle vincite.',
     })
     @UseConverter(IntConverter(min: _minBet, max: _maxBet))
     int? bet,

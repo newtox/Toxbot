@@ -15,7 +15,12 @@ final dance = ChatCommand('dance', 'Dance.', localizedDescriptions: {
   Locale.hi: 'नाचें।',
   Locale.zhCn: '跳舞。',
   Locale.ja: '踊ります。',
-  Locale.ko: '춤을 춥니다.'
+  Locale.ko: '춤을 춥니다.',
+  Locale.es419: 'Bailar.',
+  Locale.ptBr: 'Dançar.',
+  Locale.tr: 'Dans et.',
+  Locale.pl: 'Tańcz.',
+  Locale.it: 'Balla.'
 }, (ChatContext context) async {
   try {
     final imageUrl = await fetchNekos('dance');

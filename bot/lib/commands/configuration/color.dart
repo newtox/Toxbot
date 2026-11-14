@@ -15,7 +15,12 @@ final color = ChatCommand('color', 'Set the color of your embeds.',
       Locale.hi: 'अपने एम्बेड का रंग सेट करें।',
       Locale.zhCn: '设置你的嵌入消息颜色。',
       Locale.ja: '埋め込みの色を設定します。',
-      Locale.ko: '임베드 색상을 설정합니다.'
+      Locale.ko: '임베드 색상을 설정합니다.',
+      Locale.es419: 'Establecer el color de tus embeds.',
+      Locale.ptBr: 'Definir a cor dos seus embeds.',
+      Locale.tr: 'Embed\'lerinin rengini ayarla.',
+      Locale.pl: 'Ustaw kolor swoich embedów.',
+      Locale.it: 'Imposta il colore dei tuoi embed.'
     }, (ChatContext context,
         @Description('The color as hex code, e.g. #7289da.', {
           Locale.da: 'Farven som hex-kode, f.eks. #7289da.',
@@ -27,7 +32,12 @@ final color = ChatCommand('color', 'Set the color of your embeds.',
           Locale.hi: 'हेक्स कोड में रंग, जैसे #7289da।',
           Locale.zhCn: '十六进制颜色代码，例如 #7289da。',
           Locale.ja: '16 進数のカラーコード（例: #7289da）。',
-          Locale.ko: '16진수 색상 코드, 예: #7289da.'
+          Locale.ko: '16진수 색상 코드, 예: #7289da.',
+          Locale.es419: 'El color en código hex, p. ej. #7289da.',
+          Locale.ptBr: 'A cor como código hex, por exemplo #7289da.',
+          Locale.tr: 'Hex kodu olarak renk, örneğin #7289da.',
+          Locale.pl: 'Kolor jako kod hex, np. #7289da.',
+          Locale.it: 'Il colore come codice hex, ad es. #7289da.'
         })
         String color) async {
   final connection = await getMySqlConnection();

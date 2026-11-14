@@ -177,6 +177,11 @@ final lock = ChatCommand(
     Locale.zhCn: '为所有人锁定频道或重新开放。',
     Locale.ja: 'チャンネルを全員に対してロックするか、再び開放します。',
     Locale.ko: '모든 사람에게 채널을 잠그거나 다시 엽니다.',
+    Locale.es419: 'Bloquear canales para todos o volver a abrirlos.',
+    Locale.ptBr: 'Bloquear canais para todos ou abri-los de novo.',
+    Locale.tr: 'Kanalları herkese kilitle ya da tekrar aç.',
+    Locale.pl: 'Zablokuj kanały dla wszystkich albo otwórz je ponownie.',
+    Locale.it: 'Blocca i canali per tutti o riaprili.',
   },
   checks: [GuildCheck.all(), PermissionsCheck(Permissions.manageChannels)],
   (
@@ -192,6 +197,11 @@ final lock = ChatCommand(
       Locale.zhCn: '第一个频道。之后还可以添加更多。',
       Locale.ja: '最初のチャンネル。あとから追加できます。',
       Locale.ko: '첫 번째 채널. 나중에 더 추가할 수 있습니다.',
+      Locale.es419: 'El primer canal. Después puedes añadir más.',
+      Locale.ptBr: 'O primeiro canal. Você pode adicionar mais depois.',
+      Locale.tr: 'İlk kanal. Sonradan daha fazlasını ekleyebilirsin.',
+      Locale.pl: 'Pierwszy kanał. Kolejne możesz dodać potem.',
+      Locale.it: 'Il primo canale. Puoi aggiungerne altri dopo.',
     })
     GuildChannel? channel,
   ]) async {

@@ -16,7 +16,12 @@ final poke = ChatCommand('poke', 'Poke someone.', localizedDescriptions: {
   Locale.hi: 'किसी को कोंचें।',
   Locale.zhCn: '戳某人。',
   Locale.ja: '誰かをつつきます。',
-  Locale.ko: '누군가를 콕 찌릅니다.'
+  Locale.ko: '누군가를 콕 찌릅니다.',
+  Locale.es419: 'Dar un toque a alguien.',
+  Locale.ptBr: 'Cutucar alguém.',
+  Locale.tr: 'Birini dürt.',
+  Locale.pl: 'Szturchnij kogoś.',
+  Locale.it: 'Punzecchia qualcuno.'
 }, (ChatContext context,
     [@Description('The user you want to poke.', {
       Locale.da: 'Brugeren, du vil prikke til.',
@@ -28,7 +33,12 @@ final poke = ChatCommand('poke', 'Poke someone.', localizedDescriptions: {
       Locale.hi: 'वह उपयोगकर्ता जिसे आप कोंचना चाहते हैं।',
       Locale.zhCn: '你想戳的用户。',
       Locale.ja: 'つつきたいユーザー。',
-      Locale.ko: '콕 찌를 사용자.'
+      Locale.ko: '콕 찌를 사용자.',
+      Locale.es419: 'El usuario al que quieres dar un toque.',
+      Locale.ptBr: 'O usuário que você quer cutucar.',
+      Locale.tr: 'Dürtmek istediğin kullanıcı.',
+      Locale.pl: 'Użytkownik, którego chcesz szturchnąć.',
+      Locale.it: 'L\'utente che vuoi punzecchiare.'
     })
     User? user]) async {
   try {

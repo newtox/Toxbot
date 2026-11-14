@@ -39,6 +39,11 @@ final profile = ChatCommand(
     Locale.zhCn: '显示你或其他人的资料卡。',
     Locale.ja: '自分または他の人のプロフィールカードを表示します。',
     Locale.ko: '내 프로필 카드나 다른 사람의 카드를 표시합니다.',
+    Locale.es419: 'Mostrar tu tarjeta de perfil o la de otra persona.',
+    Locale.ptBr: 'Mostrar seu cartão de perfil ou o de outra pessoa.',
+    Locale.tr: 'Kendi profil kartını ya da başkasınınkini göster.',
+    Locale.pl: 'Pokaż swoją kartę profilu albo kogoś innego.',
+    Locale.it: 'Mostra la tua scheda profilo o quella di qualcun altro.',
   },
   (
     ChatContext context, [
@@ -53,6 +58,11 @@ final profile = ChatCommand(
       Locale.zhCn: '你想查看谁的资料。默认是你自己。',
       Locale.ja: '見たいプロフィールの持ち主。既定は自分。',
       Locale.ko: '보고 싶은 프로필의 주인. 기본값은 나.',
+      Locale.es419: 'De quién quieres ver el perfil. Por defecto, el tuyo.',
+      Locale.ptBr: 'De quem é o perfil que você quer ver. Por padrão, o seu.',
+      Locale.tr: 'Kimin profilini görmek istediğin. Varsayılan olarak seninki.',
+      Locale.pl: 'Czyj profil chcesz zobaczyć. Domyślnie twój.',
+      Locale.it: 'Di chi vuoi vedere il profilo. Di default il tuo.',
     })
     User? target,
   ]) async {
@@ -152,6 +162,11 @@ final daily = ChatCommand(
     Locale.zhCn: '领取每日积分。',
     Locale.ja: 'デイリークレジットを受け取ります。',
     Locale.ko: '일일 크레딧을 받습니다.',
+    Locale.es419: 'Recoger tus créditos diarios.',
+    Locale.ptBr: 'Pegar seus créditos diários.',
+    Locale.tr: 'Günlük kredilerini topla.',
+    Locale.pl: 'Odbierz swoje codzienne kredyty.',
+    Locale.it: 'Ritira i tuoi crediti giornalieri.',
   },
   (ChatContext context) async {
     final user = context.user;
@@ -216,6 +231,12 @@ final credits = ChatCommand(
     Locale.zhCn: '显示你的积分、每日连签以及收支情况。',
     Locale.ja: 'クレジット、デイリー連続日数、収支を表示します。',
     Locale.ko: '크레딧, 일일 연속 기록, 수입과 지출을 표시합니다.',
+    Locale.es419:
+        'Mostrar tus créditos, tu racha diaria y lo que has ganado y gastado.',
+    Locale.ptBr: 'Mostrar seus créditos, sua sequência diária e o que você ganhou e gastou.',
+    Locale.tr: 'Kredilerini, günlük serini ve ne kazanıp ne harcadığını göster.',
+    Locale.pl: 'Pokaż swoje kredyty, codzienną serię oraz historię zarobków i wydatków.',
+    Locale.it: 'Mostra i tuoi crediti, la serie giornaliera e cosa hai guadagnato e speso.',
   },
   (ChatContext context) async {
     final user = context.user;
@@ -291,6 +312,11 @@ final pay = ChatCommand(
     Locale.zhCn: '把你的一些积分转给另一位成员。',
     Locale.ja: '自分のクレジットを他のメンバーに送ります。',
     Locale.ko: '내 크레딧을 다른 멤버에게 보냅니다.',
+    Locale.es419: 'Enviar parte de tus créditos a otro miembro.',
+    Locale.ptBr: 'Enviar parte dos seus créditos para outro membro.',
+    Locale.tr: 'Kredilerinin bir kısmını başka bir üyeye gönder.',
+    Locale.pl: 'Wyślij część swoich kredytów innemu członkowi.',
+    Locale.it: 'Invia parte dei tuoi crediti a un altro membro.',
   },
   (
     ChatContext context,
@@ -305,6 +331,11 @@ final pay = ChatCommand(
       Locale.zhCn: '谁会收到积分。',
       Locale.ja: 'クレジットを受け取る人。',
       Locale.ko: '크레딧을 받을 사람.',
+      Locale.es419: 'Quién recibe los créditos.',
+      Locale.ptBr: 'Quem recebe os créditos.',
+      Locale.tr: 'Kredileri kimin alacağı.',
+      Locale.pl: 'Kto dostaje kredyty.',
+      Locale.it: 'Chi riceve i crediti.',
     })
     User target,
     @Description('How many credits you send.', {
@@ -318,6 +349,11 @@ final pay = ChatCommand(
       Locale.zhCn: '你要转出的积分数量。',
       Locale.ja: '送るクレジットの数。',
       Locale.ko: '보낼 크레딧 수.',
+      Locale.es419: 'Cuántos créditos envías.',
+      Locale.ptBr: 'Quantos créditos você envia.',
+      Locale.tr: 'Kaç kredi göndereceğin.',
+      Locale.pl: 'Ile kredytów wysyłasz.',
+      Locale.it: 'Quanti crediti invii.',
     })
     @UseConverter(IntConverter(min: 1, max: 1000000000))
     int amount,
@@ -390,6 +426,11 @@ final shop = ChatCommand(
     Locale.zhCn: '浏览并购买背景、头像框和进度条。',
     Locale.ja: '背景、アバターフレーム、進行バーを見て購入します。',
     Locale.ko: '배경, 아바타 테두리, 진행 막대를 둘러보고 구매합니다.',
+    Locale.es419: 'Ver y comprar fondos, marcos de avatar y barras de progreso.',
+    Locale.ptBr: 'Ver e comprar fundos, molduras de avatar e barras de progresso.',
+    Locale.tr: 'Arka planlara, avatar çerçevelerine ve ilerleme çubuklarına göz at ve satın al.',
+    Locale.pl: 'Przeglądaj i kupuj tła, ramki awatara i paski postępu.',
+    Locale.it: 'Sfoglia e compra sfondi, cornici avatar e barre di avanzamento.',
   },
   (ChatContext context) async {
     final user = context.user;
@@ -632,6 +673,11 @@ final background = ChatCommand(
     Locale.zhCn: '更换资料卡的背景。',
     Locale.ja: 'プロフィールカードの背景を変更します。',
     Locale.ko: '프로필 카드의 배경을 변경합니다.',
+    Locale.es419: 'Cambiar el fondo de tu tarjeta de perfil.',
+    Locale.ptBr: 'Mudar o fundo do seu cartão de perfil.',
+    Locale.tr: 'Profil kartının arka planını değiştir.',
+    Locale.pl: 'Zmień tło swojej karty profilu.',
+    Locale.it: 'Cambia lo sfondo della tua scheda profilo.',
   },
   (
     ChatContext context,
@@ -646,6 +692,11 @@ final background = ChatCommand(
       Locale.zhCn: '你的一个背景，或默认背景。',
       Locale.ja: '持っている背景、または既定のもの。',
       Locale.ko: '보유한 배경 또는 기본값.',
+      Locale.es419: 'Uno de tus fondos o el predeterminado.',
+      Locale.ptBr: 'Um dos seus fundos, ou o padrão.',
+      Locale.tr: 'Arka planlarından biri ya da varsayılan.',
+      Locale.pl: 'Jedno z twoich teł albo domyślne.',
+      Locale.it: 'Uno dei tuoi sfondi, o quello predefinito.',
     })
     @Autocomplete(backgroundChoices)
     String name,
@@ -667,6 +718,11 @@ final frame = ChatCommand(
     Locale.zhCn: '更换资料卡的头像框。',
     Locale.ja: 'プロフィールカードのアバターフレームを変更します。',
     Locale.ko: '프로필 카드의 아바타 테두리를 변경합니다.',
+    Locale.es419: 'Cambiar el marco de avatar de tu tarjeta de perfil.',
+    Locale.ptBr: 'Mudar a moldura de avatar do seu cartão de perfil.',
+    Locale.tr: 'Profil kartının avatar çerçevesini değiştir.',
+    Locale.pl: 'Zmień ramkę awatara na swojej karcie profilu.',
+    Locale.it: 'Cambia la cornice avatar della tua scheda profilo.',
   },
   (
     ChatContext context,
@@ -681,6 +737,11 @@ final frame = ChatCommand(
       Locale.zhCn: '你的一个头像框，或不使用。',
       Locale.ja: '持っているアバターフレーム、またはなし。',
       Locale.ko: '보유한 아바타 테두리 또는 없음.',
+      Locale.es419: 'Uno de tus marcos de avatar o ninguno.',
+      Locale.ptBr: 'Uma das suas molduras de avatar, ou nenhuma.',
+      Locale.tr: 'Avatar çerçevelerinden biri ya da hiçbiri.',
+      Locale.pl: 'Jedna z twoich ramek awatara albo żadna.',
+      Locale.it: 'Una delle tue cornici avatar, o nessuna.',
     })
     @Autocomplete(frameChoices)
     String name,
@@ -702,6 +763,11 @@ final bar = ChatCommand(
     Locale.zhCn: '更换资料卡的进度条。',
     Locale.ja: 'プロフィールカードの進行バーを変更します。',
     Locale.ko: '프로필 카드의 진행 막대를 변경합니다.',
+    Locale.es419: 'Cambiar la barra de progreso de tu tarjeta de perfil.',
+    Locale.ptBr: 'Mudar a barra de progresso do seu cartão de perfil.',
+    Locale.tr: 'Profil kartının ilerleme çubuğunu değiştir.',
+    Locale.pl: 'Zmień pasek postępu na swojej karcie profilu.',
+    Locale.it: 'Cambia la barra di avanzamento della tua scheda profilo.',
   },
   (
     ChatContext context,
@@ -716,6 +782,11 @@ final bar = ChatCommand(
       Locale.zhCn: '你的一个进度条，或默认进度条。',
       Locale.ja: '持っている進行バー、または既定のもの。',
       Locale.ko: '보유한 진행 막대 또는 기본값.',
+      Locale.es419: 'Una de tus barras de progreso o la predeterminada.',
+      Locale.ptBr: 'Uma das suas barras de progresso, ou a padrão.',
+      Locale.tr: 'İlerleme çubuklarından biri ya da varsayılan.',
+      Locale.pl: 'Jeden z twoich pasków postępu albo domyślny.',
+      Locale.it: 'Una delle tue barre di avanzamento, o quella predefinita.',
     })
     @Autocomplete(barChoices)
     String name,
@@ -737,6 +808,11 @@ final leaderboard = ChatCommand(
     Locale.zhCn: '显示此服务器经验值最多的成员。',
     Locale.ja: 'このサーバーで XP が最も多いメンバーを表示します。',
     Locale.ko: '이 서버에서 XP가 가장 많은 멤버를 표시합니다.',
+    Locale.es419: 'Mostrar los miembros de este servidor con más XP.',
+    Locale.ptBr: 'Mostrar os membros deste servidor com mais XP.',
+    Locale.tr: 'Bu sunucuda en çok XP\'ye sahip üyeleri göster.',
+    Locale.pl: 'Pokaż członków tego serwera z największą ilością XP.',
+    Locale.it: 'Mostra i membri di questo server con più XP.',
   },
   (ChatContext context) async {
     final user = context.user;

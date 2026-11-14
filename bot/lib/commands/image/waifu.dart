@@ -14,7 +14,12 @@ final waifu =
   Locale.hi: 'एक waifu तस्वीर दिखाएँ।',
   Locale.zhCn: '显示一张老婆图片。',
   Locale.ja: '嫁の画像を表示します。',
-  Locale.ko: 'waifu 이미지를 표시합니다.'
+  Locale.ko: 'waifu 이미지를 표시합니다.',
+  Locale.es419: 'Mostrar una imagen de waifu.',
+  Locale.ptBr: 'Mostrar uma imagem de waifu.',
+  Locale.tr: 'Bir waifu resmi göster.',
+  Locale.pl: 'Pokaż obrazek waifu.',
+  Locale.it: 'Mostra un\'immagine waifu.'
 }, (ChatContext context) async {
   try {
     final imageUrl = await fetchNekos('waifu');
