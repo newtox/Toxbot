@@ -1,12 +1,12 @@
 <?php
 
 return [
-    'members' => 'Members',
-    'online' => 'Online',
-    'premium_active' => 'Active',
-    'premium_free' => 'Free',
-    'modules' => 'Modules',
-    'on' => 'On',
-    'off' => 'Off',
-    'blocked_tags' => '{0} No blocked tags|{1} :count blocked tag|[2,*] :count blocked tags',
+    'members' => 'Üyeler',
+    'online' => 'Çevrimiçi',
+    'premium_active' => 'Aktif',
+    'premium_free' => 'Ücretsiz',
+    'modules' => 'Modüller',
+    'on' => 'Açık',
+    'off' => 'Kapalı',
+    'blocked_tags' => '{0} Engellenen tag yok|{1} :count engellenen tag|[2,*] :count engellenen tag',
 ];

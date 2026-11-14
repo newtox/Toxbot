@@ -1,14 +1,14 @@
 <?php
 
 return [
-    'unsaved' => 'Careful – you have unsaved changes!',
-    'reset' => 'Reset',
-    'save' => 'Save changes',
-    'saving' => 'Saving …',
-    'saved' => 'Saved! Toxbot uses the new settings right away.',
-    'bot_offline' => 'Toxbot is offline right now. Settings are saved and apply as soon as it is back online. Buttons in Discord, such as tickets or event sign-ups, don’t work until then.',
-    'saved_offline' => 'Saved! Toxbot is offline and will apply the changes as soon as it is back.',
-    'not_saved' => 'Not saved, please check the marked fields.',
-    'confirm_title' => 'Are you sure?',
-    'cancel' => 'Cancel',
+    'unsaved' => 'Uwaga – masz niezapisane zmiany!',
+    'reset' => 'Resetuj',
+    'save' => 'Zapisz zmiany',
+    'saving' => 'Zapisywanie …',
+    'saved' => 'Zapisano! Toxbot od razu używa nowych ustawień.',
+    'bot_offline' => 'Toxbot jest teraz offline. Ustawienia zostaną zapisane i zadziałają, gdy wróci. Przyciski w Discordzie, np. tickety czy zapisy na wydarzenia, do tego czasu nie działają.',
+    'saved_offline' => 'Zapisano! Toxbot jest offline i zastosuje zmiany, gdy tylko wróci.',
+    'not_saved' => 'Nie zapisano, sprawdź zaznaczone pola.',
+    'confirm_title' => 'Na pewno?',
+    'cancel' => 'Anuluj',
 ];

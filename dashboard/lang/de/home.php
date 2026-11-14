@@ -35,7 +35,7 @@ return [
     'f_welcome_d' => 'Willkommens- und Abschiedsnachrichten mit Live-Vorschau und eine Rolle für jedes neue Mitglied. Oder lass Toxbot Tickets, Moderation und Schutz mit einem Klick einrichten.',
     'f_fun_t' => 'Roleplay & Spaß',
     'f_fun_d' => '/hug, /pat, /8ball und viele mehr mit Anime-GIFs, dazu /generate für Passwörter, Hex-Werte und Zufallsfarben.',
-    'f_lang_t' => '10 Sprachen',
+    'f_lang_t' => '18 Sprachen',
     'f_lang_d' => 'Jeder wählt seine eigene Sprache und Embed-Farbe, in Discord und im Dashboard.',
     'premium_title' => 'Premium',
     'premium_text' => 'Toxbot ist kostenlos. Server Premium und exklusive Artikel unterstützen die Entwicklung.',

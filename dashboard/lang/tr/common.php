@@ -1,14 +1,14 @@
 <?php
 
 return [
-    'unsaved' => 'Careful – you have unsaved changes!',
-    'reset' => 'Reset',
-    'save' => 'Save changes',
-    'saving' => 'Saving …',
-    'saved' => 'Saved! Toxbot uses the new settings right away.',
-    'bot_offline' => 'Toxbot is offline right now. Settings are saved and apply as soon as it is back online. Buttons in Discord, such as tickets or event sign-ups, don’t work until then.',
-    'saved_offline' => 'Saved! Toxbot is offline and will apply the changes as soon as it is back.',
-    'not_saved' => 'Not saved, please check the marked fields.',
-    'confirm_title' => 'Are you sure?',
-    'cancel' => 'Cancel',
+    'unsaved' => 'Dikkat – kaydedilmemiş değişikliklerin var!',
+    'reset' => 'Sıfırla',
+    'save' => 'Değişiklikleri kaydet',
+    'saving' => 'Kaydediliyor …',
+    'saved' => 'Kaydedildi! Toxbot yeni ayarları hemen kullanıyor.',
+    'bot_offline' => 'Toxbot şu anda çevrimdışı. Ayarlar kaydedilir ve tekrar çevrimiçi olduğunda geçerli olur. Ticket veya etkinlik kayıtları gibi Discord\'daki butonlar o zamana kadar çalışmaz.',
+    'saved_offline' => 'Kaydedildi! Toxbot çevrimdışı ve döner dönmez değişiklikleri uygulayacak.',
+    'not_saved' => 'Kaydedilmedi, işaretli alanları kontrol et.',
+    'confirm_title' => 'Emin misin?',
+    'cancel' => 'İptal',
 ];

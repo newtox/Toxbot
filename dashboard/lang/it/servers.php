@@ -1,16 +1,16 @@
 <?php
 
 return [
-    'title' => 'Your servers',
-    'subtitle' => 'Servers with Toxbot you are on. You can configure the ones where you have the "Manage Server" permission.',
-    'reload' => 'Reload list',
-    'empty' => 'You are not on any server with Toxbot and don\'t manage any server.',
-    'owner' => 'Owner',
-    'manager' => 'Manager',
-    'moderator' => 'Moderator',
-    'without_bot' => 'Toxbot is not on these yet',
-    'invite' => 'Invite',
-    'after_invite' => 'After inviting, click "Reload list".',
-    'forbidden' => 'You are not allowed to manage this server, or Toxbot is not on it.',
-    'member' => 'Member',
+    'title' => 'I tuoi server',
+    'subtitle' => 'Server con Toxbot in cui ci sei. Puoi configurare quelli in cui hai il permesso "Gestire il server".',
+    'reload' => 'Ricarica lista',
+    'empty' => 'Non sei in nessun server con Toxbot e non gestisci nessun server.',
+    'owner' => 'Proprietario',
+    'manager' => 'Gestore',
+    'moderator' => 'Moderatore',
+    'without_bot' => 'Toxbot non è ancora qui',
+    'invite' => 'Invita',
+    'after_invite' => 'Dopo l\'invito clicca "Ricarica lista".',
+    'forbidden' => 'Non puoi gestire questo server, oppure Toxbot non c\'è.',
+    'member' => 'Membro',
 ];

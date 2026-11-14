@@ -1,16 +1,16 @@
 <?php
 
 return [
-    'title' => 'Your servers',
-    'subtitle' => 'Servers with Toxbot you are on. You can configure the ones where you have the "Manage Server" permission.',
-    'reload' => 'Reload list',
-    'empty' => 'You are not on any server with Toxbot and don\'t manage any server.',
-    'owner' => 'Owner',
-    'manager' => 'Manager',
-    'moderator' => 'Moderator',
-    'without_bot' => 'Toxbot is not on these yet',
-    'invite' => 'Invite',
-    'after_invite' => 'After inviting, click "Reload list".',
-    'forbidden' => 'You are not allowed to manage this server, or Toxbot is not on it.',
-    'member' => 'Member',
+    'title' => 'Sunucuların',
+    'subtitle' => 'İçinde bulunduğun, Toxbot\'un olduğu sunucular. "Sunucuyu Yönet" iznine sahip olduklarını ayarlayabilirsin.',
+    'reload' => 'Listeyi yenile',
+    'empty' => 'Toxbot\'un olduğu hiçbir sunucuda değilsin ve hiçbir sunucuyu yönetmiyorsun.',
+    'owner' => 'Sahip',
+    'manager' => 'Yönetici',
+    'moderator' => 'Moderatör',
+    'without_bot' => 'Toxbot henüz bunlarda değil',
+    'invite' => 'Davet et',
+    'after_invite' => 'Davet ettikten sonra "Listeyi yenile"ye tıkla.',
+    'forbidden' => 'Bu sunucuyu yönetme iznin yok ya da Toxbot burada değil.',
+    'member' => 'Üye',
 ];

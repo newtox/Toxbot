@@ -1,13 +1,13 @@
 <?php
 
 return [
-    'headline' => 'Configure Toxbot without typing slash commands.',
-    'intro' => 'Welcome and goodbye messages with live preview, autorole in one click and your own language and embed color.',
-    'button' => 'Log in with Discord',
-    'privacy' => 'We only see your name, avatar and server list.',
-    'cancelled' => 'Login cancelled.',
-    'invalid' => 'Invalid login. Please try again.',
-    'rejected' => 'Discord rejected the login. Please try again.',
-    'expired' => 'Your Discord session has expired. Please log in again.',
-    'blacklisted' => 'Your account is blocked from Toxbot.',
+    'headline' => 'Configure o Toxbot sem digitar comandos de barra.',
+    'intro' => 'Mensagens de boas-vindas e despedida com prévia ao vivo, cargo automático com um clique e seu próprio idioma e cor de embed.',
+    'button' => 'Entrar com o Discord',
+    'privacy' => 'Só vemos seu nome, avatar e lista de servidores.',
+    'cancelled' => 'Login cancelado.',
+    'invalid' => 'Login inválido. Tente de novo.',
+    'rejected' => 'O Discord recusou o login. Tente de novo.',
+    'expired' => 'Sua sessão do Discord expirou. Entre de novo.',
+    'blacklisted' => 'Sua conta está bloqueada no Toxbot.',
 ];

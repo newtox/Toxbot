@@ -35,7 +35,7 @@ return [
     'f_welcome_d' => '실시간 미리보기가 있는 환영·작별 메시지와 새 멤버를 위한 역할. 티켓, 관리, 보호도 클릭 한 번으로 자동 설정할 수 있습니다.',
     'f_fun_t' => '롤플레이와 재미',
     'f_fun_d' => '/hug, /pat, /8ball 등 다양한 명령어를 애니메이션 GIF와 함께. 비밀번호, 16진수 값, 랜덤 색상을 만드는 /generate도 있습니다.',
-    'f_lang_t' => '10개 언어',
+    'f_lang_t' => '18개 언어',
     'f_lang_d' => '언어와 임베드 색상은 각자 선택합니다. Discord에서도 대시보드에서도.',
     'premium_title' => '프리미엄',
     'premium_text' => 'Toxbot은 무료입니다. Server Premium과 한정 아이템이 개발을 돕습니다.',

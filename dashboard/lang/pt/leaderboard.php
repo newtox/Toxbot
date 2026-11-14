@@ -1,12 +1,12 @@
 <?php
 
 return [
-    'title' => 'Leaderboard',
-    'description' => 'The members of this server with the most XP.',
-    'empty' => 'Nobody has earned XP here yet.',
-    'level' => 'Level :level',
-    'own_rank' => 'You’re in place :rank with :xp XP.',
-    'unranked' => 'You don’t have any XP here yet.',
-    'disabled' => 'Levels are turned off on this server, so there is no leaderboard.',
-    'enable' => 'Turn on levels',
+    'title' => 'Ranking',
+    'description' => 'Os membros deste servidor com mais XP.',
+    'empty' => 'Ninguém ganhou XP aqui ainda.',
+    'level' => 'Nível :level',
+    'own_rank' => 'Você está em :rank lugar com :xp XP.',
+    'unranked' => 'Você ainda não tem XP aqui.',
+    'disabled' => 'Os níveis estão desativados neste servidor, então não há ranking.',
+    'enable' => 'Ativar níveis',
 ];
