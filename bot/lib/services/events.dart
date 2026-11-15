@@ -28,6 +28,7 @@ import 'package:shiori/commands/tickets/ticket.dart';
 import 'package:shiori/services/blacklist.dart';
 import 'package:shiori/services/client_language.dart';
 import 'package:shiori/services/levels.dart';
+import 'package:shiori/services/nickname.dart';
 import 'package:shiori/services/premium.dart';
 import 'package:shiori/services/protection.dart';
 import 'package:shiori/utils/config.dart';
@@ -173,6 +174,7 @@ void setupGuildCreateHandler(NyxxGateway client) async {
       if (await leaveIfBlacklisted(client, guild.id)) return;
       _knownGuilds[guild.id] = (guild.name, event.memberCount);
       await checkForDatabase(guild);
+      await applyJapaneseNickname(client, event);
 
       if (currentGuildIds.contains(guild.id)) {
         return;
