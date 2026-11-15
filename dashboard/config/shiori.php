@@ -7,7 +7,7 @@ return [
 
     'premium_guild_skus' => array_values(array_filter(array_map('trim', explode(',', (string) env('SHIORI_PREMIUM_GUILD_SKUS', ''))))),
 
-    'repository' => env('SHIORI_REPOSITORY', 'https://github.com/newtox/Shiori'),
+    'repository' => env('SHIORI_REPOSITORY', 'https://github.com/newtox/shiori'),
 
     'contact_email' => env('SHIORI_CONTACT_EMAIL') ?: 'justin.lys26@gmail.com',
 

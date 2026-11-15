@@ -6,7 +6,7 @@ const _host = 'nekos.best';
 
 const _timeout = Duration(seconds: 5);
 
-const _headers = {'User-Agent': 'Shiori (https://github.com/newtox/Shiori)'};
+const _headers = {'User-Agent': 'Shiori (https://github.com/newtox/shiori)'};
 
 const _batchSize = 10;
 

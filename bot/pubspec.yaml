@@ -1,7 +1,7 @@
 name: shiori
 description: A Dart Discord Bot
 version: 1.0.0
-repository: https://github.com/newtox/Shiori
+repository: https://github.com/newtox/shiori
 
 environment:
   sdk: ^3.5.2

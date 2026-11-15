@@ -74,7 +74,7 @@ class InfoTest extends TestCase
 
         $this->get('/info')
             ->assertOk()
-            ->assertSee('https://github.com/newtox/Shiori/issues')
+            ->assertSee('https://github.com/newtox/shiori/issues')
             ->assertSee('PRIVACY_POLICY.md')
             ->assertSee('mailto:hallo@shiori.test', false)
             ->assertSee(route('profile.data'))
@@ -112,7 +112,7 @@ class InfoTest extends TestCase
         $this->get('/info/system')->assertOk()->assertSee(__('info.no_status'))->assertSee('abcdef1')->assertSee(PHP_VERSION);
 
         BotStatus::create(['id' => 1, 'started_at' => now()->subDay(), 'heartbeat_at' => now(), 'commit' => '1234567abcdef', 'dart_version' => '3.9.0', 'guilds' => 42, 'latency_ms' => 87, 'memory_bytes' => 120 * 1024 * 1024, 'memory_peak_bytes' => 200 * 1024 * 1024, 'user_id' => '999']);
-        $this->get('/info/system')->assertOk()->assertSee(__('info.online'))->assertSee('87 ms')->assertSee('120.00 / 200.00 MB')->assertSee('github.com/newtox/Shiori/commit/1234567abcdef');
+        $this->get('/info/system')->assertOk()->assertSee(__('info.online'))->assertSee('87 ms')->assertSee('120.00 / 200.00 MB')->assertSee('github.com/newtox/shiori/commit/1234567abcdef');
 
         BotStatus::query()->update(['heartbeat_at' => now()->subMinutes(10)]);
         $this->get('/info/system')->assertOk()->assertSee(__('info.offline'))->assertDontSee('87 ms');

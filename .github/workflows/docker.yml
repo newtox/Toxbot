@@ -40,7 +40,7 @@ jobs:
           tags: |
             ghcr.io/newtox/${{ matrix.image }}:latest
             ghcr.io/newtox/${{ matrix.image }}:${{ github.sha }}
-          labels: org.opencontainers.image.source=https://github.com/newtox/Shiori
+          labels: org.opencontainers.image.source=https://github.com/newtox/shiori
           build-args: |
             GIT_COMMIT=${{ github.sha }}
             BUILD_DATE=${{ steps.build.outputs.date }}

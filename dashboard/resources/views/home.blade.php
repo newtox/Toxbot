@@ -18,7 +18,7 @@
         'stat_users' => $stats['users'],
         'stat_tags' => $stats['tags'],
     ], fn ($value) => (int) $value > 0);
-    $repo = 'https://github.com/newtox/Shiori';
+    $repo = 'https://github.com/newtox/shiori';
 @endphp
 
 <x-layouts.app :description="__('home.hero_text')">
